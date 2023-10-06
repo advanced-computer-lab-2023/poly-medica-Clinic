@@ -21,8 +21,9 @@ class ClinicService {
         return newPackage
     }
 
-    async updatePackage(name, price, discountOfDoctor, discountOfMedicin, discountOfFamily){
-       
+    async updatePackage(id, updateData){
+       const {updatedPackage} = await this.repository.updatePackage(id, updateData);
+       return updateData;
     }
 
     async deletePackage(id){

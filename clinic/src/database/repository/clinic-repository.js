@@ -24,7 +24,10 @@ class ClinicRepository{
         return packageDeleted;
     }
 
-   
+    async updatePackage(id, updateData){
+        const packageUpdated = await HealthPackageModel.findByIdAndUpdate(id, {$set: updateData});
+        return packageUpdated;
+    }
 }
 
 export default ClinicRepository;
