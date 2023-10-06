@@ -10,7 +10,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  lint-and-test-patient:
+  lint-and-test-clinic:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,10 +22,10 @@ jobs:
         with:
           node-version: 14
 
-      - name: Install dependencies (Patient Microservice)
+      - name: Install dependencies (Clinic Microservice)
         run: npm ci
         working-directory: clinic
 
-      - name: Run ESLint (Patient Microservice)
+      - name: Run ESLint (Clinic Microservice)
         run: npm run lint
         working-directory: clinic
