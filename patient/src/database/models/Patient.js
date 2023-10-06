@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { GENDERS } from "../utils/Constants.js";
+import { GENDERS } from "../../utils/Constants.js";
 
 const Patient = mongoose.Schema({
     name: {

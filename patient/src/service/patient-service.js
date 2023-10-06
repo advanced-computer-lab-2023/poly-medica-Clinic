@@ -1,19 +1,15 @@
-import PatientRepository from "../database/repository/Patient-Repository";
+import PatientRepository from "../database/repository/patient-repository.js";
 
 class PatientService {
     constructor() {
-        this.repository = PatientRepository;
+        this.repository = new PatientRepository();
 
     }
 
-    async getAllPatient(){
-        const patients = this.repository.getAllPatient();
-        if(patients){
-            return patients;
-        }else{
-            console.log("no data was found");
-        }
-        
+    async getAllPatient() {
+        const patients = await this.repository.findAllPatients();
+        return patients;
+
     }
 }
 
