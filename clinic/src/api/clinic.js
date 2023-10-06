@@ -1,3 +1,4 @@
+
 import ClinicService from "../service/clinic-service.js";
 
 export const clinic = (app) =>{
@@ -48,3 +49,4 @@ export const clinic = (app) =>{
     });
 
 }
+

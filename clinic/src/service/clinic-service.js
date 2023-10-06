@@ -1,3 +1,4 @@
+
 import ClinicRepository from "../database/repository/clinic-repository.js";
 
 class ClinicService {
@@ -33,3 +34,4 @@ class ClinicService {
 }
 
 export default ClinicService;
+
