@@ -1,13 +1,14 @@
 import mongoose from 'mongoose';
-import {PatientModel  , PerscriptionModel}  from '../models';
+import PatientModel from '../models/Patient.js';
+import PerscriptionModel from '../models/Perscription.js';
 
-class PatientRepository{
-    async findAllPatients(){
+class PatientRepository {
+    async findAllPatients() {
         const allPatients = await PatientModel.find();
         return allPatients;
     }
 
-    
+
 }
 
 export default PatientRepository;

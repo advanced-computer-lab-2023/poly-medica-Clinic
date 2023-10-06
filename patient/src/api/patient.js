@@ -1,4 +1,4 @@
-import PatientService from "../service/patient-service";
+import PatientService from "../service/patient-service.js";
 
 export const patient = (app) =>{
     const service = new PatientService();
