@@ -23,7 +23,7 @@ class ClinicService {
 
     async updatePackage(id, updateData){
        const {updatedPackage} = await this.repository.updatePackage(id, updateData);
-       return updateData;
+       return updatedPackage;
     }
 
     async deletePackage(id){
