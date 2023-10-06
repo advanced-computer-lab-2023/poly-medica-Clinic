@@ -14,6 +14,11 @@ class PatientService {
     const familyMembers = await this.repository.findFamilyMembers(id);
     return familyMembers;
   }
+
+  async addFamilyMember(id, updates) {
+    const familyMembers = await this.repository.addFamilyMember(id, updates);
+    return familyMembers;
+  }
 }
 
 export default PatientService;

@@ -15,6 +15,14 @@ class PatientRepository {
     );
     return familyMembers;
   }
+
+  async addFamilyMember(id, familyMembers) {
+    return await PatientModel.findOneAndUpdate(
+      { _id: id },
+      { familyMembers },
+      { new: true }
+    ).select(FAMILY_MEMBERS_PROJECTION);
+  }
 }
 
 export default PatientRepository;
