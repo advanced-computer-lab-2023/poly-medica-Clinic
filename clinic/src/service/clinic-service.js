@@ -1,13 +1,13 @@
-import ClinicRepository from "../database/repository/clinic-repository";
+import ClinicRepository from "../database/repository/clinic-repository.js";
 
 class ClinicService {
     constructor() {
-        this.repository = ClinicRepository;
+        this.repository = new ClinicRepository();
 
     }
 
     async getAllPackages(){
-        const packages = await this.repository.getAllPackages();
+        const packages = await this.repository.findAllPackages();
         if(packages){
             return packages;
         }else{
@@ -16,8 +16,18 @@ class ClinicService {
         
     }
     async createNewPackage(name, price, discountOfDoctor, discountOfMedicin, discountOfFamily){
-        const newPackage = await this.repository.addPackage(name, price, discountOfDoctor, discountOfMedicin, discountOfFamily);
-        return {newPackage}
+        
+        const {newPackage} = await this.repository.addPackage(name, price, discountOfDoctor, discountOfMedicin, discountOfFamily);
+        return newPackage
+    }
+
+    async updatePackage(name, price, discountOfDoctor, discountOfMedicin, discountOfFamily){
+       
+    }
+
+    async deletePackage(id){
+        const deletedPackage = await this.repository.deletePackage(id);
+        return deletedPackage;
     }
 }
 

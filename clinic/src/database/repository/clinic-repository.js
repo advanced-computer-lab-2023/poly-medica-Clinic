@@ -1,13 +1,13 @@
 import mongoose from 'mongoose';
-import {HealthPackageModel}  from '../models';
+import HealthPackageModel  from '../models/HealthPackage.js';
 
 class ClinicRepository{
     async findAllPackages(){
         const allPackages = await HealthPackageModel.find();
         return allPackages;
-    }
-
-    async addPackage(name, price, discountOfDoctor,  discountOfMedicin, discountOfFamily){
+    };
+    
+    async addPackage(name, price, discountOfDoctor,  discountOfMedicin, discountOfFamily) {
         const newPackage = new HealthPackageModel({
             name,
             price, 
@@ -15,9 +15,16 @@ class ClinicRepository{
             discountOfMedicin, 
             discountOfFamily
         });
-        const packageResult = newPackage.save();
+        const packageResult = await newPackage.save();
         return packageResult;
+    };
+
+    async deletePackage(id){
+        const packageDeleted = await HealthPackageModel.findByIdAndDelete(id);
+        return packageDeleted;
     }
+
+   
 }
 
 export default ClinicRepository;
