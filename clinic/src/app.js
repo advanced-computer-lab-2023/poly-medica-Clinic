@@ -1,9 +1,9 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from 'dotenv';
+import { clinic } from "./api/clinic.js";
 
-// routes
-import PatientRouter from './routes/PatientRouter.js';
+
 
 dotenv.config();
 const app = express();
@@ -24,7 +24,7 @@ await connect();
 
 app.use(express.json());
 
-// call the api class here and pass the app
+clinic(app);
 
 const port = process.env.PORT || 8001;
 
