@@ -10,8 +10,8 @@ import SecondaryAction from 'ui-component/cards/CardSecondaryAction';
 // ==============================|| TYPOGRAPHY ||============================== //
 
 const Typography = () => (
-  <MainCard title="Basic Typography" secondary={<SecondaryAction link="https://next.material-ui.com/system/typography/" />}>
-    {/* <Grid container spacing={gridSpacing}>
+	<MainCard title="Basic Typography" secondary={<SecondaryAction link="https://next.material-ui.com/system/typography/" />}>
+		{/* <Grid container spacing={gridSpacing}>
       <Grid item xs={12} sm={6}>
         <SubCard title="Heading">
           <Grid container direction="column" spacing={1}>
@@ -118,7 +118,7 @@ const Typography = () => (
         </SubCard>
       </Grid>
     </Grid> */}
-  </MainCard>
+	</MainCard>
 );
 
 export default Typography;
