@@ -2,7 +2,8 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from 'dotenv';
 
-
+// routes
+import PatientRouter from './routes/PatientRouter.js';
 
 dotenv.config();
 const app = express();
