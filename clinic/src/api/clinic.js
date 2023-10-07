@@ -41,4 +41,6 @@ export const clinic = (app) => {
 		}   
 	});
 
+	
+
 };
