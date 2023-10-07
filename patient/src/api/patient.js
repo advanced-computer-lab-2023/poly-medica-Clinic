@@ -20,7 +20,7 @@ export const patient = (app) => {
 		}
 	});
 
-	app.patch('/addFamilyMember/:id', async (req, res) => {
+	app.patch('/family-members/:id', async (req, res) => {
 		const { id } = req.params;
 		if (!isValidMongoId(id)) {
 			return res.status(NOT_FOUND_STATUS_CODE).json({
