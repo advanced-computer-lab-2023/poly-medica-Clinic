@@ -11,6 +11,11 @@ class PatientService {
         return patients;
 
     }
+
+    async signupUser(req) {
+        const user = await this.repository.signupUser(req);
+        return user;
+    }
 }
 
 export default PatientService;

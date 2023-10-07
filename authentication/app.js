@@ -1,16 +1,14 @@
-import morgan from 'morgan';
-import dotenv from 'dotenv';
-import express from "express";
-import mongoose from "mongoose";
+import express from 'express'
+import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
+import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
-import { clinic } from "./api/clinic.js";
-
-
+import dotenv from 'dotenv'
+import { user } from './src/api/user.js';
 
 dotenv.config();
-const app = express();
 
+const app = express();
 app.use(morgan('dev'));
 app.use(cookieParser())
 app.use(express.json());
@@ -31,12 +29,11 @@ const connect = async () => {
 
 await connect();
 
-app.use(express.json());
-
-clinic(app);
+user(app);
 
 const port = process.env.PORT || 8001;
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
+

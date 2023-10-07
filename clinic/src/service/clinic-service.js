@@ -29,6 +29,16 @@ class ClinicService {
         const deletedPackage = await this.repository.deletePackage(id);
         return deletedPackage;
     }
+
+    async addDoctor(req){
+        const doctorUser = await this.repository.addDoctor(req);
+        return doctorUser;
+    }
+
+    async addAdmin(req){
+        const adminUser = await this.repository.addAdmin(req);
+        return adminUser;
+    }
 }
 
 export default ClinicService;

@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 import HealthPackageModel  from '../models/HealthPackage.js';
+import DoctorModel from '../models/Doctor.js';
+import AdminModel from '../models/Admin.js';
 
 class ClinicRepository{
     async findAllPackages(){
@@ -22,6 +24,18 @@ class ClinicRepository{
     async deletePackage(id){
         const packageDeleted = await HealthPackageModel.findByIdAndDelete(id);
         return packageDeleted;
+    }
+
+    async addDoctor(req){
+        const { userData, speciality, hourlyRate, affiliation, educationalBackground } = req.body;
+        const user = await DoctorModel.addDoctor(userData, speciality, hourlyRate, affiliation, educationalBackground);
+        return user;
+    }
+
+    async addAdmin(req){
+        const { userData, mainAdmin } = req.body;
+        const user = await DoctorModel.addDoctor(userData, mainAdmin);
+        return user;
     }
 
    

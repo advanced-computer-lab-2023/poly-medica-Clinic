@@ -24,6 +24,14 @@ const Doctor = mongoose.Schema({
     }
 });
 
+Doctor.static.addUser = async function (userData, speciality, hourlyRate, affiliation, educationalBackground){
+    const salt = await bcrypt.genSalt();
+    userData.password = await bcrypt.hash(userData.password, salt);
+    const newRecord = new AdminModel({userData, speciality, hourlyRate, affiliation, educationalBackground});
+    let user = await newRecord.save();
+    return user;
+};
+
 const DoctorModel = mongoose.model('Doctor', Doctor);
 
 export default DoctorModel;

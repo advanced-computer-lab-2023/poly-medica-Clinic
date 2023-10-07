@@ -76,6 +76,12 @@ const Patient = mongoose.Schema({
     //.....
 });
 
+Patient.static.signup = async function (name, email, password, userName, dateOfBirth, gender, mobileNumber, emergencyContact){
+    const userRecord = new PatientModel({name, email, password, userName, dateOfBirth, gender, mobileNumber, emergencyContact});
+    let result = await userRecord.save();
+    return result;
+}
+
 const PatientModel = mongoose.model('Patient', Patient);
 
 export default PatientModel;

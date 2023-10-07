@@ -8,6 +8,11 @@ class PatientRepository {
         return allPatients;
     }
 
+    async signupUser(req){
+        const { name, email, password, userName, dateOfBirth, gender, mobileNumber, emergencyContact } = req.body;
+        let user = await User.signup(name, email, password, userName, dateOfBirth, gender, mobileNumber, emergencyContact);
+        return user;
+    }
 
 }
 
