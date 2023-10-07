@@ -1,9 +1,9 @@
 
-import ClinicService from '../service/clinic-service.js';
+import HealthPackageService from '../service/healthpackage-service.js';
 import { EMPTY_SIZE, ERROR_STATUS_CODE, NOT_FOUND_STATUS_CODE, OK_STATUS_CODE } from '../utils/Constants.js';
 
-export const clinic = (app) => {
-	const service = new ClinicService();
+export const healthpackage = (app) => {
+	const service = new HealthPackageService();
 
 	app.get('/all-packages', async (req,res) => {
 		const allPackages = await service.getAllPackages();

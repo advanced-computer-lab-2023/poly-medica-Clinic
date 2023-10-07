@@ -1,7 +1,7 @@
 
 import HealthPackageModel  from '../models/HealthPackage.js';
 
-class ClinicRepository{
+class HealthPackageRepository{
 	async findAllPackages(){
 		const allPackages = await HealthPackageModel.find();
 		return allPackages;
@@ -27,5 +27,5 @@ class ClinicRepository{
    
 }
 
-export default ClinicRepository;
+export default HealthPackageRepository;
 
