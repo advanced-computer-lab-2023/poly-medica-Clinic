@@ -17,7 +17,7 @@ export const doctor = (app) => {
 			res.status(NOT_FOUND_STATUS_CODE).json({ message:'doctor not found' });
 		}
 	});
-
+    
 	
 
 };
