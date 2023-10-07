@@ -1,6 +1,4 @@
-import mongoose from "mongoose";
 import PatientModel from "../models/Patient.js";
-import PerscriptionModel from "../models/Perscription.js";
 import { FAMILY_MEMBERS_PROJECTION } from "../../utils/Constants.js";
 
 class PatientRepository {
