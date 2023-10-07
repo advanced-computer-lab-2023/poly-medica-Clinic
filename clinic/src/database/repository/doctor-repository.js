@@ -1,4 +1,4 @@
-import DoctorModel from '../models/Doctor.js';
+//import DoctorModel from '../models/Doctor.js';
 
 class DoctorRepository{
 

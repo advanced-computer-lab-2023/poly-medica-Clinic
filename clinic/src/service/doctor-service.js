@@ -1,4 +1,4 @@
-import DoctorRepository from '../database/repository/doctor-repository.js';
+//import DoctorRepository from '../database/repository/doctor-repository.js';
 
 class DoctorService{
 

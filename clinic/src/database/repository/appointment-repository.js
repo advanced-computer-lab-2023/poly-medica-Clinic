@@ -1,4 +1,4 @@
-import AppointmentModel from '../models/Admin.js'
+//import AppointmentModel from '../models/Admin.js'
 
 class AppointmentRepository{
 

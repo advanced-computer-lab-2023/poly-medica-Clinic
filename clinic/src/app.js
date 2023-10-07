@@ -3,9 +3,9 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import { healthpackage } from './api/healthpackage.js';
 import { PORT } from './utils/Constants.js';
-import {doctor } from './api/doctor.js';
-import {appointment } from './api/appointment.js';
-import {admin } from './api/admin.js';
+//import {doctor } from './api/doctor.js';
+//import {appointment } from './api/appointment.js';
+//import {admin } from './api/admin.js';
 
 
 dotenv.config();
@@ -27,9 +27,9 @@ await connect();
 app.use(express.json());
 
 healthpackage(app);
-admin(app);
-doctor(app);
-appointment(app);
+//admin(app);
+//doctor(app);
+//appointment(app);
 
 const port = process.env.PORT || PORT;
 
