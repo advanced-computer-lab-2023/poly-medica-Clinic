@@ -25,82 +25,82 @@ import TotalOrderLineChartCard from 'pages/dashboard/TotalOrderLineChartCard';
 // ==============================|| SAMPLE PAGE ||============================== //
 
 const SamplePage = () => (
-  <MainCard title="Sample Card">
-      <Grid container spacing={gridSpacing} display={"flex"} flexDirection={"row"}>
-        <Grid item>
-          <CardSecondaryAction title={"hi"} link={"#"} icon={<AcUnitIcon fontSize="small" sx={{paddingLeft:0.2}}/>} />
-        </Grid>
+	<MainCard title="Sample Card">
+		<Grid container spacing={gridSpacing} display={'flex'} flexDirection={'row'}>
+			<Grid item>
+				<CardSecondaryAction title={'hi'} link={'#'} icon={<AcUnitIcon fontSize="small" sx={{ paddingLeft:0.2 }}/>} />
+			</Grid>
 
-        <Grid item width={"100%"}>
-          <MenuCard progress={4} title={'hello'} subTitle={'noo'}/>
-        </Grid>
+			<Grid item width={'100%'}>
+				<MenuCard progress={4} title={'hello'} subTitle={'noo'}/>
+			</Grid>
 
-        <Grid item width={"100%"}>
-          <SubCard title={"hi from malek"}>
-              <Typography>you can do what ever you want</Typography>
-          </SubCard>
-        </Grid>
+			<Grid item width={'100%'}>
+				<SubCard title={'hi from malek'}>
+					<Typography>you can do what ever you want</Typography>
+				</SubCard>
+			</Grid>
 
-        <Grid item width={"100%"}>
-            <EarningCardLoader/>
-        </Grid>
+			<Grid item width={'100%'}>
+				<EarningCardLoader/>
+			</Grid>
 
-        <Grid item width={"100%"}>
-            <ImagePlaceholderLoader />
-        </Grid>
+			<Grid item width={'100%'}>
+				<ImagePlaceholderLoader />
+			</Grid>
 
-        <Grid item width={"100%"}>
-            <ProductPlaceholderLoader/>
-        </Grid>
+			<Grid item width={'100%'}>
+				<ProductPlaceholderLoader/>
+			</Grid>
 
-        <Grid item width={"100%"}>
-            <TotalGrowthBarChartLoader/>
-        </Grid>
+			<Grid item width={'100%'}>
+				<TotalGrowthBarChartLoader/>
+			</Grid>
 
-        <Grid item width={"100%"}>
-            <TotalIncomeCardLoader/>
-        </Grid>
+			<Grid item width={'100%'}>
+				<TotalIncomeCardLoader/>
+			</Grid>
 
-        <Grid item>
-          <AnimateButton>
-              <Button variant="contained" color="primary" sx={{ boxShadow: 'none', marginLeft:3 }}>
+			<Grid item>
+				<AnimateButton>
+					<Button variant="contained" color="primary" sx={{ boxShadow: 'none', marginLeft:3 }}>
                 go malek
-              </Button>
-          </AnimateButton>
-        </Grid>
+					</Button>
+				</AnimateButton>
+			</Grid>
 
-        <Grid item>
-          <BajajAreaChartCard data={[100, 15, 10, 50, 30, 40, 25]} title={"malek is the Boss"} subTitle={"the greatest"} value={1000}/>
-        </Grid>
+			<Grid item>
+				<BajajAreaChartCard data={[100, 15, 10, 50, 30, 40, 25]} title={'malek is the Boss'} subTitle={'the greatest'} value={1000}/>
+			</Grid>
 
-        <Grid item>
-            <EarningCard isLoading={false} earning={'Total earning'} value={1000}/>
-        </Grid>
+			<Grid item>
+				<EarningCard isLoading={false} earning={'Total earning'} value={1000}/>
+			</Grid>
 
-        <Grid item width={"100%"}>
-          <PopularCard isLoading={false} data={[100, 15, 10, 50, 30, 40, 25]} title={"malek is the Boss"} subTitle={"the greatest"} value={1000} earningList={[{title:"malek mohamed", value:1550, subTitle:"great", benefit:true}, {title:"Reliance", value:200.00, subTitle:"10% Profit", benefit:false}, {title:"TTML", value:7800.00, subTitle:"10% Profit", benefit:false}]}/>
-        </Grid>
+			<Grid item width={'100%'}>
+				<PopularCard isLoading={false} data={[100, 15, 10, 50, 30, 40, 25]} title={'malek is the Boss'} subTitle={'the greatest'} value={1000} earningList={[{ title:'malek mohamed', value:1550, subTitle:'great', benefit:true }, { title:'Reliance', value:200.00, subTitle:'10% Profit', benefit:false }, { title:'TTML', value:7800.00, subTitle:'10% Profit', benefit:false }]}/>
+			</Grid>
 
-        <Grid item width={"100%"}>
-            <TotalGrowthBarChart isLoading={false}/>
-        </Grid>
+			<Grid item width={'100%'}>
+				<TotalGrowthBarChart isLoading={false}/>
+			</Grid>
 
-        <Grid item width={"100%"}>
-          <TotalOrderLineChartCard/>
-        </Grid>
+			<Grid item width={'100%'}>
+				<TotalOrderLineChartCard/>
+			</Grid>
 
-        <Grid item>
-            <TotalIncomeDarkCard title={"255$"} subTitle={'total income'}/>
-        </Grid>
+			<Grid item>
+				<TotalIncomeDarkCard title={'255$'} subTitle={'total income'}/>
+			</Grid>
 
-        <Grid item>
-            <TotalIncomeLightCard title={"255$"} subTitle={'total income'}/>
-        </Grid>
+			<Grid item>
+				<TotalIncomeLightCard title={'255$'} subTitle={'total income'}/>
+			</Grid>
 
 
 
-      </Grid>
-  </MainCard>
+		</Grid>
+	</MainCard>
 );
 
 export default SamplePage;

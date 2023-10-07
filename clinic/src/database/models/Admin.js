@@ -1,15 +1,15 @@
-import mongoose from "mongoose";
-import UserSchema from "./UserSchema.js";
+import mongoose from 'mongoose';
+import UserSchema from './UserSchema.js';
 
 const Admin = mongoose.Schema({
-    userData: {
-        type: UserSchema,
-        required: true
-    },
-    mainAdmin: {
-        type: Boolean
-    },
-    //....
+	userData: {
+		type: UserSchema,
+		required: true
+	},
+	mainAdmin: {
+		type: Boolean
+	},
+	//....
 });
 
 Admin.static.addUser = async function (userData, mainAdmin){
