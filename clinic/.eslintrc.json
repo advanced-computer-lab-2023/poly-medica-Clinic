@@ -38,5 +38,5 @@
         "arrow-spacing": ["error", { "before": true, "after": true }],
         "no-duplicate-imports": "error", 
         "prefer-const": "error"
-    }
+    } 
 }
