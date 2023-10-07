@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 
 const HealthPackage = mongoose.Schema({
+
 	price: {
 		type: Number,
 		required: true
@@ -22,6 +23,7 @@ const HealthPackage = mongoose.Schema({
 		type : Number, 
 		required: true
 	}
+
 });
 
 const HealthPackageModel = mongoose.model('HealthPackage', HealthPackage);

@@ -1,8 +1,9 @@
-import ClinicRepository from '../database/repository/clinic-repository.js';
 
-class ClinicService {
+import HealthPackageRepository from '../database/repository/healthpackage-repository.js';
+
+class HealthPackageService {
 	constructor() {
-		this.repository = new ClinicRepository();
+		this.repository = new HealthPackageRepository();
 
 	}
 
@@ -31,4 +32,5 @@ class ClinicService {
 	}
 }
 
-export default ClinicService;
+export default HealthPackageService;
+
