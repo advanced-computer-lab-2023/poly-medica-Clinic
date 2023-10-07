@@ -3,9 +3,9 @@ import SecondaryAction from 'ui-component/cards/CardSecondaryAction';
 
 
 const UIColor = () => (
-  <MainCard title="Color Palette" secondary={<SecondaryAction link="https://next.material-ui.com/system/palette/" />}>
+	<MainCard title="Color Palette" secondary={<SecondaryAction link="https://next.material-ui.com/system/palette/" />}>
     
-  </MainCard>
+	</MainCard>
 );
 
 export default UIColor;
