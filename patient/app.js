@@ -1,16 +1,14 @@
-import morgan from 'morgan';
-import dotenv from 'dotenv';
 import express from "express";
 import mongoose from "mongoose";
+import dotenv from 'dotenv';
+import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
-import { clinic } from "./api/clinic.js";
-
+import { patient } from "./src/api/patient.js";
 
 
 dotenv.config();
 const app = express();
-
 app.use(morgan('dev'));
 app.use(cookieParser())
 app.use(express.json());
@@ -24,8 +22,8 @@ const connect = async () => {
         await mongoose.connect(mongoURL);
         console.log("Database connected");
     } catch (err) {
-        console.error("Error connecting to the database:", err); 
-        process.exit(1); 
+        console.error("Error connecting to the database:", err);
+        process.exit(1);
     }
 };
 
@@ -33,9 +31,9 @@ await connect();
 
 app.use(express.json());
 
-clinic(app);
+patient(app);
 
-const port = process.env.PORT || 8001;
+const port = process.env.PORT || 8002;
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

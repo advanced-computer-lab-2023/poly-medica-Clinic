@@ -1,8 +1,12 @@
+import { checkUser, requireAuth } from "../../../clinic/src/middleware/authMiddleware.js";
 import PatientService from "../service/patient-service.js";
 import { ACTIVE_USER_STATE, BAD_REQUEST_CODE_400, DUPLICATE_KEY_ERROR_CODE, OK_REQUEST_CODE_200, PATIENT_ENUM } from "../utils/Constants.js";
 
 export const patient = (app) =>{
     const service = new PatientService();
+
+    app.use('*', requireAuth);
+    app.use('*', checkUser);
 
     app.get('/all-patients', async (req,res)=>{
         const allPatients = await service.getAllPatient();
