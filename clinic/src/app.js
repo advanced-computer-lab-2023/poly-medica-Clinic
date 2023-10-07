@@ -1,9 +1,11 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import { clinic } from './api/clinic.js';
+import { healthPackage } from './api/HealthPackageAPI.js';
 import { PORT } from './utils/Constants.js';
-
+//import {doctor } from './api/doctor.js';
+//import {appointment } from './api/appointment.js';
+//import {admin } from './api/admin.js';
 
 
 dotenv.config();
@@ -24,7 +26,10 @@ await connect();
 
 app.use(express.json());
 
-clinic(app);
+healthPackage(app);
+//admin(app);
+//doctor(app);
+//appointment(app);
 
 const port = process.env.PORT || PORT;
 
