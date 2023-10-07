@@ -1,5 +1,6 @@
 import PrescriptionService from '../service/prescription-service.js';
-import { EMPTY_SIZE, NOT_FOUND_STATUS_CODE, OK_STATUS_CODE } from '../utils/Constants.js';
+import { EMPTY_SIZE, ERROR_STATUS_CODE, NOT_FOUND_STATUS_CODE, OK_STATUS_CODE } from '../utils/Constants.js';
+import { isValidMongoId } from '../utils/Validation.js'; 
 
 export const prescription = ( app ) => {
 	const service = new PrescriptionService();
@@ -10,6 +11,18 @@ export const prescription = ( app ) => {
 			res.status(OK_STATUS_CODE).json(prescriptions);
 		} else {
 			res.status(NOT_FOUND_STATUS_CODE).json({ message: 'prescriptions not found' });
+		}
+	});
+
+	app.get('/prescription/:id', async (req, res) => {
+		const id = req.params.id;
+		if(!isValidMongoId(id))
+			return res.status(ERROR_STATUS_CODE).json({ message:'Invalid ID' });
+		const prescription = await service.getPrescriptionById(id);
+		if (prescription) {
+			res.status(OK_STATUS_CODE).json(prescription);
+		} else {
+			res.status(NOT_FOUND_STATUS_CODE).json({ message: 'prescription not found' });
 		}
 	});
 

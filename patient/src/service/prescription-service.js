@@ -10,6 +10,11 @@ class PrescriptionService {
 		return prescriptions;
 	}
 
+	async getPrescriptionById(id) {
+		const prescription = await this.repository.findPrescriptionById(id);
+		return prescription;
+	}
+
 }
 
 export default PrescriptionService;
