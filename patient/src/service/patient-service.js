@@ -6,10 +6,14 @@ class PatientService {
 
 	}
 
-	async getAllPatient() {
-		const patients = await this.repository.findAllPatients();
+	async getAllPatients() {
+		const patients = await this.repository.getAllPatients();
 		return patients;
+	}
 
+	async deletePatient(id) {
+		const deletedPatient = await this.repository.deletePatient(id);
+		return deletedPatient;
 	}
 }
 
