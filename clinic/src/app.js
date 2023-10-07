@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import { admin } from './api/AdminAPI.js';
 import { healthPackage } from './api/HealthPackageAPI.js';
 import { PORT } from './utils/Constants.js';
 //import {doctor } from './api/doctor.js';
@@ -27,7 +28,7 @@ await connect();
 app.use(express.json());
 
 healthPackage(app);
-//admin(app);
+admin(app);
 //doctor(app);
 //appointment(app);
 

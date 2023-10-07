@@ -1,13 +1,18 @@
 import mongoose from 'mongoose';
-import UserSchema from './UserSchema.js';
 
 const Admin = mongoose.Schema({
-	userData: {
-		type: UserSchema,
+	userName: {
+		type: String,
+		required: true,
+		unique: true
+	},
+	password: {
+		type: String,
 		required: true
 	},
 	mainAdmin: {
-		type: Boolean
+		type: Boolean,
+		default: false
 	},
 	//....
 });
