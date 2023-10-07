@@ -1,5 +1,5 @@
 
-import HealthPackageRepository from '../database/repository/healthpackage-repository.js';
+import HealthPackageRepository from '../database/repository/health-package-repository.js';
 
 class HealthPackageService {
 	constructor() {
