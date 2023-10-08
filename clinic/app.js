@@ -4,10 +4,11 @@ import express from "express";
 import mongoose from "mongoose";
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
-import { clinic } from "./src/api/clinic.js";
-import { healthPackage } from './api/HealthPackageAPI.js';
-import { PORT } from './utils/Constants.js';
-import { checkUser, requireAuth } from './src/middleware/authMiddleware.js';
+import { AdminAPI } from "./src/api/AdminAPI.js"
+import { DoctorAPI } from "./src/api/DoctorAPI.js"
+import { healthPackage } from './src/api/HealthPackageAPI.js';
+import { MONGO_URI, PORT } from './src/utils/Constants.js';
+import { checkUser } from './src/middleware/authMiddleware.js';
 
 
 dotenv.config();
@@ -19,7 +20,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const mongoURL = process.env.MONGO_URI;
+const mongoURL = process.env.MONGO_URI || MONGO_URI;
 
 const connect = async () => {
 	try {
@@ -33,12 +34,11 @@ const connect = async () => {
 await connect();
 
 app.use(express.json());
-app.use('*', requireAuth);
 app.use('*', checkUser);
 
 healthPackage(app);
-//admin(app);
-//doctor(app);
+AdminAPI(app);
+DoctorAPI(app);
 //appointment(app);
 
 const port = process.env.PORT || PORT;

@@ -31,7 +31,7 @@ await connect();
 
 user(app);
 
-const port = process.env.PORT || 8001;
+const port = process.env.PORT || 8003;
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

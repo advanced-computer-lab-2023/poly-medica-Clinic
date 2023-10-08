@@ -15,6 +15,16 @@ class UserService {
         const user = await this.repository.loginUser(req);
         return user;
     }
+
+    async findUserByEmail(email){
+        const user = await this.repository.findUserByEmail(email);
+        return user;
+    }
+
+    async findUserByUserName(userName){
+        const user = await this.repository.findUserByUserName(userName);
+        return user;
+    }
 }
 
 export default UserService;

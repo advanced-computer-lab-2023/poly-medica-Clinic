@@ -4,18 +4,18 @@ import dotenv from 'dotenv';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
-import { patient } from './api/patient.js';
-import { PORT_NUMBER } from './utils/Constants.js';
+import { patient } from './src/api/patient.js';
+import { MONGO_URI, PORT_NUMBER } from './src/utils/Constants.js';
+import { checkUser, requireAuth } from './src/middleware/authMiddleware.js';
 
 dotenv.config();
 const app = express();
 app.use(morgan('dev'));
 app.use(cookieParser())
-app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const mongoURL = process.env.MONGO_URI;
+const mongoURL = process.env.MONGO_URI || MONGO_URI;
 
 const connect = async () => {
 	try {
@@ -29,6 +29,7 @@ const connect = async () => {
 await connect();
 
 app.use( express.json() );
+app.use('*', checkUser);
 
 patient( app );
 

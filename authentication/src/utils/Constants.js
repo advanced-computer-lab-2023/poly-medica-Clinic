@@ -27,3 +27,13 @@ export const ONE_DAY_MAX_AGE_IN_MILLEMIINUTS = 1000 * 24 * 60 * 60;
 export const BAD_REQUEST_CODE_400 = 400;
 
 export const OK_REQUEST_CODE_200 = 200;
+
+export const PATIENT_SIGNUP_URL = "http://localhost:8002/signup"
+
+export const ADMIN_SIGNUP_URL = "http://localhost:8001/add-admin"
+
+export const DOCOTOR_SIGNUP_URL = "http://localhost:8001/add-doctor"
+
+export const DUB_EMAIL_ERROR_MESSAGE = `that email is already registered`
+
+export const DUB_USERNAME_ERROR_MESSAGE = `that username is already registered`

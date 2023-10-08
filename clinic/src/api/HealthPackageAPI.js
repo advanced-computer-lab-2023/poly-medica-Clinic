@@ -1,11 +1,13 @@
 
+import { requireAuth } from '../middleware/authMiddleware.js';
 import HealthPackageService from '../service/health-package-service.js';
 import { EMPTY_SIZE, ERROR_STATUS_CODE, NOT_FOUND_STATUS_CODE, OK_STATUS_CODE } from '../utils/Constants.js';
 
 export const healthPackage = (app) => {
 	const service = new HealthPackageService();
 
-	app.get('/packages', async (req, res) => {
+
+	app.get('/packages', requireAuth, async (req, res) => {
 		const allPackages = await service.getAllPackages();
 		if (allPackages.length > EMPTY_SIZE) {
 			res.status(OK_STATUS_CODE).json({ allPackages });
@@ -14,7 +16,7 @@ export const healthPackage = (app) => {
 		}
 	});
 
-	app.post('/packages', async (req, res) => {
+	app.post('/packages', requireAuth, async (req, res) => {
 
 		const { name, price, discountOfDoctor, discountOfMedicin, discountOfFamily } = req.body;
 		console.log({ name });
@@ -31,7 +33,7 @@ export const healthPackage = (app) => {
 
 	// });
 
-	app.delete('/packages/:id', async (req, res) => {
+	app.delete('/packages/:id', requireAuth, async (req, res) => {
 		const id = req.params.id;
 		try {
 			console.log(id);

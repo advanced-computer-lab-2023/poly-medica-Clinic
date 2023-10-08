@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt'
 import { ADMIN_ENUM, ADMIN_TABLE_NAME, DOCTOR_ENUM, DOCTOR_TABLE_NAME, PATIENT_TABLE_NAME, USER_ARR_ENUM, USER_STATE_ARR } from "../../utils/Constants.js";
 
 const userSchema = mongoose.Schema({
-    _id:{
+    userId:{
         type: mongoose.Schema.Types.ObjectId,
         required:true,
         unique: true,
@@ -47,7 +47,7 @@ const userSchema = mongoose.Schema({
 
 
 // static method to userSchema
-userSchema.static.login = async function (email, password){
+userSchema.statics.login = async function (email, password){
     const user = await User.findIne({email: email})
     if(user){
         const auth = bcrypt.compare(password, user.password);
@@ -57,8 +57,8 @@ userSchema.static.login = async function (email, password){
     } throw Error("incorrect Email")
 }
 
-userSchema.static.signup = async function (_id, email, password, userName, type, state){
-    const userRecord = new User({_id, email, password, userName, type, state});
+userSchema.statics.signup = async function (userId, email, password, userName, type, state){
+    const userRecord = new this({userId: new mongoose.Types.ObjectId(userId), email, password, userName, type, state});
     let result = await userRecord.save();
     return result;
 }

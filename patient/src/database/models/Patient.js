@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { GENDERS } from '../../utils/Constants.js';
 
-const Patient = mongoose.Schema( {
+const patientSchema = mongoose.Schema({
 	name: {
 		type: String,
 		required: true
@@ -76,13 +76,13 @@ const Patient = mongoose.Schema( {
 	//.....
 } );
 
-Patient.static.signup = async function (name, email, password, userName, dateOfBirth, gender, mobileNumber, emergencyContact){
-    const userRecord = new PatientModel({name, email, password, userName, dateOfBirth, gender, mobileNumber, emergencyContact});
+patientSchema.statics.signup = async function (name, email, password, userName, dateOfBirth, gender, mobileNumber, emergencyContact){
+    const userRecord = new this({name, email, password, userName, dateOfBirth, gender, mobileNumber, emergencyContact});
     let result = await userRecord.save();
     return result;
 }
 
-const PatientModel = mongoose.model('Patient', Patient);
+const PatientModel = mongoose.model('Patient', patientSchema);
 
 
 export default PatientModel;
