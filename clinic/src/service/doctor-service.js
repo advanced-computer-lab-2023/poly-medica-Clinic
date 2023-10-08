@@ -1,7 +1,13 @@
-//import DoctorRepository from '../database/repository/doctor-repository.js';
+import DoctorRepository from '../database/repository/doctor-repository.js';
 
-class DoctorService{
+class DoctorService {
+	constructor() {
+		this.repository = new DoctorRepository();
+	}
 
+	async getAllDoctors() {
+		return await this.repository.findAllDoctors();
+	}
 }
 
 export default DoctorService;
