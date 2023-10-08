@@ -1,7 +1,5 @@
-//import AppointmentRepository from '../database/repository/appointment-repository.js';
+// import AppointmentRepository from '../database/repository/appointment-repository.js';
 
-class AppointmentService{
-
-}
+class AppointmentService {}
 
 export default AppointmentService;

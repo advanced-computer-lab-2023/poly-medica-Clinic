@@ -1,7 +1,5 @@
-//import AppointmentModel from '../models/Admin.js'
+// import AppointmentModel from '../models/Appointment.js';
 
-class AppointmentRepository{
-
-}
+class AppointmentRepository {}
 
 export default AppointmentRepository;
