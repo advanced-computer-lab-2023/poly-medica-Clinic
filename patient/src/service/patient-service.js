@@ -25,7 +25,6 @@ class PatientService {
 
 	async getPrescriptions(patientId){
 		const prescriptions = await this.repository.findAllPrescriptions();
-		console.log(patientId, typeof patientId);
 		const filteredPrescriptions =  prescriptions.filter( prescription => 
 			prescription.patientId.valueOf() == patientId 
 		);
