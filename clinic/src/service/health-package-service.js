@@ -3,7 +3,7 @@ import HealthPackageRepository from '../database/repository/health-package-repos
 
 class HealthPackageService {
 	constructor() {
-		this.repository = new HealthPackageRepository;
+		this.repository = new HealthPackageRepository();
 
 	}
 

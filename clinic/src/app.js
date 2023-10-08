@@ -6,9 +6,7 @@ import { doctor } from './api/DoctorAPI.js';
 //import {appointment } from './api/AppointmentAPI.js';
 //import { admin } from './api/AdminAPI.js';
 import { PORT } from './utils/Constants.js';
- 
 import cors from 'cors';
- 
 //import {doctor } from './api/doctor.js';
 import { appointment } from './api/AppointmentAPI.js';
 //import {admin } from './api/admin.js';
@@ -17,16 +15,13 @@ dotenv.config();
 const app = express();
 
 const mongoURL = process.env.MONGO_URI;
-// console.log(mongoURL);
 
 const connect = async () => {
 	try {
 		await mongoose.connect(mongoURL);
 		console.log('Database connected');
 	} catch (err) {
- 
-		console.error('Error connecting to the database:', err.body); 
- 
+		console.error('Error connecting to the database:', err);
 	}
 };
 

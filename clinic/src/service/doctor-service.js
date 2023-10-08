@@ -1,20 +1,21 @@
 import DoctorRepository from '../database/repository/doctor-repository.js';
-import { EMPTY_SIZE } from '../utils/Constants.js';
 
-
-class DoctorService{
+class DoctorService {
 	constructor() {
-		this.repository = new DoctorRepository;
+		this.repository = new DoctorRepository();
 	}
 
-	async getAllPatients(id){
-		const allPatients = await  this.repository.findAllPatients(id);
-		if (allPatients.length>EMPTY_SIZE) {
-			return allPatients; 
+	async getDoctorById(id) {
+		const doctor = await this.repository.findDoctorById(id);
+		if (doctor) {
+			return doctor;
+		} else {
+			console.log('no doctor wuth this id was found');
 		}
-		else {
-			console.log('no data was found');
-		}
+	}
+
+	async getAllDoctors() {
+		return await this.repository.findAllDoctors();
 	}
 }
 
