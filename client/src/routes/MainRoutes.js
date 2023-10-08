@@ -18,54 +18,54 @@ const SamplePage = Loadable(lazy(() => import('pages/sample-page')));
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
-  path: '/',
-  element: <MainLayout />,
-  children: [
-    {
-      path: '/',
-      element: <DashboardDefault />
-    },
-    {
-      path: 'dashboard',
-      children: [
-        {
-          path: 'default',
-          element: <DashboardDefault />
-        }
-      ]
-    },
-    {
-      path: 'pages',
-      children: [
-        {
-          path: 'medicines',
-          element: <LazyMedicines />
-        }
-      ]
-    },
-    {
-      path: 'utils',
-      children: [
-        {
-          path: 'util-typography',
-          element: <UtilsTypography />,
-        },
-        {
-          path: 'util-color',
-          element: <UtilsColor />,
-        },
-        {
-          path: 'util-shadow',
-          element: <UtilsShadow />,
-        },
-      ],
-    },
+	path: '/',
+	element: <MainLayout />,
+	children: [
+		{
+			path: '/',
+			element: <DashboardDefault />
+		},
+		{
+			path: 'dashboard',
+			children: [
+				{
+					path: 'default',
+					element: <DashboardDefault />
+				}
+			]
+		},
+		{
+			path: 'pages',
+			children: [
+				{
+					path: 'medicines',
+					element: <LazyMedicines />
+				}
+			]
+		},
+		{
+			path: 'utils',
+			children: [
+				{
+					path: 'util-typography',
+					element: <UtilsTypography />,
+				},
+				{
+					path: 'util-color',
+					element: <UtilsColor />,
+				},
+				{
+					path: 'util-shadow',
+					element: <UtilsShadow />,
+				},
+			],
+		},
 
-    {
-      path: 'sample-page',
-      element: <SamplePage />
-    }
-  ]
+		{
+			path: 'sample-page',
+			element: <SamplePage />
+		}
+	]
 };
 
 export default MainRoutes;
