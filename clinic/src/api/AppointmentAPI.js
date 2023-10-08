@@ -11,7 +11,7 @@ export const appointment = (app) => {
 	app.get('/appointments/:id', async (req, res) => {
 		const { id } = req.params;
 		if (!isValidMongoId(id)) {
-			res.status(ERROR_STATUS_CODE).json({
+			res.status(NOT_FOUND_STATUS_CODE).json({
 				message: 'appointments not found',
 			});
 		}
@@ -19,7 +19,7 @@ export const appointment = (app) => {
 			const appointments = await service.getAppointmentsByUserId(id);
 			res.status(OK_STATUS_CODE).json(appointments);
 		} catch (err) {
-			res.status(NOT_FOUND_STATUS_CODE).json({
+			res.status(ERROR_STATUS_CODE).json({
 				message: 'appointments not found',
 			});
 		}

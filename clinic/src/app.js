@@ -2,6 +2,9 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import { healthPackage } from './api/HealthPackageAPI.js';
+import { doctor } from './api/DoctorAPI.js';
+//import {appointment } from './api/AppointmentAPI.js';
+//import { admin } from './api/AdminAPI.js';
 import { PORT } from './utils/Constants.js';
 import cors from 'cors';
 //import {doctor } from './api/doctor.js';
@@ -37,6 +40,7 @@ app.use(
 );
 
 healthPackage(app);
+doctor(app);
 //admin(app);
 //doctor(app);
 appointment(app);
