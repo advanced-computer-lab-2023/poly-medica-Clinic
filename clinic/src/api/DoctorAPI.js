@@ -1,42 +1,28 @@
 import DoctorService from '../service/doctor-service.js';
-import { isValidMongoId } from '../utils/Validation.js';
-import {
-	NOT_FOUND_STATUS_CODE,
-	ERROR_STATUS_CODE,
-	OK_STATUS_CODE,
-} from '../utils/Constants.js';
-
+ 
+import { PATIENTS_BASE_URL,  NOT_FOUND_STATUS_CODE, OK_STATUS_CODE } from '../utils/Constants.js';
+ 
+//ERROR_STATUS_CODE,
+import axios from 'axios';
 export const doctor = (app) => {
 	const service = new DoctorService();
-
-	app.get('/doctor/:id', async (req, res) => {
-		try {
-			const id = req.params.id;
-			if (!isValidMongoId(id))
-				return res
-					.status(ERROR_STATUS_CODE)
-					.json({ message: 'Invalid ID' });
-			const doctor = await service.getDoctorById(id);
-			if (doctor) {
-				res.status(OK_STATUS_CODE).json({ doctor });
-			} else {
-				res.status(NOT_FOUND_STATUS_CODE).json({
-					message: 'doctor not found',
-				});
-			}
-		} catch (error) {
-			res.status(ERROR_STATUS_CODE).json({ message: error });
+	app.get('/doctors/:id/patients', async (req, res) => { 
+		const  id  = req.params.id;
+		let patientsWithDoctor = await service.getAllPatients(id); 
+		const getPatientsURL = `${PATIENTS_BASE_URL}/patients`;
+		const allPatients = await axios.get(getPatientsURL);
+ 
+		if (patientsWithDoctor) {
+			patientsWithDoctor = patientsWithDoctor.map(patient => patient.toString());
+			const finalListOFPatients = allPatients.data.filter(patient => 
+				patientsWithDoctor.includes(patient._id));
+			console.log(finalListOFPatients);
+			res.status(OK_STATUS_CODE).json({ finalListOFPatients });
 		}
-	});
-
-	app.get('/doctors', async (req, res) => {
-		try {
-			const doctors = await service.getAllDoctors();
-			res.status(OK_STATUS_CODE).json(doctors);
-		} catch (err) {
-			res.status(ERROR_STATUS_CODE).json({
-				message: 'doctors not found',
-			});
+		else {
+			res.status(NOT_FOUND_STATUS_CODE).json({ message: 'patients not found' });
 		}
+    
 	});
 };
+
