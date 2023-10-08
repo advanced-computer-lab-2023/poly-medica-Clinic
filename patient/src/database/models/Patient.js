@@ -1,81 +1,81 @@
 import mongoose from 'mongoose';
 import { GENDERS } from '../../utils/Constants.js';
 
-const Patient = mongoose.Schema( {
+const Patient = mongoose.Schema({
 	name: {
 		type: String,
-		required: true
+		required: true,
 	},
 
 	userName: {
 		type: String,
 		required: true,
-		unique: true
+		unique: true,
 	},
 
 	email: {
 		type: String,
 		required: true,
-		unique: true
+		unique: true,
 	},
 
 	password: {
 		type: String,
-		required: true
+		required: true,
 	},
 
 	dateOfBirth: {
 		type: Date,
-		required: true
+		required: true,
 	},
 	gender: {
 		type: String,
 		enum: GENDERS,
-		required: true
+		required: true,
 	},
 	mobileNumber: {
 		type: String,
-		required: true
+		required: true,
 	},
 	emergencyContact: {
 		name: {
 			type: String,
-			required: true
+			required: true,
 		},
 		mobile: {
 			type: String,
-			required: true
-		}
+			required: true,
+		},
 	},
 	familyMembers: [
 		{
 			name: {
 				type: String,
-				required: true
+				required: true,
 			},
 			nationalId: {
 				type: String,
 				required: true,
-				unique: true
+				unique: true,
 			},
 			age: {
 				type: Number,
-				required: true
+				required: true,
 			},
 			gender: {
 				type: String,
 				enum: GENDERS,
-				required: true
+				required: true,
 			},
 			relation: {
 				type: String,
-				required: true
-			}
-		}
-	]
+				required: true,
+			},
+		},
+	],
 	//.....
-} );
+});
 
-const PatientModel = mongoose.model( 'Patient', Patient );
+const PatientModel = mongoose.model('Patient', Patient);
 
 export default PatientModel;

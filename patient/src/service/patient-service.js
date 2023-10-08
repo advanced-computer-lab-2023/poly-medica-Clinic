@@ -3,7 +3,6 @@ import PatientRepository from '../database/repository/patient-repository.js';
 class PatientService {
 	constructor() {
 		this.repository = new PatientRepository();
-
 	}
 
 	async getAllPatients() {

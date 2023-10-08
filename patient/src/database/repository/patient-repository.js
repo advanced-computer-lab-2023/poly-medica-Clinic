@@ -15,8 +15,6 @@ class PatientRepository {
 		const deletedPatient = await PatientModel.findByIdAndDelete(id);
 		return deletedPatient;
 	}
-
-
 }
 
 export default PatientRepository;
