@@ -5,8 +5,7 @@ class PatientRepository {
 		const allPatients = await PatientModel.find();
 		return allPatients;
 	}
-
-
+	
 }
 
 export default PatientRepository;
