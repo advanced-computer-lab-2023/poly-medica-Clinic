@@ -7,7 +7,7 @@ export const healthPackage = (app) => {
 
 	app.get('/packages', async (req, res) => {
 		const allPackages = await service.getAllPackages();
-		if (allPackages.length > EMPTY_SIZE) {
+		if (allPackages.length >  EMPTY_SIZE) {
 			res.status(OK_STATUS_CODE).json({ allPackages });
 		} else {
 			res.status(NOT_FOUND_STATUS_CODE).json({ message: 'patients not found' });

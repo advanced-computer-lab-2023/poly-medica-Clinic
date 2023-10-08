@@ -5,7 +5,8 @@ export const patient = ( app ) => {
 	const service = new PatientService();
 
 	app.get( '/all-patients', async ( req,res ) => {
-		const allPatients = await service.getAllPatient();
+		//console.log( 'inside get all patients' );
+		const allPatients = await service.getAllPatient(); 
 		if( allPatients.length > EMPTY_SIZE ){
 			res.status( OK_STATUS_CODE ).json( allPatients );
 		}else{
