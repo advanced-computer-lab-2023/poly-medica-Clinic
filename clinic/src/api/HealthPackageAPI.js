@@ -1,6 +1,10 @@
-
 import HealthPackageService from '../service/health-package-service.js';
-import { EMPTY_SIZE, ERROR_STATUS_CODE, NOT_FOUND_STATUS_CODE, OK_STATUS_CODE } from '../utils/Constants.js';
+import {
+	EMPTY_SIZE,
+	ERROR_STATUS_CODE,
+	NOT_FOUND_STATUS_CODE,
+	OK_STATUS_CODE,
+} from '../utils/Constants.js';
 
 export const healthPackage = (app) => {
 	const service = new HealthPackageService();
@@ -15,11 +19,22 @@ export const healthPackage = (app) => {
 	});
 
 	app.post('/packages', async (req, res) => {
-
-		const { name, price, discountOfDoctor, discountOfMedicin, discountOfFamily } = req.body;
+		const {
+			name,
+			price,
+			discountOfDoctor,
+			discountOfMedicin,
+			discountOfFamily,
+		} = req.body;
 		console.log({ name });
 
-		const data = await service.createNewPackage(name, price, discountOfDoctor, discountOfMedicin, discountOfFamily);
+		const data = await service.createNewPackage(
+			name,
+			price,
+			discountOfDoctor,
+			discountOfMedicin,
+			discountOfFamily,
+		);
 		if (data) {
 			res.status(OK_STATUS_CODE).json({ data });
 		} else {
@@ -41,5 +56,4 @@ export const healthPackage = (app) => {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}
 	});
-
 };

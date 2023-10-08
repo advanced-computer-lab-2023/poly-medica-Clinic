@@ -5,28 +5,28 @@ import { ROLES } from '../../utils/Constants.js';
 const Doctor = mongoose.Schema({
 	userData: {
 		type: UserSchema,
-		required: true
+		required: true,
 	},
 	role: {
 		type: String,
-		default: ROLES.DOCTOR
+		default: ROLES.DOCTOR,
 	},
 	speciality: {
 		type: String,
-		required: true
+		required: true,
 	},
 	hourlyRate: {
 		type: Number,
-		required: true
+		required: true,
 	},
 	affiliation: {
 		type: String,
-		required: true
+		required: true,
 	},
 	educationalBackground: {
 		type: String,
-		required: true
-	}
+		required: true,
+	},
 });
 
 const DoctorModel = mongoose.model('Doctor', Doctor);

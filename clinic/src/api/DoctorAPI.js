@@ -1,30 +1,40 @@
-import DoctorService from "../service/doctor-service.js";
+import DoctorService from '../service/doctor-service.js';
 import {
-	EMPTY_SIZE,
+	CREATED_STATUS_CODE,
 	ERROR_STATUS_CODE,
 	NOT_FOUND_STATUS_CODE,
 	OK_STATUS_CODE,
-} from "../utils/Constants.js";
+} from '../utils/Constants.js';
 
 export const doctor = (app) => {
 	const service = new DoctorService();
 
-	app.delete("/doctors/:id", async (req, res) => {
+	app.post('/doctors', async (req, res) => {
 		try {
-			const id = req.params.id;
-			const deletedDoctor = await service.deleteDoctor(id);
-			if (deletedDoctor === null)
-				res.json({
-					message: "doctor not found!",
-					status: NOT_FOUND_STATUS_CODE,
-				});
-			// to do: adding the not found status code
-			else
-				res.json({
-					message: "doctor deleted!",
-					status: OK_STATUS_CODE,
-					deleted_doctor: deletedDoctor,
-				});
+			const newDoctor = await service.createDoctor(req.body);
+			res
+				.status(CREATED_STATUS_CODE)
+				.json({ message: 'Doctor created!', newDoctor });
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({ err: err.message });
+		}
+	});
+
+	app.delete('/doctors/:id', async (req, res) => {
+		try {
+			const role = 'ADMIN'; // to be adjusted later on with the role of the logged in user
+			if (role == 'ADMIN') {
+				const id = req.params.id;
+				const deletedDoctor = await service.deleteDoctor(id);
+				if (deletedDoctor)
+					res
+						.status(OK_STATUS_CODE)
+						.json({ message: 'doctor deleted!', deletedDoctor });
+				else
+					res
+						.status(NOT_FOUND_STATUS_CODE)
+						.json({ message: 'doctor not found!' });
+			}
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}
