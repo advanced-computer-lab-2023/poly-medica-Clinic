@@ -7,7 +7,6 @@ import { doctor } from './api/DoctorAPI.js';
 import { PORT } from './utils/Constants.js';
 import cors from 'cors';
 import { appointment } from './api/AppointmentAPI.js';
-import { doctor } from './api/DoctorAPI.js';
 
 dotenv.config();
 const app = express();
@@ -20,9 +19,7 @@ const connect = async () => {
 		await mongoose.connect(mongoURL);
 		console.log('Database connected');
 	} catch (err) {
- 
-		console.error('Error connecting to the database:', err.body); 
- 
+		console.error('Error connecting to the database:', err.body);
 	}
 };
 
@@ -37,7 +34,7 @@ app.use(
 			'http://localhost:3002',
 		],
 		credentials: true,
-	})
+	}),
 );
 
 healthPackage(app);
