@@ -21,7 +21,10 @@ const Doctor = mongoose.Schema({
 	educationalBackground: {
 		type: String,
 		required: true
-	}
+	},
+	availableSlots: {
+		type: [Date]
+	},
 });
 
 const DoctorModel = mongoose.model('Doctor', Doctor);
