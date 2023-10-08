@@ -9,12 +9,9 @@ export const doctor = (app) => {
 	app.get('/doctors/:id/patients', async (req, res) => { 
 		const  id  = req.params.id;
 		let patients = await service.getAllPatients(id); 
-		const getPatientsURL = `${PATIENTS_BASE_URL}/all-patients`;
+		const getPatientsURL = `${PATIENTS_BASE_URL}/patients`;
 		const allPatients = await axios.get(getPatientsURL);
-		// console.log(allPatients.data);
-		
-
-
+ 
 		if (patients) {
 			patients = patients.map(patient => patient.toString());
 			const finalListOFPatients = allPatients.data.filter(patient => 

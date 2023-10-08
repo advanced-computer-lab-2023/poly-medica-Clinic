@@ -10,9 +10,7 @@ class DoctorRepository {
 
 
 
-	async findAllPatients(id) {
-		//console.log(id);
-		//doctorId is of type ObjectId nad id is of type string
+	async findAllPatients(id) { 
 		try{
 			let allPatients = await AppointmentModel.find({ }).select('patientId doctorId');
 			allPatients = allPatients.filter(appointment => appointment.doctorId.toString() === id ).
