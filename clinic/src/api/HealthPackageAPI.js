@@ -27,9 +27,16 @@ export const healthPackage = (app) => {
 		}
 	});
 
-	// app.patch('/edit-package', async (req,res) => {
-
-	// });
+	app.patch('/package/:id', async (req,res)=>{
+        const updateData = req.body;
+        const id = req.params.id;
+        try{
+            const updatedPackage = await service.updatePackage(id, updateData);
+            res.status(200).json({updatedPackage});
+        }catch(err){
+            res.status(500).json({err : err.message});
+        }
+    });
 
 	app.delete('/packages/:id', async (req, res) => {
 		const id = req.params.id;

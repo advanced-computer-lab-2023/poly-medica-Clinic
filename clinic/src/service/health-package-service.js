@@ -22,9 +22,10 @@ class HealthPackageService {
 		return newPackage;
 	}
 
-	// async updatePackage(name, price, discountOfDoctor, discountOfMedicin, discountOfFamily){
-       
-	// }
+	async updatePackage(id, updateData){
+		const {updatedPackage} = await this.repository.updatePackage(id, updateData);
+		return updatedPackage;
+	 }
 
 	async deletePackage(id){
 		const deletedPackage = await this.repository.deletePackage(id);
