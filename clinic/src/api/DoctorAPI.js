@@ -8,14 +8,14 @@ export const doctor = (app) => {
 	const service = new DoctorService();
 	app.get('/doctors/:id/patients', async (req, res) => { 
 		const  id  = req.params.id;
-		let patients = await service.getAllPatients(id); 
+		let patientsWithDoctor = await service.getAllPatients(id); 
 		const getPatientsURL = `${PATIENTS_BASE_URL}/patients`;
 		const allPatients = await axios.get(getPatientsURL);
  
-		if (patients) {
-			patients = patients.map(patient => patient.toString());
+		if (patientsWithDoctor) {
+			patientsWithDoctor = patientsWithDoctor.map(patient => patient.toString());
 			const finalListOFPatients = allPatients.data.filter(patient => 
-				patients.includes(patient._id));
+				patientsWithDoctor.includes(patient._id));
 			console.log(finalListOFPatients);
 			res.status(OK_STATUS_CODE).json({ finalListOFPatients });
 		}
