@@ -30,10 +30,6 @@ class HealthPackageService {
 		return newPackage;
 	}
 
-	// async updatePackage(name, price, discountOfDoctor, discountOfMedicin, discountOfFamily){
-
-	// }
-
 	async deletePackage(id) {
 		const deletedPackage = await this.repository.deletePackage(id);
 		return deletedPackage;

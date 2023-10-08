@@ -25,7 +25,10 @@ const Doctor = mongoose.Schema({
 	},
 	educationalBackground: {
 		type: String,
-		required: true,
+		required: true
+	},
+	availableSlots: {
+		type: [Date]
 	},
 });
 

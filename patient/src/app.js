@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import { patient } from './api/PatientAPI.js';
 import { PORT_NUMBER } from './utils/Constants.js';
+import cors from 'cors';
 
 dotenv.config();
 const app = express();
@@ -21,6 +22,10 @@ const connect = async () => {
 await connect();
 
 app.use(express.json());
+app.use(cors({
+	origin: ['http://localhost:3000','http://localhost:3001', 'http://localhost:3002'],
+	credentials: true
+}));
 
 patient(app);
 

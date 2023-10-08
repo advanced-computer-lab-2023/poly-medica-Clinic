@@ -42,10 +42,6 @@ export const healthPackage = (app) => {
 		}
 	});
 
-	// app.patch('/edit-package', async (req,res) => {
-
-	// });
-
 	app.delete('/packages/:id', async (req, res) => {
 		const id = req.params.id;
 		try {

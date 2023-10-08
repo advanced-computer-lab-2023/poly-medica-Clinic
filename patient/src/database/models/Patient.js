@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { GENDERS } from '../../utils/Constants.js';
+import { GENDERS, FAMILY_RELATIONS } from '../../utils/Constants.js';
 
 const Patient = mongoose.Schema({
 	name: {
@@ -69,6 +69,7 @@ const Patient = mongoose.Schema({
 			},
 			relation: {
 				type: String,
+				enum: FAMILY_RELATIONS,
 				required: true,
 			},
 		},

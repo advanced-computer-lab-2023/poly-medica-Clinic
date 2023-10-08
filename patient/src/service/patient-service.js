@@ -5,8 +5,8 @@ class PatientService {
 		this.repository = new PatientRepository();
 	}
 
-	async getAllPatients() {
-		const patients = await this.repository.getAllPatients();
+	async findAllPatients() {
+		const patients = await this.repository.findAllPatients();
 		return patients;
 	}
 
@@ -18,6 +18,33 @@ class PatientService {
 	async deletePatient(id) {
 		const deletedPatient = await this.repository.deletePatient(id);
 		return deletedPatient;
+	}
+
+	async getFamilyMembers(id) {
+		const familyMembers = await this.repository.findFamilyMembers(id);
+		return familyMembers;
+	}
+
+	async addFamilyMember(id, updates) {
+		const familyMembers = await this.repository.addFamilyMember(id, updates);
+		return familyMembers;
+	}
+
+	async getPrescriptions(patientId) {
+		const prescriptions = await this.repository.findAllPrescriptions();
+		const filteredPrescriptions = prescriptions.filter(
+			(prescription) => prescription.patientId.valueOf() == patientId,
+		);
+		return filteredPrescriptions;
+	}
+
+	async getPrescription(patientId, prescriptionId) {
+		const prescription = await this.repository.findPrescriptionById(
+			prescriptionId,
+		);
+		if (prescription && prescription.patientId.valueOf() == patientId)
+			return prescription;
+		return null;
 	}
 }
 

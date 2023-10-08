@@ -1,5 +1,6 @@
 import axios from 'axios';
 import AdminService from '../service/admin-service.js';
+import { isValidMongoId } from '../utils/Validation.js';
 import {
 	ERROR_STATUS_CODE,
 	NOT_FOUND_STATUS_CODE,
@@ -27,6 +28,8 @@ export const admin = (app) => {
 			const role = 'ADMIN'; // to be adjusted later on with the role of the logged in user
 			if (role == 'ADMIN') {
 				const id = req.params.id;
+				if (!isValidMongoId(id))
+					return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
 				const isMainAdmin = await service.checkMainAdmin(id);
 				if (isMainAdmin) {
 					res
@@ -60,6 +63,8 @@ export const admin = (app) => {
 			const role = 'ADMIN'; // to be adjusted later on with the role of the logged in user
 			if (role == 'ADMIN') {
 				const id = req.params.id;
+				if (!isValidMongoId(id))
+					return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
 				const deletePatientURL = `http://localhost:8002/patients/${id}`;
 				const response = await axios.delete(deletePatientURL);
 
