@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 
-const Perscription = mongoose.Schema( {
+const Prescription = mongoose.Schema( {
 	patientId: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Patient',
@@ -23,6 +23,6 @@ const Perscription = mongoose.Schema( {
 	//.....
 } );
 
-const PerscriptionModel = mongoose.model( 'Perscription', Perscription );
+const PrescriptionModel = mongoose.model( 'Prescription', Prescription );
 
-export default PerscriptionModel;
+export default PrescriptionModel;
