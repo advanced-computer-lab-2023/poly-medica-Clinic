@@ -7,7 +7,8 @@ import { doctor } from './api/DoctorAPI.js';
 //import { admin } from './api/AdminAPI.js';
 import { PORT } from './utils/Constants.js';
 import cors from 'cors';
-// import { appointment } from './api/AppointmentAPI.js';
+//import {doctor } from './api/doctor.js';
+import { appointment } from './api/AppointmentAPI.js';
 //import {admin } from './api/admin.js';
 
 dotenv.config();
@@ -41,7 +42,8 @@ app.use(
 healthPackage(app);
 doctor(app);
 //admin(app);
-//appointment(app);
+//doctor(app);
+appointment(app);
 
 const port = process.env.PORT || PORT;
 
