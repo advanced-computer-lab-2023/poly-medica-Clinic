@@ -1,8 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import { patient } from './api/patient.js';
-import { prescription } from './api/prescription.js';
+import { patient } from './api/PatientAPI.js';
 import { PORT_NUMBER } from './utils/Constants.js';
 import cors from 'cors';
 
@@ -29,7 +28,6 @@ app.use(cors({
 }));
 
 patient(app);
-prescription(app);
 
 const port = process.env.PORT || PORT_NUMBER;
 

@@ -64,5 +64,47 @@ export const patient = (app) => {
 			});
 		}
 	});
+
+	app.get('/patient/:id/prescriptions', async (req, res) => {
+		const { id } = req.params;
+		if (!isValidMongoId(id)) {
+			return res
+				.status(ERROR_STATUS_CODE)
+				.json({ message: 'Patient ID is invalid' });
+		}
+		try {
+			const data = await service.getPrescriptions(id);
+			if(data && data.length > EMPTY_SIZE)
+				res.status(OK_STATUS_CODE).json(data);
+			else
+				res.status(NOT_FOUND_STATUS_CODE).json({ message: 'prescriptions not found' });
+
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({
+				message: 'error occurred while fetching prescriptions',
+			});
+		}
+	});
+
+	app.get('/patient/:pateintId/prescription/:prescriptionId', async (req, res) => {
+		const { pateintId, prescriptionId } = req.params;
+		if (!isValidMongoId(pateintId) || !isValidMongoId(prescriptionId)) {
+			return res
+				.status(ERROR_STATUS_CODE)
+				.json({ message: 'Patient ID or Prescription ID is invalid' });
+		}
+		try {
+			const data = await service.getPrescription(pateintId, prescriptionId);
+			if(data)
+				res.status(OK_STATUS_CODE).json(data);
+			else
+				res.status(NOT_FOUND_STATUS_CODE).json({ message: 'prescription not found' });
+
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({
+				message: 'error occurred while fetching prescription',
+			});
+		}
+	});
 };
  
