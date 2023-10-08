@@ -1,7 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import { patient } from './api/patient.js';
+import { patient } from './api/PatientAPI.js';
 import { PORT_NUMBER } from './utils/Constants.js';
 
 dotenv.config();

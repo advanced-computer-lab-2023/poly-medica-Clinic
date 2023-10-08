@@ -11,6 +11,11 @@ class PatientService {
 		return patients;
 	}
 
+	async createPatient(patient) {
+		const newPatient = await this.repository.createPatient(patient);
+		return newPatient;
+	}
+
 	async deletePatient(id) {
 		const deletedPatient = await this.repository.deletePatient(id);
 		return deletedPatient;

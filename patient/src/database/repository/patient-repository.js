@@ -6,6 +6,11 @@ class PatientRepository {
 		return patients;
 	}
 
+	async createPatient(patient) {
+		const newPatient = await PatientModel.create(patient);
+		return newPatient;
+	}
+
 	async deletePatient(id) {
 		const deletedPatient = await PatientModel.findByIdAndDelete(id);
 		return deletedPatient;

@@ -1,10 +1,15 @@
 import mongoose from 'mongoose';
 import UserSchema from './UserSchema.js';
+import { ROLES } from '../../utils/Constants.js';
 
 const Doctor = mongoose.Schema({
 	userData: {
 		type: UserSchema,
 		required: true
+	},
+	role: {
+		type: String,
+		default: ROLES.DOCTOR
 	},
 	speciality: {
 		type: String,
