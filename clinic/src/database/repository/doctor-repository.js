@@ -1,7 +1,10 @@
-//import DoctorModel from '../models/Doctor.js';
+import DoctorModel from "../models/Doctor.js";
 
-class DoctorRepository{
-
+class DoctorRepository {
+	async deleteDoctor(id) {
+		const deletedDoctor = await DoctorModel.findByIdAndDelete(id);
+		return deletedDoctor;
+	}
 }
 
 export default DoctorRepository;

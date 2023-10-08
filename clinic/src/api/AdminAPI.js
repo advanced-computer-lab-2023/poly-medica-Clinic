@@ -50,24 +50,57 @@ export const admin = (app) => {
 
 	app.delete("/patients/:id", async (req, res) => {
 		try {
-			const id = req.params.id;
-			const deletePatientURL = `http://localhost:8002/patients/${id}`;
-			const response = await axios.delete(deletePatientURL);
+			const role = "ADMIN"; // to be adjusted later on with the role of the logged in user
+			if (role == "ADMIN") {
+				const id = req.params.id;
+				const deletePatientURL = `http://localhost:8002/patients/${id}`;
+				const response = await axios.delete(deletePatientURL);
 
-			if (response.data.status == NOT_FOUND_STATUS_CODE) {
-				res.status(NOT_FOUND_STATUS_CODE).send({
-					message: "patient not found!",
-					status: NOT_FOUND_STATUS_CODE,
-				});
-			} else if (response.data.status == OK_STATUS_CODE) {
-				res.status(OK_STATUS_CODE).send({
-					message: "patient deleted!",
-					status: OK_STATUS_CODE,
-					deletePatient: response.data.deleted_patient,
-				});
-			} else if (response.data.status == UNAUTHORIZED_STATUS_CODE) {
+				if (response.data.status == NOT_FOUND_STATUS_CODE) {
+					res.status(NOT_FOUND_STATUS_CODE).send({
+						message: "patient not found!",
+						status: NOT_FOUND_STATUS_CODE,
+					});
+				} else if (response.data.status == OK_STATUS_CODE) {
+					res.status(OK_STATUS_CODE).send({
+						message: "patient deleted!",
+						status: OK_STATUS_CODE,
+						deletePatient: response.data.deleted_patient,
+					});
+				}
+			} else {
 				res.status(UNAUTHORIZED_STATUS_CODE).send({
 					message: "You are not authorized to delete a patient!",
+				});
+			}
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).send(err);
+		}
+	});
+
+	app.delete("/doctors/:id", async (req, res) => {
+		try {
+			const role = "ADMIN"; // to be adjusted later on with the role of the logged in user
+			if (role == "ADMIN") {
+				const id = req.params.id;
+				const deleteDoctorURL = `http://localhost:8001/doctors/${id}`;
+				const response = await axios.delete(deleteDoctorURL);
+
+				if (response.status == NOT_FOUND_STATUS_CODE) {
+					res.status(NOT_FOUND_STATUS_CODE).send({
+						message: "doctor not found!",
+						status: NOT_FOUND_STATUS_CODE,
+					});
+				} else if (response.status == OK_STATUS_CODE) {
+					res.status(OK_STATUS_CODE).send({
+						message: "doctor deleted!",
+						status: OK_STATUS_CODE,
+						deleteDoctor: response.data.deleted_doctor,
+					});
+				}
+			} else {
+				res.status(UNAUTHORIZED_STATUS_CODE).send({
+					message: "You are not authorized to delete a doctor!",
 				});
 			}
 		} catch (err) {

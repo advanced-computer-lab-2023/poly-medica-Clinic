@@ -39,26 +39,19 @@ export const patient = (app) => {
 	app.delete("/patients/:id", async (req, res) => {
 		try {
 			const id = req.params.id;
-			const role = "ADMIN"; // to be adjusted later` on with the role of the logged in user
-			if (role === "ADMIN") {
-				const deletedPatient = await service.deletePatient(id);
-				if (deletedPatient === null)
-					res.json({
-						message: "patient not found!",
-						status: NOT_FOUND_STATUS_CODE,
-					}); // to do: adding the not found status code
-				else
-					res.json({
-						message: "patient deleted!",
-						status: OK_STATUS_CODE,
-						deleted_patient: deletedPatient,
-					});
-			} else {
+			const deletedPatient = await service.deletePatient(id);
+			if (deletedPatient === null)
 				res.json({
-					message: "You are not authorized to delete a patient!",
-					status: UNAUTHORIZED_STATUS_CODE,
+					message: "patient not found!",
+					status: NOT_FOUND_STATUS_CODE,
 				});
-			}
+			// to do: adding the not found status code
+			else
+				res.json({
+					message: "patient deleted!",
+					status: OK_STATUS_CODE,
+					deleted_patient: deletedPatient,
+				});
 		} catch (err) {
 			res.json({ err: err.message, status: ERROR_STATUS_CODE });
 		}
