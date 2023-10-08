@@ -22,6 +22,22 @@ class PatientService {
 		);
 		return familyMembers;
 	}
+
+	async getPrescriptions(patientId){
+		const prescriptions = await this.repository.findAllPrescriptions();
+		console.log(patientId, typeof patientId);
+		const filteredPrescriptions =  prescriptions.filter( prescription => 
+			prescription.patientId.valueOf() == patientId 
+		);
+		return filteredPrescriptions;
+	}
+
+	async getPrescription(patientId, prescriptionId){
+		const prescription = await this.repository.findPrescriptionById(prescriptionId);
+		if(prescription && prescription.patientId.valueOf() == patientId)
+			return prescription;
+		return null;
+	}
 }
 
 export default PatientService;
