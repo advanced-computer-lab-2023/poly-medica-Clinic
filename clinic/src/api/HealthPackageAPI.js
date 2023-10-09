@@ -1,6 +1,12 @@
 
 import HealthPackageService from '../service/health-package-service.js';
-import { EMPTY_SIZE, ERROR_STATUS_CODE, NOT_FOUND_STATUS_CODE, OK_STATUS_CODE } from '../utils/Constants.js';
+import {
+	EMPTY_SIZE,
+	ERROR_STATUS_CODE,
+	NOT_FOUND_STATUS_CODE,
+	OK_STATUS_CODE,
+} from '../utils/Constants.js';
+import { isValidMongoId } from '../utils/Validation.js';
 
 export const healthPackage = (app) => {
 	const service = new HealthPackageService();
@@ -15,11 +21,22 @@ export const healthPackage = (app) => {
 	});
 
 	app.post('/packages', async (req, res) => {
-
-		const { name, price, discountOfDoctor, discountOfMedicin, discountOfFamily } = req.body;
+		const {
+			name,
+			price,
+			discountOfDoctor,
+			discountOfMedicin,
+			discountOfFamily,
+		} = req.body;
 		console.log({ name });
 
-		const data = await service.createNewPackage(name, price, discountOfDoctor, discountOfMedicin, discountOfFamily);
+		const data = await service.createNewPackage(
+			name,
+			price,
+			discountOfDoctor,
+			discountOfMedicin,
+			discountOfFamily,
+		);
 		if (data) {
 			res.status(OK_STATUS_CODE).json({ data });
 		} else {
@@ -30,6 +47,8 @@ export const healthPackage = (app) => {
 	app.patch('/package/:id', async (req,res)=>{
         const updateData = req.body;
         const id = req.params.id;
+		if (!isValidMongoId(id))
+			return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
         try{
             const updatedPackage = await service.updatePackage(id, updateData);
             res.status(200).json({updatedPackage});
@@ -40,15 +59,14 @@ export const healthPackage = (app) => {
 
 	app.delete('/packages/:id', async (req, res) => {
 		const id = req.params.id;
+		if (!isValidMongoId(id))
+			return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
+
 		try {
-			console.log(id);
 			const deletedPackage = await service.deletePackage(id);
 			res.status(OK_STATUS_CODE).json({ deletedPackage });
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}
 	});
-
-	
-
 };
