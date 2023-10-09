@@ -2,6 +2,7 @@ import axios from 'axios';
 import DoctorService from '../service/doctor-service.js';
 import { isValidMongoId } from '../utils/Validation.js';
 import {
+	EMPTY_SIZE,
 	PATIENTS_BASE_URL,
 	NOT_FOUND_STATUS_CODE,
 	ERROR_STATUS_CODE,
@@ -97,6 +98,23 @@ export const doctor = (app) => {
 			}
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
+		}
+	});
+
+	app.get('/patients', async (req, res) => {
+		try {
+			const getPatientsURL = `${PATIENTS_BASE_URL}/patients`;
+			let allPatients = await axios.get(getPatientsURL);
+			allPatients = allPatients.data;
+			if (allPatients.length > EMPTY_SIZE) {
+				res.status(OK_STATUS_CODE).json({ allPatients });
+			} else {
+				res.status(NOT_FOUND_STATUS_CODE).json({
+					message: 'patient not found',
+				});
+			}
+		} catch (error) {
+			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
 	});
 };
