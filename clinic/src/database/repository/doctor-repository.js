@@ -45,7 +45,6 @@ class DoctorRepository {
 		return await AppointmentModel.find();
 	}
 	async updateDoctor(id, updates) {
-		//take care that some attributes are stored in the userData attribute such as email
 		let doctor = await DoctorModel.findByIdAndUpdate(id, updates, {
 			new: true,
 			runValidators: true,
