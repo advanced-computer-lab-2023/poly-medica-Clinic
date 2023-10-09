@@ -90,25 +90,26 @@ const Patients = () => {
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{patients.map((patient) => (
-									<TableRow key={patient._id}>
-										<TableCell>{patient.name}</TableCell>
-										<TableCell>{patient.userName}</TableCell>
-										<TableCell>{patient.email}</TableCell>
-										<TableCell>{formatDate(patient.dateOfBirth)}</TableCell>
-										<TableCell>{patient.gender}</TableCell>
-										<TableCell>{patient.mobileNumber}</TableCell>
-										<TableCell>
-											<IconButton
-												aria-label='delete'
-												onClick={() => handleRemovePatient(patient._id)}
-												color='error'
-											>
-												<DeleteIcon />
-											</IconButton>
-										</TableCell>
-									</TableRow>
-								))}
+								{Array.isArray(patients) &&
+									patients.map((patient) => (
+										<TableRow key={patient._id}>
+											<TableCell>{patient.name}</TableCell>
+											<TableCell>{patient.userName}</TableCell>
+											<TableCell>{patient.email}</TableCell>
+											<TableCell>{formatDate(patient.dateOfBirth)}</TableCell>
+											<TableCell>{patient.gender}</TableCell>
+											<TableCell>{patient.mobileNumber}</TableCell>
+											<TableCell>
+												<IconButton
+													aria-label='delete'
+													onClick={() => handleRemovePatient(patient._id)}
+													color='error'
+												>
+													<DeleteIcon />
+												</IconButton>
+											</TableCell>
+										</TableRow>
+									))}
 							</TableBody>
 						</Table>
 					</TableContainer>

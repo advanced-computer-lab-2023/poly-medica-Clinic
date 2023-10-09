@@ -95,30 +95,31 @@ const Doctors = () => {
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{doctors.map((doctor) => (
-									<TableRow key={doctor._id}>
-										<TableCell>{doctor.userData.name}</TableCell>
-										<TableCell>{doctor.userData.userName}</TableCell>
-										<TableCell>{doctor.userData.email}</TableCell>
-										<TableCell>
-											{formatDate(doctor.userData.dateOfBirth)}
-										</TableCell>
-										<TableCell>{doctor.speciality}</TableCell>
-										<TableCell>{doctor.hourlyRate}</TableCell>
-										<TableCell>{doctor.affiliation}</TableCell>
-										<TableCell>{doctor.educationalBackground}</TableCell>
-										<TableCell>{doctor.availableSlots}</TableCell>
-										<TableCell>
-											<IconButton
-												aria-label='delete'
-												onClick={() => handleRemoveDoctor(doctor._id)}
-												color='error'
-											>
-												<DeleteIcon />
-											</IconButton>
-										</TableCell>
-									</TableRow>
-								))}
+								{Array.isArray(doctors) &&
+									doctors.map((doctor) => (
+										<TableRow key={doctor._id}>
+											<TableCell>{doctor.userData.name}</TableCell>
+											<TableCell>{doctor.userData.userName}</TableCell>
+											<TableCell>{doctor.userData.email}</TableCell>
+											<TableCell>
+												{formatDate(doctor.userData.dateOfBirth)}
+											</TableCell>
+											<TableCell>{doctor.speciality}</TableCell>
+											<TableCell>{doctor.hourlyRate}</TableCell>
+											<TableCell>{doctor.affiliation}</TableCell>
+											<TableCell>{doctor.educationalBackground}</TableCell>
+											<TableCell>{doctor.availableSlots}</TableCell>
+											<TableCell>
+												<IconButton
+													aria-label='delete'
+													onClick={() => handleRemoveDoctor(doctor._id)}
+													color='error'
+												>
+													<DeleteIcon />
+												</IconButton>
+											</TableCell>
+										</TableRow>
+									))}
 							</TableBody>
 						</Table>
 					</TableContainer>
