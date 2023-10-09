@@ -13,6 +13,15 @@ import {
 export const admin = (app) => {
 	const service = new AdminService();
 
+	app.get('/admins', async (req, res) => {
+		try {
+			const admins = await service.findAllAdmins();
+			res.status(OK_STATUS_CODE).json({ admins });
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({ err: err.message });
+		}
+	});
+
 	app.post('/admins', async (req, res) => {
 		try {
 			const newAdmin = await service.createAdmin(req.body);

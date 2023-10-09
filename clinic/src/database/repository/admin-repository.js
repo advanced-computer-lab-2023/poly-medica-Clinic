@@ -1,6 +1,11 @@
 import AdminModel from '../models/Admin.js';
 
 class AdminRepository {
+	async findAllAdmins() {
+		const admins = await AdminModel.find();
+		return admins;
+	}
+
 	async addAdmin(admin) {
 		const newAdmin = await AdminModel.create(admin);
 		return newAdmin;
