@@ -86,4 +86,21 @@ export const doctor = (app) => {
 		}
 	});
 
+	app.get('/appointments', async (req, res) => {
+		try {
+			const allAppointments = await service.getAllAppointments();
+			if (allAppointments.length > EMPTY_SIZE) {
+				res.status(OK_STATUS_CODE).json({ allAppointments });
+			} else {
+				res.status(NOT_FOUND_STATUS_CODE).json({
+					message: 'appointments not found',
+				});
+			}
+ 
+		} catch (error) {
+			res.status(ERROR_STATUS_CODE).json({ message: error });
+		}
+	}
+	);
+
 };
