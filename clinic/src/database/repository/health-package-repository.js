@@ -1,3 +1,4 @@
+
 import HealthPackageModel from '../models/HealthPackage.js';
 
 class HealthPackageRepository {
@@ -28,6 +29,12 @@ class HealthPackageRepository {
 		const packageDeleted = await HealthPackageModel.findByIdAndDelete(id);
 		return packageDeleted;
 	}
+
+	async updatePackage(id, updateData){
+		const packageUpdated = await HealthPackageModel.findByIdAndUpdate(id, { $set: updateData });
+		return packageUpdated;
+	}
 }
 
 export default HealthPackageRepository;
+

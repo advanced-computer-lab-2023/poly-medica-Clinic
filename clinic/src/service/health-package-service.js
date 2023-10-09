@@ -1,3 +1,4 @@
+
 import HealthPackageRepository from '../database/repository/health-package-repository.js';
 
 class HealthPackageService {
@@ -28,6 +29,11 @@ class HealthPackageService {
 			discountOfFamily,
 		);
 		return newPackage;
+	}
+
+	async updatePackage(id, updateData){
+		const { updatedPackage } = await this.repository.updatePackage(id, updateData);
+		return updatedPackage;
 	}
 
 	async deletePackage(id) {
