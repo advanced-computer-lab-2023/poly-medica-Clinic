@@ -68,12 +68,11 @@ export const doctor = (app) => {
 		}
 
 	});
-	app.get('/doctors/patients', async (req, res) => {
-		
+	app.get('/doctors/patients', async (req, res) => { 	
 		try {
-			
 			const getPatientsURL = `${PATIENTS_BASE_URL}/patients`;	
-			const allPatients = await axios.get(getPatientsURL);
+			let allPatients = await axios.get(getPatientsURL);
+			allPatients = allPatients.data;
 			if (allPatients.length > EMPTY_SIZE) {
 				res.status(OK_STATUS_CODE).json({ allPatients });
 			} else {
