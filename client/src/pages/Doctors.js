@@ -34,7 +34,6 @@ const Doctors = () => {
 		})
 			.then((response) => response.json())
 			.then((data) => {
-				console.log(data, 'data');
 				setDoctors(data);
 				setIsLoading(false);
 			})
