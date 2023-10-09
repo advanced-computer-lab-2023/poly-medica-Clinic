@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import {
-	List,
-	ListItem,
-	ListItemText,
-	ListItemSecondaryAction,
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
+	Paper,
 	IconButton,
 	Button,
 	Dialog,
@@ -46,6 +49,16 @@ const Admins = () => {
 	};
 
 	const handleConfirmDelete = () => {
+		// Check if the admin being deleted is a main admin
+		const adminToBeDeleted = admins.find(
+			(admin) => admin._id === adminToDelete,
+		);
+		if (adminToBeDeleted && adminToBeDeleted.mainAdmin) {
+			// If it's a main admin, prevent deletion and show a message
+			setConfirmDeleteDialogOpen(false);
+			return;
+		}
+
 		fetch(`http://localhost:8001/admins/${adminToDelete}`, {
 			method: 'DELETE',
 		})
@@ -117,40 +130,40 @@ const Admins = () => {
 				<p>Loading...</p>
 			) : (
 				<div>
-					<List>
-						{Array.isArray(admins) &&
-							admins.map((admin, index) => (
-								<div key={index}>
-									<div key={index}>
-										<ListItem>
-											<ListItemText primary={admin.userName} />
-											<ListItemSecondaryAction>
+					<TableContainer component={Paper}>
+						<Table>
+							<TableHead>
+								<TableRow>
+									<TableCell>Username</TableCell>
+									<TableCell>Delete</TableCell>
+								</TableRow>
+							</TableHead>
+							<TableBody>
+								{Array.isArray(admins) &&
+									admins.map((admin, index) => (
+										<TableRow key={index}>
+											<TableCell>{admin.userName}</TableCell>
+											<TableCell>
 												{admin.mainAdmin ? (
-													<Tooltip title='Main Admin'>
-														<IconButton edge='end' aria-label='main admin'>
-															{/* Add your specific icon for the main admin */}
-															{/* For example, you can use a star icon */}
-															{/* Replace the following line with your desired icon */}
-															<span role='img' aria-label='Main Admin'>
-																⭐
-															</span>
+													<Tooltip title="Main Admin Can't be deleted">
+														<IconButton disabled>
+															<DeleteIcon />
 														</IconButton>
 													</Tooltip>
 												) : (
 													<IconButton
-														edge='end'
-														aria-label='delete'
 														onClick={() => handleRemoveAdmin(admin._id)}
+														color='error'
 													>
 														<DeleteIcon />
 													</IconButton>
 												)}
-											</ListItemSecondaryAction>
-										</ListItem>
-									</div>
-								</div>
-							))}
-					</List>
+											</TableCell>
+										</TableRow>
+									))}
+							</TableBody>
+						</Table>
+					</TableContainer>
 					<Button
 						variant='contained'
 						color='primary'
@@ -211,7 +224,7 @@ const Admins = () => {
 							</Button>
 							<Button
 								onClick={handleConfirmDelete}
-								color='primary'
+								color='error'
 								variant='contained'
 							>
 								Delete
