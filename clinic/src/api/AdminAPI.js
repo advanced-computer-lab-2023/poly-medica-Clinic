@@ -1,6 +1,7 @@
 import axios from 'axios';
 import AdminService from '../service/admin-service.js';
 import { isValidMongoId } from '../utils/Validation.js';
+import { PATIENTS_BASE_URL } from '../utils/Constants.js';
 import {
 	ERROR_STATUS_CODE,
 	NOT_FOUND_STATUS_CODE,
@@ -65,7 +66,7 @@ export const admin = (app) => {
 				const id = req.params.id;
 				if (!isValidMongoId(id))
 					return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
-				const deletePatientURL = `http://localhost:8002/patients/${id}`;
+				const deletePatientURL = `${PATIENTS_BASE_URL}/patients/${id}`;
 				const response = await axios.delete(deletePatientURL);
 
 				if (response.data.status == NOT_FOUND_STATUS_CODE) {
