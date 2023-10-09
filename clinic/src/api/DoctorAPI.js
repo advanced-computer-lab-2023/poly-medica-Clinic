@@ -106,7 +106,7 @@ export const doctor = (app) => {
 			let allPatients = await axios.get(getPatientsURL);
 			allPatients = allPatients.data.patients;
 			if (allPatients.length > EMPTY_SIZE) {
-				res.status(OK_STATUS_CODE).json( { allPatients } );
+				res.status(OK_STATUS_CODE).json({ allPatients });
 			} else {
 				res.status(NOT_FOUND_STATUS_CODE).json({
 					message: 'patient not found',
@@ -127,11 +127,8 @@ export const doctor = (app) => {
 					message: 'appointments not found',
 				});
 			}
- 
 		} catch (error) {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
-	}
-	);
+	});
 };
-
