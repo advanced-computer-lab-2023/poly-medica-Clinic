@@ -10,7 +10,7 @@ class PatientRepository {
 	async findFamilyMembers(id) {
 		const familyMembers = await PatientModel.findById(
 			id,
-			FAMILY_MEMBERS_PROJECTION
+			FAMILY_MEMBERS_PROJECTION,
 		);
 		return familyMembers;
 	}
@@ -19,7 +19,7 @@ class PatientRepository {
 		return await PatientModel.findOneAndUpdate(
 			{ _id: id },
 			{ familyMembers },
-			{ new: true, runValidators: true }
+			{ new: true, runValidators: true },
 		).select(FAMILY_MEMBERS_PROJECTION);
 	}
 
@@ -31,6 +31,16 @@ class PatientRepository {
 	async findPrescriptionById(id) {
 		const prescription = await PrescriptionModel.findById(id);
 		return prescription;
+	}
+
+	async createPatient(patient) {
+		const newPatient = await PatientModel.create(patient);
+		return newPatient;
+	}
+
+	async deletePatient(id) {
+		const deletedPatient = await PatientModel.findByIdAndDelete(id);
+		return deletedPatient;
 	}
 }
 
