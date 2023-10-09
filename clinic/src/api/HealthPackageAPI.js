@@ -51,9 +51,9 @@ export const healthPackage = (app) => {
 			return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
         try{
             const updatedPackage = await service.updatePackage(id, updateData);
-            res.status(200).json({updatedPackage});
+            res.status(OK_STATUS_CODE).json({updatedPackage});
         }catch(err){
-            res.status(500).json({err : err.message});
+            res.status(ERROR_STATUS_CODE).json({err : err.message});
         }
     });
 
