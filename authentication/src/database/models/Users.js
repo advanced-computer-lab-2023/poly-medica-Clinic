@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import bcrypt from 'bcrypt'
 import { ADMIN_ENUM, ADMIN_TABLE_NAME, DOCTOR_ENUM, DOCTOR_TABLE_NAME, PATIENT_TABLE_NAME, USER_ARR_ENUM, USER_STATE_ARR } from "../../utils/Constants.js";
 
 const userSchema = mongoose.Schema({
@@ -46,16 +45,6 @@ const userSchema = mongoose.Schema({
 
 
 
-// static method to userSchema
-userSchema.statics.login = async function (email, password){
-    const user = await User.findIne({email: email})
-    if(user){
-        const auth = bcrypt.compare(password, user.password);
-        if(auth){
-            return user;
-        } throw Error("incorrect Password")
-    } throw Error("incorrect Email")
-}
 
 userSchema.statics.signup = async function (userId, email, password, userName, type, state){
     const userRecord = new this({userId: new mongoose.Types.ObjectId(userId), email, password, userName, type, state});

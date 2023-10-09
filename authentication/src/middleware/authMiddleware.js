@@ -6,15 +6,15 @@ export const checkUser = (req, res, next) => {
     if (token) {
       jwt.verify(token, process.env.JWT_SECRET, async (err, decodedToken) => {
         if (err) {
-          res.locals.user = null;
+          req.user = null;
           next();
         } else {
-          res.locals.userId = decodedToken.id;
+          req.user = decodedToken.id;
           next();
         }
       });
     } else {
-      res.locals.user = null;
+      req.user = null;
       next();
     }
   };

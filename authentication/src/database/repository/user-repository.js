@@ -1,4 +1,5 @@
 import User from "../models/Users.js"
+import bcrypt from 'bcrypt'
 
 class UserRepository{
     async signupUser(data){
@@ -7,9 +8,17 @@ class UserRepository{
         return user;
     }
     async loginUser(req){
+        console.log(req.body);
         const { email, password } = req.body;
-        let user = await User.login( email, password );
-        return user;
+        const user = await User.findOne({email: email})
+        if(user){
+        if(password){
+            const auth = await bcrypt.compare(password, user.password);
+            if(auth){
+                return user;
+                } 
+            }throw Error("incorrect Password")
+        } throw Error("incorrect Email")
     }
     async findUserByEmail(email){
         let user = await User.findOne({email: email}).lean();

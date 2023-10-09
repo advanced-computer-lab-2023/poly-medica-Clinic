@@ -32,8 +32,11 @@ export const PATIENT_SIGNUP_URL = "http://localhost:8002/signup"
 
 export const ADMIN_SIGNUP_URL = "http://localhost:8001/add-admin"
 
-export const DOCOTOR_SIGNUP_URL = "http://localhost:8001/add-doctor"
+export const DOCOTOR_SIGNUP_URL = "http://localhost:8001/add-doctor-req"
 
 export const DUB_EMAIL_ERROR_MESSAGE = `that email is already registered`
 
 export const DUB_USERNAME_ERROR_MESSAGE = `that username is already registered`
+
+export const PORT = 8004;
+

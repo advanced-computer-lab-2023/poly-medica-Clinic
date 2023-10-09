@@ -7,8 +7,8 @@ import axios from 'axios';
 export const user = (app)=>{
     const user = new UserService();
 
-    const createToken = (id) => {
-        return jwt.sign({ id }, process.env.JWT_SECRET, {
+    const createToken = (id, userName, type) => {
+        return jwt.sign({ id, userName, type }, process.env.JWT_SECRET, {
           expiresIn: ONE_DAY_MAX_AGE_IN_MIINUTS
         });
       };
@@ -21,9 +21,9 @@ export const user = (app)=>{
             let email = null;
             let userName = null;
             switch(type){
-                case PATIENT_ENUM:signupData = await axios.post(PATIENT_SIGNUP_URL, req.body);email = req.body.email; userName = req.body.userName;break;
-                case DOCTOR_ENUM: signupData = await axios.post(DOCOTOR_SIGNUP_URL, req.body);email = req.body.userData.email; userName = req.body.userData.userName;break;
-                case ADMIN_ENUM: signupData = await axios.post(ADMIN_SIGNUP_URL, req.body);email = req.body.userData.email; userName = req.body.userData.userName;break;
+                case PATIENT_ENUM:email = req.body.email; userName = req.body.userName;break;
+                case DOCTOR_ENUM: email = req.body.userData.email; userName = req.body.userData.userName;break;
+                case ADMIN_ENUM: email = req.body.userData.email; userName = req.body.userData.userName;break;
                 default: throw new Error("invalid type of user");
             }
             const checkEmail = await user.findUserByEmail(email);
@@ -34,10 +34,19 @@ export const user = (app)=>{
             if(checkUserName){
                 throw new Error(DUB_USERNAME_ERROR_MESSAGE);
             }
-            const signedupUser = await user.signupUser(signupData.data);
-            res.status(OK_REQUEST_CODE_200).send(signedupUser);
+            switch(type){
+                case PATIENT_ENUM:signupData = await axios.post(PATIENT_SIGNUP_URL, req.body);break;
+                case DOCTOR_ENUM: signupData = await axios.post(DOCOTOR_SIGNUP_URL, req.body);break;
+                case ADMIN_ENUM: signupData = await axios.post(ADMIN_SIGNUP_URL, req.body);break;
+                default: throw new Error("invalid type of user");
+            }
+            if(type != DOCTOR_ENUM){
+                const signedupUser = await user.signupUser(signupData.data);
+                res.status(OK_REQUEST_CODE_200).end();
+            } else{
+                res.status(OK_REQUEST_CODE_200).end();
+            }
         } catch(err){
-            console.log(err);
             if(err.response){
                 if(err.response.data.errCode == DUPLICATE_KEY_ERROR_CODE){
                     res.status(BAD_REQUEST_CODE_400).send({message: err.response.data.errMessage});
@@ -52,11 +61,27 @@ export const user = (app)=>{
     app.post('/login', async (req, res) =>{
         try{
             const logedinUser = await user.loginUser(req);
-            const token = createToken(logedinUser._id);
+            const token = createToken(logedinUser.userId, logedinUser.userName,  logedinUser.type);
             res.cookie('jwt', token, { httpOnly: true, maxAge: ONE_DAY_MAX_AGE_IN_MILLEMIINUTS });
-            res.send({userId: logedinUser._id});
+            res.send({id:logedinUser._id, name:logedinUser.userName, type: logedinUser.type, token: token });
         } catch(err){
-            res.status(BAD_REQUEST_CODE_400).send(err.message);
+            console.log(err);
+            res.status(BAD_REQUEST_CODE_400).send({message: err.message});
         }
+    })
+
+    app.get('/check-user', async (req, res) => {
+        const token = req.cookies.jwt;
+        if (token) {
+            jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
+              if (err) {
+                res.status(401).send({message: "you are not Auth"});
+              } else {
+                res.status(200).send({id: decodedToken.id, userName: decodedToken.userName , type: decodedToken.type});
+              }
+            });
+          } else {
+            res.status(401).send({message: "you are not Auth"})
+          }
     })
 }

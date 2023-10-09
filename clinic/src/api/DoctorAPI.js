@@ -5,15 +5,16 @@ import { BAD_REQUEST_CODE_400, DOCTOR_ENUM, DUPLICATE_KEY_ERROR_CODE, INACTIVE_U
 export const DoctorAPI = (app) => {
 const service = new DoctorService();
 
-app.post('/add-doctor', async (req, res) =>{
+app.post('/add-doctor-req', async (req, res) =>{
     try{
-        const doctorUser = await service.addDoctor(req);
+        const doctorUser = await service.addReqDoctor(req);
         req.body = {userId: doctorUser._id, email: doctorUser.userData.email, password: doctorUser.userData.password, userName: doctorUser.userData.userName, type: DOCTOR_ENUM , state: INACTIVE_USER_STATE}
         res.send(req.body);
     } catch(err){
         if(err.code == DUPLICATE_KEY_ERROR_CODE){
             const duplicateKeyAttrb = Object.keys(err.keyPattern)[0];
-            res.status(BAD_REQUEST_CODE_400).send({errCode:DUPLICATE_KEY_ERROR_CODE ,errMessage:`that ${duplicateKeyAttrb.split('.')[1]} is already registered`});
+            let keyAttrb = duplicateKeyAttrb.split('.')
+            res.status(BAD_REQUEST_CODE_400).send({errCode:DUPLICATE_KEY_ERROR_CODE ,errMessage:`that ${keyAttrb[keyAttrb.length -1 ]} is already registered`});
         } else res.status(BAD_REQUEST_CODE_400).send({errMessage: err.message});
     }
 });

@@ -41,7 +41,7 @@ AdminAPI(app);
 DoctorAPI(app);
 //appointment(app);
 
-const port = process.env.PORT || PORT;
+const port = PORT;
 
 app.listen(port, () => {
 	console.log(`Server is running on port ${port}`);

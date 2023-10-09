@@ -10,6 +10,11 @@ class DoctorService{
         const doctorUser = await this.repository.addDoctor(req);
         return doctorUser;
     }
+
+    async addReqDoctor(req){
+        const doctorUser = await this.repository.addDoctorReq(req);
+        return doctorUser;
+    }
 }
 
 export default DoctorService;

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { GENDERS } from '../../utils/Constants.js';
+import { FAMILY_RELATIONS, GENDERS } from '../../utils/Constants.js';
 
 const patientSchema = mongoose.Schema({
 	name: {
@@ -45,6 +45,11 @@ const patientSchema = mongoose.Schema({
 		mobile: {
 			type: String,
 			required: true
+		},
+		relation: {
+			type: String,
+			required: true,
+			enum: FAMILY_RELATIONS
 		}
 	},
 	familyMembers: [
@@ -56,7 +61,8 @@ const patientSchema = mongoose.Schema({
 			nationalId: {
 				type: String,
 				required: true,
-				unique: true
+				unique: true,
+				sparse: true,
 			},
 			age: {
 				type: Number,
@@ -77,7 +83,8 @@ const patientSchema = mongoose.Schema({
 } );
 
 patientSchema.statics.signup = async function (name, email, password, userName, dateOfBirth, gender, mobileNumber, emergencyContact){
-    const userRecord = new this({name, email, password, userName, dateOfBirth, gender, mobileNumber, emergencyContact});
+	console.log(name, email, password, userName, dateOfBirth, gender, mobileNumber, emergencyContact);
+    const userRecord = new this({name, email, password, userName, dateOfBirth, gender, mobileNumber, emergencyContact, familyMembers: []});
     let result = await userRecord.save();
     return result;
 }

@@ -5,6 +5,8 @@ import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv'
 import { user } from './src/api/user.js';
+import { PORT } from './src/utils/Constants.js';
+import cors from 'cors'
 
 dotenv.config();
 
@@ -14,6 +16,10 @@ app.use(cookieParser())
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+}));
 
 const mongoURL = process.env.MONGO_URI;
 
@@ -31,7 +37,7 @@ await connect();
 
 user(app);
 
-const port = process.env.PORT || 8003;
+const port = PORT;
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

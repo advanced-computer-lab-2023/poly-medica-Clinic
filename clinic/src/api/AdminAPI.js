@@ -12,7 +12,8 @@ const service = new AdminService();
     } catch(err){
         if(err.code == DUPLICATE_KEY_ERROR_CODE){
             const duplicateKeyAttrb = Object.keys(err.keyPattern)[0];
-            res.status(BAD_REQUEST_CODE_400).send({errCode:DUPLICATE_KEY_ERROR_CODE ,errMessage:`that ${duplicateKeyAttrb.split('.')[1]} is already registered`});
+            let keyAttrb = duplicateKeyAttrb.split('.')
+            res.status(BAD_REQUEST_CODE_400).send({errCode:DUPLICATE_KEY_ERROR_CODE ,errMessage:`that ${keyAttrb[keyAttrb.length - 1]} is already registered`});
         }
         else res.status(BAD_REQUEST_CODE_400).send({errMessage: err.message});
     }

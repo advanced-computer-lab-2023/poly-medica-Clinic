@@ -27,6 +27,7 @@ export const patient = ( app ) => {
         } catch(err){
             if(err.code == DUPLICATE_KEY_ERROR_CODE){
                 const duplicateKeyAttrb = Object.keys(err.keyPattern)[0];
+                console.log(duplicateKeyAttrb);
                 res.status(BAD_REQUEST_CODE_400).send({errCode:DUPLICATE_KEY_ERROR_CODE ,errMessage:`that ${duplicateKeyAttrb} is already registered`});
             }
             else res.status(BAD_REQUEST_CODE_400).send({errMessage: err.message});

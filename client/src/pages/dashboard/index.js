@@ -1,4 +1,3 @@
-// import { useEffect, useState } from 'react';
 import CardSecondaryAction from 'ui-component/cards/CardSecondaryAction';
 
 // material-ui
@@ -14,14 +13,9 @@ import CardSecondaryAction from 'ui-component/cards/CardSecondaryAction';
 // import { gridSpacing } from 'store/constant';
 import MainCard from 'ui-component/cards/MainCard';
 
-// ==============================|| DEFAULT DASHBOARD ||============================== //
 
 const Dashboard = () => {
-	// const [isLoading, setLoading] = useState(true);
-	// useEffect(() => {
-	//   setLoading(false);
-	// }, []);
-
+	
 	return (
 
 		<MainCard title="Dashboard" secondary={<CardSecondaryAction link="https://next.material-ui.com/system/palette/" />}>

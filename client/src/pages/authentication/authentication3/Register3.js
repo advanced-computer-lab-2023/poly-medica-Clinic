@@ -2,14 +2,16 @@ import { Link } from 'react-router-dom';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Divider, Grid, Stack, Typography, useMediaQuery, Button } from '@mui/material';
 
 // project imports
 import AuthWrapper1 from '../AuthWrapper1';
 import AuthCardWrapper from '../AuthCardWrapper';
 import Logo from 'ui-component/Logo';
-import AuthRegister from '../auth-forms/AuthRegister';
+import PatientRegister from '../auth-forms/PatientRegister';
+import DoctorRegister from '../auth-forms/DoctorRegister';
 import AuthFooter from 'ui-component/cards/AuthFooter';
+import { useState } from 'react';
 
 // assets
 
@@ -18,6 +20,7 @@ import AuthFooter from 'ui-component/cards/AuthFooter';
 const Register = () => {
 	const theme = useTheme();
 	const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
+	const [selectedButton, setSeletcedButton] = useState(null);
 
 	return (
 		<AuthWrapper1>
@@ -37,17 +40,32 @@ const Register = () => {
 											<Grid item>
 												<Stack alignItems="center" justifyContent="center" spacing={1}>
 													<Typography color={theme.palette.secondary.main} gutterBottom variant={matchDownSM ? 'h3' : 'h2'}>
-                            Sign up
+                            Sign up as
 													</Typography>
-													<Typography variant="caption" fontSize="16px" textAlign={matchDownSM ? 'center' : 'inherit'}>
-                            Enter your credentials to continue
-													</Typography>
+													<Grid container display={"flex"} flexDirection={"row"} spacing={2}>
+														<Grid item>
+															<Button sx={{ color: (selectedButton=='patient'?"white":"#4CAF50"), borderRadius:5, backgroundColor: (selectedButton=='patient'?'#4CAF50':'#FFFFFF') }} variant={selectedButton=='patient'?'contained':'outlined'} size='small' onClick={ () => setSeletcedButton('patient')}>
+																Patient
+															</Button>
+														</Grid>
+														<Grid item>
+															<Button sx={{ color: (selectedButton=='doctor'?"white":"#2196F3"), borderRadius:5, backgroundColor: (selectedButton=='doctor'?"#2196F3":'#FFFFFF') }} variant={selectedButton=='doctor'?'contained':'outlined'} size='small' onClick={ () => setSeletcedButton('doctor')}>
+																Doctor
+															</Button>
+														</Grid>
+														<Grid item>
+															<Button sx={{ color: (selectedButton=='pharmacist'?"white":"#FF5722"), borderRadius:5, backgroundColor: (selectedButton=='pharmacist'?"#FF5722":'#FFFFFF') }} variant={selectedButton=='pharmacist'?'contained':'outlined'} size='small' onClick={ () => setSeletcedButton('pharmacist')}>
+																Pharmacist
+															</Button>
+														</Grid>
+													</Grid>
 												</Stack>
 											</Grid>
 										</Grid>
 									</Grid>
 									<Grid item xs={12}>
-										<AuthRegister />
+										{selectedButton && selectedButton == 'patient' && <PatientRegister />}
+										{selectedButton && selectedButton == 'doctor' && <DoctorRegister />}
 									</Grid>
 									<Grid item xs={12}>
 										<Divider />

@@ -6,7 +6,7 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import { patient } from './src/api/patient.js';
 import { MONGO_URI, PORT_NUMBER } from './src/utils/Constants.js';
-import { checkUser, requireAuth } from './src/middleware/authMiddleware.js';
+import { checkUser } from './src/middleware/authMiddleware.js';
 
 dotenv.config();
 const app = express();
@@ -33,7 +33,7 @@ app.use('*', checkUser);
 
 patient( app );
 
-const port = process.env.PORT || PORT_NUMBER;
+const port = PORT_NUMBER;
 
 app.listen( port, () => {
 	console.log( `Server is running on port ${port}` );
