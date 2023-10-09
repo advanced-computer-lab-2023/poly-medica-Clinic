@@ -68,7 +68,7 @@ export const doctor = (app) => {
 		}
 
 	});
-	app.get('/doctors/patients', async (req, res) => { 	
+	app.get('/patients', async (req, res) => { 	
 		try {
 			const getPatientsURL = `${PATIENTS_BASE_URL}/patients`;	
 			let allPatients = await axios.get(getPatientsURL);
