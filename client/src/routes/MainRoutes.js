@@ -9,6 +9,7 @@ const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 const LazyMedicines = Loadable(lazy(() => import('pages/Medicines')));
 const LazyAdmins = Loadable(lazy(() => import('pages/Admins')));
 const LazyPatients = Loadable(lazy(() => import('pages/Patients')));
+const LazyDoctors = Loadable(lazy(() => import('pages/Doctors')));
 // utilities routing
 const UtilsTypography = Loadable(
 	lazy(() => import('pages/utilities/Typography')),
@@ -52,6 +53,10 @@ const MainRoutes = {
 				{
 					path: 'patients',
 					element: <LazyPatients />,
+				},
+				{
+					path: 'doctors',
+					element: <LazyDoctors />,
 				},
 			],
 		},

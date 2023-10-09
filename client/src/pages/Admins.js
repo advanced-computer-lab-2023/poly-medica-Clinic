@@ -33,7 +33,6 @@ const Admins = () => {
 		fetch('http://localhost:8001/admins')
 			.then((response) => response.json())
 			.then((data) => {
-				console.log(data.admins, 'data in Admins page');
 				setAdmins(data.admins);
 				setIsLoading(false);
 			})
