@@ -44,6 +44,10 @@ class DoctorService {
 		}
 		
 	}
+	async updateDoctor(id, updates) {
+		const doctor = await this.repository.updateDoctor(id, updates);
+		return doctor;
+	}
 	
 }
 
