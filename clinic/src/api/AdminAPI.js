@@ -1,13 +1,13 @@
 import axios from 'axios';
 import AdminService from '../service/admin-service.js';
 import { isValidMongoId } from '../utils/Validation.js';
-import { PATIENTS_BASE_URL } from '../utils/Constants.js';
 import {
 	ERROR_STATUS_CODE,
 	NOT_FOUND_STATUS_CODE,
 	UNAUTHORIZED_STATUS_CODE,
 	OK_STATUS_CODE,
 	CREATED_STATUS_CODE,
+	PATIENTS_BASE_URL,
 } from '../utils/Constants.js';
 
 export const admin = (app) => {
