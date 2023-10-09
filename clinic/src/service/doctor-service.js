@@ -34,7 +34,18 @@ class DoctorService {
 			console.log('no data was found');
 		}
 	}
+	async getAllAppointments(){
+		const allAppointments = await this.repository.findAllAppointments(); 
+		if (allAppointments.length>EMPTY_SIZE) {
+			return allAppointments; 
+		}
+		else {
+			console.log('no data was found');
+		}
+		
+	}
 	
 }
 
 export default DoctorService;
+

@@ -40,6 +40,11 @@ class DoctorRepository {
 		const doctor = await DoctorModel.findById(id, '-userData.password');
 		return doctor;
 	}
+
+	async findAllAppointments() {
+		return await AppointmentModel.find();
+	}
 }
 
 export default DoctorRepository;
+

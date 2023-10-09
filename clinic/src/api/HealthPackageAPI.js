@@ -44,18 +44,18 @@ export const healthPackage = (app) => {
 		}
 	});
 
-	app.patch('/package/:id', async (req,res)=>{
-        const updateData = req.body;
-        const id = req.params.id;
+	app.patch('/package/:id', async (req,res) => {
+		const updateData = req.body;
+		const id = req.params.id;
 		if (!isValidMongoId(id))
 			return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
-        try{
-            const updatedPackage = await service.updatePackage(id, updateData);
-            res.status(OK_STATUS_CODE).json({updatedPackage});
-        }catch(err){
-            res.status(ERROR_STATUS_CODE).json({err : err.message});
-        }
-    });
+		try{
+			const updatedPackage = await service.updatePackage(id, updateData);
+			res.status(OK_STATUS_CODE).json({ updatedPackage });
+		}catch(err){
+			res.status(ERROR_STATUS_CODE).json({ err : err.message });
+		}
+	});
 
 	app.delete('/packages/:id', async (req, res) => {
 		const id = req.params.id;
