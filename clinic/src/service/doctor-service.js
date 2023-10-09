@@ -16,6 +16,7 @@ class DoctorService{
 			console.log('no data was found');
 		}
 	}
+	
 }
 
 export default DoctorService;

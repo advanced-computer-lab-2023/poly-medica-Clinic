@@ -3,6 +3,7 @@ import DoctorService from '../service/doctor-service.js';
 import axios from 'axios';
 import { isValidMongoId } from '../utils/Validation.js';
 import {
+	EMPTY_SIZE,
 	PATIENTS_BASE_URL,
 	NOT_FOUND_STATUS_CODE,
 	ERROR_STATUS_CODE,
@@ -14,21 +15,25 @@ export const doctor = (app) => {
 	const service = new DoctorService();
 
 	app.get('/doctors/:id/patients', async (req, res) => { 
-		const  id  = req.params.id;
-		let patientsWithDoctor = await service.getAllPatients(id); 
-		const getPatientsURL = `${PATIENTS_BASE_URL}/patients`;
-		const allPatients = await axios.get(getPatientsURL);
+		try{
+			const  id  = req.params.id;
+			let patientsWithDoctor = await service.getAllPatients(id); 
+			const getPatientsURL = `${PATIENTS_BASE_URL}/patients`;
+			const allPatients = await axios.get(getPatientsURL);
 
-		if (patientsWithDoctor) {
-			patientsWithDoctor = patientsWithDoctor.map(patient => patient.toString());
-			const finalListOFPatients = allPatients.data.filter(patient => 
-				patientsWithDoctor.includes(patient._id));
-			console.log(finalListOFPatients);
-			res.status(OK_STATUS_CODE).json({ finalListOFPatients });
+			if (patientsWithDoctor) {
+				patientsWithDoctor = patientsWithDoctor.map(patient => patient.toString());
+				const finalListOFPatients = allPatients.data.filter(patient => 
+					patientsWithDoctor.includes(patient._id));
+				console.log(finalListOFPatients);
+				res.status(OK_STATUS_CODE).json({ finalListOFPatients });
 
-		}
-		else {
-			res.status(NOT_FOUND_STATUS_CODE).json({ message: 'patients not found' });
+			}
+			else {
+				res.status(NOT_FOUND_STATUS_CODE).json({ message: 'patients not found' });
+			}}
+		catch(error){
+			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
 	});
 	app.get('/doctor/:id', async (req, res) => {
@@ -63,5 +68,22 @@ export const doctor = (app) => {
 		}
 
 	});
+	app.get('/patients', async (req, res) => { 	
+		try {
+			const getPatientsURL = `${PATIENTS_BASE_URL}/patients`;	
+			let allPatients = await axios.get(getPatientsURL);
+			allPatients = allPatients.data;
+			if (allPatients.length > EMPTY_SIZE) {
+				res.status(OK_STATUS_CODE).json({ allPatients });
+			} else {
+				res.status(NOT_FOUND_STATUS_CODE).json({
+					message: 'patient not found',
+				});
+			}
+ 
+		} catch (error) {
+			res.status(ERROR_STATUS_CODE).json({ message: error });
+		}
+	});
 
-}
+};
