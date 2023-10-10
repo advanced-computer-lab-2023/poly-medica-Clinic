@@ -1,7 +1,5 @@
 //import AdminRepository from '../database/repository/admin-repository.js';
 
-class AdminService{
-
-}
+class AdminService {}
 
 export default AdminService;
