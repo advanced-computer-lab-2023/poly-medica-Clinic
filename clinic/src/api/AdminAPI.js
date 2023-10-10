@@ -14,7 +14,6 @@ export const admin = (app) => {
 	const service = new AdminService();
 
 	app.get('/admins', async (req, res) => {
-		console.log('/admins In admin api');
 		try {
 			const admins = await service.findAllAdmins();
 			res.status(OK_STATUS_CODE).json({ admins });

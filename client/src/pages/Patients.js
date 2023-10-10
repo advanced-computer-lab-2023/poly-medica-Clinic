@@ -7,20 +7,10 @@ import {
 	TableHead,
 	TableRow,
 	Paper,
-	IconButton,
-	Button,
-	Dialog,
-	DialogTitle,
-	DialogContent,
-	DialogActions,
 } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
 import MainCard from 'ui-component/cards/MainCard';
-
-const formatDate = (dateString) => {
-	const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-	return new Date(dateString).toLocaleDateString(undefined, options);
-};
+import PatientRow from './PatientRow';
+import DeleteConfirmationDialog from './DeleteConfirmationDialog';
 
 const Patients = () => {
 	const [patients, setPatients] = useState([]);
@@ -92,47 +82,24 @@ const Patients = () => {
 							<TableBody>
 								{Array.isArray(patients) &&
 									patients.map((patient) => (
-										<TableRow key={patient._id}>
-											<TableCell>{patient.name}</TableCell>
-											<TableCell>{patient.userName}</TableCell>
-											<TableCell>{patient.email}</TableCell>
-											<TableCell>{formatDate(patient.dateOfBirth)}</TableCell>
-											<TableCell>{patient.gender}</TableCell>
-											<TableCell>{patient.mobileNumber}</TableCell>
-											<TableCell>
-												<IconButton
-													aria-label='delete'
-													onClick={() => handleRemovePatient(patient._id)}
-													color='error'
-												>
-													<DeleteIcon />
-												</IconButton>
-											</TableCell>
-										</TableRow>
+										<PatientRow
+											key={patient._id}
+											patient={patient}
+											handleRemovePatient={handleRemovePatient}
+										/>
 									))}
 							</TableBody>
 						</Table>
 					</TableContainer>
 
 					{/* Confirmation Dialog for Delete */}
-					<Dialog open={confirmDeleteDialogOpen} onClose={handleCancelDelete}>
-						<DialogTitle>Confirm Delete</DialogTitle>
-						<DialogContent>
-							Are you sure you want to delete this patient?
-						</DialogContent>
-						<DialogActions>
-							<Button onClick={handleCancelDelete} color='primary'>
-								Cancel
-							</Button>
-							<Button
-								onClick={handleConfirmDelete}
-								color='error'
-								variant='contained'
-							>
-								Delete
-							</Button>
-						</DialogActions>
-					</Dialog>
+					<DeleteConfirmationDialog
+						open={confirmDeleteDialogOpen}
+						onClose={handleCancelDelete}
+						onConfirm={handleConfirmDelete}
+						title='Confirm Delete'
+						content='Are you sure you want to delete this patient?'
+					/>
 				</div>
 			)}
 		</MainCard>

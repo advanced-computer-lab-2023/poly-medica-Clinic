@@ -7,18 +7,17 @@ import {
 	TableHead,
 	TableRow,
 	Paper,
-	IconButton,
 	Button,
 	Dialog,
 	DialogTitle,
 	DialogContent,
 	DialogActions,
 	TextField,
-	Tooltip,
 } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import MainCard from 'ui-component/cards/MainCard';
+import AdminRow from './AdminRow';
+import DeleteConfirmationDialog from './DeleteConfirmationDialog';
 
 const Admins = () => {
 	const [admins, setAdmins] = useState([]);
@@ -139,26 +138,12 @@ const Admins = () => {
 							</TableHead>
 							<TableBody>
 								{Array.isArray(admins) &&
-									admins.map((admin, index) => (
-										<TableRow key={index}>
-											<TableCell>{admin.userName}</TableCell>
-											<TableCell>
-												{admin.mainAdmin ? (
-													<Tooltip title="Main Admin Can't be deleted">
-														<IconButton disabled>
-															<DeleteIcon />
-														</IconButton>
-													</Tooltip>
-												) : (
-													<IconButton
-														onClick={() => handleRemoveAdmin(admin._id)}
-														color='error'
-													>
-														<DeleteIcon />
-													</IconButton>
-												)}
-											</TableCell>
-										</TableRow>
+									admins.map((admin) => (
+										<AdminRow
+											key={admin._id}
+											admin={admin}
+											handleRemoveAdmin={handleRemoveAdmin}
+										/>
 									))}
 							</TableBody>
 						</Table>
@@ -212,24 +197,13 @@ const Admins = () => {
 					</Dialog>
 
 					{/* Confirmation Dialog for Delete */}
-					<Dialog open={confirmDeleteDialogOpen} onClose={handleCancelDelete}>
-						<DialogTitle>Confirm Delete</DialogTitle>
-						<DialogContent>
-							Are you sure you want to delete this admin?
-						</DialogContent>
-						<DialogActions>
-							<Button onClick={handleCancelDelete} color='primary'>
-								Cancel
-							</Button>
-							<Button
-								onClick={handleConfirmDelete}
-								color='error'
-								variant='contained'
-							>
-								Delete
-							</Button>
-						</DialogActions>
-					</Dialog>
+					<DeleteConfirmationDialog
+						open={confirmDeleteDialogOpen}
+						onClose={handleCancelDelete}
+						onConfirm={handleConfirmDelete}
+						title='Confirm Delete'
+						content='Are you sure you want to delete this admin?'
+					/>
 				</div>
 			)}
 		</MainCard>

@@ -7,20 +7,10 @@ import {
 	TableHead,
 	TableRow,
 	Paper,
-	IconButton,
-	Button,
-	Dialog,
-	DialogTitle,
-	DialogContent,
-	DialogActions,
 } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
 import MainCard from 'ui-component/cards/MainCard';
-
-const formatDate = (dateString) => {
-	const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-	return new Date(dateString).toLocaleDateString(undefined, options);
-};
+import DoctorRow from './DoctorRow'; // Import the DoctorRow component
+import DeleteConfirmationDialog from './DeleteConfirmationDialog';
 
 const Doctors = () => {
 	const [doctors, setDoctors] = useState([]);
@@ -97,52 +87,24 @@ const Doctors = () => {
 							<TableBody>
 								{Array.isArray(doctors) &&
 									doctors.map((doctor) => (
-										<TableRow key={doctor._id}>
-											<TableCell>{doctor.userData.name}</TableCell>
-											<TableCell>{doctor.userData.userName}</TableCell>
-											<TableCell>{doctor.userData.email}</TableCell>
-											<TableCell>
-												{formatDate(doctor.userData.dateOfBirth)}
-											</TableCell>
-											<TableCell>{doctor.speciality}</TableCell>
-											<TableCell>{doctor.hourlyRate}</TableCell>
-											<TableCell>{doctor.affiliation}</TableCell>
-											<TableCell>{doctor.educationalBackground}</TableCell>
-											<TableCell>{doctor.availableSlots}</TableCell>
-											<TableCell>
-												<IconButton
-													aria-label='delete'
-													onClick={() => handleRemoveDoctor(doctor._id)}
-													color='error'
-												>
-													<DeleteIcon />
-												</IconButton>
-											</TableCell>
-										</TableRow>
+										<DoctorRow
+											key={doctor._id}
+											doctor={doctor}
+											handleRemoveDoctor={handleRemoveDoctor}
+										/>
 									))}
 							</TableBody>
 						</Table>
 					</TableContainer>
 
 					{/* Confirmation Dialog for Delete */}
-					<Dialog open={confirmDeleteDialogOpen} onClose={handleCancelDelete}>
-						<DialogTitle>Confirm Delete</DialogTitle>
-						<DialogContent>
-							Are you sure you want to delete this doctor?
-						</DialogContent>
-						<DialogActions>
-							<Button onClick={handleCancelDelete} color='primary'>
-								Cancel
-							</Button>
-							<Button
-								onClick={handleConfirmDelete}
-								color='error'
-								variant='contained'
-							>
-								Delete
-							</Button>
-						</DialogActions>
-					</Dialog>
+					<DeleteConfirmationDialog
+						open={confirmDeleteDialogOpen}
+						onClose={handleCancelDelete}
+						onConfirm={handleConfirmDelete}
+						title='Confirm Delete'
+						content='Are you sure you want to delete this doctor?'
+					/>
 				</div>
 			)}
 		</MainCard>
