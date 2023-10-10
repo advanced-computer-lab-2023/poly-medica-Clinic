@@ -1,10 +1,11 @@
 // assets
 import { IconKey, IconVaccineBottle } from '@tabler/icons';
-
+import SubscriptionsIcon from '@mui/icons-material/Subscriptions';
 // constant
 const icons = {
 	IconKey,
-	IconVaccineBottle
+	IconVaccineBottle, 
+	SubscriptionsIcon
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
@@ -44,6 +45,14 @@ const pages = {
 			type: 'item', 
 			icon: icons.IconVaccineBottle, 
 			url: '/pages/medicines', 
+			target: false 
+		},
+		{
+			id: 'Packages',
+			title: 'Packages',
+			type: 'item', 
+			icon: icons.SubscriptionsIcon, 
+			url: '/pages/packages', 
 			target: false 
 		}
 	]
