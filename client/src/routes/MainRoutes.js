@@ -7,10 +7,12 @@ import Loadable from 'ui-component/Loadable';
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 const LazyMedicines = Loadable(lazy(() => import('pages/Medicines')));
+const LazyPrescriptions = Loadable(lazy(() => import('pages/prescriptions/Prescriptions')));
 // utilities routing
 const UtilsTypography = Loadable(lazy(() => import('pages/utilities/Typography')));
 const UtilsColor = Loadable(lazy(() => import('pages/utilities/Color')));
 const UtilsShadow = Loadable(lazy(() => import('pages/utilities/Shadow')));
+
 
 // sample page routing
 const SamplePage = Loadable(lazy(() => import('pages/sample-page')));
@@ -40,6 +42,10 @@ const MainRoutes = {
 				{
 					path: 'medicines',
 					element: <LazyMedicines />
+				},
+				{
+					path: 'prescriptions',
+					element: <LazyPrescriptions />
 				}
 			]
 		},

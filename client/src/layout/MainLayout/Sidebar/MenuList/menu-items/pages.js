@@ -1,10 +1,11 @@
 // assets
-import { IconKey, IconVaccineBottle } from '@tabler/icons';
+import { IconKey, IconVaccineBottle, IconPrescription } from '@tabler/icons';
 
 // constant
 const icons = {
 	IconKey,
-	IconVaccineBottle
+	IconVaccineBottle,
+	IconPrescription
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
@@ -44,6 +45,14 @@ const pages = {
 			type: 'item', 
 			icon: icons.IconVaccineBottle, 
 			url: '/pages/medicines', 
+			target: false 
+		},
+		{
+			id: 'prescriptions',
+			title: 'Prescriptions',
+			type: 'item', 
+			icon: icons.IconPrescription, 
+			url: '/pages/prescriptions', 
 			target: false 
 		}
 	]
