@@ -9,7 +9,7 @@ import AuthWrapper1 from '../AuthWrapper1';
 import AuthCardWrapper from '../AuthCardWrapper';
 import Logo from 'ui-component/Logo';
 import PatientRegister from '../auth-forms/PatientRegister';
-import DoctorRegister from '../auth-forms/DoctorRegister';
+import DoctorPharmaRegister from '../auth-forms/DoctorPharmaRegister';
 import AuthFooter from 'ui-component/cards/AuthFooter';
 import { useState } from 'react';
 
@@ -65,7 +65,7 @@ const Register = () => {
 									</Grid>
 									<Grid item xs={12}>
 										{selectedButton && selectedButton == 'patient' && <PatientRegister />}
-										{selectedButton && selectedButton == 'doctor' && <DoctorRegister />}
+										{selectedButton && (selectedButton == 'doctor' || selectedButton == 'pharmacist') && <DoctorPharmaRegister type={selectedButton}/>}
 									</Grid>
 									<Grid item xs={12}>
 										<Divider />

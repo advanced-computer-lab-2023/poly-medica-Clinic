@@ -28,12 +28,12 @@ export const checkUser = (req, res, next) => {
           req.user = null;
           next();
         } else {
-          req.user = decodedToken.id;
+          req.user = decodedToken;
           next();
         }
       });
     } else {
-      res.locals.user = null;
+      req.user = null;
       next();
     }
   };

@@ -1,5 +1,4 @@
 import axios from 'axios';
-import Cookies from 'js-cookie';
 import Swal from 'sweetalert2';
 
 
@@ -7,19 +6,6 @@ const instance = axios.create({
   baseURL: 'http://localhost:8004',
   withCredentials: true 
 });
-
-instance.interceptors.request.use(
-  (config) => {
-    const token = Cookies.get('jwt');
-    if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
 
 instance.interceptors.response.use(
   (response) => {

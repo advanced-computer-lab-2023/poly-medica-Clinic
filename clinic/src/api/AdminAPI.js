@@ -7,7 +7,7 @@ const service = new AdminService();
  app.post('/add-admin', async (req, res) =>{
     try{
         const adminUser = await service.addAdmin(req);
-        req.body = {userId: adminUser._id, email: adminUser.userData.email, password: adminUser.userData.password, userName: adminUser.userData.userName, type: ADMIN_ENUM , state: ACTIVE_USER_STATE}
+        req.body = {userId: adminUser._id, email: adminUser.userData.email, password: adminUser.userData.password, userName: adminUser.userData.userName, type: ADMIN_ENUM}
         res.send(req.body);
     } catch(err){
         if(err.code == DUPLICATE_KEY_ERROR_CODE){

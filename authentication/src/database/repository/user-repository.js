@@ -8,7 +8,6 @@ class UserRepository{
         return user;
     }
     async loginUser(req){
-        console.log(req.body);
         const { email, password } = req.body;
         const user = await User.findOne({email: email})
         if(user){

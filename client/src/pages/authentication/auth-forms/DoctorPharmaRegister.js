@@ -21,7 +21,7 @@ import Swal from 'sweetalert2';
 
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
-const FirebaseRegister = () => {
+const FirebaseRegister = ({ type }) => {
 	const theme = useTheme();
 	const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
 	const [password, setPassword] = useState("");
@@ -55,10 +55,8 @@ const FirebaseRegister = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setIsSubmitting(true);
-		const sendData = { type: "doctor",  userData: { name: name, email: email, password: password, userName: userName, dateOfBirth: selectedDate }, speciality: speciality, hourlyRate: hourlyRating, affiliation: affiliation, educationalBackground: educationalBackground  };
+		const sendData = { type: type,  userData: { name: name, email: email, password: password, userName: userName, dateOfBirth: selectedDate }, speciality: speciality, hourlyRate: hourlyRating, affiliation: affiliation, educationalBackground: educationalBackground  };
 		const response = await axiosInstanceAuthSer.post('/signup', sendData);
-		const data = response.data;
-		console.log({ response , data });
 		if(response.status === 200){		
             Swal.fire({
                 icon: 'success',
@@ -66,6 +64,16 @@ const FirebaseRegister = () => {
 				text: 'You request have been successfully send',
             });	
 			setIsSubmitting(false);
+			setPassword("");
+			setUserName("");
+			setName("");
+			setEmail("");
+			setEducationalBackground("");
+			setHourlyRating(0);
+			setIsSubmitting(false);
+			setSelectedDate(new Date());
+			setSpeciality("");
+			setAffiliation("");
 		} else{
 			Swal.fire({
 				icon: 'error',
@@ -136,7 +144,6 @@ const FirebaseRegister = () => {
 									type="password"
 									margin="normal"
 									name="password"
-									defaultValue=""
 									required
 									value={password}
 									onChange={changePassword}

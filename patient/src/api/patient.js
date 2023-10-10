@@ -22,7 +22,7 @@ export const patient = ( app ) => {
     app.post('/signup', async (req, res) =>{
         try{
             const signedupUser = await service.signupUser(req);
-            req.body = {userId: signedupUser._id ,email: signedupUser.email , password:signedupUser.password, userName:signedupUser.userName, type: PATIENT_ENUM , state: ACTIVE_USER_STATE}
+            req.body = {userId: signedupUser._id ,email: signedupUser.email , password:signedupUser.password, userName:signedupUser.userName, type: PATIENT_ENUM }
             res.send(req.body);
         } catch(err){
             if(err.code == DUPLICATE_KEY_ERROR_CODE){

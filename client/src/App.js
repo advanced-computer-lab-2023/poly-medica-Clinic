@@ -21,22 +21,28 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
 const App = () => {
 	const customization = useSelector((state) => state.customization);
-	const { dispatch } = useUserContext();
+	const { dispatch, user } = useUserContext();
 	const navigate = useNavigate();
 	const location = useLocation();
 	useEffect(() => {
-		if(location.pathname != "/pages/login/login3" && location.pathname != "/pages/register/register3"){
-		axios.get('http://localhost:8004/check-user', {  credentials: 'include', withCredentials:true }).then(user => {
-			dispatch({ auth: true, payload: user.data });
+		axios.get('http://localhost:8004/check-user', {  withCredentials:true }).then(userCheck => {
+			if(!user)
+				dispatch({ auth: true, payload: userCheck.data });
+			if(location.pathname == "/pages/login/login3" || location.pathname == "/pages/register/register3"){
+				navigate('/');
+			}
 		}).catch( () => {
-			Swal.fire({
+			if(location.pathname != "/pages/login/login3" && location.pathname != "/pages/register/register3"){
+				Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
 				text: "you are not autherized, please login",
 			});
 			navigate('/pages/login/login3');
+		}
+			dispatch({ auth: false, payload: null });
 		});
-	}
+	
 	}, []);
 
 	return (

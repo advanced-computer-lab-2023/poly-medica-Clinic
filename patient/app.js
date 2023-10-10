@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser';
 import { patient } from './src/api/patient.js';
 import { MONGO_URI, PORT_NUMBER } from './src/utils/Constants.js';
 import { checkUser } from './src/middleware/authMiddleware.js';
+import cors from 'cors'
 
 dotenv.config();
 const app = express();
@@ -14,6 +15,10 @@ app.use(morgan('dev'));
 app.use(cookieParser())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+}));
 
 const mongoURL = process.env.MONGO_URI || MONGO_URI;
 

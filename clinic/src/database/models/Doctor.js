@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcrypt';
 import UserSchema from './UserSchema.js';
 
 const Doctor = mongoose.Schema({
@@ -26,8 +25,6 @@ const Doctor = mongoose.Schema({
 });
 
 Doctor.statics.addUser = async function (userData, speciality, hourlyRate, affiliation, educationalBackground){
-    const salt = await bcrypt.genSalt();
-    userData.password = await bcrypt.hash(userData.password, salt);
     const newRecord = new this({userData, speciality, hourlyRate, affiliation, educationalBackground});
     let user = await newRecord.save();
     return user;

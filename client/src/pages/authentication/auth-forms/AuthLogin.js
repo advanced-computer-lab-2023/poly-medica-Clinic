@@ -16,7 +16,7 @@ import axiosInstanceAuthSer from 'utils/api/axiosInstanceAuthSer';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import Swal from 'sweetalert2';
 import Loader from 'ui-component/Loader';
-import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';
 import axios from 'axios';
 
 
@@ -36,7 +36,6 @@ const FirebaseLogin = () => {
 			navigate('/');
 		}else {
 			axios.get('http://localhost:8004/check-user', { withCredentials: true }).then(user => {
-				console.log(user.data);
 				dispatch({ auth: true, payload: user.data });
 				navigate('/');
 			}).catch( () => {
@@ -53,8 +52,6 @@ const FirebaseLogin = () => {
 		const response = await axiosInstanceAuthSer.post('/login', postData);
 		const data = response.data;		
 		if(response.status === 200){
-			Cookies.set('jwt', data.token, { expires: 1 });
-			delete data.token;
 			dispatch({ auth: true, payload:data });
 			navigate('/');
 			setIsSubmitting(false);

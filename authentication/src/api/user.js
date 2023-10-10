@@ -1,5 +1,5 @@
 import UserService from "../service/user-service.js";
-import { ADMIN_ENUM, ADMIN_SIGNUP_URL, BAD_REQUEST_CODE_400, DOCOTOR_SIGNUP_URL, DOCTOR_ENUM, DUB_EMAIL_ERROR_MESSAGE, DUB_USERNAME_ERROR_MESSAGE, DUPLICATE_KEY_ERROR_CODE, OK_REQUEST_CODE_200, ONE_DAY_MAX_AGE_IN_MIINUTS, ONE_DAY_MAX_AGE_IN_MILLEMIINUTS, PATIENT_ENUM, PATIENT_SIGNUP_URL } from "../utils/Constants.js";
+import { ADMIN_ENUM, ADMIN_SIGNUP_URL, BAD_REQUEST_CODE_400, DOCOTOR_SIGNUP_URL, DOCTOR_ENUM, DUB_EMAIL_ERROR_MESSAGE, DUB_USERNAME_ERROR_MESSAGE, DUPLICATE_KEY_ERROR_CODE, OK_REQUEST_CODE_200, ONE_DAY_MAX_AGE_IN_MIINUTS, ONE_DAY_MAX_AGE_IN_MILLEMIINUTS, PATIENT_ENUM, PATIENT_SIGNUP_URL, PHARMACIST_ENUM, PHARMACIST_SIGNUP_URL } from "../utils/Constants.js";
 import jwt from "jsonwebtoken";
 import axios from 'axios';
 
@@ -22,8 +22,7 @@ export const user = (app)=>{
             let userName = null;
             switch(type){
                 case PATIENT_ENUM:email = req.body.email; userName = req.body.userName;break;
-                case DOCTOR_ENUM: email = req.body.userData.email; userName = req.body.userData.userName;break;
-                case ADMIN_ENUM: email = req.body.userData.email; userName = req.body.userData.userName;break;
+                case DOCTOR_ENUM:case ADMIN_ENUM:case PHARMACIST_ENUM: email = req.body.userData.email; userName = req.body.userData.userName;break;
                 default: throw new Error("invalid type of user");
             }
             const checkEmail = await user.findUserByEmail(email);
@@ -38,14 +37,14 @@ export const user = (app)=>{
                 case PATIENT_ENUM:signupData = await axios.post(PATIENT_SIGNUP_URL, req.body);break;
                 case DOCTOR_ENUM: signupData = await axios.post(DOCOTOR_SIGNUP_URL, req.body);break;
                 case ADMIN_ENUM: signupData = await axios.post(ADMIN_SIGNUP_URL, req.body);break;
+                case PHARMACIST_ENUM: signupData = await axios.post(PHARMACIST_SIGNUP_URL, req.body);break;
                 default: throw new Error("invalid type of user");
             }
-            if(type != DOCTOR_ENUM){
-                const signedupUser = await user.signupUser(signupData.data);
-                res.status(OK_REQUEST_CODE_200).end();
-            } else{
-                res.status(OK_REQUEST_CODE_200).end();
+            if(type != DOCTOR_ENUM && type != PHARMACIST_ENUM){
+                await user.signupUser(signupData.data);
             }
+            res.status(OK_REQUEST_CODE_200).end();
+            
         } catch(err){
             if(err.response){
                 if(err.response.data.errCode == DUPLICATE_KEY_ERROR_CODE){
@@ -65,7 +64,6 @@ export const user = (app)=>{
             res.cookie('jwt', token, { httpOnly: true, maxAge: ONE_DAY_MAX_AGE_IN_MILLEMIINUTS });
             res.send({id:logedinUser._id, name:logedinUser.userName, type: logedinUser.type, token: token });
         } catch(err){
-            console.log(err);
             res.status(BAD_REQUEST_CODE_400).send({message: err.message});
         }
     })
@@ -83,5 +81,10 @@ export const user = (app)=>{
           } else {
             res.status(401).send({message: "you are not Auth"})
           }
-    })
+    });
+
+    app.get('/remove-cookie', (req, res) => {
+        res.cookie('jwt', '', { expires: new Date(0), path: '/' });
+        res.status(200).end();
+      });
 }
