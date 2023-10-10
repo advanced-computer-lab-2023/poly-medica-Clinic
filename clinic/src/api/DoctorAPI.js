@@ -130,5 +130,26 @@ export const doctor = (app) => {
 		} catch (error) {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
-	});
+	}
+	);
+	app.patch('/doctors/:id', async (req, res) => {
+		try {
+			const id = req.params.id;
+			if (!isValidMongoId(id))
+				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
+			const doctor = await service.getDoctorById(id);
+			if (doctor) {
+				const updatedDoctor = await service.updateDoctor(id, req.body);
+				res.status(OK_STATUS_CODE).json({ updatedDoctor });
+			} else {
+				res.status(NOT_FOUND_STATUS_CODE).json({
+					message: 'doctor not found',
+				});
+			}
+		} catch (error) {
+			res.status(ERROR_STATUS_CODE).json({ message: error });
+		}
+	}
+
+	);
 };
