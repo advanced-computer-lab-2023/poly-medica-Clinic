@@ -1,9 +1,6 @@
 import PatientModel from '../models/Patient.js';
 import PrescriptionModel from '../models/Prescription.js';
-import {
-    FAMILY_MEMBERS_PROJECTION,
-    PATIENT_PROJECTION,
-} from '../../utils/Constants.js';
+import { FAMILY_MEMBERS_PROJECTION } from '../../utils/Constants.js';
 
 class PatientRepository {
     async findAllPatients() {
