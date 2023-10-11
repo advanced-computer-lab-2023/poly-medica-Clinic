@@ -17,10 +17,10 @@
         "react-hooks"
     ],
     "rules": {
-        "indent": [
-            "error",
-            "tab"
-        ],
+        // "indent": [
+        //     "error",
+        //     "tab"
+        // ],
         "linebreak-style": [
             "error",
             "windows"

@@ -1,7 +1,7 @@
 import PrescriptionItem from './PrescriptionItem';
 import List from '@mui/material/List';
 
-const PrescriptionsList = ({ prescriptions }) => {
+const PrescriptionsList = ({ prescriptions, handleSelectingPrescription }) => {
 	return (
 		<>
 			<List>
@@ -11,7 +11,11 @@ const PrescriptionsList = ({ prescriptions }) => {
 					prescriptions.map((prescription, index) => {
 						return( 
 							<div key={index}>
-								<PrescriptionItem key={index} prescription={prescription} />
+								<PrescriptionItem 
+									key={index} 
+									prescription={prescription}
+									handleClicking={handleSelectingPrescription}
+								/>
 							</div>
 						);
 					})

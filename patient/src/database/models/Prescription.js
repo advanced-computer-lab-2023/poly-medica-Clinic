@@ -20,6 +20,10 @@ const Prescription = mongoose.Schema( {
 		type: Boolean,
 		required: true
 	},
+	description: {
+		type: String,
+		required: true
+	}
 	//.....
 } );
 
