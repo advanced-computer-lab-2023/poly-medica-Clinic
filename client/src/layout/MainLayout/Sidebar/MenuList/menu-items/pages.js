@@ -6,7 +6,7 @@ import {
 	IconStethoscope,
 } from '@tabler/icons';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
-
+import TodayIcon from '@mui/icons-material/Today';
 // constant
 const icons = {
 	IconKey,
@@ -14,6 +14,7 @@ const icons = {
 	AdminPanelSettingsOutlinedIcon,
 	IconEmergencyBed,
 	IconStethoscope,
+	TodayIcon,
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
@@ -77,6 +78,14 @@ const pages = {
 			type: 'item',
 			icon: icons.IconStethoscope,
 			url: '/pages/doctors',
+			target: false,
+		},
+		{
+			id: 'appointments',
+			title: 'Appointments',
+			type: 'item',
+			icon: icons.TodayIcon,
+			url: '/pages/appointments',
 			target: false,
 		},
 	],
