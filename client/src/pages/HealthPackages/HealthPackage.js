@@ -1,19 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Fab } from '@mui/material';
-import MainCard from '../ui-component/cards/MainCard';
-import { clinicAxios } from '../utils/AxiosConfig';
+import MainCard from '../../ui-component/cards/MainCard';
+import { clinicAxios } from '../../utils/AxiosConfig';
 import HealthPackagesList from './HealthPackagesList';
 import { Add } from '@mui/icons-material';
-
 import AddHealthPackages from './AddHealthPackages';
 import EditHealthPackages from './EditHealthPackage';
-//import { useSearch } from 'contexts/SearchContext';
 
 const HealthPackages = () => {
 	const [packages, setPackage] = useState([]);
-	//const [originalPackages, setOriginalPackages] = useState([]);
-	//const { searchQuery } = useSearch();
-	//const [selectedPackages, setSelectedPackages] = useState(null);
+
 	const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 	const [loading, setLoading] = useState(true);
 	const [newPackage, setNewPackage] = useState({
@@ -31,24 +27,13 @@ const HealthPackages = () => {
 			.then((response) => {
 				setPackage(response.data.allPackages);
 				setLoading(false);
-				//setOriginalPackages(response.data.packages);
+				
 			})
 			.catch(error => {
 				console.log(error);
 				setLoading(true);
 			});
 	}, []);
-
-	// useEffect(() => {
-	// 	const filteredMedicines = originalMedicines.filter((medicine) =>
-	// 		medicine.name.toLowerCase().includes(searchQuery.toLowerCase())
-	// 	);
-	// 	setMedicines(filteredMedicines);
-	// }, [searchQuery, originalMedicines]);
-
-	// const handleDialogClose = () => {
-	// 	setSelectedPackages(null);
-	// };
 
 	const handleAddDialogOpen = () => {
 		setIsAddDialogOpen(true);
@@ -72,7 +57,6 @@ const HealthPackages = () => {
 			[name]: value,
 		}));
 	};
-
 
 	const handleAddPackages = (e) => {
 		e.preventDefault();
@@ -112,7 +96,6 @@ const HealthPackages = () => {
 	};
 
 	const handleSaveEdit = () => {
-		
 		if (selectedEditPackages) {
 			clinicAxios.patch(`/package/${selectedEditPackages._id}`, { selectedEditPackages })
 				.then(() => {
@@ -127,7 +110,6 @@ const HealthPackages = () => {
 						return updatedPackages;
 					});
 					setSelectedEditPackages(null);
-					
 				})
 				.catch((error) => {
 					console.log('Error updating health package:', error);
@@ -137,12 +119,6 @@ const HealthPackages = () => {
 
 	if (loading) return (<>Loading...</>);
 	else {
-
-		{
-			console.log('====================================');
-			console.log('packages = ', packages);
-			console.log('====================================');
-		}
 		return (
 			<MainCard title="Packages">
 				<HealthPackagesList packages={packages} handleEditButtonClick={handleEditButtonClick} handleDeleteButtonClick={handleDeleteButtonClick}/>
@@ -163,7 +139,6 @@ const HealthPackages = () => {
 					handleFormInputChange={handleFormInputChange} handleAddPackage={handleAddPackages} newPackage={newPackage} />
 				<EditHealthPackages isEditDialogOpen={isEditDialogOpen} setIsEditDialogOpen={setIsEditDialogOpen}
 				setSelectedEditPackage={setSelectedEditPackages} handleSaveEdit={handleSaveEdit} selectedEditPackage={selectedEditPackages} />
-			
 			</MainCard>
 		);
 	}
