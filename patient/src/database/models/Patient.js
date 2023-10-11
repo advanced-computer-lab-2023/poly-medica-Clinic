@@ -10,7 +10,9 @@ const Patient = mongoose.Schema({
 	userName: {
 		type: String,
 		required: true,
-		unique: true,
+		index: {
+			unique: true,
+		},
 	},
 
 	email: {

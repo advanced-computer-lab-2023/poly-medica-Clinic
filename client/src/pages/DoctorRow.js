@@ -20,7 +20,6 @@ const DoctorRow = ({ doctor, handleRemoveDoctor }) => {
 			<TableCell>{doctor.hourlyRate}</TableCell>
 			<TableCell>{doctor.affiliation}</TableCell>
 			<TableCell>{doctor.educationalBackground}</TableCell>
-			<TableCell>{doctor.availableSlots}</TableCell>
 			<TableCell>
 				<IconButton
 					aria-label='delete'

@@ -2,6 +2,12 @@ import AdminModel from '../models/Admin.js';
 import { ADMIN_PROJECTION } from '../../utils/Constants.js';
 
 class AdminRepository {
+	async findAdminByUserName(userName) {
+		const admin = await AdminModel.findOne({ userName }).select(
+			ADMIN_PROJECTION,
+		);
+		return admin;
+	}
 	async findAllAdmins() {
 		const admins = await AdminModel.find().select(ADMIN_PROJECTION);
 		return admins;

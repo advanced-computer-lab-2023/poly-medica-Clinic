@@ -49,7 +49,7 @@ const Doctors = () => {
 				),
 			)
 			.catch((error) => {
-				console.error('Error deleting patient:', error);
+				console.error('Error deleting doctor:', error);
 			})
 			.finally(() => {
 				setDoctorToDelete(null);
@@ -80,7 +80,6 @@ const Doctors = () => {
 									<TableCell>Hourly Rate</TableCell>
 									<TableCell>Affiliation</TableCell>
 									<TableCell>Educational Background</TableCell>
-									<TableCell>Available Slots</TableCell>
 									<TableCell>Delete</TableCell>
 								</TableRow>
 							</TableHead>

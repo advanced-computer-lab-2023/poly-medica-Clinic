@@ -8,6 +8,7 @@ import {
 	OK_STATUS_CODE,
 	CREATED_STATUS_CODE,
 	PATIENTS_BASE_URL,
+	CONFLICT_STATUS_CODE,
 } from '../utils/Constants.js';
 
 export const admin = (app) => {
@@ -24,12 +25,21 @@ export const admin = (app) => {
 
 	app.post('/admins', async (req, res) => {
 		try {
+			const admin = await service.findAdminByUserName(req.body.userName);
+			if (admin) {
+				return res.status(CONFLICT_STATUS_CODE).json({
+					message: 'admin already exists',
+					status: CONFLICT_STATUS_CODE,
+				});
+			}
 			const newAdmin = await service.createAdmin(req.body);
-			res
-				.status(CREATED_STATUS_CODE)
-				.json({ message: 'admin created!', newAdmin });
+			return res.status(CREATED_STATUS_CODE).json({
+				message: 'admin created!',
+				newAdmin,
+				status: CREATED_STATUS_CODE,
+			});
 		} catch (err) {
-			res.status(ERROR_STATUS_CODE).json({ err: err.message });
+			throw Error(err);
 		}
 	});
 

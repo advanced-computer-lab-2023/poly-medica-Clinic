@@ -23,6 +23,7 @@ const Admins = () => {
 	const [newAdminPassword, setNewAdminPassword] = useState('');
 	const [confirmDeleteDialogOpen, setConfirmDeleteDialogOpen] = useState(false);
 	const [adminToDelete, setAdminToDelete] = useState(null);
+	const [errorMessage, setErrorMessage] = useState('');
 
 	useEffect(() => {
 		fetch('http://localhost:8001/admins')
@@ -84,6 +85,7 @@ const Admins = () => {
 		setOpenAddDialog(false);
 		setNewAdminUsername('');
 		setNewAdminPassword('');
+		setErrorMessage('');
 	};
 
 	const handleAddAdmin = () => {
@@ -105,11 +107,20 @@ const Admins = () => {
 			body: JSON.stringify(newAdmin),
 		})
 			.then((response) => response.json())
-			.then(() => {
+			.then((data) => {
+				const status = data.status;
+				if (status === 409) {
+					setErrorMessage(
+						`Username '${newAdminUsername}' already exists. Please choose a different username.`,
+					);
+					return;
+				}
+
 				setAdmins((prevAdmins) => [...prevAdmins, newAdmin]);
 				setOpenAddDialog(false);
 				setNewAdminUsername('');
 				setNewAdminPassword('');
+				setErrorMessage('');
 			})
 			.catch((error) => {
 				console.error('Error adding admin:', error);
@@ -167,6 +178,7 @@ const Admins = () => {
 						setNewAdminPassword={setNewAdminPassword}
 						handleAddAdmin={handleAddAdmin}
 						isAddButtonDisabled={isAddButtonDisabled}
+						errorMessage={errorMessage}
 					/>
 
 					{/* Confirmation Dialog for Delete */}
