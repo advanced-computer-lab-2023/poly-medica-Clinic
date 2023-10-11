@@ -1,5 +1,5 @@
 import AdminService from '../service/admin-service.js';
-import { ACTIVE_USER_STATE, ADMIN_ENUM, BAD_REQUEST_CODE_400, DUPLICATE_KEY_ERROR_CODE, OK_REQUEST_CODE_200 } from '../utils/Constants.js';
+import { ADMIN_ENUM, BAD_REQUEST_CODE_400, DUPLICATE_KEY_ERROR_CODE } from '../utils/Constants.js';
 
 export const AdminAPI = (app) => {
 const service = new AdminService();

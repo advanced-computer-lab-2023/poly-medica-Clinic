@@ -53,11 +53,6 @@ const Register = () => {
 																Doctor
 															</Button>
 														</Grid>
-														<Grid item>
-															<Button sx={{ color: (selectedButton=='pharmacist'?"white":"#FF5722"), borderRadius:5, backgroundColor: (selectedButton=='pharmacist'?"#FF5722":'#FFFFFF') }} variant={selectedButton=='pharmacist'?'contained':'outlined'} size='small' onClick={ () => setSeletcedButton('pharmacist')}>
-																Pharmacist
-															</Button>
-														</Grid>
 													</Grid>
 												</Stack>
 											</Grid>
@@ -65,7 +60,7 @@ const Register = () => {
 									</Grid>
 									<Grid item xs={12}>
 										{selectedButton && selectedButton == 'patient' && <PatientRegister />}
-										{selectedButton && (selectedButton == 'doctor' || selectedButton == 'pharmacist') && <DoctorPharmaRegister type={selectedButton}/>}
+										{selectedButton && (selectedButton == 'doctor') && <DoctorPharmaRegister type={selectedButton}/>}
 									</Grid>
 									<Grid item xs={12}>
 										<Divider />
