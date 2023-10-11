@@ -8,16 +8,12 @@ import {
 	TableRow,
 	Paper,
 	Button,
-	Dialog,
-	DialogTitle,
-	DialogContent,
-	DialogActions,
-	TextField,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import MainCard from 'ui-component/cards/MainCard';
 import AdminRow from './AdminRow';
 import DeleteConfirmationDialog from './DeleteConfirmationDialog';
+import AddAdminDialog from './AddAdminDialog';
 
 const Admins = () => {
 	const [admins, setAdmins] = useState([]);
@@ -161,40 +157,17 @@ const Admins = () => {
 						<AddIcon />
 						Add Admin
 					</Button>
-					<Dialog open={openAddDialog} onClose={handleCloseAddDialog}>
-						<DialogTitle>Add New Admin</DialogTitle>
-						<DialogContent>
-							<TextField
-								label='Username'
-								fullWidth
-								value={newAdminUsername}
-								onChange={(e) => setNewAdminUsername(e.target.value)}
-								margin='normal'
-								required
-							/>
-							<TextField
-								label='Password'
-								fullWidth
-								value={newAdminPassword}
-								onChange={(e) => setNewAdminPassword(e.target.value)}
-								margin='normal'
-								required
-							/>
-						</DialogContent>
-						<DialogActions>
-							<Button onClick={handleCloseAddDialog} color='primary'>
-								Cancel
-							</Button>
-							<Button
-								onClick={handleAddAdmin}
-								color='primary'
-								variant='contained'
-								disabled={isAddButtonDisabled}
-							>
-								Add
-							</Button>
-						</DialogActions>
-					</Dialog>
+
+					<AddAdminDialog
+						openAddDialog={openAddDialog}
+						handleCloseAddDialog={handleCloseAddDialog}
+						newAdminUsername={newAdminUsername}
+						newAdminPassword={newAdminPassword}
+						setNewAdminUsername={setNewAdminUsername}
+						setNewAdminPassword={setNewAdminPassword}
+						handleAddAdmin={handleAddAdmin}
+						isAddButtonDisabled={isAddButtonDisabled}
+					/>
 
 					{/* Confirmation Dialog for Delete */}
 					<DeleteConfirmationDialog
