@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@mui/x-date-pickers": "^6.16.1"
+  }
+}
