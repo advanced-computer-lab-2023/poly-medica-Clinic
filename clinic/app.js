@@ -1,26 +1,25 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import { healthPackage } from './api/HealthPackageAPI.js';
-import { doctor } from './api/DoctorAPI.js';
-//import {appointment } from './api/AppointmentAPI.js';
-//import { admin } from './api/AdminAPI.js';
-import { PORT } from './utils/Constants.js';
+import { admin } from './src/api/AdminAPI.js';
+import { healthPackage } from './src/api/HealthPackageAPI.js';
+import { doctor } from './src/api/DoctorAPI.js';
+import { PORT } from './src/utils/Constants.js';
 import cors from 'cors';
-//import {doctor } from './api/doctor.js';
-import { appointment } from './api/AppointmentAPI.js';
-//import {admin } from './api/admin.js';
+import { appointment } from './src/api/AppointmentAPI.js';
 
 dotenv.config();
 const app = express();
+
 const mongoURL = process.env.MONGO_URI;
+// console.log(mongoURL);
 
 const connect = async () => {
     try {
         await mongoose.connect(mongoURL);
         console.log('Database connected');
     } catch (err) {
-        console.error('Error connecting to the database:', err);
+        console.error('Error connecting to the database:', err.body);
     }
 };
 
@@ -39,9 +38,8 @@ app.use(
 );
 
 healthPackage(app);
+admin(app);
 doctor(app);
-//admin(app);
-//doctor(app);
 appointment(app);
 
 const port = process.env.PORT || PORT;

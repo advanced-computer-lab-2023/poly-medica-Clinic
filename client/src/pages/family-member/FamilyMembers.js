@@ -25,8 +25,8 @@ const FamilyMembers = () => {
         userName: '',
         nationalId: '',
         age: '',
-        gender: 'Male',
-        relation: 'Child',
+        gender: '',
+        relation: '',
     });
 
     const handleFormInputChange = (e) => {

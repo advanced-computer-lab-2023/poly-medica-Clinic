@@ -9,9 +9,10 @@ import {
     FormControl,
 } from '@mui/material';
 import axios from 'axios';
+import { useState } from 'react';
 
-const genders = ['Male', 'Female'];
-const relations = ['Husband', 'Wife', 'Child'];
+const genders = ['MALE', 'FEMALE'];
+const relations = ['HUSBAND', 'WIFE', 'CHILD'];
 
 const AddFamilyMember = ({
     setFamilyMembers,
@@ -22,6 +23,7 @@ const AddFamilyMember = ({
     userNameError,
     setUserNameError,
 }) => {
+    const [error, setError] = useState(null);
     const userId = '65256ddfbe76d9d70f92d287';
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -33,8 +35,12 @@ const AddFamilyMember = ({
                 setIsOpen(false);
                 setFamilyMembers(data.data.familyMembers);
             })
-            .catch(() => {
-                setUserNameError(true);
+            .catch((err) => {
+                if (err.response.data.message === 'username not found') {
+                    setError(err.response.data);
+                    setUserNameError(true);
+                }
+                console.log(err);
             });
     };
 
@@ -64,11 +70,7 @@ const AddFamilyMember = ({
                                 required
                                 fullWidth
                                 error={userNameError}
-                                helperText={
-                                    userNameError
-                                        ? 'there is no user with this userName'
-                                        : ''
-                                }
+                                helperText={userNameError ? error.message : ''}
                                 value={newMember.userName}
                                 sx={{ marginTop: 5 }}
                                 onChange={(e) => {
@@ -110,6 +112,7 @@ const AddFamilyMember = ({
                                 required
                                 fullWidth
                                 select
+                                defaultValue='Child'
                                 value={newMember.gender}
                                 sx={{ marginTop: 5 }}
                                 onChange={handleFormInputChange}

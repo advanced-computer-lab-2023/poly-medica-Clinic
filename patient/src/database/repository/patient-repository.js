@@ -1,5 +1,9 @@
 import PatientModel from '../models/Patient.js';
-import { FAMILY_MEMBERS_PROJECTION } from '../../utils/Constants.js';
+import PrescriptionModel from '../models/Prescription.js';
+import {
+    FAMILY_MEMBERS_PROJECTION,
+    PATIENT_PROJECTION,
+} from '../../utils/Constants.js';
 
 class PatientRepository {
     async findAllPatients() {
@@ -24,6 +28,26 @@ class PatientRepository {
             { familyMembers },
             { new: true, runValidators: true }
         ).select(FAMILY_MEMBERS_PROJECTION);
+    }
+
+    async findAllPrescriptions() {
+        const allPrescriptions = await PrescriptionModel.find();
+        return allPrescriptions;
+    }
+
+    async findPrescriptionById(id) {
+        const prescription = await PrescriptionModel.findById(id);
+        return prescription;
+    }
+
+    async createPatient(patient) {
+        const newPatient = await PatientModel.create(patient);
+        return newPatient;
+    }
+
+    async deletePatient(id) {
+        const deletedPatient = await PatientModel.findByIdAndDelete(id);
+        return deletedPatient;
     }
 }
 
