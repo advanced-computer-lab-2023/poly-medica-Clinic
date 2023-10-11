@@ -40,6 +40,27 @@ class DoctorRepository {
 		const doctor = await DoctorModel.findById(id, '-userData.password');
 		return doctor;
 	}
+
+	async findAllAppointments() {
+		return await AppointmentModel.find();
+	}
+	async updateDoctor(id, updates) {
+		let doctor = await DoctorModel.findByIdAndUpdate(id, updates, {
+			new: true,
+			runValidators: true,
+		});
+		if(updates.email) {
+			doctor= await DoctorModel.findOneAndUpdate({ _id: id }, { 'userData.email': updates.email }, { new: true, runValidators: true });
+		}
+		
+		return doctor;
+		
+
+
+		
+
+	}
 }
 
 export default DoctorRepository;
+

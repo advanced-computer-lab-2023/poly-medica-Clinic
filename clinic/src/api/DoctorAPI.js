@@ -26,10 +26,9 @@ export const doctor = (app) => {
 			patientsWithDoctor = patientsWithDoctor.map((patient) =>
 				patient.toString(),
 			);
-			const finalListOFPatients = allPatients.data.filter((patient) =>
+			const finalListOFPatients = allPatients.data.patients.filter((patient) =>
 				patientsWithDoctor.includes(patient._id),
 			);
-			console.log(finalListOFPatients);
 			res.status(OK_STATUS_CODE).json({ finalListOFPatients });
 		} else {
 			res.status(NOT_FOUND_STATUS_CODE).json({ message: 'patients not found' });
@@ -105,7 +104,7 @@ export const doctor = (app) => {
 		try {
 			const getPatientsURL = `${PATIENTS_BASE_URL}/patients`;
 			let allPatients = await axios.get(getPatientsURL);
-			allPatients = allPatients.data;
+			allPatients = allPatients.data.patients;
 			if (allPatients.length > EMPTY_SIZE) {
 				res.status(OK_STATUS_CODE).json({ allPatients });
 			} else {
@@ -117,4 +116,40 @@ export const doctor = (app) => {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
 	});
+
+	app.get('/appointments', async (req, res) => {
+		try {
+			const allAppointments = await service.getAllAppointments();
+			if (allAppointments.length > EMPTY_SIZE) {
+				res.status(OK_STATUS_CODE).json({ allAppointments });
+			} else {
+				res.status(NOT_FOUND_STATUS_CODE).json({
+					message: 'appointments not found',
+				});
+			}
+		} catch (error) {
+			res.status(ERROR_STATUS_CODE).json({ message: error });
+		}
+	}
+	);
+	app.patch('/doctors/:id', async (req, res) => {
+		try {
+			const id = req.params.id;
+			if (!isValidMongoId(id))
+				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
+			const doctor = await service.getDoctorById(id);
+			if (doctor) {
+				const updatedDoctor = await service.updateDoctor(id, req.body);
+				res.status(OK_STATUS_CODE).json({ updatedDoctor });
+			} else {
+				res.status(NOT_FOUND_STATUS_CODE).json({
+					message: 'doctor not found',
+				});
+			}
+		} catch (error) {
+			res.status(ERROR_STATUS_CODE).json({ message: error });
+		}
+	}
+
+	);
 };

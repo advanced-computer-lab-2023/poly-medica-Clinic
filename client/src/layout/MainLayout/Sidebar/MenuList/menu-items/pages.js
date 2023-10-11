@@ -1,11 +1,19 @@
 // assets
-import { IconKey, IconVaccineBottle } from '@tabler/icons';
-import SubscriptionsIcon from '@mui/icons-material/Subscriptions';
+import {
+	IconKey,
+	IconVaccineBottle,
+	IconEmergencyBed,
+	IconStethoscope,
+} from '@tabler/icons';
+import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
+
 // constant
 const icons = {
 	IconKey,
-	IconVaccineBottle, 
-	SubscriptionsIcon
+	IconVaccineBottle,
+	AdminPanelSettingsOutlinedIcon,
+	IconEmergencyBed,
+	IconStethoscope,
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
@@ -28,34 +36,59 @@ const pages = {
 					title: 'subPage',
 					type: 'item',
 					url: '/pages/login/login3',
-					target: true
+					target: true,
 				},
 				{
 					id: 'register3',
 					title: 'subPage',
 					type: 'item',
 					url: '/pages/register/register3',
-					target: true
-				}
-			]
+					target: true,
+				},
+			],
 		},
 		{
 			id: 'medicines',
 			title: 'Medicines',
-			type: 'item', 
-			icon: icons.IconVaccineBottle, 
-			url: '/pages/medicines', 
-			target: false 
+			type: 'item',
+			icon: icons.IconVaccineBottle,
+			url: '/pages/medicines',
+			target: false,
+		},
+		{
+			id: 'admins',
+			title: 'Admins',
+			type: 'item',
+			icon: icons.AdminPanelSettingsOutlinedIcon,
+			url: '/pages/admins',
+			target: false,
+		},
+		{
+			id: 'patients',
+			title: 'Patients',
+			type: 'item',
+			icon: icons.IconEmergencyBed,
+			url: '/pages/patients',
+			target: false,
+		},
+		{
+			id: 'doctors',
+			title: 'Doctors',
+			type: 'item',
+			icon: icons.IconStethoscope,
+			url: '/pages/doctors',
+			target: false,
 		},
 		{
 			id: 'Packages',
-			title: 'Packages',
+			title: 'Health Packages',
 			type: 'item', 
 			icon: icons.SubscriptionsIcon, 
 			url: '/pages/packages', 
 			target: false 
 		}
-	]
+	],
 };
 
 export default pages;
+

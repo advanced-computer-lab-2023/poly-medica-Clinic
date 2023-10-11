@@ -8,3 +8,4 @@ export const PORT_NUMBER = 8002;
 export const EMPTY_SIZE = 0;
 export const FAMILY_RELATIONS = ['WIFE', 'HUSBAND', 'CHILD'];
 export const FAMILY_MEMBERS_PROJECTION = 'familyMembers';
+export const PATIENT_PROJECTION = '-password';

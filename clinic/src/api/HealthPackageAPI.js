@@ -68,9 +68,6 @@ export const healthPackage = (app) => {
 
 	app.delete('/packages/:id', async (req, res) => {
 		const id = req.params.id;
-		// if (!isValidMongoId(id))
-		// 	return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
-
 		try {
 			console.log(id);
 			const deletedPackage = await service.deletePackage(id);
