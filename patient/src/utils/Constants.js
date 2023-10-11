@@ -1,4 +1,3 @@
-
 export const DUPLICATE_KEY_ERROR_CODE = 11000;
 
 export const BAD_REQUEST_CODE_400 = 400;
@@ -32,3 +31,10 @@ export const FAMILY_RELATIONS = [
     'Cousin',
     'Other',
   ];
+
+
+export const CREATED_STATUS_CODE = 201;
+export const UNAUTHORIZED_STATUS_CODE = 401;
+export const FAMILY_MEMBERS_PROJECTION = 'familyMembers';
+export const PATIENT_PROJECTION = '-password';
+

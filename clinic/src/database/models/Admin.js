@@ -1,14 +1,23 @@
 import mongoose from 'mongoose';
-import UserSchema from './UserSchema.js';
-import bcrypt from 'bcrypt';
+import { ROLES } from '../../utils/Constants.js';
 
 const Admin = mongoose.Schema({
-	userData: {
-		type: UserSchema,
-		required: true
+	role: {
+		type: String,
+		default: ROLES.ADMIN,
+	},
+	userName: {
+		type: String,
+		required: true,
+		unique: true,
+	},
+	password: {
+		type: String,
+		required: true,
 	},
 	mainAdmin: {
-		type: Boolean
+		type: Boolean,
+		default: false,
 	},
 	//....
 });
@@ -24,3 +33,4 @@ Admin.statics.addUser = async function (userData, mainAdmin){
 const AdminModel = mongoose.model('Admin', Admin);
 
 export default AdminModel;
+
