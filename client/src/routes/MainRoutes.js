@@ -7,8 +7,13 @@ import Loadable from 'ui-component/Loadable';
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 const LazyMedicines = Loadable(lazy(() => import('pages/Medicines')));
+const LazyAdmins = Loadable(lazy(() => import('pages/Admins')));
+const LazyPatients = Loadable(lazy(() => import('pages/Patients')));
+const LazyDoctors = Loadable(lazy(() => import('pages/Doctors')));
 // utilities routing
-const UtilsTypography = Loadable(lazy(() => import('pages/utilities/Typography')));
+const UtilsTypography = Loadable(
+	lazy(() => import('pages/utilities/Typography')),
+);
 const UtilsColor = Loadable(lazy(() => import('pages/utilities/Color')));
 const UtilsShadow = Loadable(lazy(() => import('pages/utilities/Shadow')));
 
@@ -23,25 +28,37 @@ const MainRoutes = {
 	children: [
 		{
 			path: '/',
-			element: <DashboardDefault />
+			element: <DashboardDefault />,
 		},
 		{
 			path: 'dashboard',
 			children: [
 				{
 					path: 'default',
-					element: <DashboardDefault />
-				}
-			]
+					element: <DashboardDefault />,
+				},
+			],
 		},
 		{
 			path: 'pages',
 			children: [
 				{
 					path: 'medicines',
-					element: <LazyMedicines />
-				}
-			]
+					element: <LazyMedicines />,
+				},
+				{
+					path: 'admins',
+					element: <LazyAdmins />,
+				},
+				{
+					path: 'patients',
+					element: <LazyPatients />,
+				},
+				{
+					path: 'doctors',
+					element: <LazyDoctors />,
+				},
+			],
 		},
 		{
 			path: 'utils',
@@ -63,9 +80,9 @@ const MainRoutes = {
 
 		{
 			path: 'sample-page',
-			element: <SamplePage />
-		}
-	]
+			element: <SamplePage />,
+		},
+	],
 };
 
 export default MainRoutes;
