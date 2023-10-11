@@ -1,25 +1,27 @@
-import {  Typography ,Grid, Card, CardHeader, Box, CardActions, Button, CardContent } from '@mui/material';
+import { Typography, Grid, Card, CardHeader, Box, CardActions, Button, CardContent } from '@mui/material';
 import { Star } from '@mui/icons-material';
-const HealthPackagesList = ({  packages }) =>
-{
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Stack from '@mui/material/Stack';
+const HealthPackagesList = ({ packages, handleEditButtonClick, handleDeleteButtonClick }) => {
 	return (
-        
-            
+
+
 		<Grid container spacing={5} alignItems="flex-end">
-			{Array.isArray(packages) && packages.map((packages) => (
+			{Array.isArray(packages) && packages.map((pack) => (
 				// Platinum card is full width at sm breakpoint
 				<Grid
 					item
-					key={packages.name}
+					key={pack.name}
 					xs={12}
-					sm={packages.name === 'gold' ? 12 : 6}
+					sm={pack.name === 'platnium' ? 12 : 6}
 					md={4}
 				>
 					<Card>
 						<CardHeader
-							title={packages.name}
+							title={pack.name}
 							titleTypographyProps={{ align: 'center' }}
-							action={packages.title === 'Platinum' ? <Star /> : null}
+							action={pack.name === 'gold' ? <Star /> : null}
 							subheaderTypographyProps={{
 								align: 'center',
 							}}
@@ -40,34 +42,42 @@ const HealthPackagesList = ({  packages }) =>
 								}}
 							>
 								<Typography component="h2" variant="h3" color="text.primary">
-									{`$ ${packages.price}`}
+									{`$ ${pack.price}`}
 								</Typography>
 								<Typography variant="h6" color="text.secondary">
-                        /mo
+									/mo
 								</Typography>
 							</Box>
 							<ul>
 								<Typography component="h6" color="text.primary">
-									{`Discount for the doctor's sessions : ${packages.discountOfDoctor}`}
+									{` Doctor's Discount : ${pack.discountOfDoctor}%`}
 								</Typography>
 								<Typography component="h6" color="text.primary">
-									{`Discount on the medicines : ${packages.discountOfMedicin}`}
+									{`Medicines discount : ${pack.discountOfMedicin}%`}
 								</Typography>
 								<Typography component="h6" color="text.primary">
-									{`Discount for your family members : ${packages.discountOfFamily}`}
+									{`Family Discount : ${pack.discountOfFamily}%`}
 								</Typography>
 							</ul>
 						</CardContent>
+						<Stack direction="row" spacing={2} justifyContent="center" >
+							<Button variant="outlined" startIcon={<DeleteIcon />} onClick={() => handleDeleteButtonClick(pack)}>
+								Delete
+							</Button>
+							<Button variant="contained" endIcon={<EditIcon />} onClick={(event) => handleEditButtonClick(pack, event)} >
+								Edit
+							</Button>
+						</Stack>
 						<CardActions>
 							<Button fullWidth variant="contained">
-                    Buy Now
-							</Button>
+								Buy Now
+						</Button>
 						</CardActions>
 					</Card>
 				</Grid>
 			))}
 		</Grid>
-       
+
 	);
 
 };

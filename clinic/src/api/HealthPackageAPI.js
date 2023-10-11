@@ -21,37 +21,46 @@ export const healthPackage = (app) => {
 	});
 
 	app.post('/packages', async (req, res) => {
-		const {
-			name,
-			price,
-			discountOfDoctor,
-			discountOfMedicin,
-			discountOfFamily,
-		} = req.body;
-		console.log({ name });
-
-		const data = await service.createNewPackage(
-			name,
-			price,
-			discountOfDoctor,
-			discountOfMedicin,
-			discountOfFamily,
-		);
-		if (data) {
-			res.status(OK_STATUS_CODE).json({ data });
-		} else {
-			res.status(ERROR_STATUS_CODE);
+		const newPackage = req.body.newPackage;
+		const name = newPackage.name;
+		const price = Number(newPackage.price);
+		const discountOfDoctor = Number(newPackage.discountOfDoctor);
+		const discountOfMedicin = Number(newPackage.discountOfMedicin);
+		const discountOfFamily = Number(newPackage.discountOfFamily);
+		
+		try{
+			
+			const data = await service.createNewPackage(
+				name,
+				price,
+				discountOfDoctor,
+				discountOfMedicin,
+				discountOfFamily
+			
+			);
+			if (data) {
+				res.status(OK_STATUS_CODE).json({ data });
+			} else {
+				res.status(NOT_FOUND_STATUS_CODE);
+			}
+		}catch(err){
+			res.status(ERROR_STATUS_CODE).json({err : err.message});
 		}
+		
+		
+		
 	});
 
 	app.patch('/package/:id', async (req,res)=>{
-        const updateData = req.body;
+        const {selectedEditPackages} = req.body;
         const id = req.params.id;
 		if (!isValidMongoId(id))
 			return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
         try{
-            const updatedPackage = await service.updatePackage(id, updateData);
+			console.log(selectedEditPackages);
+            const updatedPackage = await service.updatePackage(id, selectedEditPackages);
             res.status(OK_STATUS_CODE).json({updatedPackage});
+			
         }catch(err){
             res.status(ERROR_STATUS_CODE).json({err : err.message});
         }
@@ -59,10 +68,11 @@ export const healthPackage = (app) => {
 
 	app.delete('/packages/:id', async (req, res) => {
 		const id = req.params.id;
-		if (!isValidMongoId(id))
-			return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
+		// if (!isValidMongoId(id))
+		// 	return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
 
 		try {
+			console.log(id);
 			const deletedPackage = await service.deletePackage(id);
 			res.status(OK_STATUS_CODE).json({ deletedPackage });
 		} catch (err) {

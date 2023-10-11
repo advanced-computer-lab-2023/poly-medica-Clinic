@@ -21,7 +21,8 @@ class HealthPackageService {
 		discountOfMedicin,
 		discountOfFamily,
 	) {
-		const { newPackage } = await this.repository.addPackage(
+		
+		const newPackage  = await this.repository.addPackage(
 			name,
 			price,
 			discountOfDoctor,

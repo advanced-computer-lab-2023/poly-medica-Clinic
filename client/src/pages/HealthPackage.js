@@ -6,7 +6,7 @@ import HealthPackagesList from './HealthPackagesList';
 import { Add } from '@mui/icons-material';
 
 import AddHealthPackages from './AddHealthPackages';
-//import EditHealthPackages from './EditMedicine';
+import EditHealthPackages from './EditHealthPackage';
 //import { useSearch } from 'contexts/SearchContext';
 
 const HealthPackages = () => {
@@ -23,16 +23,13 @@ const HealthPackages = () => {
 		discountOfMedicin: '',
 		discountOfFamily: '',
 	});
-	//const [selectedEditPackages, setSelectedEditPackages] = useState(null);
-	//const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+	const [selectedEditPackages, setSelectedEditPackages] = useState(null);
+	const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
 	useEffect(() => {
 		clinicAxios.get('/packages')
 			.then((response) => {
 				setPackage(response.data.allPackages);
-				console.log('====================================');
-				console.log(response.data.allPackages);
-				console.log('====================================');
 				setLoading(false);
 				//setOriginalPackages(response.data.packages);
 			})
@@ -50,7 +47,7 @@ const HealthPackages = () => {
 	// }, [searchQuery, originalMedicines]);
 
 	// const handleDialogClose = () => {
-	// 	setSelectedMedicine(null);
+	// 	setSelectedPackages(null);
 	// };
 
 	const handleAddDialogOpen = () => {
@@ -79,47 +76,64 @@ const HealthPackages = () => {
 
 	const handleAddPackages = (e) => {
 		e.preventDefault();
-		const formData = new FormData();
-		formData.append('newPackage', JSON.stringify(newPackage));
-
-		clinicAxios.post('/packages', formData).then((response) => {
+		
+		clinicAxios.post('/packages', { newPackage  }).then((response) => {
 			const newPackageData = response.data;
 			setPackage((prevPackage) => [...prevPackage, newPackageData]);
 			handleAddDialogClose();
 		})
 			.catch((error) => {
-				console.log('Error adding medicine:', error);
+				console.log('Error adding health package:', error);
 				handleAddDialogClose();
 			});
 	};
 
-	// const handleEditButtonClick = (medicine, event) => {
-	// 	event.stopPropagation();
-	// 	setSelectedEditMedicine(medicine);
-	// 	setIsEditDialogOpen(true);
-	// };
+	const handleEditButtonClick = (packages, event) => {
+		event.stopPropagation();
+		setSelectedEditPackages(packages);
+		setIsEditDialogOpen(true);
+	};
 
-	// const handleSaveEdit = () => {
-	// 	if (selectedEditMedicine) {
-	// 		pharmacyAxios.patch(`/medicines/${selectedEditMedicine._id}`, { updatedMedicine: selectedEditMedicine })
-	// 			.then(() => {
-	// 				setSelectedEditMedicine(null);
-	// 				setIsEditDialogOpen(false);
-	// 				setMedicines((prevMedicines) => {
-	// 					const updatedMedicines = prevMedicines.map((med) => {
-	// 						if (med._id === selectedEditMedicine._id) {
-	// 							return selectedEditMedicine;
-	// 						}
-	// 						return med;
-	// 					});
-	// 					return updatedMedicines;
-	// 				});
-	// 			})
-	// 			.catch((error) => {
-	// 				console.log('Error updating medicine:', error);
-	// 			});
-	// 	}
-	// };
+	const handleDeleteButtonClick = (pack) => {
+		console.log(pack);
+		clinicAxios.delete(`/packages/${pack._id}`)
+		.then(() => {
+				setPackage((prevPackage) => {
+						const updatedPackages = prevPackage.filter((packages) => {
+							if (pack._id !== packages._id) {
+								return packages;
+							}
+						});
+						return updatedPackages;
+					});
+		}).catch((error) => {
+			console.log('Error deleting health package:', error);
+		});
+	};
+
+	const handleSaveEdit = () => {
+		
+		if (selectedEditPackages) {
+			clinicAxios.patch(`/package/${selectedEditPackages._id}`, { selectedEditPackages })
+				.then(() => {
+					setIsEditDialogOpen(false);
+					setPackage((prevPackage) => {
+						const updatedPackages = prevPackage.map((packages) => {
+							if (packages._id === selectedEditPackages._id) {
+								return selectedEditPackages;
+							}
+							return packages;
+						});
+						return updatedPackages;
+					});
+					setSelectedEditPackages(null);
+					
+				})
+				.catch((error) => {
+					console.log('Error updating health package:', error);
+				});
+		}
+	};
 
 	if (loading) return (<>Loading...</>);
 	else {
@@ -131,7 +145,7 @@ const HealthPackages = () => {
 		}
 		return (
 			<MainCard title="Packages">
-				<HealthPackagesList packages={packages} />
+				<HealthPackagesList packages={packages} handleEditButtonClick={handleEditButtonClick} handleDeleteButtonClick={handleDeleteButtonClick}/>
 				<Fab
 					color="secondary"
 					aria-label="Add"
@@ -147,7 +161,9 @@ const HealthPackages = () => {
 				</Fab>
 				<AddHealthPackages isAddDialogOpen={isAddDialogOpen} handleAddDialogClose={handleAddDialogClose}
 					handleFormInputChange={handleFormInputChange} handleAddPackage={handleAddPackages} newPackage={newPackage} />
-
+				<EditHealthPackages isEditDialogOpen={isEditDialogOpen} setIsEditDialogOpen={setIsEditDialogOpen}
+				setSelectedEditPackage={setSelectedEditPackages} handleSaveEdit={handleSaveEdit} selectedEditPackage={selectedEditPackages} />
+			
 			</MainCard>
 		);
 	}

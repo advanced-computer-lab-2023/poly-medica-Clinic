@@ -1,3 +1,4 @@
+import React from 'react';
 import {
     Dialog,
     DialogTitle,
@@ -8,13 +9,17 @@ import {
     FormControl
 } from '@mui/material';
 
-const AddHealthPackages = ({ isAddDialogOpen, handleAddDialogClose, handleFormInputChange, handleAddPackage, newPackage }) => {
-   
+const EditHealthPackage = ({ isEditDialogOpen, setIsEditDialogOpen, setSelectedEditPackage, handleSaveEdit, selectedEditPackage }) => {
     return (
-            <Dialog open={isAddDialogOpen} onClose={handleAddDialogClose}>
-                <DialogTitle>Add New Package</DialogTitle>
-                <DialogContent>
-                    <form onSubmit={(e) => handleAddPackage(e)} id='addPackageForm'>
+        <Dialog
+            open={isEditDialogOpen}
+            onClose={() => setIsEditDialogOpen(false)}
+        >
+            <DialogTitle>Edit Health Package</DialogTitle>
+            <DialogContent>
+                {selectedEditPackage && (
+                    <form onSubmit={(e) => handleSaveEdit(e)} id='editPackageForm'>
+
                         <FormControl required fullWidth>
                             <TextField
                                 name="name"
@@ -22,8 +27,8 @@ const AddHealthPackages = ({ isAddDialogOpen, handleAddDialogClose, handleFormIn
                                 variant="outlined"
                                 fullWidth
                                 margin="normal"
-                                value={newPackage.name}
-                                onChange={handleFormInputChange}
+                                value={selectedEditPackage.name}
+                                onChange={(e) => setSelectedEditPackage({ ...selectedEditPackage, name: e.target.value })}
                                 required
                             />
                         </FormControl>
@@ -34,63 +39,68 @@ const AddHealthPackages = ({ isAddDialogOpen, handleAddDialogClose, handleFormIn
                                 variant="outlined"
                                 fullWidth
                                 margin="normal"
-                                value={newPackage.price}
-                                onChange={handleFormInputChange}
+                                value={selectedEditPackage.price}
+                                onChange={(e) => setSelectedEditPackage({ ...selectedEditPackage, price: e.target.value })}
                                 required
                             />
                         </FormControl>
-    
+
                         <FormControl required fullWidth>
                             <TextField
                                 name="discountOfDoctor"
-                                label="Doctor-Discount"
+                                label="Doctor Discount"
                                 variant="outlined"
                                 fullWidth
                                 margin="normal"
-                                value={newPackage.discountOfDoctor}
-                                onChange={handleFormInputChange}
+                                value={selectedEditPackage.discountOfDoctor}
+                                onChange={(e) => setSelectedEditPackage({ ...selectedEditPackage, discountOfDoctor: e.target.value })}
                                 required
                             />
                         </FormControl>
                         <FormControl required fullWidth>
                             <TextField
                                 name="discountOfMedicin"
-                                label="Medicine-Discount"
+                                label="Medicine Discount"
                                 variant="outlined"
                                 fullWidth
                                 margin="normal"
-                                value={newPackage.discountOfMedicin}
-                                onChange={handleFormInputChange}
+                                value={selectedEditPackage.discountOfMedicin}
+                                onChange={(e) => setSelectedEditPackage({ ...selectedEditPackage, discountOfMedicin: e.target.value })}
                                 required
                             />
                         </FormControl>
                         <FormControl required fullWidth>
                             <TextField
                                 name="discountOfFamily"
-                                label="Family-Discount"
+                                label="Family Discount"
                                 variant="outlined"
                                 fullWidth
                                 margin="normal"
-                                value={newPackage.discountOfFamily}
-                                onChange={handleFormInputChange}
+                                value={selectedEditPackage.discountOfFamily}
+                                onChange={(e) => setSelectedEditPackage({ ...selectedEditPackage, discountOfFamily: e.target.value })}
                                 required
                             />
                         </FormControl>
                     </form>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleAddDialogClose} color="secondary">
-                        Cancel
-                    </Button>
-                    <Button
-                        type='submit'
-                        color='primary'
-                        form='addPackageForm'
-                    >
-                        Add Health Package
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        );
+                )}
+            </DialogContent>
+            <DialogActions>
+                <Button
+                    onClick={() => setIsEditDialogOpen(false)}
+                    color="secondary"
+                >
+                    Cancel
+                </Button>
+                <Button
+                    type='submit'
+                    color="primary"
+                    form='editPackageForm'
+                >
+                    Save
+                </Button>
+            </DialogActions>
+        </Dialog>
+    );
 };
-export default AddHealthPackages;
+
+export default EditHealthPackage;
