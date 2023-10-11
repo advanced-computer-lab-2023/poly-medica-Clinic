@@ -35,11 +35,15 @@ const DoctorDetails = ({ selectedDoctor, handleDialogClose }) => {
                         >
                             <img
                                 src={DoctorIcon}
-                                alt={selectedDoctor.name}
+                                alt={selectedDoctor.userData.name}
                                 width='100'
                                 height='100'
                             />
                         </div>
+                        <Typography variant='subtitle1'>Name:</Typography>
+                        <Typography variant='body1'>
+                            {selectedDoctor.userData.name}
+                        </Typography>
                         <Typography variant='subtitle1'>Speciality:</Typography>
                         <Typography variant='body1'>
                             {selectedDoctor.speciality}

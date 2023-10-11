@@ -3,11 +3,14 @@ import { lazy } from 'react';
 // project imports
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
-import Doctors from 'pages/Doctors/Doctors';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 const LazyMedicines = Loadable(lazy(() => import('pages/Medicines')));
+const LazyAdmins = Loadable(lazy(() => import('pages/Admins')));
+const LazyPatients = Loadable(lazy(() => import('pages/Patients')));
+const LazyDoctors = Loadable(lazy(() => import('pages/Doctors')));
+const LazyClinicDoctors = Loadable(lazy(() => import('pages/Doctors/Doctors')));
 // utilities routing
 const UtilsTypography = Loadable(
     lazy(() => import('pages/utilities/Typography'))
@@ -45,8 +48,30 @@ const MainRoutes = {
                     element: <LazyMedicines />,
                 },
                 {
-                    path: 'doctors',
-                    element: <Doctors />,
+                    path: 'admins',
+                    children: [
+                        {
+                            path: 'admins',
+                            element: <LazyAdmins />,
+                        },
+                        {
+                            path: 'patients',
+                            element: <LazyPatients />,
+                        },
+                        {
+                            path: 'doctors',
+                            element: <LazyDoctors />,
+                        },
+                    ],
+                },
+                {
+                    path: 'clinic',
+                    children: [
+                        {
+                            path: 'doctors',
+                            element: <LazyClinicDoctors />,
+                        },
+                    ],
                 },
             ],
         },

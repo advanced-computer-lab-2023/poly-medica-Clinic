@@ -6,16 +6,16 @@ const patientBaseUrl = 'http://localhost:8002';
 const pharmacyBaseUrl = 'http://localhost:8003';   
 
 export const clinicAxios = axios.create({
-  baseURL: clinicBaseUrl,
-  withCredentials: true, 
+	baseURL: clinicBaseUrl,
+	withCredentials: true, 
 });
 
 export const patientAxios = axios.create({
-  baseURL: patientBaseUrl,
-  withCredentials: true,
+	baseURL: patientBaseUrl,
+	withCredentials: true,
 });
 
 export const pharmacyAxios = axios.create({
-  baseURL: pharmacyBaseUrl,
-  withCredentials: true, 
+	baseURL: pharmacyBaseUrl,
+	withCredentials: true, 
 });
