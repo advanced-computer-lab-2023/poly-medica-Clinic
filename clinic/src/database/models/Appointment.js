@@ -11,6 +11,14 @@ const Appointment = mongoose.Schema({
 		ref: 'Doctor',
 		required: true,
 	},
+	patientName: {
+		type: String,
+		required: true,
+	},
+	doctorName: {
+		type: String,
+		required: true,
+	},
 	date: {
 		type: Date,
 		required: true,

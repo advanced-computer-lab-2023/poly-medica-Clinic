@@ -14,6 +14,7 @@ class HealthPackageService {
 			console.log('no data was found');
 		}
 	}
+	
 	async createNewPackage(
 		name,
 		price,
@@ -21,7 +22,7 @@ class HealthPackageService {
 		discountOfMedicin,
 		discountOfFamily,
 	) {
-		const { newPackage } = await this.repository.addPackage(
+		const newPackage  = await this.repository.addPackage(
 			name,
 			price,
 			discountOfDoctor,
@@ -32,7 +33,7 @@ class HealthPackageService {
 	}
 
 	async updatePackage(id, updateData){
-		const { updatedPackage } = await this.repository.updatePackage(id, updateData);
+		const {updatedPackage} = await this.repository.updatePackage(id, updateData);
 		return updatedPackage;
 	}
 

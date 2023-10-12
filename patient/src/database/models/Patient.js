@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
-import { GENDERS, FAMILY_RELATIONS } from '../../utils/Constants.js';
+import { FAMILY_RELATIONS, GENDERS } from '../../utils/Constants.js';
+import bcrypt from 'bcrypt';
 
-const Patient = mongoose.Schema({
+const patientSchema = mongoose.Schema({
 	name: {
 		type: String,
 		required: true,
@@ -10,9 +11,7 @@ const Patient = mongoose.Schema({
 	userName: {
 		type: String,
 		required: true,
-		index: {
-			unique: true,
-		},
+		unique: true,
 	},
 
 	email: {
@@ -48,6 +47,11 @@ const Patient = mongoose.Schema({
 			type: String,
 			required: true,
 		},
+		relation: {
+			type: String,
+			required: true,
+			enum: FAMILY_RELATIONS,
+		},
 	},
 	familyMembers: [
 		{
@@ -59,6 +63,7 @@ const Patient = mongoose.Schema({
 				type: String,
 				required: true,
 				unique: true,
+				sparse: true,
 			},
 			age: {
 				type: Number,
@@ -71,7 +76,6 @@ const Patient = mongoose.Schema({
 			},
 			relation: {
 				type: String,
-				enum: FAMILY_RELATIONS,
 				required: true,
 			},
 		},
@@ -79,6 +83,33 @@ const Patient = mongoose.Schema({
 	//.....
 });
 
-const PatientModel = mongoose.model('Patient', Patient);
+patientSchema.statics.signup = async function (
+	name,
+	email,
+	password,
+	userName,
+	dateOfBirth,
+	gender,
+	mobileNumber,
+	emergencyContact,
+) {
+	const salt = await bcrypt.genSalt();
+	password = await bcrypt.hash(password, salt);
+	const userRecord = new this({
+		name,
+		email,
+		password,
+		userName,
+		dateOfBirth,
+		gender,
+		mobileNumber,
+		emergencyContact,
+		familyMembers: [],
+	});
+	const result = await userRecord.save();
+	return result;
+};
+
+const PatientModel = mongoose.model('Patient', patientSchema);
 
 export default PatientModel;

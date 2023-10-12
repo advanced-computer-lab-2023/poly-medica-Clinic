@@ -15,9 +15,14 @@ class AdminService {
 		return admins;
 	}
 
-	async createAdmin(admin) {
-		const newAdmin = await this.repository.addAdmin(admin);
-		return newAdmin;
+	// async createAdmin(admin) {
+	// 	const newAdmin = await this.repository.addAdmin(admin);
+	// 	return newAdmin;
+	// }
+
+	async addAdmin(req) {
+		const adminUser = await this.repository.addAdmin(req);
+		return adminUser;
 	}
 
 	async checkMainAdmin(id) {
