@@ -7,10 +7,11 @@ class AdminRepository {
 		return admins;
 	}
 
-	async addAdmin(admin) {
-		const newAdmin = await AdminModel.create(admin);
-		return newAdmin;
-	}
+	async addAdmin(req){
+        const { userData, mainAdmin } = req.body;
+        const user = await AdminModel.addUser(userData, mainAdmin);
+        return user;
+    }
 
 	async findAdminById(id) {
 		const admin = await AdminModel.findById(id);
@@ -24,3 +25,4 @@ class AdminRepository {
 }
 
 export default AdminRepository;
+

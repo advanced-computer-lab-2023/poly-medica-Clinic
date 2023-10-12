@@ -8,6 +8,18 @@ class DoctorRepository {
 		this.model = DoctorModel;
 	}
 
+	async addDoctor(req){
+        const { userData, speciality, hourlyRate, affiliation, educationalBackground } = req.body;
+        const user = await DoctorModel.addUser(userData, speciality, hourlyRate, affiliation, educationalBackground);
+        return user;
+    }
+
+    async addDoctorReq(req){
+        const { userData, speciality, hourlyRate, affiliation, educationalBackground } = req.body;
+        const user = await DoctorReqModel.addUser(userData, speciality, hourlyRate, affiliation, educationalBackground);
+        return user;
+    }
+
 	async createDoctor(doctor) {
 		const newDoctor = await DoctorModel.create(doctor);
 		return newDoctor;
@@ -63,4 +75,3 @@ class DoctorRepository {
 }
 
 export default DoctorRepository;
-

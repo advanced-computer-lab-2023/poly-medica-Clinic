@@ -5,6 +5,11 @@ class PatientService {
 		this.repository = new PatientRepository();
 	}
 
+	async signupUser(req) {
+        const user = await this.repository.signupUser(req);
+        return user;
+    }
+
 	async findAllPatients() {
 		const patients = await this.repository.findAllPatients();
 		return patients;
@@ -49,3 +54,4 @@ class PatientService {
 }
 
 export default PatientService;
+
