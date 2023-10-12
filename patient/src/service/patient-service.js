@@ -6,9 +6,9 @@ class PatientService {
 	}
 
 	async signupUser(req) {
-        const user = await this.repository.signupUser(req);
-        return user;
-    }
+		const user = await this.repository.signupUser(req);
+		return user;
+	}
 
 	async findAllPatients() {
 		const patients = await this.repository.findAllPatients();

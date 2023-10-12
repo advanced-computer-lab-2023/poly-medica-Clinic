@@ -8,11 +8,11 @@ import {
 class PatientRepository {
 
 
-    async signupUser(req){
-        const { name, email, password, userName, dateOfBirth, gender, mobileNumber, emergencyContact } = req.body;
-        let user = await PatientModel.signup(name, email, password, userName, dateOfBirth, gender, mobileNumber, emergencyContact);
-        return user;
-    }
+	async signupUser(req){
+		const { name, email, password, userName, dateOfBirth, gender, mobileNumber, emergencyContact } = req.body;
+		const user = await PatientModel.signup(name, email, password, userName, dateOfBirth, gender, mobileNumber, emergencyContact);
+		return user;
+	}
 
 	async findAllPatients() {
 		const allPatients = await PatientModel.find().select(PATIENT_PROJECTION);

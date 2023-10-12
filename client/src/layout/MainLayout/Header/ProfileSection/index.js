@@ -68,7 +68,7 @@ const ProfileSection = () => {
 			Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
-				text: "failed to logout",
+				text: 'failed to logout',
 			});
 		});
 	};

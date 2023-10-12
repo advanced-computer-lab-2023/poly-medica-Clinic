@@ -30,13 +30,13 @@ const FirebaseRegister = () => {
 	const theme = useTheme();
 	const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
 	const navigate = useNavigate();
-	const [password, setPassword] = useState("");
-	const [userName, setUserName] = useState("");
-	const [name, setName] = useState("");
-	const [email, setEmail] = useState("");
-	const [emergencyFullName, setEmergencyFullName] = useState("");
-	const [emergencyMobileNumber, setEmergencyMobileNumber] = useState("");
-	const [mobileNumber, setMobileNumner] = useState("");
+	const [password, setPassword] = useState('');
+	const [userName, setUserName] = useState('');
+	const [name, setName] = useState('');
+	const [email, setEmail] = useState('');
+	const [emergencyFullName, setEmergencyFullName] = useState('');
+	const [emergencyMobileNumber, setEmergencyMobileNumber] = useState('');
+	const [mobileNumber, setMobileNumner] = useState('');
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [selectedGender, setSelectedGender] = useState('');
 	const [selectedDate, setSelectedDate] = useState(new Date());
@@ -83,7 +83,7 @@ const FirebaseRegister = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setIsSubmitting(true);
-		const sendData = { type: "patient" ,name: name, email: email, password: password, userName: userName, dateOfBirth: selectedDate, gender: selectedGender, mobileNumber: mobileNumber, emergencyContact: { name: emergencyFullName, mobile: emergencyMobileNumber, relation: selectedRelation } };
+		const sendData = { type: 'patient' ,name: name, email: email, password: password, userName: userName, dateOfBirth: selectedDate, gender: selectedGender, mobileNumber: mobileNumber, emergencyContact: { name: emergencyFullName, mobile: emergencyMobileNumber, relation: selectedRelation } };
 		const response = await axiosInstanceAuthSer.post('/signup', sendData);
 		const data = response.data;
 		console.log({ response , data });

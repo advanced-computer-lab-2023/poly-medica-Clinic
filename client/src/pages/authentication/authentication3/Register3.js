@@ -42,14 +42,14 @@ const Register = () => {
 													<Typography color={theme.palette.secondary.main} gutterBottom variant={matchDownSM ? 'h3' : 'h2'}>
                             Sign up as
 													</Typography>
-													<Grid container display={"flex"} flexDirection={"row"} spacing={2}>
+													<Grid container display={'flex'} flexDirection={'row'} spacing={2}>
 														<Grid item>
-															<Button sx={{ color: (selectedButton=='patient'?"white":"#4CAF50"), borderRadius:5, backgroundColor: (selectedButton=='patient'?'#4CAF50':'#FFFFFF') }} variant={selectedButton=='patient'?'contained':'outlined'} size='small' onClick={ () => setSeletcedButton('patient')}>
+															<Button sx={{ color: (selectedButton=='patient'?'white':'#4CAF50'), borderRadius:5, backgroundColor: (selectedButton=='patient'?'#4CAF50':'#FFFFFF') }} variant={selectedButton=='patient'?'contained':'outlined'} size='small' onClick={ () => setSeletcedButton('patient')}>
 																Patient
 															</Button>
 														</Grid>
 														<Grid item>
-															<Button sx={{ color: (selectedButton=='doctor'?"white":"#2196F3"), borderRadius:5, backgroundColor: (selectedButton=='doctor'?"#2196F3":'#FFFFFF') }} variant={selectedButton=='doctor'?'contained':'outlined'} size='small' onClick={ () => setSeletcedButton('doctor')}>
+															<Button sx={{ color: (selectedButton=='doctor'?'white':'#2196F3'), borderRadius:5, backgroundColor: (selectedButton=='doctor'?'#2196F3':'#FFFFFF') }} variant={selectedButton=='doctor'?'contained':'outlined'} size='small' onClick={ () => setSeletcedButton('doctor')}>
 																Doctor
 															</Button>
 														</Grid>

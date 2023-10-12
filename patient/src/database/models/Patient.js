@@ -85,11 +85,11 @@ const patientSchema = mongoose.Schema({
 
 patientSchema.statics.signup = async function (name, email, password, userName, dateOfBirth, gender, mobileNumber, emergencyContact){
 	const salt = await bcrypt.genSalt();
-    password = await bcrypt.hash(password, salt);
-    const userRecord = new this({name, email, password, userName, dateOfBirth, gender, mobileNumber, emergencyContact, familyMembers: []});
-    let result = await userRecord.save();
-    return result;
-}
+	password = await bcrypt.hash(password, salt);
+	const userRecord = new this({ name, email, password, userName, dateOfBirth, gender, mobileNumber, emergencyContact, familyMembers: [] });
+	const result = await userRecord.save();
+	return result;
+};
 
 const PatientModel = mongoose.model('Patient', patientSchema);
 

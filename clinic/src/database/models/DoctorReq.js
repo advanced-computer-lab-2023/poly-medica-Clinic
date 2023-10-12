@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import UserSchema from './UserSchema.js';
 
 const DoctorReq = mongoose.Schema({
-    userData: {
+	userData: {
 		type: UserSchema,
 		required: true
 	},
@@ -26,12 +26,12 @@ const DoctorReq = mongoose.Schema({
 });
 
 DoctorReq.statics.addUser = async function (userData, speciality, hourlyRate, affiliation, educationalBackground){
-    console.log(userData, speciality, hourlyRate, affiliation, educationalBackground);
-    const salt = await bcrypt.genSalt();
-    userData.password = await bcrypt.hash(userData.password, salt);
-    const newRecord = new this({userData, speciality, hourlyRate, affiliation, educationalBackground});
-    let user = await newRecord.save();
-    return user;
+	console.log(userData, speciality, hourlyRate, affiliation, educationalBackground);
+	const salt = await bcrypt.genSalt();
+	userData.password = await bcrypt.hash(userData.password, salt);
+	const newRecord = new this({ userData, speciality, hourlyRate, affiliation, educationalBackground });
+	const user = await newRecord.save();
+	return user;
 };
 
 

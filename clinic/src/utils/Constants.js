@@ -4,9 +4,9 @@ export const BAD_REQUEST_CODE_400 = 400;
 
 export const OK_REQUEST_CODE_200 = 200;
 
-export const ADMIN_ENUM = "admin"
+export const ADMIN_ENUM = 'admin';
 
-export const DOCTOR_ENUM = "doctor"
+export const DOCTOR_ENUM = 'doctor';
 
 export const GENDERS = ['MALE', 'FEMALE'];
 
@@ -16,8 +16,9 @@ export const NOT_FOUND_STATUS_CODE = 404;
 export const ERROR_STATUS_CODE = 500;
 export const PORT = 8001;
 
-export const MONGO_URI= "mongodb://localhost:27017";
-
+export const MONGO_URI= 'mongodb://localhost:27017';
+export const ZERO_INDEX = 0;
+export const EXTRA_INDEX = 1;
 
 export const ROLES = ['ADMIN', 'DOCTOR'];
 export const CREATED_STATUS_CODE = 201;

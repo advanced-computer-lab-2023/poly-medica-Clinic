@@ -1,6 +1,6 @@
 const config = {
-  defaultPath: "/dashboard/default",
-  fontFamily: `'Roboto', sans-serif`,
+  defaultPath: '/dashboard/default',
+  fontFamily: '\'Roboto\', sans-serif',
   borderRadius: 12,
 };
 

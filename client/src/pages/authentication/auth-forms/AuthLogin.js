@@ -24,8 +24,8 @@ import axios from 'axios';
 
 const FirebaseLogin = () => {
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [password, setPassword] = useState("");
-	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState('');
+	const [email, setEmail] = useState('');
 	const { user, dispatch } = useUserContext();
 	const [isLoading, setIsLoading] = useState(true);
 	const navigate = useNavigate();

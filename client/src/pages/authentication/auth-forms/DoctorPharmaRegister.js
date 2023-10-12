@@ -24,16 +24,16 @@ import Swal from 'sweetalert2';
 const FirebaseRegister = ({ type }) => {
 	const theme = useTheme();
 	const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-	const [password, setPassword] = useState("");
-	const [userName, setUserName] = useState("");
-	const [name, setName] = useState("");
-	const [email, setEmail] = useState("");
-	const [educationalBackground, setEducationalBackground] = useState("");
+	const [password, setPassword] = useState('');
+	const [userName, setUserName] = useState('');
+	const [name, setName] = useState('');
+	const [email, setEmail] = useState('');
+	const [educationalBackground, setEducationalBackground] = useState('');
 	const [hourlyRating, setHourlyRating] = useState(0);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [selectedDate, setSelectedDate] = useState(new Date());
-    const [speciality, setSpeciality] = useState("");
-    const [affiliation, setAffiliation] = useState("");
+    const [speciality, setSpeciality] = useState('');
+    const [affiliation, setAffiliation] = useState('');
 
 
   // Function to handle date changes
@@ -64,16 +64,16 @@ const FirebaseRegister = ({ type }) => {
 				text: 'You request have been successfully send',
             });	
 			setIsSubmitting(false);
-			setPassword("");
-			setUserName("");
-			setName("");
-			setEmail("");
-			setEducationalBackground("");
+			setPassword('');
+			setUserName('');
+			setName('');
+			setEmail('');
+			setEducationalBackground('');
 			setHourlyRating(0);
 			setIsSubmitting(false);
 			setSelectedDate(new Date());
-			setSpeciality("");
-			setAffiliation("");
+			setSpeciality('');
+			setAffiliation('');
 		} else{
 			Swal.fire({
 				icon: 'error',

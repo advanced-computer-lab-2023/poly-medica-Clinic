@@ -14,7 +14,7 @@ import { useUserContext } from 'hooks/useUserContext';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 
 // ==============================|| APP ||============================== //
@@ -28,15 +28,15 @@ const App = () => {
 		axios.get('http://localhost:8004/check-user', {  withCredentials:true }).then(userCheck => {
 			if(!user)
 				dispatch({ auth: true, payload: userCheck.data });
-			if(location.pathname == "/pages/login/login3" || location.pathname == "/pages/register/register3"){
+			if(location.pathname == '/pages/login/login3' || location.pathname == '/pages/register/register3'){
 				navigate('/');
 			}
 		}).catch( () => {
-			if(location.pathname != "/pages/login/login3" && location.pathname != "/pages/register/register3"){
+			if(location.pathname != '/pages/login/login3' && location.pathname != '/pages/register/register3'){
 				Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
-				text: "you are not autherized, please login",
+				text: 'you are not autherized, please login',
 			});
 			navigate('/pages/login/login3');
 		}

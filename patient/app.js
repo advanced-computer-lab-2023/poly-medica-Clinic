@@ -13,7 +13,7 @@ dotenv.config();
 const app = express();
 
 app.use(morgan('dev'));
-app.use(cookieParser())
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
