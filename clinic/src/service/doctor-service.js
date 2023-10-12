@@ -6,6 +6,17 @@ class DoctorService {
 		this.repository = new DoctorRepository();
 	}
 
+	
+    async addDoctor(req){
+        const doctorUser = await this.repository.addDoctor(req);
+        return doctorUser;
+    }
+
+    async addReqDoctor(req){
+        const doctorUser = await this.repository.addDoctorReq(req);
+        return doctorUser;
+    }
+	
 	async findAllDoctors() {
 		const doctors = await this.repository.findAllDoctors();
 		return doctors;

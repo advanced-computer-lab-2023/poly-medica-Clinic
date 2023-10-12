@@ -1,36 +1,34 @@
 import mongoose from 'mongoose';
 import UserSchema from './UserSchema.js';
-import { ROLES } from '../../utils/Constants.js';
 
 const Doctor = mongoose.Schema({
-	userData: {
+    userData: {
 		type: UserSchema,
-		required: true,
-	},
-	role: {
-		type: String,
-		default: ROLES.DOCTOR,
+		required: true
 	},
 	speciality: {
 		type: String,
-		required: true,
+		required: true
 	},
 	hourlyRate: {
 		type: Number,
-		required: true,
+		required: true
 	},
 	affiliation: {
 		type: String,
-		required: true,
+		required: true
 	},
 	educationalBackground: {
 		type: String,
 		required: true
-	},
-	availableSlots: {
-		type: [Date]
-	},
+	}
 });
+
+Doctor.statics.addUser = async function (userData, speciality, hourlyRate, affiliation, educationalBackground){
+    const newRecord = new this({userData, speciality, hourlyRate, affiliation, educationalBackground});
+    let user = await newRecord.save();
+    return user;
+};
 
 const DoctorModel = mongoose.model('Doctor', Doctor);
 
