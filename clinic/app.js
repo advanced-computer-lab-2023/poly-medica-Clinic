@@ -15,18 +15,16 @@ import { checkUser } from './src/middleware/authMiddleware.js';
 dotenv.config();
 const app = express();
 
-
-
 const mongoURL = process.env.MONGO_URI;
 // console.log(mongoURL);
 
 const connect = async () => {
-	try {
-		await mongoose.connect(mongoURL);
-		console.log('Database connected');
-	} catch (err) {
-		console.error('Error connecting to the database:', err.body);
-	}
+    try {
+        await mongoose.connect(mongoURL);
+        console.log('Database connected');
+    } catch (err) {
+        console.error('Error connecting to the database:', err.body);
+    }
 };
 
 await connect();
@@ -58,6 +56,5 @@ appointment(app);
 const port = process.env.PORT || PORT;
 
 app.listen(port, () => {
-	console.log(`Server is running on port ${port}`);
+    console.log(`Server is running on port ${port}`);
 });
-

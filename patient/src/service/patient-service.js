@@ -30,15 +30,22 @@ class PatientService {
 		return familyMembers;
 	}
 
-	async addFamilyMember(id, updates) {
-		const familyMembers = await this.repository.addFamilyMember(id, updates);
-		return familyMembers;
+	async getPatientByUserName(userName) {
+		const patient = await this.repository.findPatientByUserName(userName);
+		return patient;
 	}
 
+	async addFamilyMember(id, updates) {
+		const familyMembers = await this.repository.addFamilyMember(
+			id,
+			updates
+		);
+		return familyMembers;
+	}
 	async getPrescriptions(patientId) {
 		const prescriptions = await this.repository.findAllPrescriptions();
 		const filteredPrescriptions = prescriptions.filter(
-			(prescription) => prescription.patientId.valueOf() == patientId,
+			(prescription) => prescription.patientId.valueOf() == patientId
 		);
 		return filteredPrescriptions;
 	}
@@ -54,4 +61,3 @@ class PatientService {
 }
 
 export default PatientService;
-
