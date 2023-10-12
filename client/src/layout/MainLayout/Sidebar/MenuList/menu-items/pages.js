@@ -4,10 +4,11 @@ import {
     IconVaccineBottle,
     IconEmergencyBed,
     IconStethoscope,
-    IconPrescription
 } from '@tabler/icons';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
+import MedicationIcon from '@mui/icons-material/Medication';
 import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
+import IconPrescription from '@tabler/icons';
 // constant
 const icons = {
     IconKey,
@@ -15,6 +16,7 @@ const icons = {
     AdminPanelSettingsOutlinedIcon,
     IconEmergencyBed,
     IconStethoscope,
+    MedicationIcon,
     FamilyRestroomIcon,
     IconPrescription
 };
@@ -102,19 +104,35 @@ const pages = {
 		{
 			id: 'prescriptions',
 			title: 'Prescriptions',
-			type: 'item', 
-			icon: icons.IconPrescription, 
-			url: '/pages/prescriptions', 
-			target: false 
+			type: 'item',
+			icon: icons.IconPrescription,
+			url: '/pages/prescriptions',
+			target: false
 		},
         {
 			id: 'Packages',
 			title: 'Health Packages',
-			type: 'item', 
-			icon: icons.SubscriptionsIcon, 
-			url: '/pages/packages', 
-			target: false 
-		}
+			type: 'item',
+			icon: icons.SubscriptionsIcon,
+			url: '/pages/packages',
+			target: false
+		},
+        {
+            id: 'clinic',
+            title: 'Clinic',
+            type: 'collapse',
+            icon: icons.MedicationIcon,
+            children: [
+                {
+                    id: 'doctors',
+                    title: 'Doctors',
+                    type: 'item',
+                    icon: icons.IconStethoscope,
+                    url: '/pages/clinic/doctors',
+                    target: false,
+                },
+            ],
+        },
 	]
 };
 
