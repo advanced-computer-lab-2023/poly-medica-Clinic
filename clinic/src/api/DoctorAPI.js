@@ -29,14 +29,14 @@ export const doctor = (app) => {
 		}
 	});
 
-	app.get('/check-doctor-req-user', async (req, res) =>{
+	app.get('/check-doctor-req-user', async (req, res) => {
 		try{
 			await service.checkDoctorReqUser(req);
 			res.status(OK_STATUS_CODE).end();
 		} catch(err){
 			res.status(BAD_REQUEST_CODE_400).send({ errCode:DUPLICATE_KEY_ERROR_CODE, errMessage: err.message });
 		}
-	})
+	});
 
 	app.get('/doctors/:id/patients', async (req, res) => {
 		const id = req.params.id;

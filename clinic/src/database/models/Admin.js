@@ -22,10 +22,10 @@ const Admin = mongoose.Schema({
 	//....
 });
 
-Admin.statics.addUser = async function ({role, userName, password, mainAdmin }) {
+Admin.statics.addUser = async function ({ role, userName, password, mainAdmin }) {
 	
 	const salt = await bcrypt.genSalt();
-	passwordpassword = await bcrypt.hash(password, salt);
+	password = await bcrypt.hash(password, salt);
 	const newRecord = new this({ role, userName, password, mainAdmin });
 	const user = await newRecord.save();
 	return user;
