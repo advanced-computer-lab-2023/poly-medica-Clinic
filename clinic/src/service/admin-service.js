@@ -1,33 +1,39 @@
 import AdminRepository from '../database/repository/admin-repository.js';
 
 class AdminService {
-    constructor() {
-        this.repository = new AdminRepository();
-    }
+	constructor() {
+		this.repository = new AdminRepository();
+	}
 
-    async findAllAdmins() {
-        const admins = await this.repository.findAllAdmins();
-        return admins;
-    }
+	async addAdmin(req){
+		const adminUser = await this.repository.addAdmin(req);
+		return adminUser;
+	}
 
-    async createAdmin(admin) {
-        const newAdmin = await this.repository.addAdmin(admin);
-        return newAdmin;
-    }
+	async findAllAdmins() {
+		const admins = await this.repository.findAllAdmins();
+		return admins;
+	}
 
-    async checkMainAdmin(id) {
-        const admin = await this.repository.findAdminById(id);
-        if (admin) {
-            return admin.mainAdmin;
-        }
+	async createAdmin(admin) {
+		const newAdmin = await this.repository.addAdmin(admin);
+		return newAdmin;
+	}
 
-        return false;
-    }
+	async checkMainAdmin(id) {
+		const admin = await this.repository.findAdminById(id);
+		if (admin) {
+			return admin.mainAdmin;
+		}
 
-    async deleteAdmin(id) {
-        const deletedAdmin = await this.repository.deleteAdmin(id);
-        return deletedAdmin;
-    }
+		return false;
+	}
+
+	async deleteAdmin(id) {
+		const deletedAdmin = await this.repository.deleteAdmin(id);
+		return deletedAdmin;
+	}
 }
 
 export default AdminService;
+

@@ -1,87 +1,97 @@
 import mongoose from 'mongoose';
-import { GENDERS, FAMILY_RELATIONS } from '../../utils/Constants.js';
+import { FAMILY_RELATIONS, GENDERS } from '../../utils/Constants.js';
+import bcrypt from 'bcrypt';
 
-const Patient = mongoose.Schema({
+const patientSchema = mongoose.Schema({
 	name: {
 		type: String,
-		required: true,
+		required: true
 	},
 
 	userName: {
 		type: String,
 		required: true,
-		unique: true,
+		unique: true
 	},
 
 	email: {
 		type: String,
 		required: true,
-		unique: true,
+		unique: true
 	},
 
 	password: {
 		type: String,
-		required: true,
+		required: true
 	},
 
 	dateOfBirth: {
 		type: Date,
-		required: true,
+		required: true
 	},
 	gender: {
 		type: String,
 		enum: GENDERS,
-		required: true,
+		required: true
 	},
 	mobileNumber: {
 		type: String,
-		required: true,
+		required: true
 	},
 	emergencyContact: {
 		name: {
 			type: String,
-			required: true,
+			required: true
 		},
 		mobile: {
 			type: String,
-			required: true,
+			required: true
 		},
+		relation: {
+			type: String,
+			required: true,
+			enum: FAMILY_RELATIONS
+		}
 	},
 	familyMembers: [
 		{
-			userName: {
-				type: String,
-				required: true,
-				unique: true,
-			},
 			name: {
 				type: String,
-				required: true,
+				required: true
 			},
 			nationalId: {
 				type: String,
 				required: true,
 				unique: true,
+				sparse: true,
 			},
 			age: {
 				type: Number,
-				required: true,
+				required: true
 			},
 			gender: {
 				type: String,
 				enum: GENDERS,
-				required: true,
+				required: true
 			},
 			relation: {
 				type: String,
-				enum: FAMILY_RELATIONS,
-				required: true,
-			},
-		},
-	],
+				required: true
+			}
+		}
+	]
 	//.....
-});
+} );
 
-const PatientModel = mongoose.model('Patient', Patient);
+patientSchema.statics.signup = async function (name, email, password, userName, dateOfBirth, gender, mobileNumber, emergencyContact){
+	const salt = await bcrypt.genSalt();
+	password = await bcrypt.hash(password, salt);
+	const userRecord = new this({ name, email, password, userName, dateOfBirth, gender, mobileNumber, emergencyContact, familyMembers: [] });
+	const result = await userRecord.save();
+	return result;
+};
+
+const PatientModel = mongoose.model('Patient', patientSchema);
+
 
 export default PatientModel;

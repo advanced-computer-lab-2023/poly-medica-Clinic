@@ -8,10 +8,27 @@ import {
 	OK_STATUS_CODE,
 	CREATED_STATUS_CODE,
 	PATIENTS_BASE_URL,
+	ADMIN_ENUM, BAD_REQUEST_CODE_400, DUPLICATE_KEY_ERROR_CODE, ZERO_INDEX, EXTRA_INDEX
 } from '../utils/Constants.js';
 
 export const admin = (app) => {
 	const service = new AdminService();
+
+    
+	app.post('/add-admin', async (req, res) => {
+		try{
+			const adminUser = await service.addAdmin(req);
+			req.body = { userId: adminUser._id, email: adminUser.userData.email, password: adminUser.userData.password, userName: adminUser.userData.userName, type: ADMIN_ENUM };
+			res.send(req.body);
+		} catch(err){
+			if(err.code == DUPLICATE_KEY_ERROR_CODE){
+				const duplicateKeyAttrb = Object.keys(err.keyPattern)[ZERO_INDEX];
+				const keyAttrb = duplicateKeyAttrb.split('.');
+				res.status(BAD_REQUEST_CODE_400).send({ errCode:DUPLICATE_KEY_ERROR_CODE ,errMessage:`that ${keyAttrb[keyAttrb.length - EXTRA_INDEX]} is already registered` });
+			}
+			else res.status(BAD_REQUEST_CODE_400).send({ errMessage: err.message });
+		}
+	});
 
 	app.get('/admins', async (req, res) => {
 		try {

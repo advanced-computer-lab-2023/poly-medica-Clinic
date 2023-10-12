@@ -88,6 +88,14 @@ const pages = {
             url: '/pages/family-members',
             target: false,
         },
+        {
+			id: 'appointments',
+			title: 'Appointments',
+			type: 'item',
+			icon: icons.TodayIcon,
+			url: '/pages/appointments',
+			target: false,
+		},
     ],
 };
 

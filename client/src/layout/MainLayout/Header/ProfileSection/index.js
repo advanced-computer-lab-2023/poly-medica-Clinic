@@ -38,6 +38,10 @@ import User1 from 'assets/images/users/user-round.svg';
 
 // assets
 import { IconLogout, IconSearch, IconSettings, IconUser } from '@tabler/icons';
+import Swal from 'sweetalert2';
+import { useUserContext } from 'hooks/useUserContext';
+import axiosInstanceAuthService from 'utils/api/axiosInstanceAuthSer';
+
 
 // ==============================|| PROFILE MENU ||============================== //
 
@@ -51,12 +55,22 @@ const ProfileSection = () => {
 	const [notification, setNotification] = useState(false);
 	const [selectedIndex, setSelectedIndex] = useState(-1);
 	const [open, setOpen] = useState(false);
+	const { dispatch } = useUserContext();
 	/**
    * anchorRef is used on different componets and specifying one type leads to other components throwing an error
    * */
 	const anchorRef = useRef(null);
 	const handleLogout = async () => {
-		console.log('Logout');
+		await axiosInstanceAuthService.get('/remove-cookie').then( () => {
+			dispatch({ auth: false, payload: null });
+			navigate('pages/login/login3');
+		}).catch(() => {
+			Swal.fire({
+				icon: 'error',
+				title: 'Oops...',
+				text: 'failed to logout',
+			});
+		});
 	};
 
 	const handleClose = (event) => {

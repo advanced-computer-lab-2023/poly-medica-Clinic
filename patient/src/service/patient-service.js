@@ -5,6 +5,11 @@ class PatientService {
 		this.repository = new PatientRepository();
 	}
 
+	async signupUser(req) {
+		const user = await this.repository.signupUser(req);
+		return user;
+	}
+
 	async findAllPatients() {
 		const patients = await this.repository.findAllPatients();
 		return patients;
@@ -47,7 +52,7 @@ class PatientService {
 
 	async getPrescription(patientId, prescriptionId) {
 		const prescription = await this.repository.findPrescriptionById(
-			prescriptionId
+			prescriptionId,
 		);
 		if (prescription && prescription.patientId.valueOf() == patientId)
 			return prescription;
