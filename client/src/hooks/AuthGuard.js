@@ -7,8 +7,10 @@ import { GUEST_ACCESS } from "./Constants";
 const AuthGuard = ({ component: Component, Auth, isLazy, ...rest }) => {
   const { user } = useUserContext();
   const history = useHistory();
+  const isRoute = true; // Dummy data
 
-  const handleAuthorization = (User, props) => {
+
+  const handleAuthorization = (User) => {
     if (User) {
       if (User.isAuth) {
         if (Auth.includes(User.access)) {
@@ -31,15 +33,14 @@ const AuthGuard = ({ component: Component, Auth, isLazy, ...rest }) => {
   };
 
   useEffect(() => {
-    
     if (user) {
       if (user.isAuth) {
         if (!Auth.includes(user.access)  && isRoute) {
-          history.push('/home')
+          history.push('/home');
         }
       } else {
         if (!Auth.includes(GUEST_ACCESS) && isRoute) {
-          history.push('/pages/login/login3')
+          history.push('/pages/login/login3');
         }
       }
     }
