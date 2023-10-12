@@ -3,7 +3,7 @@ import {
     CLINIC_BASE_URL,
     PATIENT_BASE_URL,
     PHARMACY_BASE_URL,
-} from '../../utils/Constants';
+} from '../../utils/Constants.js';
 
 // Define the base URLs for each microservice
 

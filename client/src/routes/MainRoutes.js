@@ -3,14 +3,18 @@ import { lazy } from 'react';
 // project imports
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
+import FamilyMembers from 'pages/family-member/FamilyMembers.js';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 const LazyMedicines = Loadable(lazy(() => import('pages/Medicines')));
+const LazyPrescriptions = Loadable(lazy(() => import('pages/prescriptions/Prescriptions')));
 const LazyAdmins = Loadable(lazy(() => import('pages/Admins')));
 const LazyPatients = Loadable(lazy(() => import('pages/Patients')));
 const LazyDoctors = Loadable(lazy(() => import('pages/Doctors')));
+const LazyPackages = Loadable(lazy(() => import('pages/HealthPackages/HealthPackage')));
 const LazyClinicDoctors = Loadable(lazy(() => import('pages/Doctors/Doctors')));
+
 // utilities routing
 const UtilsTypography = Loadable(
     lazy(() => import('pages/utilities/Typography'))
@@ -49,32 +53,43 @@ const MainRoutes = {
                 },
                 {
                     path: 'admins',
-                    children: [
-                        {
-                            path: 'admins',
-                            element: <LazyAdmins />,
-                        },
-                        {
-                            path: 'patients',
-                            element: <LazyPatients />,
-                        },
-                        {
-                            path: 'doctors',
-                            element: <LazyDoctors />,
-                        },
-                    ],
+                    element: <LazyAdmins />,
                 },
                 {
-                    path: 'clinic',
-                    children: [
-                        {
-                            path: 'doctors',
-                            element: <LazyClinicDoctors />,
-                        },
-                    ],
+                    path: 'patients',
+                    element: <LazyPatients />,
                 },
+                {
+                    path: 'doctors',
+                    element: <LazyDoctors />,
+                },
+                {
+                    path: 'family-members',
+                    element: <FamilyMembers />,
+                },
+				{
+					path: 'appointments',
+					element: <LazyAppointments />,
+				},
+				{
+					path: 'prescriptions',
+					element: <LazyPrescriptions />
+				},
+				{
+					path: 'packages',
+					element: <LazyPackages />
+				}
             ],
         },
+		{
+			path: 'clinic',
+			children: [
+				{
+					path: 'doctors',
+					element: <LazyClinicDoctors />,
+				},
+			],
+		},
         {
             path: 'utils',
             children: [

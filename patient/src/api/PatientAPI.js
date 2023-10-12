@@ -17,9 +17,9 @@ export const patient = (app) => {
 			if (patients.length > EMPTY_SIZE) {
 				res.status(OK_STATUS_CODE).json({ patients });
 			} else {
-				res
-					.status(NOT_FOUND_STATUS_CODE)
-					.json({ message: 'No patients found!' });
+				res.status(NOT_FOUND_STATUS_CODE).json({
+					message: 'No patients found!',
+				});
 			}
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
@@ -29,9 +29,10 @@ export const patient = (app) => {
 	app.post('/patients', async (req, res) => {
 		try {
 			const newPatient = await service.createPatient(req.body);
-			res
-				.status(OK_STATUS_CODE)
-				.json({ message: 'Patient created!', newPatient });
+			res.status(OK_STATUS_CODE).json({
+				message: 'Patient created!',
+				newPatient,
+			});
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}
@@ -66,7 +67,9 @@ export const patient = (app) => {
 	app.get('/family-members/:id', async (req, res) => {
 		const { id } = req.params;
 		if (!isValidMongoId(id)) {
-			return res.status(NOT_FOUND_STATUS_CODE).json({ message: 'Invalid ID' });
+			return res
+				.status(NOT_FOUND_STATUS_CODE)
+				.json({ message: 'Invalid ID' });
 		}
 		try {
 			const data = await service.getFamilyMembers(id);
@@ -86,14 +89,22 @@ export const patient = (app) => {
 			});
 		}
 		try {
-			const { name, nationalId, age, gender, relation } = req.body;
-			const data = await service.getFamilyMembers(id);
-			const newFamilyMem = [
-				{ name, nationalId, age, gender, relation },
-				...data.familyMembers,
-			];
-			const newData = await service.addFamilyMember(id, newFamilyMem);
-			res.status(OK_STATUS_CODE).json(newData);
+			const { name, userName, nationalId, age, gender, relation } =
+                req.body;
+			const patient = await service.getPatientByUserName(userName);
+			if (patient) {
+				const data = await service.getFamilyMembers(id);
+				const newFamilyMem = [
+					{ name, userName, nationalId, age, gender, relation },
+					...data.familyMembers,
+				];
+				const newData = await service.addFamilyMember(id, newFamilyMem);
+				res.status(OK_STATUS_CODE).json(newData);
+			} else {
+				res.status(NOT_FOUND_STATUS_CODE).json({
+					message: 'username not found',
+				});
+			}
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({
 				message: err.message,
@@ -113,9 +124,9 @@ export const patient = (app) => {
 			if (data && data.length > EMPTY_SIZE)
 				res.status(OK_STATUS_CODE).json(data);
 			else
-				res
-					.status(NOT_FOUND_STATUS_CODE)
-					.json({ message: 'prescriptions not found' });
+				res.status(NOT_FOUND_STATUS_CODE).json({
+					message: 'prescriptions not found',
+				});
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({
 				message: 'error occurred while fetching prescriptions',
@@ -128,22 +139,25 @@ export const patient = (app) => {
 		async (req, res) => {
 			const { pateintId, prescriptionId } = req.params;
 			if (!isValidMongoId(pateintId) || !isValidMongoId(prescriptionId)) {
-				return res
-					.status(ERROR_STATUS_CODE)
-					.json({ message: 'Patient ID or Prescription ID is invalid' });
+				return res.status(ERROR_STATUS_CODE).json({
+					message: 'Patient ID or Prescription ID is invalid',
+				});
 			}
 			try {
-				const data = await service.getPrescription(pateintId, prescriptionId);
+				const data = await service.getPrescription(
+					pateintId,
+					prescriptionId
+				);
 				if (data) res.status(OK_STATUS_CODE).json(data);
 				else
-					res
-						.status(NOT_FOUND_STATUS_CODE)
-						.json({ message: 'prescription not found' });
+					res.status(NOT_FOUND_STATUS_CODE).json({
+						message: 'prescription not found',
+					});
 			} catch (err) {
 				res.status(ERROR_STATUS_CODE).json({
 					message: 'error occurred while fetching prescription',
 				});
 			}
-		},
+		}
 	);
 };

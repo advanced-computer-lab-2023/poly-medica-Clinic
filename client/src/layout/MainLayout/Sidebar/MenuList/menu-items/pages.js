@@ -7,6 +7,8 @@ import {
 } from '@tabler/icons';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 import MedicationIcon from '@mui/icons-material/Medication';
+import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
+import IconPrescription from '@tabler/icons';
 // constant
 const icons = {
     IconKey,
@@ -15,6 +17,8 @@ const icons = {
     IconEmergencyBed,
     IconStethoscope,
     MedicationIcon,
+    FamilyRestroomIcon,
+    IconPrescription
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
@@ -59,35 +63,60 @@ const pages = {
         {
             id: 'admins',
             title: 'Admins',
-            type: 'collapse',
+            type: 'item',
             icon: icons.AdminPanelSettingsOutlinedIcon,
-            children: [
-                {
-                    id: 'admins',
-                    title: 'Admins',
-                    type: 'item',
-                    icon: icons.AdminPanelSettingsOutlinedIcon,
-                    url: '/pages/admins/admins',
-                    target: false,
-                },
-                {
-                    id: 'patients',
-                    title: 'Patients',
-                    type: 'item',
-                    icon: icons.IconEmergencyBed,
-                    url: '/pages/admins/patients',
-                    target: false,
-                },
-                {
-                    id: 'doctors',
-                    title: 'Doctors',
-                    type: 'item',
-                    icon: icons.IconStethoscope,
-                    url: '/pages/admins/doctors',
-                    target: false,
-                },
-            ],
+            url: '/pages/admins',
+            target: false,
         },
+        {
+            id: 'patients',
+            title: 'Patients',
+            type: 'item',
+            icon: icons.IconEmergencyBed,
+            url: '/pages/patients',
+            target: false,
+        },
+        {
+            id: 'doctors',
+            title: 'Doctors',
+            type: 'item',
+            icon: icons.IconStethoscope,
+            url: '/pages/doctors',
+            target: false,
+        },
+        {
+            id: 'family-members',
+            title: 'Family Members',
+            type: 'item',
+            icon: icons.FamilyRestroomIcon,
+            url: '/pages/family-members',
+            target: false,
+        },
+        {
+			id: 'appointments',
+			title: 'Appointments',
+			type: 'item',
+			icon: icons.TodayIcon,
+			url: '/pages/appointments',
+			target: false,
+		},
+
+		{
+			id: 'prescriptions',
+			title: 'Prescriptions',
+			type: 'item',
+			icon: icons.IconPrescription,
+			url: '/pages/prescriptions',
+			target: false
+		},
+        {
+			id: 'Packages',
+			title: 'Health Packages',
+			type: 'item',
+			icon: icons.SubscriptionsIcon,
+			url: '/pages/packages',
+			target: false
+		},
         {
             id: 'clinic',
             title: 'Clinic',
@@ -104,7 +133,7 @@ const pages = {
                 },
             ],
         },
-    ],
+	]
 };
 
 export default pages;
