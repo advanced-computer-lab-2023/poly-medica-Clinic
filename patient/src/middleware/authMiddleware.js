@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { UNAUTHORIZED_STATUS_CODE } from '../utils/Constants';
+import { UNAUTHORIZED_STATUS_CODE } from '../utils/Constants.js';
 
 export const requireAuth = (req, res, next) => {
 	const token = req.cookies.jwt;

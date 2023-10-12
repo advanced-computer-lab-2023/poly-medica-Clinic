@@ -26,7 +26,6 @@ const DoctorReq = mongoose.Schema({
 });
 
 DoctorReq.statics.addUser = async function (userData, speciality, hourlyRate, affiliation, educationalBackground){
-	console.log(userData, speciality, hourlyRate, affiliation, educationalBackground);
 	const salt = await bcrypt.genSalt();
 	userData.password = await bcrypt.hash(userData.password, salt);
 	const newRecord = new this({ userData, speciality, hourlyRate, affiliation, educationalBackground });

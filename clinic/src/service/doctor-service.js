@@ -60,6 +60,9 @@ class DoctorService {
 		return doctor;
 	}
 	
+	async checkDoctorReqUser(req){
+		await this.repository.checkDoctorReqUser(req);
+	}
 }
 
 export default DoctorService;

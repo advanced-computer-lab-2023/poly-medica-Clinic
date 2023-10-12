@@ -46,6 +46,12 @@ class PatientRepository {
         const deletedPatient = await PatientModel.findByIdAndDelete(id);
         return deletedPatient;
     }
+
+    async signupUser(req){
+        const { name, email, password, userName, dateOfBirth, gender, mobileNumber, emergencyContact } = req.body;
+        let user = await PatientModel.signup(name, email, password, userName, dateOfBirth, gender, mobileNumber, emergencyContact);
+        return user;
+    }
 }
 
 export default PatientRepository;

@@ -14,6 +14,7 @@ const LazyPatients = Loadable(lazy(() => import('pages/Patients')));
 const LazyDoctors = Loadable(lazy(() => import('pages/Doctors')));
 const LazyPackages = Loadable(lazy(() => import('pages/HealthPackages/HealthPackage')));
 const LazyClinicDoctors = Loadable(lazy(() => import('pages/Doctors/Doctors')));
+const LazyAppointments = Loadable(lazy(() => import('pages/Appointment/Appointment')));
 
 // utilities routing
 const UtilsTypography = Loadable(
