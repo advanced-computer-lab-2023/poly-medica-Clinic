@@ -16,6 +16,7 @@
     "@tabler/icons": "^1.72.0",
     "apexcharts": "^3.35.3",
     "axios": "^1.5.1",
+    "dayjs": "^1.11.10",
     "date-fns": "^2.30.0",
     "formik": "^2.2.9",
     "framer-motion": "^6.3.16",

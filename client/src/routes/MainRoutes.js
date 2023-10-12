@@ -8,6 +8,7 @@ import FamilyMembers from 'pages/family-member/FamilyMembers.js';
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 const LazyMedicines = Loadable(lazy(() => import('pages/Medicines')));
+const LazyPrescriptions = Loadable(lazy(() => import('pages/prescriptions/Prescriptions')));
 const LazyAdmins = Loadable(lazy(() => import('pages/Admins')));
 const LazyPatients = Loadable(lazy(() => import('pages/Patients')));
 const LazyDoctors = Loadable(lazy(() => import('pages/Doctors')));
@@ -17,6 +18,7 @@ const UtilsTypography = Loadable(
 );
 const UtilsColor = Loadable(lazy(() => import('pages/utilities/Color')));
 const UtilsShadow = Loadable(lazy(() => import('pages/utilities/Shadow')));
+
 
 // sample page routing
 const SamplePage = Loadable(lazy(() => import('pages/sample-page')));
@@ -67,6 +69,10 @@ const MainRoutes = {
 					path: 'appointments',
 					element: <LazyAppointments />,
 				},
+				{
+					path: 'prescriptions',
+					element: <LazyPrescriptions />
+				}
             ],
         },
         {

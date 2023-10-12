@@ -4,6 +4,7 @@ import {
     IconVaccineBottle,
     IconEmergencyBed,
     IconStethoscope,
+    IconPrescription
 } from '@tabler/icons';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
@@ -15,6 +16,7 @@ const icons = {
     IconEmergencyBed,
     IconStethoscope,
     FamilyRestroomIcon,
+    IconPrescription
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
@@ -96,7 +98,16 @@ const pages = {
 			url: '/pages/appointments',
 			target: false,
 		},
-    ],
+
+		{
+			id: 'prescriptions',
+			title: 'Prescriptions',
+			type: 'item', 
+			icon: icons.IconPrescription, 
+			url: '/pages/prescriptions', 
+			target: false 
+		}
+	]
 };
 
 export default pages;
