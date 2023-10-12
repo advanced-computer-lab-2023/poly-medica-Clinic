@@ -15,12 +15,14 @@ class HealthPackageRepository {
 		discountOfFamily,
 	) {
 		const newPackage = new HealthPackageModel({
-			name,
+			
 			price,
+			name,
 			discountOfDoctor,
 			discountOfMedicin,
 			discountOfFamily,
 		});
+		
 		const packageResult = await newPackage.save();
 		return packageResult;
 	}
@@ -31,9 +33,9 @@ class HealthPackageRepository {
 	}
 
 	async updatePackage(id, updateData){
-		const packageUpdated = await HealthPackageModel.findByIdAndUpdate(id, { $set: updateData });
-		return packageUpdated;
-	}
+        const packageUpdated = await HealthPackageModel.findByIdAndUpdate(id, {$set: updateData});
+        return packageUpdated;
+    }
 }
 
 export default HealthPackageRepository;

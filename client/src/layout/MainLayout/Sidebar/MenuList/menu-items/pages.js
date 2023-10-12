@@ -106,6 +106,14 @@ const pages = {
 			icon: icons.IconPrescription, 
 			url: '/pages/prescriptions', 
 			target: false 
+		},
+        {
+			id: 'Packages',
+			title: 'Health Packages',
+			type: 'item', 
+			icon: icons.SubscriptionsIcon, 
+			url: '/pages/packages', 
+			target: false 
 		}
 	]
 };

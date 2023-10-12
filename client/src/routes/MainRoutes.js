@@ -12,13 +12,14 @@ const LazyPrescriptions = Loadable(lazy(() => import('pages/prescriptions/Prescr
 const LazyAdmins = Loadable(lazy(() => import('pages/Admins')));
 const LazyPatients = Loadable(lazy(() => import('pages/Patients')));
 const LazyDoctors = Loadable(lazy(() => import('pages/Doctors')));
+const LazyPackages = Loadable(lazy(() => import('pages/HealthPackages/HealthPackage')));
+
 // utilities routing
 const UtilsTypography = Loadable(
     lazy(() => import('pages/utilities/Typography'))
 );
 const UtilsColor = Loadable(lazy(() => import('pages/utilities/Color')));
 const UtilsShadow = Loadable(lazy(() => import('pages/utilities/Shadow')));
-
 
 // sample page routing
 const SamplePage = Loadable(lazy(() => import('pages/sample-page')));
@@ -72,6 +73,10 @@ const MainRoutes = {
 				{
 					path: 'prescriptions',
 					element: <LazyPrescriptions />
+				},
+				{
+					path: 'packages',
+					element: <LazyPackages />
 				}
             ],
         },
