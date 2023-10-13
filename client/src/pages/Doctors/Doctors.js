@@ -12,6 +12,7 @@ const Doctors = () => {
             .get('/doctors')
             .then((response) => {
                 setDoctors(response.data);
+                console.log(response);
             })
             .catch((error) => {
                 console.log(error);

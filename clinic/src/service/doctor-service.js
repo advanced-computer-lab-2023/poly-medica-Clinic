@@ -6,26 +6,17 @@ class DoctorService {
 		this.repository = new DoctorRepository();
 	}
 
-	async findAllDoctorRequests() {
-		const doctorRequests = await this.repository.findAllDoctorRequests();
-		return doctorRequests;
-	}
-
-	async addDoctor(req) {
+	
+	async addDoctor(req){
 		const doctorUser = await this.repository.addDoctor(req);
 		return doctorUser;
 	}
 
-	async addReqDoctor(req) {
+	async addReqDoctor(req){
 		const doctorUser = await this.repository.addDoctorReq(req);
 		return doctorUser;
 	}
-
-	async deleteDoctorRequest(id) {
-		const deletedDoctorRequest = await this.repository.deleteDoctorRequest(id);
-		return deletedDoctorRequest;
-	}
-
+	
 	async findAllDoctors() {
 		const doctors = await this.repository.findAllDoctors();
 		return doctors;
@@ -54,18 +45,25 @@ class DoctorService {
 			console.log('no data was found');
 		}
 	}
-	async getAllAppointments() {
-		const allAppointments = await this.repository.findAllAppointments();
-		if (allAppointments.length > EMPTY_SIZE) {
-			return allAppointments;
-		} else {
+	async getAllAppointments(){
+		const allAppointments = await this.repository.findAllAppointments(); 
+		if (allAppointments.length>EMPTY_SIZE) {
+			return allAppointments; 
+		}
+		else {
 			console.log('no data was found');
 		}
+		
 	}
 	async updateDoctor(id, updates) {
 		const doctor = await this.repository.updateDoctor(id, updates);
 		return doctor;
 	}
+	
+	async checkDoctorReqUser(req){
+		await this.repository.checkDoctorReqUser(req);
+	}
 }
 
 export default DoctorService;
+

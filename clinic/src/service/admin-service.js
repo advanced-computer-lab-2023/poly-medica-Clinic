@@ -5,9 +5,9 @@ class AdminService {
 		this.repository = new AdminRepository();
 	}
 
-	async findAdminByUserName(userName) {
-		const admin = await this.repository.findAdminByUserName(userName);
-		return admin;
+	async addAdmin(req){
+		const adminUser = await this.repository.addAdmin(req);
+		return adminUser;
 	}
 
 	async findAllAdmins() {
@@ -15,14 +15,9 @@ class AdminService {
 		return admins;
 	}
 
-	// async createAdmin(admin) {
-	// 	const newAdmin = await this.repository.addAdmin(admin);
-	// 	return newAdmin;
-	// }
-
-	async addAdmin(req) {
-		const adminUser = await this.repository.addAdmin(req);
-		return adminUser;
+	async createAdmin(admin) {
+		const newAdmin = await this.repository.addAdmin(admin);
+		return newAdmin;
 	}
 
 	async checkMainAdmin(id) {

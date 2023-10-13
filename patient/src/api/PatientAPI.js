@@ -6,7 +6,11 @@ import {
 	NOT_FOUND_STATUS_CODE,
 	OK_STATUS_CODE,
 	ERROR_STATUS_CODE,
+	DUPLICATE_KEY_ERROR_CODE,
+	BAD_REQUEST_CODE_400,
+	PATIENT_ENUM,
 } from '../utils/Constants.js';
+import { ZERO_INDEX } from '../../../clinic/src/utils/Constants.js';
 
 export const patient = (app) => {
 	const service = new PatientService();
@@ -94,6 +98,7 @@ export const patient = (app) => {
 			const patient = await service.getPatientByUserName(userName);
 			if (patient) {
 				const data = await service.getFamilyMembers(id);
+				console.log('Data = ', data);
 				const newFamilyMem = [
 					{ name, userName, nationalId, age, gender, relation },
 					...data.familyMembers,
@@ -109,6 +114,7 @@ export const patient = (app) => {
 			res.status(ERROR_STATUS_CODE).json({
 				message: err.message,
 			});
+			console.log(err.message);
 		}
 	});
 
@@ -160,4 +166,19 @@ export const patient = (app) => {
 			}
 		}
 	);
+
+	app.post('/signup', async (req, res) => {
+		try{
+			const signedupUser = await service.signupUser(req);
+			req.body = { userId: signedupUser._id ,email: signedupUser.email , password:signedupUser.password, userName:signedupUser.userName, type: PATIENT_ENUM };
+			res.send(req.body);
+		} catch(err){
+			if(err.code == DUPLICATE_KEY_ERROR_CODE){
+				const duplicateKeyAttrb = Object.keys(err.keyPattern)[ZERO_INDEX];
+				console.log(duplicateKeyAttrb);
+				res.status(BAD_REQUEST_CODE_400).send({ errCode:DUPLICATE_KEY_ERROR_CODE ,errMessage:`that ${duplicateKeyAttrb} is already registered` });
+			}
+			else res.status(BAD_REQUEST_CODE_400).send({ errMessage: err.message });
+		}
+	});
 };

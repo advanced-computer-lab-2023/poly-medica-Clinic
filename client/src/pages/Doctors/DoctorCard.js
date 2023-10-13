@@ -1,7 +1,7 @@
 import { ListItemButton, ListItemText, ListItemAvatar } from '@mui/material';
 import DoctorIcon from '../../assets/images/icons/DoctorIcon.png';
 
-const calcPrice = async (price) => {
+const calcPrice =  (price) => {
     const userDiscount = 0.2; // needs user to get the id to get the discount
     const priceWithDiscount = price * (1 - userDiscount);
     const final = 1.1 * priceWithDiscount;

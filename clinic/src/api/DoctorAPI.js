@@ -9,10 +9,35 @@ import {
 	OK_STATUS_CODE,
 	CREATED_STATUS_CODE,
 	UNAUTHORIZED_STATUS_CODE,
+	BAD_REQUEST_CODE_400, DOCTOR_ENUM, DUPLICATE_KEY_ERROR_CODE, ZERO_INDEX, EXTRA_INDEX
 } from '../utils/Constants.js';
 
 export const doctor = (app) => {
 	const service = new DoctorService();
+
+	app.post('/add-doctor-req', async (req, res) => {
+		try{
+
+			const doctorUser = await service.addReqDoctor(req);
+			req.body = { userId: doctorUser._id, email: doctorUser.userData.email, password: doctorUser.userData.password, userName: doctorUser.userData.userName, type: DOCTOR_ENUM };
+			res.send(req.body);
+		} catch(err){
+			if(err.code == DUPLICATE_KEY_ERROR_CODE){
+				const duplicateKeyAttrb = Object.keys(err.keyPattern)[ZERO_INDEX];
+				const keyAttrb = duplicateKeyAttrb.split('.');
+				res.status(BAD_REQUEST_CODE_400).send({ errCode:DUPLICATE_KEY_ERROR_CODE ,errMessage:`that ${keyAttrb[keyAttrb.length - EXTRA_INDEX ]} is already registered` });
+			} else res.status(BAD_REQUEST_CODE_400).send({ errMessage: err.message });
+		}
+	});
+
+	app.post('/check-doctor', async (req, res) => {
+		try{
+			await service.checkDoctorReqUser(req);
+			res.status(OK_STATUS_CODE).end();
+		} catch(err){
+			res.status(BAD_REQUEST_CODE_400).send({ errCode:DUPLICATE_KEY_ERROR_CODE, errMessage: err.message });
+		}
+	});
 
 	app.get('/doctors/:id/patients', async (req, res) => {
 		const id = req.params.id;
@@ -130,7 +155,8 @@ export const doctor = (app) => {
 		} catch (error) {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
-	});
+	}
+	);
 	app.patch('/doctors/:id', async (req, res) => {
 		try {
 			const id = req.params.id;
@@ -148,5 +174,8 @@ export const doctor = (app) => {
 		} catch (error) {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
-	});
+	}
+
+	);
 };
+

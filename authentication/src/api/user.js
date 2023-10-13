@@ -34,20 +34,20 @@ export const user = (app) => {
 			let email = null;
 			let userName = null;
 			switch (type) {
-				case PATIENT_ENUM:
-					email = req.body.email;
-					userName = req.body.userName;
-					break;
-				case DOCTOR_ENUM:
-					email = req.body.userData.email;
-					userName = req.body.userData.userName;
-					break;
-				case ADMIN_ENUM:
-					email = req.body.userData.email;
-					userName = req.body.userData.userName;
-					break;
-				default:
-					throw new Error('invalid type of user');
+			case PATIENT_ENUM:
+				email = req.body.email;
+				userName = req.body.userName;
+				break;
+			case DOCTOR_ENUM:
+				email = req.body.userData.email;
+				userName = req.body.userData.userName;
+				break;
+			case ADMIN_ENUM:
+				email = req.body.userData.email;
+				userName = req.body.userData.userName;
+				break;
+			default:
+				throw new Error('invalid type of user');
 			}
 			console.log(email, userName, 'email, userName');
 			const checkEmail = await user.findUserByEmail(email);
@@ -59,17 +59,17 @@ export const user = (app) => {
 				throw new Error(DUB_USERNAME_ERROR_MESSAGE);
 			}
 			switch (type) {
-				case PATIENT_ENUM:
-					signupData = await axios.post(PATIENT_SIGNUP_URL, req.body);
-					break;
-				case DOCTOR_ENUM:
-					signupData = await axios.post(DOCOTOR_SIGNUP_URL, req.body);
-					break;
-				case ADMIN_ENUM:
-					signupData = await axios.post(ADMIN_SIGNUP_URL, req.body);
-					break;
-				default:
-					throw new Error('invalid type of user');
+			case PATIENT_ENUM:
+				signupData = await axios.post(PATIENT_SIGNUP_URL, req.body);
+				break;
+			case DOCTOR_ENUM:
+				signupData = await axios.post(DOCOTOR_SIGNUP_URL, req.body);
+				break;
+			case ADMIN_ENUM:
+				signupData = await axios.post(ADMIN_SIGNUP_URL, req.body);
+				break;
+			default:
+				throw new Error('invalid type of user');
 			}
 			if (type != DOCTOR_ENUM) {
 				await user.signupUser(signupData.data);

@@ -3,16 +3,18 @@ import { clinicAxios } from 'pages/utilities/AxiosConfig';
 import MainCard from 'ui-component/cards/MainCard';
 import AppointmentList from './AppointmentList.js';
 import AppointmentDetails from './AppointmentDetails.js';
-
+import { useUserContext } from 'hooks/useUserContext.js';
 const Appointment = () => {
 	const [appointments, setAppointments] = useState([]);
 	const [selectedAppointment, setSelectedAppointment] = useState(null);
-	const userId = '652704ba188f4ee2976751fc';
+	const { user } = useUserContext();
+	const userId = user.id;
 	useEffect(() => {
 		clinicAxios
 			.get('/appointments/' + userId)
 			.then((response) => {
 				setAppointments(response.data);
+				console.log(response);
 			})
 			.catch((error) => {
 				console.log(error);

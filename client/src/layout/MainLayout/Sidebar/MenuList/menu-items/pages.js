@@ -72,14 +72,6 @@ const pages = {
 			target: false,
 		},
 		{
-			id: 'doctor-requests',
-			title: 'Doctor Requests',
-			type: 'item',
-			icon: icons.IconRegistered,
-			url: '/pages/doctor-requests',
-			target: false,
-		},
-		{
 			id: 'patients',
 			title: 'Patients',
 			type: 'item',

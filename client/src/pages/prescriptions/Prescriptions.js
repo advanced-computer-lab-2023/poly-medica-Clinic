@@ -3,10 +3,12 @@ import PrescriptionsList from './PrescriptionsList';
 import MainCard from '../../ui-component/cards/MainCard';
 import { patientAxios } from '../../utils/AxiosConfig';
 import PrescriptionDetails from './PrescriptionDetails';
+import { useUserContext } from 'hooks/useUserContext';
 const Prescriptions = () => {
 
 	// Assuming a patientID
-	const patientID = '6521e182f1f96a5a11e96607';
+	const { user } = useUserContext();
+	const patientID = user.id;
 	
 	const [prescriptions, setPrescritpions] = useState([]);
 	const [selectedPrescription, setSelectedPrescription] = useState(null);
