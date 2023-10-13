@@ -22,11 +22,13 @@ class DoctorRepository {
 
 	async checkDoctorReqUser(req){
 		const { email, userName } = req.body;
-		// console.log(req.body, userData);
-		const checkUserEmail = await DoctoerReqModel.findOne({ 'userData.email': email });
-		if(checkUserEmail){
-			throw new Error('that email is already registered');
+		if(email){
+			const checkUserEmail = await DoctoerReqModel.findOne({ 'userData.email': email });
+			if(checkUserEmail){
+				throw new Error('that email is already registered');
+			}
 		}
+		
 		const checkUserUserName = await DoctoerReqModel.findOne({ 'userData.userName': userName });
 		if(checkUserUserName){
 			throw new Error('that username is already registered');
