@@ -79,6 +79,14 @@ const pages = {
 			url: '/pages/doctors',
 			target: false,
 		},
+		{
+			id: 'ListOfPatients',
+			title: 'ListOfPatientsRegiested',
+			type: 'item',
+			icon: icons.IconStethoscope,
+			url: '/pages/listOfPatients',
+			target: false,
+		},
 	],
 };
 

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 // material-ui
@@ -8,6 +8,7 @@ import { useTheme } from '@mui/material/styles';
 import {
 	Avatar,
 	Box,
+	Button,
 	Card,
 	CardContent,
 	Chip,
@@ -35,6 +36,8 @@ import MainCard from 'ui-component/cards/MainCard';
 import Transitions from 'ui-component/extended/Transitions';
 import UpgradePlanCard from './UpgradePlanCard';
 import User1 from 'assets/images/users/user-round.svg';
+
+
 
 // assets
 import { IconLogout, IconSearch, IconSettings, IconUser } from '@tabler/icons';
@@ -258,7 +261,7 @@ const ProfileSection = () => {
 												<ListItemButton
 													sx={{ borderRadius: `${customization.borderRadius}px` }}
 													selected={selectedIndex === 1}
-													onClick={(event) => handleListItemClick(event, 1, '#')}
+													onClick={() => {navigate('+/profile');}}
 												>
 													<ListItemIcon>
 														<IconUser stroke={1.5} size="1.3rem" />
@@ -267,7 +270,11 @@ const ProfileSection = () => {
 														primary={
 															<Grid container spacing={1} justifyContent="space-between">
 																<Grid item>
-																	<Typography variant="body2">Social Profile</Typography>
+																	<Typography variant="body2">
+																		<Button variant='text'>
+																		Social Profile
+																		</Button>
+																	</Typography>
 																</Grid>
 																<Grid item>
 																	<Chip

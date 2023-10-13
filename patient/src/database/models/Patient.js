@@ -74,6 +74,23 @@ const Patient = mongoose.Schema({
 			},
 		},
 	],
+	healthrecords: [
+		{
+			healthIssue: {
+				type: String,
+				required: true,
+			},
+			healthIssueDate: {
+				type: Date,
+				required: true,
+			},
+			healthIssueDescription: {
+				type: String,
+				required: true,
+			},
+		},
+	],
+
 	//.....
 });
 

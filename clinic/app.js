@@ -29,6 +29,7 @@ app.use(express.json());
 app.use(
 	cors({
 		origin: [
+			'http://192.168.56.1/3000',
 			'http://localhost:3000',
 			'http://localhost:3001',
 			'http://localhost:3002',
