@@ -6,7 +6,6 @@ import {
 	NOT_FOUND_STATUS_CODE,
 	UNAUTHORIZED_STATUS_CODE,
 	OK_STATUS_CODE,
-	CREATED_STATUS_CODE,
 	PATIENTS_BASE_URL,
 	ADMIN_ENUM, BAD_REQUEST_CODE_400, DUPLICATE_KEY_ERROR_CODE, ZERO_INDEX, EXTRA_INDEX, AUTH_BASE_URL
 } from '../utils/Constants.js';
@@ -42,28 +41,28 @@ export const admin = (app) => {
 	app.delete('/admins/:id', async (req, res) => {
 		try {
 				
-				const id = req.params.id;
-				if (!isValidMongoId(id))
-					return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
-				const isMainAdmin = await service.checkMainAdmin(id);
-				if (isMainAdmin) {
-					res
-						.status(ERROR_STATUS_CODE)
-						.json({ message: 'you can not delete main admin' });
-				} else {
-					const deletedAdmin = await service.deleteAdmin(id);
+			const id = req.params.id;
+			if (!isValidMongoId(id))
+				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
+			const isMainAdmin = await service.checkMainAdmin(id);
+			if (isMainAdmin) {
+				res
+					.status(ERROR_STATUS_CODE)
+					.json({ message: 'you can not delete main admin' });
+			} else {
+				const deletedAdmin = await service.deleteAdmin(id);
 					
-					if (deletedAdmin) {
-						axios.delete(`${AUTH_BASE_URL}/users/${id}`)
-						res
-							.status(OK_STATUS_CODE)
-							.json({ message: 'admin deleted!', deletedAdmin });
-					} else {
-						res
-							.status(NOT_FOUND_STATUS_CODE)
-							.json({ message: 'admin not found!' });
-					}
+				if (deletedAdmin) {
+					axios.delete(`${AUTH_BASE_URL}/users/${id}`);
+					res
+						.status(OK_STATUS_CODE)
+						.json({ message: 'admin deleted!', deletedAdmin });
+				} else {
+					res
+						.status(NOT_FOUND_STATUS_CODE)
+						.json({ message: 'admin not found!' });
 				}
+			}
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}
