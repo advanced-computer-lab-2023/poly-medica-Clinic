@@ -68,29 +68,31 @@ const MainRoutes = {
                     path: 'family-members',
                     element: <FamilyMembers />,
                 },
-				{
-					path: 'appointments',
-					element: <LazyAppointments />,
-				},
-				{
-					path: 'prescriptions',
-					element: <LazyPrescriptions />
-				},
-				{
-					path: 'packages',
-					element: <LazyPackages />
-				}
+                {
+                    path: 'appointments',
+                    element: <LazyAppointments />,
+                },
+                {
+                    path: 'prescriptions',
+                    element: <LazyPrescriptions />
+                },
+                {
+                    path: 'packages',
+                    element: <LazyPackages />
+                },
+                {
+                    path: 'clinic',
+                    children: [
+                        {
+                            path: 'doctors',
+                            element: <LazyClinicDoctors />,
+                        },
+                    ],
+                }
+
             ],
         },
-		{
-			path: 'clinic',
-			children: [
-				{
-					path: 'doctors',
-					element: <LazyClinicDoctors />,
-				},
-			],
-		},
+
         {
             path: 'utils',
             children: [

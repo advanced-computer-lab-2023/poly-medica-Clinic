@@ -98,6 +98,7 @@ export const patient = (app) => {
 			const patient = await service.getPatientByUserName(userName);
 			if (patient) {
 				const data = await service.getFamilyMembers(id);
+				console.log('Data = ', data);
 				const newFamilyMem = [
 					{ name, userName, nationalId, age, gender, relation },
 					...data.familyMembers,
@@ -113,6 +114,7 @@ export const patient = (app) => {
 			res.status(ERROR_STATUS_CODE).json({
 				message: err.message,
 			});
+			console.log(err.message);
 		}
 	});
 

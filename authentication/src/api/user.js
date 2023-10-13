@@ -1,18 +1,18 @@
 import UserService from "../service/user-service.js";
-import { ADMIN_ENUM, ADMIN_SIGNUP_URL, BAD_REQUEST_CODE_400, DOCOTOR_CHECK_DOC_USERS, DOCOTOR_SIGNUP_URL, DOCTOR_ENUM, DUB_EMAIL_ERROR_MESSAGE, DUB_USERNAME_ERROR_MESSAGE, DUPLICATE_KEY_ERROR_CODE, OK_REQUEST_CODE_200, ONE_DAY_MAX_AGE_IN_MIINUTS, ONE_DAY_MAX_AGE_IN_MILLEMIINUTS, PATIENT_ENUM, PATIENT_SIGNUP_URL, SERVER_ERROR_REQUEST_CODE_500 } from "../utils/Constants.js";
+import { ADMIN_SIGNUP_URL, BAD_REQUEST_CODE_400, DOCOTOR_CHECK_DOC_USERS, DOCOTOR_SIGNUP_URL, DOCTOR_ENUM, DUB_EMAIL_ERROR_MESSAGE, DUB_USERNAME_ERROR_MESSAGE, DUPLICATE_KEY_ERROR_CODE, OK_REQUEST_CODE_200, ONE_DAY_MAX_AGE_IN_MIINUTS, ONE_DAY_MAX_AGE_IN_MILLEMIINUTS, PATIENT_ENUM, PATIENT_SIGNUP_URL, SERVER_ERROR_REQUEST_CODE_500 } from "../utils/Constants.js";
 import jwt from "jsonwebtoken";
 import axios from 'axios';
 
 
 
-export const user = (app)=>{
-    const user = new UserService();
+export const user = (app) => {
+	const user = new UserService();
 
-    const createToken = (id, userName, type) => {
-        return jwt.sign({ id, userName, type }, process.env.JWT_SECRET, {
-          expiresIn: ONE_DAY_MAX_AGE_IN_MIINUTS
-        });
-      };
+	const createToken = (id, userName, type) => {
+		return jwt.sign({ id, userName, type }, process.env.JWT_SECRET, {
+			expiresIn: ONE_DAY_MAX_AGE_IN_MIINUTS
+		});
+	};
 
 
     app.post('/signup', async (req, res) =>{
@@ -32,10 +32,10 @@ export const user = (app)=>{
                 throw new Error(DUB_EMAIL_ERROR_MESSAGE);
             }
 
-            const checkUserName = await user.findUserByUserName(userName);
-            if(checkUserName){
-                throw new Error(DUB_USERNAME_ERROR_MESSAGE);
-            }
+			const checkUserName = await user.findUserByUserName(userName);
+			if(checkUserName){
+				throw new Error(DUB_USERNAME_ERROR_MESSAGE);
+			}
             
             await axios.post(DOCOTOR_CHECK_DOC_USERS, {email, userName});
 
@@ -123,23 +123,23 @@ export const user = (app)=>{
         }
     })
 
-    app.get('/check-user', async (req, res) => {
-        const token = req.cookies.jwt;
-        if (token) {
-            jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
-              if (err) {
-                res.status(401).send({message: "you are not Auth"});
-              } else {
-                res.status(200).send({id: decodedToken.id, userName: decodedToken.userName , type: decodedToken.type});
-              }
-            });
-          } else {
-            res.status(401).send({message: "you are not Auth"})
-          }
-    });
+	app.get('/check-user', async (req, res) => {
+		const token = req.cookies.jwt;
+		if (token) {
+			jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
+				if (err) {
+					res.status(401).send({ message: 'you are not Auth' });
+				} else {
+					res.status(200).send({ id: decodedToken.id, userName: decodedToken.userName , type: decodedToken.type });
+				}
+			});
+		} else {
+			res.status(401).send({ message: 'you are not Auth' });
+		}
+	});
 
-    app.get('/remove-cookie', (req, res) => {
-        res.cookie('jwt', '', { expires: new Date(0), path: '/' });
-        res.status(200).end();
-      });
-}
+	app.get('/remove-cookie', (req, res) => {
+		res.cookie('jwt', '', { expires: new Date(0), path: '/' });
+		res.status(200).end();
+	});
+};

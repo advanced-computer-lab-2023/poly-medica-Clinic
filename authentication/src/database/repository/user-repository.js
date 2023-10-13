@@ -1,5 +1,5 @@
-import User from "../models/Users.js"
-import bcrypt from 'bcrypt'
+import User from '../models/Users.js';
+import bcrypt from 'bcrypt';
 
 class UserRepository{
     async signupUser(data){

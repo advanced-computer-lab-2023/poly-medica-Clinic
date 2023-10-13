@@ -39,7 +39,6 @@ export const admin = (app) => {
 		}
 	});
 
-
 	app.delete('/admins/:id', async (req, res) => {
 		try {
 				

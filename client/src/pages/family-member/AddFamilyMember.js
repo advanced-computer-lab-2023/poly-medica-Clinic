@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import { useState } from 'react';
+import { useUserContext } from 'hooks/useUserContext';
 
 const genders = ['MALE', 'FEMALE'];
 const relations = ['HUSBAND', 'WIFE', 'CHILD'];
@@ -24,7 +25,9 @@ const AddFamilyMember = ({
     setUserNameError,
 }) => {
     const [error, setError] = useState(null);
-    const userId = '65256ddfbe76d9d70f92d287';
+    const { user } = useUserContext();
+    console.log('User = ', user);
+    const userId =  user.id;
     const handleSubmit = (e) => {
         e.preventDefault();
         newMember.gender = newMember.gender.toUpperCase();

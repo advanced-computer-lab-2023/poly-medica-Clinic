@@ -31,10 +31,10 @@ const userSchema = mongoose.Schema({
 
 
 userSchema.statics.signup = async function (userId, email, password, userName, type, state){
-    const userRecord = new this({userId: new mongoose.Types.ObjectId(userId), email, password, userName, type, state});
-    let result = await userRecord.save();
-    return result;
-}
+	const userRecord = new this({ userId: new mongoose.Types.ObjectId(userId), email, password, userName, type, state });
+	const result = await userRecord.save();
+	return result;
+};
 
 const User = mongoose.model('User', userSchema);
 

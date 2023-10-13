@@ -2,9 +2,11 @@ import AppointmentModel from '../models/Appointment.js';
 
 class AppointmentRepository {
 	async findAppointmentsByUserId(id) {
-		return await AppointmentModel.find({
-			$or: [{ patientId: id }, { doctorId: id }],
-		});
+		// const objectId = mongoose.Types.ObjectId(id)
+		// console.log(objectId);
+		const appointments = await AppointmentModel.find({});
+		return appointments.filter((appointment) => appointment.patientId.toString() === id.toString()
+		);
 	}
 }
 

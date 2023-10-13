@@ -14,7 +14,7 @@ import {
 import PeopleIcon from '@mui/icons-material/People';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import AddFamilyMember from './AddFamilyMember';
-
+import { useUserContext } from 'hooks/useUserContext';
 const FamilyMembers = () => {
     const [FamilyMembers, setFamilyMembers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -35,7 +35,9 @@ const FamilyMembers = () => {
             [e.target.name]: e.target.value,
         }));
     };
-    const userId = '65256ddfbe76d9d70f92d287';
+    const { user } = useUserContext(); 
+    console.log('user = ', user);
+    const userId = user.id;
     useEffect(() => {
         const fetch = async () => {
             axios
