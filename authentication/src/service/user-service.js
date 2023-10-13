@@ -25,6 +25,11 @@ class UserService {
         const user = await this.repository.findUserByUserName(userName);
         return user;
     }
+
+    async deleteUser(userId){
+        const user = await this.repository.deleteUser(userId);
+        return user;
+    }
 }
 
 export default UserService;

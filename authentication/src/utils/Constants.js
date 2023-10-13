@@ -14,15 +14,17 @@ export const ONE_DAY_MAX_AGE_IN_MILLEMIINUTS = 1000 * 24 * 60 * 60;
 
 export const BAD_REQUEST_CODE_400 = 400;
 
+export const SERVER_ERROR_REQUEST_CODE_500 = 500;
+
 export const OK_REQUEST_CODE_200 = 200;
 
 export const PATIENT_SIGNUP_URL = "http://localhost:8002/signup"
 
-export const ADMIN_SIGNUP_URL = "http://localhost:8001/add-admin"
+export const ADMIN_SIGNUP_URL = "http://localhost:8001/admins"
 
 export const DOCOTOR_SIGNUP_URL = "http://localhost:8001/add-doctor-req"
 
-export const DOCOTOR_CHECK_DOC_USERS = "http://localhost:8001/check-doctor-req-user"
+export const DOCOTOR_CHECK_DOC_USERS = "http://localhost:8001/check-doctor"
 
 export const DUB_EMAIL_ERROR_MESSAGE = `that email is already registered`
 

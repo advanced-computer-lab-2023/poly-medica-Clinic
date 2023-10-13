@@ -17,6 +17,7 @@ export const doctor = (app) => {
 
 	app.post('/add-doctor-req', async (req, res) => {
 		try{
+
 			const doctorUser = await service.addReqDoctor(req);
 			req.body = { userId: doctorUser._id, email: doctorUser.userData.email, password: doctorUser.userData.password, userName: doctorUser.userData.userName, type: DOCTOR_ENUM };
 			res.send(req.body);
@@ -29,7 +30,7 @@ export const doctor = (app) => {
 		}
 	});
 
-	app.get('/check-doctor-req-user', async (req, res) => {
+	app.post('/check-doctor', async (req, res) => {
 		try{
 			await service.checkDoctorReqUser(req);
 			res.status(OK_STATUS_CODE).end();

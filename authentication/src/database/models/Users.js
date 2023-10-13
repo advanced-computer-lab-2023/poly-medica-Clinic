@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { USER_ARR_ENUM } from "../../utils/Constants.js";
+import bcrypt from 'bcrypt';
 
 const userSchema = mongoose.Schema({
     userId:{
@@ -9,8 +10,6 @@ const userSchema = mongoose.Schema({
     },
     email:{
         type:String,
-        required:true,
-        unique: true
     },
     userName:{
         type:String,

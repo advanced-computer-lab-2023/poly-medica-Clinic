@@ -25,7 +25,7 @@ import axios from 'axios';
 const FirebaseLogin = () => {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [password, setPassword] = useState('');
-	const [email, setEmail] = useState('');
+	const [userName, setUserName] = useState('');
 	const { user, dispatch } = useUserContext();
 	const [isLoading, setIsLoading] = useState(true);
 	const navigate = useNavigate();
@@ -48,7 +48,7 @@ const FirebaseLogin = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setIsSubmitting(true);
-		const postData = { 'email': email, 'password': password };
+		const postData = { 'userName': userName, 'password': password };
 		const response = await axiosInstanceAuthSer.post('/login', postData);
 		const data = response.data;		
 		if(response.status === 200){
@@ -73,18 +73,18 @@ const FirebaseLogin = () => {
 			<Grid container direction="column" justifyContent="center" spacing={2}>
 				<Grid item xs={12} container alignItems="center" justifyContent="center">
 					<Box sx={{ mb: 2 }}>
-						<Typography variant="subtitle1">Sign in with Email address</Typography>
+						<Typography variant="subtitle1">Sign in with username address</Typography>
 					</Box>
 				</Grid>
 			</Grid>
 					<form onSubmit={handleSubmit}>
 						<FormControl fullWidth required sx={{ marginBottom:3 }}>
 							<TextField
-							type='email'
+							type='text'
 							required
-							label="Email Address"
-							value={email}
-							onChange={e => setEmail(e.target.value)}
+							label="username"
+							value={userName}
+							onChange={e => setUserName(e.target.value)}
 							/>
 						</FormControl>
 

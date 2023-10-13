@@ -97,7 +97,7 @@ const Admins = () => {
 		}
 
 		// Make a POST request to add a new admin
-		fetch('http://localhost:8001/admins', {
+		fetch('http://localhost:8004/admins', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',

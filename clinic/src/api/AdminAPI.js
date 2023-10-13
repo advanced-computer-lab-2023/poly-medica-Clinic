@@ -8,18 +8,17 @@ import {
 	OK_STATUS_CODE,
 	CREATED_STATUS_CODE,
 	PATIENTS_BASE_URL,
-	ADMIN_ENUM, BAD_REQUEST_CODE_400, DUPLICATE_KEY_ERROR_CODE, ZERO_INDEX, EXTRA_INDEX
+	ADMIN_ENUM, BAD_REQUEST_CODE_400, DUPLICATE_KEY_ERROR_CODE, ZERO_INDEX, EXTRA_INDEX, AUTH_BASE_URL
 } from '../utils/Constants.js';
 
 export const admin = (app) => {
 	const service = new AdminService();
 
     
-	app.post('/add-admin', async (req, res) => {
+	app.post('/admins', async (req, res) => {
 		try{
-			//TODO will be deleted
 			const adminUser = await service.addAdmin(req);
-			req.body = { userId: adminUser._id, email: adminUser.userData.email, password: adminUser.userData.password, userName: adminUser.userData.userName, type: ADMIN_ENUM };
+			req.body = { userId: adminUser._id, password: adminUser.password, userName: adminUser.userName, type: ADMIN_ENUM };
 			res.send(req.body);
 		} catch(err){
 			if(err.code == DUPLICATE_KEY_ERROR_CODE){
@@ -40,23 +39,10 @@ export const admin = (app) => {
 		}
 	});
 
-	app.post('/admins', async (req, res) => {
-		try {
-			// TODO: this function must be through the Authentication
-			const newAdmin = await service.createAdmin(req.body);
-			res
-				.status(CREATED_STATUS_CODE)
-				.json({ message: 'admin created!', newAdmin });
-		} catch (err) {
-			res.status(ERROR_STATUS_CODE).json({ err: err.message });
-		}
-	});
 
 	app.delete('/admins/:id', async (req, res) => {
 		try {
-			// TODO: this must delete from auth user also
-			const role = 'ADMIN'; // to be adjusted later on with the role of the logged in user
-			if (role == 'ADMIN') {
+				
 				const id = req.params.id;
 				if (!isValidMongoId(id))
 					return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
@@ -67,8 +53,9 @@ export const admin = (app) => {
 						.json({ message: 'you can not delete main admin' });
 				} else {
 					const deletedAdmin = await service.deleteAdmin(id);
-
+					
 					if (deletedAdmin) {
+						axios.delete(`${AUTH_BASE_URL}/users/${id}`)
 						res
 							.status(OK_STATUS_CODE)
 							.json({ message: 'admin deleted!', deletedAdmin });
@@ -78,11 +65,6 @@ export const admin = (app) => {
 							.json({ message: 'admin not found!' });
 					}
 				}
-			} else {
-				res
-					.status(UNAUTHORIZED_STATUS_CODE)
-					.json({ message: 'You are not authorized to delete an admin!' });
-			}
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}
