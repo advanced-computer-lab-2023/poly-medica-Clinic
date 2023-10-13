@@ -49,6 +49,7 @@ export const admin = (app) => {
 				.json({ message: 'admin created!', newAdmin });
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
+			console.log(err.message);
 		}
 	});
 

@@ -95,7 +95,8 @@ const HealthPackages = () => {
 		});
 	};
 
-	const handleSaveEdit = () => {
+	const handleSaveEdit = (e) => {
+		e.preventDefault();
 		if (selectedEditPackages) {
 			clinicAxios.patch(`/package/${selectedEditPackages._id}`, { selectedEditPackages })
 				.then(() => {
