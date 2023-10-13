@@ -22,6 +22,8 @@ export const ADMIN_SIGNUP_URL = "http://localhost:8001/add-admin"
 
 export const DOCOTOR_SIGNUP_URL = "http://localhost:8001/add-doctor-req"
 
+export const DOCOTOR_CHECK_DOC_USERS = "http://localhost:8001/check-doctor-req-user"
+
 export const DUB_EMAIL_ERROR_MESSAGE = `that email is already registered`
 
 export const DUB_USERNAME_ERROR_MESSAGE = `that username is already registered`

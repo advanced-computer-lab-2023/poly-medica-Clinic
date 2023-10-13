@@ -17,6 +17,7 @@ export const admin = (app) => {
     
 	app.post('/add-admin', async (req, res) => {
 		try{
+			//TODO will be deleted
 			const adminUser = await service.addAdmin(req);
 			req.body = { userId: adminUser._id, email: adminUser.userData.email, password: adminUser.userData.password, userName: adminUser.userData.userName, type: ADMIN_ENUM };
 			res.send(req.body);
@@ -41,6 +42,7 @@ export const admin = (app) => {
 
 	app.post('/admins', async (req, res) => {
 		try {
+			// TODO: this function must be through the Authentication
 			const newAdmin = await service.createAdmin(req.body);
 			res
 				.status(CREATED_STATUS_CODE)
@@ -52,6 +54,7 @@ export const admin = (app) => {
 
 	app.delete('/admins/:id', async (req, res) => {
 		try {
+			// TODO: this must delete from auth user also
 			const role = 'ADMIN'; // to be adjusted later on with the role of the logged in user
 			if (role == 'ADMIN') {
 				const id = req.params.id;
@@ -87,6 +90,7 @@ export const admin = (app) => {
 
 	app.delete('/patients/:id', async (req, res) => {
 		try {
+			// TODO: this must delete from auth user also
 			const role = 'ADMIN'; // to be adjusted later on with the role of the logged in user
 			if (role == 'ADMIN') {
 				const id = req.params.id;

@@ -4,11 +4,11 @@ import {
     IconVaccineBottle,
     IconEmergencyBed,
     IconStethoscope,
+    IconPrescription
 } from '@tabler/icons';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 import MedicationIcon from '@mui/icons-material/Medication';
 import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
-import IconPrescription from '@tabler/icons';
 // constant
 const icons = {
     IconKey,

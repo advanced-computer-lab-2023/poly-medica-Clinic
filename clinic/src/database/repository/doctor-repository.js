@@ -1,6 +1,6 @@
 import DoctorModel from '../models/Doctor.js';
 import { DOCTOR_PROJECTION } from '../../utils/Constants.js';
-
+import DoctoerReqModel from '../models/DoctorReq.js';
 import AppointmentModel from '../models/Appointment.js';
 
 class DoctorRepository {
@@ -16,8 +16,22 @@ class DoctorRepository {
 
 	async addDoctorReq(req){
 		const { userData, speciality, hourlyRate, affiliation, educationalBackground } = req.body;
-		const user = await DoctorModel.addUser(userData, speciality, hourlyRate, affiliation, educationalBackground);
+		const user = await DoctoerReqModel.addUser(userData, speciality, hourlyRate, affiliation, educationalBackground);
 		return user;
+	}
+
+	async checkDoctorReqUser(req){
+		const { email, userName } = req.body;
+		// console.log(req.body, userData);
+		const checkUserEmail = await DoctoerReqModel.findOne({ 'userData.email': email });
+		if(checkUserEmail){
+			throw new Error('that email is already registered');
+		}
+		const checkUserUserName = await DoctoerReqModel.findOne({ 'userData.userName': userName });
+		if(checkUserUserName){
+			throw new Error('that username is already registered');
+		}
+
 	}
 
 	async createDoctor(doctor) {
