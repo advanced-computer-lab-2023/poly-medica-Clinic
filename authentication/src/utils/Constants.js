@@ -20,11 +20,11 @@ export const OK_REQUEST_CODE_200 = 200;
 
 export const PATIENT_SIGNUP_URL = 'http://localhost:8002/signup';
 
-export const ADMIN_SIGNUP_URL = "http://localhost:8001/admins"
+export const ADMIN_SIGNUP_URL = 'http://localhost:8001/admins';
 
 export const DOCOTOR_SIGNUP_URL = 'http://localhost:8001/add-doctor-req';
 
-export const DOCOTOR_CHECK_DOC_USERS = "http://localhost:8001/check-doctor"
+export const DOCOTOR_CHECK_DOC_USERS = 'http://localhost:8001/check-doctor';
 
 export const DUB_EMAIL_ERROR_MESSAGE = 'that email is already registered';
 
