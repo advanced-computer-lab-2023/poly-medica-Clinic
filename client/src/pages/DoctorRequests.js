@@ -1,38 +1,94 @@
-// DoctorRequestsPage.js
-// import React, { useState, useEffect } from 'react';
-// import DoctorRequestCard from './DoctorRequestCard.js';
+import React, { useState, useEffect } from 'react';
+import DoctorRequestCard from './DoctorRequestCard';
 
-const DoctorRequestsPage = () => {
-	// const [doctorRequests, setDoctorRequests] = useState([]);
-	// const [expandedCard, setExpandedCard] = useState(null);
-	// useEffect(() => {
-	// Fetch doctor requests data from the backend API and set it to the state.
-	// Example: fetch('your-backend-url/doctor-requests')
-	//   .then((response) => response.json())
-	//   .then((data) => setDoctorRequests(data));
-	// }, []);
-	// const handleExpandCard = (index) => {
-	// 	setExpandedCard(index === expandedCard ? null : index);
-	// };
-	// const handleAccept = (doctorId) => {
-	// 	// Implement the logic to accept the doctor request by ID.
-	// };
-	// const handleReject = (doctorId) => {
-	// 	// Implement the logic to reject the doctor request by ID.
-	// };
-	// return (
-	// <div className='doctor-requests-page'>
-	// 	<h1>Doctor Requests</h1>
-	// 	{doctorRequests.map((doctor, index) => (
-	// 		<DoctorRequestCard
-	// 			key={index}
-	// 			doctor={doctor}
-	// 			expanded={index === expandedCard}
-	// 			onExpand={() => handleExpandCard(index)}
-	// 		/>
-	// 	))}
-	// </div>
-	// );
+const DoctorRequests = () => {
+	const [doctorRequests, setDoctorRequests] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
+
+	useEffect(() => {
+		fetch('http://localhost:8001/doctor-requests', {
+			method: 'GET',
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				setDoctorRequests(data.doctorRequests);
+				setIsLoading(false);
+			})
+			.catch((error) => {
+				console.error('Error fetching data:', error);
+				setIsLoading(false);
+			});
+	}, []);
+
+	const handleAccept = (doctorReq) => {
+		fetch(`http://localhost:8001/doctor-requests/${doctorReq._id}`, {
+			method: 'DELETE',
+		})
+			.then((response) => response.json())
+			.then(() => {
+				setDoctorRequests((prevDoctorRequests) =>
+					prevDoctorRequests.filter(
+						(doctorRequest) => doctorRequest._id !== doctorReq._id,
+					),
+				);
+			})
+			.catch((error) => {
+				console.error('Error accepting doctor request:', error);
+			});
+
+		fetch('http://localhost:8001/doctors', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ doctorReq }),
+		})
+			.then((response) => response.json())
+			.then(() => {
+				setDoctorRequests((prevDoctorRequests) =>
+					prevDoctorRequests.filter(
+						(doctorRequest) => doctorRequest._id !== doctorReq._id,
+					),
+				);
+			})
+			.catch((error) => {
+				console.error('Error accepting doctor request:', error);
+			});
+	};
+
+	const handleReject = (doctorReq) => {
+		fetch(`http://localhost:8001/doctor-requests/${doctorReq._id}`, {
+			method: 'DELETE',
+		})
+			.then((response) => response.json())
+			.then(() => {
+				setDoctorRequests((prevDoctorRequests) =>
+					prevDoctorRequests.filter(
+						(doctorRequest) => doctorRequest._id !== doctorReq._id,
+					),
+				);
+			})
+			.catch((error) => {
+				console.error('Error rejecting doctor request:', error);
+			});
+	};
+
+	return (
+		<div>
+			{isLoading ? (
+				<p>Loading...</p>
+			) : (
+				<div>
+					{doctorRequests.map((doctorRequest) => (
+						<DoctorRequestCard
+							key={doctorRequest._id}
+							doctorReq={doctorRequest}
+							onAccept={handleAccept}
+							onReject={handleReject}
+						/>
+					))}
+				</div>
+			)}
+		</div>
+	);
 };
 
-export default DoctorRequestsPage;
+export default DoctorRequests;

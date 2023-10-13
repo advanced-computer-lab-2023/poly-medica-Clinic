@@ -1,33 +1,59 @@
-// DoctorRequestCard.js
-import React from 'react';
+import React, { useState } from 'react';
+import {
+	Card,
+	CardHeader,
+	CardContent,
+	CardActions,
+	Typography,
+	Accordion,
+	AccordionSummary,
+	AccordionDetails,
+	Button,
+} from '@mui/material';
 
-const DoctorRequestCard = ({
-	doctor,
-	expanded,
-	onExpand,
-	onAccept,
-	onReject,
-}) => {
+const DoctorRequestCard = ({ doctorReq, onAccept, onReject }) => {
+	const [expanded, setExpanded] = useState(false);
+
+	const handleExpand = () => {
+		setExpanded(!expanded);
+	};
+
 	return (
-		<div className={`doctor-request-card ${expanded ? 'expanded' : ''}`}>
-			<div className='doctor-name'>
-				<h2>{doctor.name}</h2>
-				<button onClick={onExpand}>{expanded ? 'Collapse' : 'Expand'}</button>
-			</div>
-			{expanded && (
-				<div className='doctor-details'>
-					<p>Speciality: {doctor.speciality}</p>
-					<p>Hourly Rate: {doctor.hourlyRate}</p>
-					<p>Affiliation: {doctor.affiliation}</p>
-					<p>Educational Background: {doctor.educationalBackground}</p>
-					<p>Available Slots: {doctor.availableSlots.join(', ')}</p>
-					<div className='actions'>
-						<button onClick={onAccept}>Accept</button>
-						<button onClick={onReject}>Reject</button>
-					</div>
-				</div>
-			)}
-		</div>
+		<Card>
+			<CardHeader title={doctorReq.userData.name} />
+			<CardActions>
+				<Button variant='contained' color='primary' onClick={handleExpand}>
+					{expanded ? 'Collapse' : 'Expand'}
+				</Button>
+			</CardActions>
+			<Accordion expanded={expanded}>
+				<AccordionSummary>
+					<Typography>Doctor Details</Typography>
+				</AccordionSummary>
+				<AccordionDetails>
+					<CardContent>
+						<Typography>Email: {doctorReq.userData.email}</Typography>
+						<Typography>
+							Date of Birth: {doctorReq.userData.dateOfBirth}
+						</Typography>
+						<Typography>Speciality: {doctorReq.speciality}</Typography>
+						<Typography>Hourly Rate: {doctorReq.hourlyRate}</Typography>
+						<Typography>Affiliation: {doctorReq.affiliation}</Typography>
+						<Typography>
+							Educational Background: {doctorReq.educationalBackground}
+						</Typography>
+					</CardContent>
+					<CardActions>
+						<Button variant='contained' color='primary' onClick={onAccept}>
+							Accept
+						</Button>
+						<Button variant='contained' color='secondary' onClick={onReject}>
+							Reject
+						</Button>
+					</CardActions>
+				</AccordionDetails>
+			</Accordion>
+		</Card>
 	);
 };
 

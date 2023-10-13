@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { admin } from './src/api/AdminAPI.js';
 import { healthPackage } from './src/api/HealthPackageAPI.js';
 import { doctor } from './src/api/DoctorAPI.js';
+import { doctorRequests } from './src/api/DoctorRequestsAPI.js';
 import { PORT } from './src/utils/Constants.js';
 import cors from 'cors';
 import { appointment } from './src/api/AppointmentAPI.js';
@@ -12,7 +13,6 @@ dotenv.config();
 const app = express();
 
 const mongoURL = process.env.MONGO_URI;
-console.log(mongoURL);
 
 const connect = async () => {
 	try {
@@ -34,12 +34,13 @@ app.use(
 			'http://localhost:3002',
 		],
 		credentials: true,
-	})
+	}),
 );
 
 healthPackage(app);
 admin(app);
 doctor(app);
+doctorRequests(app);
 appointment(app);
 
 const port = process.env.PORT || PORT;

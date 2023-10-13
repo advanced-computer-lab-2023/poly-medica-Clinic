@@ -22,7 +22,7 @@ const DoctorReq = mongoose.Schema({
 	educationalBackground: {
 		type: String,
 		required: true
-	}
+	},
 });
 
 DoctorReq.statics.addUser = async function (userData, speciality, hourlyRate, affiliation, educationalBackground){

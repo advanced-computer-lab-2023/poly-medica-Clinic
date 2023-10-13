@@ -1,4 +1,5 @@
 import DoctorModel from '../models/Doctor.js';
+import DoctorReqModel from '../models/DoctorReq.js';
 import { DOCTOR_PROJECTION } from '../../utils/Constants.js';
 
 import AppointmentModel from '../models/Appointment.js';
@@ -8,16 +9,50 @@ class DoctorRepository {
 		this.model = DoctorModel;
 	}
 
-	async addDoctor(req){
-		const { userData, speciality, hourlyRate, affiliation, educationalBackground } = req.body;
-		const user = await DoctorModel.addUser(userData, speciality, hourlyRate, affiliation, educationalBackground);
+	async findAllDoctorRequests() {
+		const doctorRequests = await DoctorReqModel.find();
+		return doctorRequests;
+	}
+
+	async addDoctor(req) {
+		const {
+			userData,
+			speciality,
+			hourlyRate,
+			affiliation,
+			educationalBackground,
+		} = req.body;
+		const user = await DoctorModel.addUser(
+			userData,
+			speciality,
+			hourlyRate,
+			affiliation,
+			educationalBackground,
+		);
 		return user;
 	}
 
-	async addDoctorReq(req){
-		const { userData, speciality, hourlyRate, affiliation, educationalBackground } = req.body;
-		const user = await DoctorModel.addUser(userData, speciality, hourlyRate, affiliation, educationalBackground);
+	async addDoctorReq(req) {
+		const {
+			userData,
+			speciality,
+			hourlyRate,
+			affiliation,
+			educationalBackground,
+		} = req.body;
+		const user = await DoctorReqModel.addUser(
+			userData,
+			speciality,
+			hourlyRate,
+			affiliation,
+			educationalBackground,
+		);
 		return user;
+	}
+
+	async deleteDoctorRequest(id) {
+		const deletedDoctorRequest = await DoctorReqModel.findByIdAndDelete(id);
+		return deletedDoctorRequest;
 	}
 
 	async createDoctor(doctor) {
@@ -61,16 +96,15 @@ class DoctorRepository {
 			new: true,
 			runValidators: true,
 		});
-		if(updates.email) {
-			doctor= await DoctorModel.findOneAndUpdate({ _id: id }, { 'userData.email': updates.email }, { new: true, runValidators: true });
+		if (updates.email) {
+			doctor = await DoctorModel.findOneAndUpdate(
+				{ _id: id },
+				{ 'userData.email': updates.email },
+				{ new: true, runValidators: true },
+			);
 		}
-		
+
 		return doctor;
-		
-
-
-		
-
 	}
 }
 
