@@ -56,14 +56,6 @@ const pages = {
 			],
 		},
 		{
-			id: 'medicines',
-			title: 'Medicines',
-			type: 'item',
-			icon: icons.IconVaccineBottle,
-			url: '/pages/medicines',
-			target: false,
-		},
-		{
 			id: 'admins',
 			title: 'Admins',
 			type: 'item',
