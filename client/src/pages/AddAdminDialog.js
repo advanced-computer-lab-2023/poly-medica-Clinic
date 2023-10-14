@@ -21,10 +21,6 @@ const AddAdminDialog = ({
 	isAddButtonDisabled,
 	errorMessage,
 }) => {
-	console.log(
-		'AddAdminDialog.js: AddAdminDialog: openAddDialog: ',
-		openAddDialog,
-	);
 	return (
 		<Dialog open={openAddDialog} onClose={handleCloseAddDialog}>
 			<DialogTitle>Add New Admin</DialogTitle>
