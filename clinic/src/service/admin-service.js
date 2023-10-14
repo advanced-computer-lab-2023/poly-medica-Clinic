@@ -5,6 +5,11 @@ class AdminService {
 		this.repository = new AdminRepository();
 	}
 
+	async addAdmin(req){
+		const adminUser = await this.repository.addAdmin(req);
+		return adminUser;
+	}
+
 	async findAllAdmins() {
 		const admins = await this.repository.findAllAdmins();
 		return admins;

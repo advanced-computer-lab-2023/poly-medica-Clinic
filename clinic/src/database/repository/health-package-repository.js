@@ -15,12 +15,14 @@ class HealthPackageRepository {
 		discountOfFamily,
 	) {
 		const newPackage = new HealthPackageModel({
-			name,
+			
 			price,
+			name,
 			discountOfDoctor,
 			discountOfMedicin,
 			discountOfFamily,
 		});
+		
 		const packageResult = await newPackage.save();
 		return packageResult;
 	}

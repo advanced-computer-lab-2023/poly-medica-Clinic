@@ -18,6 +18,7 @@ export const appointment = (app) => {
 		try {
 			const appointments = await service.getAppointmentsByUserId(id);
 			res.status(OK_STATUS_CODE).json(appointments);
+			console.log('Appointments = ', appointments);
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({
 				message: 'appointments not found',

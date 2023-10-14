@@ -8,7 +8,6 @@ import { Box, Card, Divider, Grid, Typography } from '@mui/material';
 import MuiBreadcrumbs from '@mui/material/Breadcrumbs';
 
 // project imports
-import config from 'config';
 import { gridSpacing } from 'store/constant';
 
 // assets
@@ -41,22 +40,22 @@ const Breadcrumbs = ({ card, divider, icon, icons, maxItems, navigation, rightAl
 	const [main, setMain] = useState();
 	const [item, setItem] = useState();
 
-	// set active item state
-	const getCollapse = (menu) => {
-		if (menu.children) {
-			menu.children.filter((collapse) => {
-				if (collapse.type && collapse.type === 'collapse') {
-					getCollapse(collapse);
-				} else if (collapse.type && collapse.type === 'item') {
-					if (document.location.pathname === config.basename + collapse.url) {
-						setMain(menu);
-						setItem(collapse);
-					}
-				}
-				return false;
-			});
-		}
-	};
+  // set active item state
+  const getCollapse = (menu) => {
+    if (menu.children) {
+      menu.children.filter((collapse) => {
+        if (collapse.type && collapse.type === 'collapse') {
+          getCollapse(collapse);
+        } else if (collapse.type && collapse.type === 'item') {
+          if (document.location.pathname === collapse.url) {
+            setMain(menu);
+            setItem(collapse);
+          }
+        }
+        return false;
+      });
+    }
+  };
 
 	useEffect(() => {
 		navigation?.items?.map((menu) => {

@@ -13,6 +13,8 @@ import Sidebar from './Sidebar';
 
 import { drawerWidth } from 'store/constant';
 import { SET_MENU } from 'store/actions';
+import { SearchProvider } from 'contexts/SearchContext';
+import { FilterProvider } from 'contexts/FilterContext';
 
 // assets
 // import { IconChevronRight } from '@tabler/icons';
@@ -64,34 +66,38 @@ const MainLayout = () => {
 	};
 
 	return (
-		<Box sx={{ display: 'flex' }}>
-			<CssBaseline />
-			{/* header */}
-			<AppBar
-				enableColorOnDark
-				position="fixed"
-				color="inherit"
-				elevation={0}
-				sx={{
-					bgcolor: theme.palette.background.default,
-					transition: leftDrawerOpened ? theme.transitions.create('width') : 'none'
-				}}
-			>
-				<Toolbar>
-					<Header handleLeftDrawerToggle={handleLeftDrawerToggle} />
-				</Toolbar>
-			</AppBar>
+		<FilterProvider>
+			<SearchProvider>
+				<Box sx={{ display: 'flex' }}>
+					<CssBaseline />
+					{/* header */}
+					<AppBar
+						enableColorOnDark
+						position="fixed"
+						color="inherit"
+						elevation={0}
+						sx={{
+							bgcolor: theme.palette.background.default,
+							transition: leftDrawerOpened ? theme.transitions.create('width') : 'none'
+						}}
+					>
+						<Toolbar>
+							<Header handleLeftDrawerToggle={handleLeftDrawerToggle} />
+						</Toolbar>
+					</AppBar>
 
-			{/* drawer */}
-			<Sidebar drawerOpen={!matchDownMd ? leftDrawerOpened : !leftDrawerOpened} drawerToggle={handleLeftDrawerToggle} />
+					{/* drawer */}
+					<Sidebar drawerOpen={!matchDownMd ? leftDrawerOpened : !leftDrawerOpened} drawerToggle={handleLeftDrawerToggle} />
 
-			{/* main content */}
-			<Main theme={theme} open={leftDrawerOpened}>
-        
-				<Outlet />
-			</Main>
-			{/* <Customization /> */}
-		</Box>
+					{/* main content */}
+					<Main theme={theme} open={leftDrawerOpened}>
+
+						<Outlet />
+					</Main>
+					{/* <Customization /> */}
+				</Box>
+			</SearchProvider>
+		</FilterProvider>
 	);
 };
 
