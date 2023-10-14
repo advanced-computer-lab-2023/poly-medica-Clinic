@@ -55,6 +55,30 @@ const DoctorRequests = () => {
 				console.error('Error accepting doctor request:', error);
 			});
 
+		doctorReq.type = 'doctor';
+		// Add the doctor to the users table
+		fetch('http://localhost:8004/doctors', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({
+				userId: doctorReq._id,
+				email: doctorReq.userData.email,
+				password: doctorReq.userData.password,
+				userName: doctorReq.userData.userName,
+				type: doctorReq.type,
+			}),
+		})
+			.then((response) => response.json())
+			.then(() => {
+				setDoctorRequests((prevDoctorRequests) =>
+					prevDoctorRequests.filter(
+						(doctorRequest) => doctorRequest._id !== doctorReq._id,
+					),
+				);
+			})
+			.catch((error) => {
+				console.error('Error accepting doctor request:', error);
+			});
 	};
 
 	const handleReject = (doctorReq) => {
