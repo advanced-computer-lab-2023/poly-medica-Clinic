@@ -1,5 +1,8 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { useSearch } from 'contexts/SearchContext';
+import { useFilter } from 'contexts/FilterContext';
+import FilterDropdown from './FilterDropdown';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
@@ -60,12 +63,21 @@ const HeaderAvatarStyle = styled(Avatar, { shouldForwardProp })(({ theme }) => (
 
 const MobileSearch = ({ value, setValue, popupState }) => {
 	const theme = useTheme();
+	const { updateSearchQuery } = useSearch();
+
+	const handleInputChange = (e) => {
+		const inputValue = e.target.value;
+		setValue(inputValue);
+		updateSearchQuery(inputValue);
+	};
+
+	
 
 	return (
 		<OutlineInputStyle
 			id="input-search-header"
 			value={value}
-			onChange={(e) => setValue(e.target.value)}
+			onChange={e => handleInputChange(e)}
 			placeholder="Search"
 			startAdornment={
 				<InputAdornment position="start">
@@ -118,13 +130,41 @@ MobileSearch.propTypes = {
 const SearchSection = () => {
 	const theme = useTheme();
 	const [value, setValue] = useState('');
+	const { updateSearchQuery } = useSearch();
+	const { filterData, updateFilter } = useFilter();
+	const [isDrawerOpen, setDrawerOpen] = useState(false);
+
+	const handleFilterChange = (index, selectedValue) => {
+		const updatedFilterData = [...filterData];
+		updatedFilterData[index] = {
+			...updatedFilterData[index],
+			selectedValue: selectedValue,
+		};
+		updateFilter(updatedFilterData);
+	};
+
+	const handleInputChange = (e) => {
+		const inputValue = e.target.value;
+		setValue(inputValue);
+		updateSearchQuery(inputValue);
+	};
+
+	const handleOpenDrawer = () => {
+		setDrawerOpen(true);
+	};
+
+	const handleDrawerClose = () => {
+		setDrawerOpen(false);
+	};
 
 	return (
 		<>
 			<Box sx={{ display: { xs: 'block', md: 'none' } }}>
+
 				<PopupState variant="popper" popupId="demo-popup-popper">
 					{(popupState) => (
 						<>
+
 							<Box sx={{ ml: 2 }}>
 								<ButtonBase sx={{ borderRadius: '12px' }}>
 									<HeaderAvatarStyle variant="rounded" {...bindToggle(popupState)}>
@@ -145,13 +185,6 @@ const SearchSection = () => {
 													}
 												}}
 											>
-												<Box sx={{ p: 2 }}>
-													<Grid container alignItems="center" justifyContent="space-between">
-														<Grid item xs>
-															<MobileSearch value={value} setValue={setValue} popupState={popupState} />
-														</Grid>
-													</Grid>
-												</Box>
 											</Card>
 										</Transitions>
 									</>
@@ -160,12 +193,14 @@ const SearchSection = () => {
 						</>
 					)}
 				</PopupState>
+
 			</Box>
 			<Box sx={{ display: { xs: 'none', md: 'block' } }}>
+
 				<OutlineInputStyle
 					id="input-search-header"
 					value={value}
-					onChange={(e) => setValue(e.target.value)}
+					onChange={(e) => handleInputChange(e)}
 					placeholder="Search"
 					startAdornment={
 						<InputAdornment position="start">
@@ -174,16 +209,31 @@ const SearchSection = () => {
 					}
 					endAdornment={
 						<InputAdornment position="end">
-							<ButtonBase sx={{ borderRadius: '12px' }}>
+							<ButtonBase sx={{ borderRadius: '12px' }} onClick={handleOpenDrawer}>
 								<HeaderAvatarStyle variant="rounded">
 									<IconAdjustmentsHorizontal stroke={1.5} size="1.3rem" />
 								</HeaderAvatarStyle>
 							</ButtonBase>
 						</InputAdornment>
 					}
+
 					aria-describedby="search-helper-text"
 					inputProps={{ 'aria-label': 'weight' }}
 				/>
+			</Box>
+			<Box sx={{ p: 2 }}>
+				<Grid container alignItems="center" justifyContent="space-between">
+					<Grid item xs>
+						{isDrawerOpen && (
+							<FilterDropdown
+								filterData={filterData}
+								onChange={handleFilterChange}
+								isDrawerOpen = {isDrawerOpen}
+								handleDrawerClose = {handleDrawerClose}
+							/>
+						)}
+					</Grid>
+				</Grid>
 			</Box>
 		</>
 	);

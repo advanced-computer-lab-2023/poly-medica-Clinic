@@ -7,7 +7,6 @@ import FamilyMembers from 'pages/family-member/FamilyMembers.js';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
-const LazyMedicines = Loadable(lazy(() => import('pages/Medicines')));
 const LazyPrescriptions = Loadable(lazy(() => import('pages/prescriptions/Prescriptions')));
 const LazyAdmins = Loadable(lazy(() => import('pages/Admins')));
 const LazyPatients = Loadable(lazy(() => import('pages/Patients')));
@@ -48,10 +47,6 @@ const MainRoutes = {
         {
             path: 'pages',
             children: [
-                {
-                    path: 'medicines',
-                    element: <LazyMedicines />,
-                },
                 {
                     path: 'admins',
                     element: <LazyAdmins />,
