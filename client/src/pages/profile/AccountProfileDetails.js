@@ -162,6 +162,7 @@ export const AccountProfileDetails = () => {
                                     fullWidth
                                     label='email'
                                     name='email'
+                                    required
                                     onChange={handleChange}
                                     type='email'
                                     value={values.email}
@@ -173,6 +174,9 @@ export const AccountProfileDetails = () => {
                                     label='hourlyRate'
                                     name='hourlyRate'
                                     type='number'
+                                    inputProps={{
+                                        min:0
+                                    }}
                                     onChange={handleChange}
                                     required
                                     value={values.hourlyRate}
@@ -209,7 +213,7 @@ export const AccountProfileDetails = () => {
                 <CardActions sx={{ justifyContent: 'flex-end' }}>
                     <Button
                         variant='contained'
-                        onClick={handleSubmit}
+                        type='submit'
                         disabled={loading}
                     >
                         Save details
