@@ -390,7 +390,7 @@ const ProfileSection = () => {
                                                         selectedIndex === 1
                                                     }
                                                     onClick={() => {
-                                                        navigate('/profile');
+                                                        navigate('pages/profile');
                                                     }}
                                                 >
                                                     <ListItemIcon>

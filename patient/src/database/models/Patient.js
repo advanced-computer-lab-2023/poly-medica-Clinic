@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { FAMILY_RELATIONS, GENDERS } from '../../utils/Constants.js';
+import { FAMILIY_EMERGENCY, GENDERS } from '../../utils/Constants.js';
 import bcrypt from 'bcrypt';
 
 const patientSchema = mongoose.Schema({
@@ -50,7 +50,7 @@ const patientSchema = mongoose.Schema({
 		relation: {
 			type: String,
 			required: true,
-			enum: FAMILY_RELATIONS,
+			enum: FAMILIY_EMERGENCY,
 		},
 	},
 	familyMembers: [
@@ -76,7 +76,7 @@ const patientSchema = mongoose.Schema({
 			},
 			relation: {
 				type: String,
-				enum: FAMILY_RELATIONS,
+				enum: FAMILIY_EMERGENCY,
 				required: true,
 			},
 		},

@@ -137,7 +137,7 @@ export const doctor = (app) => {
 					.json({ message: 'Invalid ID' });
 			const deletedDoctor = await service.deleteDoctor(id);
 			if (deletedDoctor) {
-				axios.delete(`${AUTH_BASE_URL}/users/${id}`);
+				await axios.delete(`${AUTH_BASE_URL}/users/${id}`);
 
 				res.status(OK_STATUS_CODE).json({
 					message: 'doctor deleted!',

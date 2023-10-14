@@ -45,7 +45,7 @@ const FamilyMembers = () => {
                 .then((data) => {
                     setFamilyMembers(data.familyMembers);
                     setIsLoading(false);
-                });
+                }).catch(() => setIsLoading(false));
         };
         fetch();
     }, []);

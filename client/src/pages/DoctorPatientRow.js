@@ -16,18 +16,20 @@ const PatientRow = ({ patient }) => {
 		setPatientDetailsOpen(true);
 	};
  
-	// const handleClose = () => {
-	// 	setPatientDetailsOpen(false);
-	// 	console.log('close',isPatientDetailsOpen);
-	// };
+	const handleClose = () => {
+		console.log('here');
+		setPatientDetailsOpen(false);
+	};
 	
 
 	return (
 		
+	<>
 		<TableRow
 			key={patient._id}
 			hover={true}
-			onClick={handleOpen}   
+			onClick={handleOpen} 
+			sx={ { cursor: 'pointer' } }  
 		>
 			<TableCell>{patient.name}</TableCell>
 			<TableCell>{patient.email}</TableCell>
@@ -36,14 +38,16 @@ const PatientRow = ({ patient }) => {
 			<TableCell>{patient.mobileNumber}</TableCell>
 			
 			{/* Conditionally render the popup based on the 'open' state */}
-			<HealthRecordDetails
-				isPatientDetailsOpen={isPatientDetailsOpen}
-				setPatientDetailsOpen={setPatientDetailsOpen}
-				patient={patient}
-			/>
+			
 
  
 		</TableRow>
+		<HealthRecordDetails
+		isPatientDetailsOpen={isPatientDetailsOpen}
+		handleClose={handleClose}
+		patient={patient}
+	/>
+	</>
 	);
 };
 

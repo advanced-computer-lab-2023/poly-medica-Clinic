@@ -160,8 +160,8 @@ export const user = (app) => {
 				maxAge: ONE_DAY_MAX_AGE_IN_MILLEMIINUTS,
 			});
 			res.send({
-				id: logedinUser._id,
-				name: logedinUser.userName,
+				id: logedinUser.userId,
+				userName: logedinUser.userName,
 				type: logedinUser.type,
 			});
 		} catch (err) {

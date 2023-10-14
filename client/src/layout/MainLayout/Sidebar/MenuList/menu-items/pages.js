@@ -57,14 +57,6 @@ const pages = {
             ],
         },
         {
-            id: 'profile',
-            title: 'Profile',
-            type: 'item',
-            icon: icons.AccountBoxIcon,
-            url: '/pages/profile',
-            target: false,
-        },
-        {
             id: 'admins',
             title: 'Admins',
             type: 'item',
@@ -146,10 +138,10 @@ const pages = {
         },
         {
             id: 'ListOfPatients',
-            title: 'ListOfPatientsRegiested',
+            title: 'My Patients',
             type: 'item',
             icon: icons.IconStethoscope,
-            url: '/pages/listOfPatients',
+            url: '/pages/my-patients',
             target: false,
         },
     ],

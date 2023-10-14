@@ -92,6 +92,10 @@ const MainRoutes = {
                     element: <LazyPrescriptions />,
                 },
                 {
+                    path: 'my-patients',
+                    element: <LazyDoctorListofPatients/>
+                },
+                {
                     path: 'packages',
                     element: <LazyPackages />,
                 },
@@ -107,7 +111,7 @@ const MainRoutes = {
 
                 {
                     path: 'My Patients',
-                    element: <LazyDoctorListofPatients />,
+                    element: <lazyDoctorListofPatients />,
                 },
             ],
         },
