@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useUserContext } from 'hooks/useUserContext.js';
 import {
 	Table,
 	TableBody,
@@ -24,12 +25,17 @@ const Admins = () => {
 	const [confirmDeleteDialogOpen, setConfirmDeleteDialogOpen] = useState(false);
 	const [adminToDelete, setAdminToDelete] = useState(null);
 	const [errorMessage, setErrorMessage] = useState('');
+	const { user } = useUserContext();
 
 	useEffect(() => {
+		console.log(user, 'user');
+
 		fetch('http://localhost:8001/admins')
 			.then((response) => response.json())
 			.then((data) => {
-				setAdmins(data.admins);
+				setAdmins(
+					data.admins.filter((admin) => admin.userName !== user.userName),
+				);
 				setIsLoading(false);
 			})
 			.catch((error) => {
@@ -108,14 +114,14 @@ const Admins = () => {
 		})
 			.then((response) => response.json())
 			.then((data) => {
-				const status = data.status;
-				if (status === 409) {
+				if (data.message === 'that username is already registered') {
 					setErrorMessage(
 						`Username '${newAdminUsername}' already exists. Please choose a different username.`,
 					);
 					return;
 				}
 
+				console.log('New admin added:', data);
 				setAdmins((prevAdmins) => [...prevAdmins, newAdmin]);
 				setOpenAddDialog(false);
 				setNewAdminUsername('');

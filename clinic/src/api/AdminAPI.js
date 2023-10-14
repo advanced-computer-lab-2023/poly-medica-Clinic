@@ -23,7 +23,7 @@ export const admin = (app) => {
 			if(err.code == DUPLICATE_KEY_ERROR_CODE){
 				const duplicateKeyAttrb = Object.keys(err.keyPattern)[ZERO_INDEX];
 				const keyAttrb = duplicateKeyAttrb.split('.');
-				res.status(BAD_REQUEST_CODE_400).send({ errCode:DUPLICATE_KEY_ERROR_CODE ,errMessage:`that ${keyAttrb[keyAttrb.length - EXTRA_INDEX]} is already registered` });
+				res.status(BAD_REQUEST_CODE_400).send({ errCode:DUPLICATE_KEY_ERROR_CODE ,errMessage:`that ${keyAttrb[keyAttrb.length - EXTRA_INDEX]} is already registered`, errStatus: BAD_REQUEST_CODE_400 });
 			}
 			else res.status(BAD_REQUEST_CODE_400).send({ errMessage: err.message });
 		}
