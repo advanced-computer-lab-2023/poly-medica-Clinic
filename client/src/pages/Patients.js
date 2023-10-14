@@ -37,7 +37,7 @@ const Patients = () => {
 	};
 
 	const handleConfirmDelete = () => {
-		fetch(`http://localhost:8002/patients/${patientToDelete}`, {
+		fetch(`http://localhost:8001/patients/${patientToDelete}`, {
 			method: 'DELETE',
 		})
 			.then((response) => response.json())

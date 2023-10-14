@@ -4,38 +4,54 @@ import { isValidMongoId } from '../utils/Validation.js';
 import {
 	EMPTY_SIZE,
 	PATIENTS_BASE_URL,
+	AUTH_BASE_URL,
 	NOT_FOUND_STATUS_CODE,
 	ERROR_STATUS_CODE,
 	OK_STATUS_CODE,
 	CREATED_STATUS_CODE,
-	UNAUTHORIZED_STATUS_CODE,
-	BAD_REQUEST_CODE_400, DOCTOR_ENUM, DUPLICATE_KEY_ERROR_CODE, ZERO_INDEX, EXTRA_INDEX
+	BAD_REQUEST_CODE_400,
+	DOCTOR_ENUM,
+	DUPLICATE_KEY_ERROR_CODE,
+	ZERO_INDEX,
+	EXTRA_INDEX,
 } from '../utils/Constants.js';
 
 export const doctor = (app) => {
 	const service = new DoctorService();
 
 	app.post('/add-doctor-req', async (req, res) => {
-		try{
-
+		try {
 			const doctorUser = await service.addReqDoctor(req);
-			req.body = { userId: doctorUser._id, email: doctorUser.userData.email, password: doctorUser.userData.password, userName: doctorUser.userData.userName, type: DOCTOR_ENUM };
+			req.body = {
+				userId: doctorUser._id,
+				email: doctorUser.userData.email,
+				password: doctorUser.userData.password,
+				userName: doctorUser.userData.userName,
+				type: DOCTOR_ENUM,
+			};
 			res.send(req.body);
-		} catch(err){
-			if(err.code == DUPLICATE_KEY_ERROR_CODE){
+		} catch (err) {
+			if (err.code == DUPLICATE_KEY_ERROR_CODE) {
 				const duplicateKeyAttrb = Object.keys(err.keyPattern)[ZERO_INDEX];
 				const keyAttrb = duplicateKeyAttrb.split('.');
-				res.status(BAD_REQUEST_CODE_400).send({ errCode:DUPLICATE_KEY_ERROR_CODE ,errMessage:`that ${keyAttrb[keyAttrb.length - EXTRA_INDEX ]} is already registered` });
+				res.status(BAD_REQUEST_CODE_400).send({
+					errCode: DUPLICATE_KEY_ERROR_CODE,
+					errMessage: `that ${
+						keyAttrb[keyAttrb.length - EXTRA_INDEX]
+					} is already registered`,
+				});
 			} else res.status(BAD_REQUEST_CODE_400).send({ errMessage: err.message });
 		}
 	});
 
 	app.post('/check-doctor', async (req, res) => {
-		try{
+		try {
 			await service.checkDoctorReqUser(req);
 			res.status(OK_STATUS_CODE).end();
-		} catch(err){
-			res.status(BAD_REQUEST_CODE_400).send({ errCode:DUPLICATE_KEY_ERROR_CODE, errMessage: err.message });
+		} catch (err) {
+			res
+				.status(BAD_REQUEST_CODE_400)
+				.send({ errCode: DUPLICATE_KEY_ERROR_CODE, errMessage: err.message });
 		}
 	});
 
@@ -89,6 +105,7 @@ export const doctor = (app) => {
 	});
 
 	app.post('/doctors', async (req, res) => {
+		console.log('add doctor in doc api', req.body);
 		try {
 			const newDoctor = await service.createDoctor(req.body);
 			res
@@ -101,25 +118,20 @@ export const doctor = (app) => {
 
 	app.delete('/doctors/:id', async (req, res) => {
 		try {
-			const role = 'ADMIN'; // to be adjusted later on with the role of the logged in user
-			if (role == 'ADMIN') {
-				const id = req.params.id;
-				if (!isValidMongoId(id))
-					return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
-				const deletedDoctor = await service.deleteDoctor(id);
-				if (deletedDoctor)
-					res
-						.status(OK_STATUS_CODE)
-						.json({ message: 'doctor deleted!', deletedDoctor });
-				else
-					res
-						.status(NOT_FOUND_STATUS_CODE)
-						.json({ message: 'doctor not found!' });
-			} else {
+			const id = req.params.id;
+			if (!isValidMongoId(id))
+				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
+			const deletedDoctor = await service.deleteDoctor(id);
+			if (deletedDoctor) {
+				axios.delete(`${AUTH_BASE_URL}/users/${id}`);
+
 				res
-					.status(UNAUTHORIZED_STATUS_CODE)
-					.json({ message: 'You are not authorized to delete a doctor!' });
-			}
+					.status(OK_STATUS_CODE)
+					.json({ message: 'doctor deleted!', deletedDoctor });
+			} else
+				res
+					.status(NOT_FOUND_STATUS_CODE)
+					.json({ message: 'doctor not found!' });
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}
@@ -155,8 +167,7 @@ export const doctor = (app) => {
 		} catch (error) {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
-	}
-	);
+	});
 	app.patch('/doctors/:id', async (req, res) => {
 		try {
 			const id = req.params.id;
@@ -174,8 +185,5 @@ export const doctor = (app) => {
 		} catch (error) {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
-	}
-
-	);
+	});
 };
-

@@ -93,5 +93,4 @@ patientSchema.statics.signup = async function (name, email, password, userName, 
 
 const PatientModel = mongoose.model('Patient', patientSchema);
 
-
 export default PatientModel;

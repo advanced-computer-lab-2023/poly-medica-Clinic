@@ -31,4 +31,3 @@ export const DUB_EMAIL_ERROR_MESSAGE = 'that email is already registered';
 export const DUB_USERNAME_ERROR_MESSAGE = 'that username is already registered';
 
 export const PORT = 8004;
-

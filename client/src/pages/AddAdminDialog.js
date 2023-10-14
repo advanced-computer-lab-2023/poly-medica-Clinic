@@ -19,6 +19,7 @@ const AddAdminDialog = ({
 	setNewAdminPassword,
 	handleAddAdmin,
 	isAddButtonDisabled,
+	errorMessage,
 }) => {
 	console.log(
 		'AddAdminDialog.js: AddAdminDialog: openAddDialog: ',
@@ -44,6 +45,11 @@ const AddAdminDialog = ({
 					margin='normal'
 					required
 				/>
+				{errorMessage && (
+					<div className='error-message' style={{ color: 'red' }}>
+						{errorMessage}
+					</div>
+				)}
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={handleCloseAddDialog} color='primary'>
