@@ -102,6 +102,7 @@ export const user = (app) => {
 	});
 
 	app.post('/doctors', async (req, res) => {
+		console.log('add doctor in user api', req.body);
 		try {
 			await user.signupUser(req.body);
 			res.status(OK_REQUEST_CODE_200).end();

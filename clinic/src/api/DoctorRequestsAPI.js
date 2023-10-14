@@ -48,6 +48,7 @@ export const doctorRequests = (app) => {
 	});
 
 	app.delete('/doctor-requests/:id', async (req, res) => {
+		console.log('delete doctor request', req.params.id);
 		try {
 			const id = req.params.id;
 			if (!isValidMongoId(id))

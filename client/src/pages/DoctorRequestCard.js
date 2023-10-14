@@ -44,10 +44,18 @@ const DoctorRequestCard = ({ doctorReq, onAccept, onReject }) => {
 						</Typography>
 					</CardContent>
 					<CardActions>
-						<Button variant='contained' color='primary' onClick={onAccept}>
+						<Button
+							variant='contained'
+							color='primary'
+							onClick={() => onAccept(doctorReq)}
+						>
 							Accept
 						</Button>
-						<Button variant='contained' color='secondary' onClick={onReject}>
+						<Button
+							variant='contained'
+							color='secondary'
+							onClick={() => onReject(doctorReq)}
+						>
 							Reject
 						</Button>
 					</CardActions>
