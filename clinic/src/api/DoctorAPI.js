@@ -105,7 +105,6 @@ export const doctor = (app) => {
 	});
 
 	app.post('/doctors', async (req, res) => {
-		console.log('add doctor in doc api', req.body);
 		try {
 			const newDoctor = await service.createDoctor(req.body);
 			res

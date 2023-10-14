@@ -28,8 +28,6 @@ const Admins = () => {
 	const { user } = useUserContext();
 
 	useEffect(() => {
-		console.log(user, 'user');
-
 		fetch('http://localhost:8001/admins')
 			.then((response) => response.json())
 			.then((data) => {
@@ -121,7 +119,6 @@ const Admins = () => {
 					return;
 				}
 
-				console.log('New admin added:', data);
 				setAdmins((prevAdmins) => [...prevAdmins, newAdmin]);
 				setOpenAddDialog(false);
 				setNewAdminUsername('');
