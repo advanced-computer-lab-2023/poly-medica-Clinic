@@ -63,6 +63,7 @@ const MainRoutes = {
                     element: <Account />,
                 },
                 {
+
                     path: 'admins',
                     element: <LazyAdmins />,
                 },
@@ -103,8 +104,9 @@ const MainRoutes = {
                         },
                     ],
                 },
+
                 {
-                    path: 'listOfPatients',
+                    path: 'My Patients',
                     element: <LazyDoctorListofPatients />,
                 },
             ],
