@@ -28,43 +28,62 @@ const Doctors = () => {
                 updateFilter([
                     {
                         attribute: 'Speciality',
-                        values: specialities
-                    }, {
-                        attribute: 'Available Slots'
+                        values: specialities,
+                    },
+                    {
+                        attribute: 'Available Slots',
                     },
                     {
                         attribute: 'Search Method',
-                        values: ['Name', 'Speciality', 'Both']
-                    }
+                        values: ['Name', 'Speciality', 'Both'],
+                    },
                 ]);
             })
             .catch((error) => {
                 console.log(error);
             });
-
     }, []);
 
     const applySelectedSearch = (doctor, value) => {
         if (value === 'Name') {
-            return doctor.userData.name.toLowerCase().includes(searchQuery.toLowerCase());
+            return doctor.userData.name
+                .toLowerCase()
+                .includes(searchQuery.toLowerCase());
         } else if (value === 'Speciality') {
-            return doctor.speciality.toLowerCase().includes(searchQuery.toLowerCase());
+            return doctor.speciality
+                .toLowerCase()
+                .includes(searchQuery.toLowerCase());
         } else {
-            return doctor.userData.name.toLowerCase().includes(searchQuery.toLowerCase()) || doctor.speciality.toLowerCase().includes(searchQuery.toLowerCase());
+            return (
+                doctor.userData.name
+                    .toLowerCase()
+                    .includes(searchQuery.toLowerCase()) ||
+                doctor.speciality
+                    .toLowerCase()
+                    .includes(searchQuery.toLowerCase())
+            );
         }
     };
 
     useEffect(() => {
-        const filteredDoctors = originalDoctors.filter((doctor) =>
-            applySelectedSearch(doctor, filterData[2].selectedValue || 'Both') &&
-            (!filterData[0].selectedValue || doctor.speciality.toString() === filterData[0].selectedValue.toString()) &&
-            (!filterData[1].selectedValue || isDateInAvailableSlots(new Date(filterData[1].selectedValue), doctor.availableSlots))
-
+        const filteredDoctors = originalDoctors.filter(
+            (doctor) =>
+                applySelectedSearch(
+                    doctor,
+                    filterData[2].selectedValue || 'Both'
+                ) &&
+                (!filterData[0].selectedValue ||
+                    doctor.speciality.toString() ===
+                        filterData[0].selectedValue.toString()) &&
+                (!filterData[1].selectedValue ||
+                    isDateInAvailableSlots(
+                        new Date(filterData[1].selectedValue),
+                        doctor.availableSlots
+                    ))
         );
 
         setDoctors(filteredDoctors);
-    }
-        , [filterData, originalDoctors, searchQuery]);
+    }, [filterData, originalDoctors, searchQuery]);
 
     const handleDialogClose = () => {
         setSelectedDoctor(null);

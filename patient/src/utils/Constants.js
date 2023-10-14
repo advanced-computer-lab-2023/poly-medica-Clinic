@@ -6,7 +6,7 @@ export const OK_REQUEST_CODE_200 = 200;
 
 export const PATIENT_ENUM = 'patient';
 
-export const  ACTIVE_USER_STATE = 'active';
+export const ACTIVE_USER_STATE = 'active';
 
 export const GENDERS = ['MALE', 'FEMALE'];
 export const OK_STATUS_CODE = 200;
@@ -17,24 +17,9 @@ export const PORT_NUMBER = 8002;
 
 export const MONGO_URI = 'mongodb://localhost:27017';
 
-export const FAMILY_RELATIONS = [
-	'Parent',
-	'Child',
-	'Sibling',
-	'Spouse',
-	'Grandparent',
-	'Grandchild',
-	'Aunt',
-	'Uncle',
-	'Niece',
-	'Nephew',
-	'Cousin',
-	'Other',
-];
-
+export const FAMILY_RELATIONS = ['HUSBAND', 'WIFE', 'CHILD'];
 
 export const CREATED_STATUS_CODE = 201;
 export const UNAUTHORIZED_STATUS_CODE = 401;
 export const FAMILY_MEMBERS_PROJECTION = 'familyMembers';
 export const PATIENT_PROJECTION = '-password';
-

@@ -1,7 +1,5 @@
-
 import HealthPackageService from '../service/health-package-service.js';
 import {
-	EMPTY_SIZE,
 	ERROR_STATUS_CODE,
 	NOT_FOUND_STATUS_CODE,
 	OK_STATUS_CODE,
@@ -13,10 +11,12 @@ export const healthPackage = (app) => {
 
 	app.get('/packages', async (req, res) => {
 		const allPackages = await service.getAllPackages();
-		if (allPackages.length > EMPTY_SIZE) {
+		if (allPackages) {
 			res.status(OK_STATUS_CODE).json({ allPackages });
 		} else {
-			res.status(NOT_FOUND_STATUS_CODE).json({ message: 'patients not found' });
+			res.status(NOT_FOUND_STATUS_CODE).json({
+				message: 'packages not found',
+			});
 		}
 	});
 
@@ -27,42 +27,41 @@ export const healthPackage = (app) => {
 		const discountOfDoctor = Number(newPackage.discountOfDoctor);
 		const discountOfMedicin = Number(newPackage.discountOfMedicin);
 		const discountOfFamily = Number(newPackage.discountOfFamily);
-		
-		try{
-			
+
+		try {
 			const data = await service.createNewPackage(
 				name,
 				price,
 				discountOfDoctor,
 				discountOfMedicin,
 				discountOfFamily
-			
 			);
 			if (data) {
 				res.status(OK_STATUS_CODE).json({ data });
 			} else {
 				res.status(NOT_FOUND_STATUS_CODE);
 			}
-		}catch(err){
-			res.status(ERROR_STATUS_CODE).json({ err : err.message });
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}
-		
-		
-		
 	});
 
-	app.patch('/package/:id', async (req,res) => {
+	app.patch('/package/:id', async (req, res) => {
 		const { selectedEditPackages } = req.body;
 		const id = req.params.id;
 		if (!isValidMongoId(id))
-			return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
-		try{
+			return res
+				.status(ERROR_STATUS_CODE)
+				.json({ message: 'Invalid ID' });
+		try {
 			console.log(selectedEditPackages);
-			const updatedPackage = await service.updatePackage(id, selectedEditPackages);
+			const updatedPackage = await service.updatePackage(
+				id,
+				selectedEditPackages
+			);
 			res.status(OK_STATUS_CODE).json({ updatedPackage });
-			
-		}catch(err){
-			res.status(ERROR_STATUS_CODE).json({ err : err.message });
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}
 	});
 
