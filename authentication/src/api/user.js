@@ -18,6 +18,7 @@ import {
 import jwt from 'jsonwebtoken';
 import axios from 'axios';
 
+
 export const user = (app) => {
 	const user = new UserService();
 
@@ -26,6 +27,8 @@ export const user = (app) => {
 			expiresIn: ONE_DAY_MAX_AGE_IN_MIINUTS,
 		});
 	};
+
+	
 
 	app.post('/signup', async (req, res) => {
 		try {
@@ -168,6 +171,7 @@ export const user = (app) => {
 			res.status(BAD_REQUEST_CODE_400).send({ message: err.message });
 		}
 	});
+
 
 	app.get('/check-user', async (req, res) => {
 		const token = req.cookies.jwt;
