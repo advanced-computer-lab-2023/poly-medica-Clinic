@@ -8,11 +8,6 @@ import {
     Button,
 } from '@mui/material';
 
-const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-};
-
 const AppointmentDetails = ({ selectedAppointment, handleDialogClose }) => {
     return (
         <Dialog
@@ -46,7 +41,7 @@ const AppointmentDetails = ({ selectedAppointment, handleDialogClose }) => {
                         </Typography>
                         <Typography variant='subtitle1'>Status:</Typography>
                         <Typography variant='body1'>
-                            {formatDate(selectedAppointment.status)}
+                            {selectedAppointment.status}
                         </Typography>
                     </DialogContent>
                     <DialogActions>
