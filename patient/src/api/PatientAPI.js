@@ -56,7 +56,6 @@ export const patient = (app) => {
 					message: 'patient not found!',
 					status: NOT_FOUND_STATUS_CODE,
 				});
-			// to do: adding the not found status code
 			else
 				res.json({
 					message: 'patient deleted!',
