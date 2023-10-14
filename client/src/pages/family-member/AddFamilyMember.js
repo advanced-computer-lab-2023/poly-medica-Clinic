@@ -26,8 +26,7 @@ const AddFamilyMember = ({
 }) => {
     const [error, setError] = useState(null);
     const { user } = useUserContext();
-    console.log('User = ', user);
-    const userId =  user.id;
+    const userId = user.id;
     const handleSubmit = (e) => {
         e.preventDefault();
         newMember.gender = newMember.gender.toUpperCase();

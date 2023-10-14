@@ -38,16 +38,16 @@ export const user = (app) => {
 			let email = null;
 			let userName = null;
 			switch (type) {
-				case PATIENT_ENUM:
-					email = req.body.email;
-					userName = req.body.userName;
-					break;
-				case DOCTOR_ENUM:
-					email = req.body.userData.email;
-					userName = req.body.userData.userName;
-					break;
-				default:
-					throw new Error('invalid type of user');
+			case PATIENT_ENUM:
+				email = req.body.email;
+				userName = req.body.userName;
+				break;
+			case DOCTOR_ENUM:
+				email = req.body.userData.email;
+				userName = req.body.userData.userName;
+				break;
+			default:
+				throw new Error('invalid type of user');
 			}
 			const checkEmail = await user.findUserByEmail(email);
 			if (checkEmail) {
@@ -62,14 +62,14 @@ export const user = (app) => {
 			await axios.post(DOCOTOR_CHECK_DOC_USERS, { email, userName });
 
 			switch (type) {
-				case PATIENT_ENUM:
-					signupData = await axios.post(PATIENT_SIGNUP_URL, req.body);
-					break;
-				case DOCTOR_ENUM:
-					signupData = await axios.post(DOCOTOR_SIGNUP_URL, req.body);
-					break;
-				default:
-					throw new Error('invalid type of user');
+			case PATIENT_ENUM:
+				signupData = await axios.post(PATIENT_SIGNUP_URL, req.body);
+				break;
+			case DOCTOR_ENUM:
+				signupData = await axios.post(DOCOTOR_SIGNUP_URL, req.body);
+				break;
+			default:
+				throw new Error('invalid type of user');
 			}
 
 			if (type != DOCTOR_ENUM) {
@@ -100,7 +100,7 @@ export const user = (app) => {
 		} catch (err) {
 			res
 				.status(SERVER_ERROR_REQUEST_CODE_500)
-				.send({ message: "coudn't delete the user" });
+				.send({ message: 'coudn\'t delete the user' });
 		}
 	});
 
@@ -112,7 +112,7 @@ export const user = (app) => {
 			console.log(err.message);
 			res
 				.status(SERVER_ERROR_REQUEST_CODE_500)
-				.send({ errMessage: "coudn't add the doctor" });
+				.send({ errMessage: 'coudn\'t add the doctor' });
 		}
 	});
 
@@ -163,8 +163,8 @@ export const user = (app) => {
 				maxAge: ONE_DAY_MAX_AGE_IN_MILLEMIINUTS,
 			});
 			res.send({
-				id: logedinUser._id,
-				name: logedinUser.userName,
+				id: logedinUser.userId,
+				userName: logedinUser.userName,
 				type: logedinUser.type,
 			});
 		} catch (err) {

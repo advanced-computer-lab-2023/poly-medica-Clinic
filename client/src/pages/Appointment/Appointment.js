@@ -7,14 +7,16 @@ import { useUserContext } from 'hooks/useUserContext.js';
 import { useFilter } from 'contexts/FilterContext.js';
 import { APPOINTMENT_FILTER_ARRAY } from 'utils/Constants.js';
 import { filterAppointmentsByDate } from 'utils/AppointmentUtils.js';
+// import _ from 'lodash';
 
 const Appointment = () => {
-	const [appointments, setAppointments] = useState([]);
+	const [appointments, setAppointments] = useState(null);
 	const [originalAppointments, setOriginalAppointments] = useState([]);
 	const [selectedAppointment, setSelectedAppointment] = useState(null);
 	const { filterData, updateFilter } = useFilter();
 	const { user } = useUserContext();
 	const userId = user.id;
+	console.log({ userId });
 	useEffect(() => {
 		clinicAxios
 			.get('/appointments/' + userId)
@@ -22,6 +24,7 @@ const Appointment = () => {
 				setAppointments(response.data);
 				setOriginalAppointments(response.data);
 				updateFilter(APPOINTMENT_FILTER_ARRAY);
+				console.log('appoitments = ', response.data);
 			})
 			.catch((error) => {
 				console.log(error);
@@ -42,10 +45,10 @@ const Appointment = () => {
 
 	return (
 		<MainCard title='Appointments'>
-			<AppointmentList
+			{appointments && <AppointmentList
 				appointments={appointments}
 				setSelectedAppointment={setSelectedAppointment}
-			/>
+			/>}
 			<AppointmentDetails
 				selectedAppointment={selectedAppointment}
 				handleDialogClose={handleDialogClose}
