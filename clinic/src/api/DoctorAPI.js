@@ -119,10 +119,17 @@ export const doctor = (app) => {
 	app.post('/doctors', async (req, res) => {
 		try {
 			const newDoctor = await service.createDoctor(req.body);
-			res.status(CREATED_STATUS_CODE).json({
-				message: 'Doctor created!',
-				newDoctor,
+			await axios.post(`${AUTH_BASE_URL}/doctors`, {
+				userId: newDoctor._id,
+				email: newDoctor.userData.email,
+				password: newDoctor.userData.password,
+				userName: newDoctor.userData.userName,
+				type: DOCTOR_ENUM,
 			});
+		
+			res
+				.status(CREATED_STATUS_CODE)
+				.json({ message: 'Doctor created!', newDoctor });
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}
