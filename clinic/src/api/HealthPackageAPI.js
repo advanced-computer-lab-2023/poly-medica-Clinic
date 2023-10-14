@@ -44,27 +44,27 @@ export const healthPackage = (app) => {
 				res.status(NOT_FOUND_STATUS_CODE);
 			}
 		}catch(err){
-			res.status(ERROR_STATUS_CODE).json({err : err.message});
+			res.status(ERROR_STATUS_CODE).json({ err : err.message });
 		}
 		
 		
 		
 	});
 
-	app.patch('/package/:id', async (req,res)=>{
-        const {selectedEditPackages} = req.body;
-        const id = req.params.id;
+	app.patch('/package/:id', async (req,res) => {
+		const { selectedEditPackages } = req.body;
+		const id = req.params.id;
 		if (!isValidMongoId(id))
 			return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
-        try{
+		try{
 			console.log(selectedEditPackages);
-            const updatedPackage = await service.updatePackage(id, selectedEditPackages);
-            res.status(OK_STATUS_CODE).json({updatedPackage});
+			const updatedPackage = await service.updatePackage(id, selectedEditPackages);
+			res.status(OK_STATUS_CODE).json({ updatedPackage });
 			
-        }catch(err){
-            res.status(ERROR_STATUS_CODE).json({err : err.message});
-        }
-    });
+		}catch(err){
+			res.status(ERROR_STATUS_CODE).json({ err : err.message });
+		}
+	});
 
 	app.delete('/packages/:id', async (req, res) => {
 		const id = req.params.id;

@@ -5,7 +5,8 @@
   "type": "module",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint . --fix"
   },
   "author": "",
   "license": "ISC",
@@ -20,5 +21,9 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.6.0",
     "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.51.0",
+    "eslint-plugin-react": "^7.33.2"
   }
 }

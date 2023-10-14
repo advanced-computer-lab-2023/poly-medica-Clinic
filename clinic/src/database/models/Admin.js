@@ -1,11 +1,7 @@
 import mongoose from 'mongoose';
-import { ROLES } from '../../utils/Constants.js';
+
 import bcrypt from 'bcrypt';
 const Admin = mongoose.Schema({
-	role: {
-		type: String,
-		default: ROLES.ADMIN,
-	},
 	userName: {
 		type: String,
 		required: true,
@@ -13,7 +9,7 @@ const Admin = mongoose.Schema({
 	},
 	password: {
 		type: String,
-		required: true,
+		required: [true],
 	},
 	mainAdmin: {
 		type: Boolean,
@@ -22,10 +18,10 @@ const Admin = mongoose.Schema({
 	//....
 });
 
-Admin.statics.addUser = async function (userData, mainAdmin) {
+Admin.statics.addUser = async function (userName, password, mainAdmin ) {
 	const salt = await bcrypt.genSalt();
-	userData.password = await bcrypt.hash(userData.password, salt);
-	const newRecord = new this({ userData, mainAdmin });
+	password = await bcrypt.hash(password, salt);
+	const newRecord = new this({ userName, password, mainAdmin });
 	const user = await newRecord.save();
 	return user;
 };
