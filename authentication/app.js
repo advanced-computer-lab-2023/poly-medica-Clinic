@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import { user } from './src/api/user.js';
+import { resetPassword } from './src/api/resetPassword.js';
 import { PORT } from './src/utils/Constants.js';
 import cors from 'cors';
 
@@ -36,6 +37,7 @@ const connect = async () => {
 await connect();
 
 user(app);
+resetPassword(app);
 
 const port = PORT;
 
