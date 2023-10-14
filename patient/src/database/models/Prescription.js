@@ -12,6 +12,9 @@ const Prescription = mongoose.Schema( {
 		ref: 'Doctor',
 		required: true
 	},
+	doctorName: {
+		type: String
+	},
 	date: {
 		type: Date,
 		required: true

@@ -2,27 +2,27 @@ import mongoose from 'mongoose';
 import { USER_ARR_ENUM } from '../../utils/Constants.js';
 
 const userSchema = mongoose.Schema({
-	userId: {
+	userId:{
 		type: mongoose.Schema.Types.ObjectId,
-		required: true,
+		required:true,
 		unique: true,
 	},
-	email: {
-		type: String,
+	email:{
+		type:String,
 	},
-	userName: {
-		type: String,
-		required: true,
-		unique: true,
+	userName:{
+		type:String,
+		required:true,
+		unique: true
 	},
-	password: {
-		type: String,
-		required: true,
+	password:{
+		type:String,
+		required:true
 	},
-	type: {
+	type:{
 		type: String,
 		enum: USER_ARR_ENUM,
-		required: true,
+		required:true
 	},
 });
 
