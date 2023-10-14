@@ -35,8 +35,7 @@ const FamilyMembers = () => {
             [e.target.name]: e.target.value,
         }));
     };
-    const { user } = useUserContext(); 
-    console.log('user = ', user);
+    const { user } = useUserContext();
     const userId = user.id;
     useEffect(() => {
         const fetch = async () => {

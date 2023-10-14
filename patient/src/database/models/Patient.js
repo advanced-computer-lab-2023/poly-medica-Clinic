@@ -5,59 +5,59 @@ import bcrypt from 'bcrypt';
 const patientSchema = mongoose.Schema({
 	name: {
 		type: String,
-		required: true
+		required: true,
 	},
 
 	userName: {
 		type: String,
 		required: true,
-		unique: true
+		unique: true,
 	},
 
 	email: {
 		type: String,
 		required: true,
-		unique: true
+		unique: true,
 	},
 
 	password: {
 		type: String,
-		required: true
+		required: true,
 	},
 
 	dateOfBirth: {
 		type: Date,
-		required: true
+		required: true,
 	},
 	gender: {
 		type: String,
 		enum: GENDERS,
-		required: true
+		required: true,
 	},
 	mobileNumber: {
 		type: String,
-		required: true
+		required: true,
 	},
 	emergencyContact: {
 		name: {
 			type: String,
-			required: true
+			required: true,
 		},
 		mobile: {
 			type: String,
-			required: true
+			required: true,
 		},
 		relation: {
 			type: String,
 			required: true,
-			enum: FAMILY_RELATIONS
-		}
+			enum: FAMILY_RELATIONS,
+		},
 	},
 	familyMembers: [
 		{
 			name: {
 				type: String,
-				required: true
+				required: true,
 			},
 			nationalId: {
 				type: String,
@@ -67,26 +67,63 @@ const patientSchema = mongoose.Schema({
 			},
 			age: {
 				type: Number,
-				required: true
+				required: true,
 			},
 			gender: {
 				type: String,
 				enum: GENDERS,
-				required: true
+				required: true,
 			},
 			relation: {
 				type: String,
-				required: true
-			}
-		}
-	]
-	//.....
-} );
+				enum: FAMILY_RELATIONS,
+				required: true,
+			},
+		},
+	],
+	healthrecords: [
+		{
+			healthIssue: {
+				type: String,
+				required: true,
+			},
+			healthIssueDate: {
+				type: Date,
+				required: true,
+			},
+			healthIssueDescription: {
+				type: String,
+				required: true,
+			},
+		},
+	],
 
-patientSchema.statics.signup = async function (name, email, password, userName, dateOfBirth, gender, mobileNumber, emergencyContact){
+	//.....
+});
+
+patientSchema.statics.signup = async function (
+	name,
+	email,
+	password,
+	userName,
+	dateOfBirth,
+	gender,
+	mobileNumber,
+	emergencyContact
+) {
 	const salt = await bcrypt.genSalt();
 	password = await bcrypt.hash(password, salt);
-	const userRecord = new this({ name, email, password, userName, dateOfBirth, gender, mobileNumber, emergencyContact, familyMembers: [] });
+	const userRecord = new this({
+		name,
+		email,
+		password,
+		userName,
+		dateOfBirth,
+		gender,
+		mobileNumber,
+		emergencyContact,
+		familyMembers: [],
+	});
 	const result = await userRecord.save();
 	return result;
 };

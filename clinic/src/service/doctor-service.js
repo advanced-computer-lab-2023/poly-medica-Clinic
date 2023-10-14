@@ -1,5 +1,4 @@
 import DoctorRepository from '../database/repository/doctor-repository.js';
-import { EMPTY_SIZE } from '../utils/Constants.js';
 
 class DoctorService {
 	constructor() {
@@ -48,19 +47,11 @@ class DoctorService {
 
 	async findAllPatients(id) {
 		const allPatients = await this.repository.findAllPatients(id);
-		if (allPatients.length > EMPTY_SIZE) {
-			return allPatients;
-		} else {
-			console.log('no data was found');
-		}
+		return allPatients;
 	}
 	async getAllAppointments() {
 		const allAppointments = await this.repository.findAllAppointments();
-		if (allAppointments.length > EMPTY_SIZE) {
-			return allAppointments;
-		} else {
-			console.log('no data was found');
-		}
+		return allAppointments;
 	}
 	async updateDoctor(id, updates) {
 		const doctor = await this.repository.updateDoctor(id, updates);
