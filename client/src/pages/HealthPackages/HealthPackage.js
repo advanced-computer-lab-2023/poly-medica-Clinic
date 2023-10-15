@@ -62,7 +62,7 @@ const HealthPackages = () => {
 		e.preventDefault();
 		
 		clinicAxios.post('/packages', { newPackage  }).then((response) => {
-			const newPackageData = response.data;
+			const newPackageData = response.data.data;
 			setPackage((prevPackage) => [...prevPackage, newPackageData]);
 			handleAddDialogClose();
 		})

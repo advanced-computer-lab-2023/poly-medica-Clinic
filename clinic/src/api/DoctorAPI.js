@@ -32,7 +32,9 @@ export const doctor = (app) => {
 			res.send(req.body);
 		} catch (err) {
 			if (err.code == DUPLICATE_KEY_ERROR_CODE) {
-				const duplicateKeyAttrb = Object.keys(err.keyPattern)[ZERO_INDEX];
+				const duplicateKeyAttrb = Object.keys(err.keyPattern)[
+					ZERO_INDEX
+				];
 				const keyAttrb = duplicateKeyAttrb.split('.');
 				res.status(BAD_REQUEST_CODE_400).send({
 					errCode: DUPLICATE_KEY_ERROR_CODE,
@@ -40,7 +42,10 @@ export const doctor = (app) => {
 						keyAttrb[keyAttrb.length - EXTRA_INDEX]
 					} is already registered`,
 				});
-			} else res.status(BAD_REQUEST_CODE_400).send({ errMessage: err.message });
+			} else
+				res.status(BAD_REQUEST_CODE_400).send({
+					errMessage: err.message,
+				});
 		}
 	});
 
@@ -49,40 +54,47 @@ export const doctor = (app) => {
 			await service.checkDoctorReqUser(req);
 			res.status(OK_STATUS_CODE).end();
 		} catch (err) {
-			res
-				.status(BAD_REQUEST_CODE_400)
-				.send({ errCode: DUPLICATE_KEY_ERROR_CODE, errMessage: err.message });
+			res.status(BAD_REQUEST_CODE_400).send({
+				errCode: DUPLICATE_KEY_ERROR_CODE,
+				errMessage: err.message,
+			});
 		}
 	});
 
 	app.get('/doctors/:id/patients', async (req, res) => {
 		const id = req.params.id;
 		if (!isValidMongoId(id))
-			return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
+			return res
+				.status(ERROR_STATUS_CODE)
+				.json({ message: 'Invalid ID' });
 		let patientsWithDoctor = await service.findAllPatients(id);
 		const getPatientsURL = `${PATIENTS_BASE_URL}/patients`;
 		const allPatients = await axios.get(getPatientsURL);
 
 		if (patientsWithDoctor) {
 			patientsWithDoctor = patientsWithDoctor.map((patient) =>
-				patient.toString(),
+				patient.toString()
 			);
-			const finalListOFPatients = allPatients.data.patients.filter((patient) =>
-				patientsWithDoctor.includes(patient._id),
+			const finalListOFPatients = allPatients.data.patients.filter(
+				(patient) => patientsWithDoctor.includes(patient._id)
 			);
 			res.status(OK_STATUS_CODE).json({ finalListOFPatients });
 		} else {
-			res.status(NOT_FOUND_STATUS_CODE).json({ message: 'patients not found' });
+			res.status(NOT_FOUND_STATUS_CODE).json({
+				message: 'patients not found',
+			});
 		}
 	});
 	app.get('/doctor/:id', async (req, res) => {
 		try {
 			const id = req.params.id;
 			if (!isValidMongoId(id))
-				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
+				return res
+					.status(ERROR_STATUS_CODE)
+					.json({ message: 'Invalid ID' });
 			const doctor = await service.getDoctorById(id);
 			if (doctor) {
-				res.status(OK_STATUS_CODE).json({ doctor });
+				res.status(OK_STATUS_CODE).send({ doctor });
 			} else {
 				res.status(NOT_FOUND_STATUS_CODE).json({
 					message: 'doctor not found',
@@ -107,6 +119,14 @@ export const doctor = (app) => {
 	app.post('/doctors', async (req, res) => {
 		try {
 			const newDoctor = await service.createDoctor(req.body);
+			await axios.post(`${AUTH_BASE_URL}/doctors`, {
+				userId: newDoctor._id,
+				email: newDoctor.userData.email,
+				password: newDoctor.userData.password,
+				userName: newDoctor.userData.userName,
+				type: DOCTOR_ENUM,
+			});
+		
 			res
 				.status(CREATED_STATUS_CODE)
 				.json({ message: 'Doctor created!', newDoctor });
@@ -119,18 +139,21 @@ export const doctor = (app) => {
 		try {
 			const id = req.params.id;
 			if (!isValidMongoId(id))
-				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
+				return res
+					.status(ERROR_STATUS_CODE)
+					.json({ message: 'Invalid ID' });
 			const deletedDoctor = await service.deleteDoctor(id);
 			if (deletedDoctor) {
-				axios.delete(`${AUTH_BASE_URL}/users/${id}`);
+				await axios.delete(`${AUTH_BASE_URL}/users/${id}`);
 
-				res
-					.status(OK_STATUS_CODE)
-					.json({ message: 'doctor deleted!', deletedDoctor });
+				res.status(OK_STATUS_CODE).json({
+					message: 'doctor deleted!',
+					deletedDoctor,
+				});
 			} else
-				res
-					.status(NOT_FOUND_STATUS_CODE)
-					.json({ message: 'doctor not found!' });
+				res.status(NOT_FOUND_STATUS_CODE).json({
+					message: 'doctor not found!',
+				});
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}
@@ -171,7 +194,9 @@ export const doctor = (app) => {
 		try {
 			const id = req.params.id;
 			if (!isValidMongoId(id))
-				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
+				return res
+					.status(ERROR_STATUS_CODE)
+					.json({ message: 'Invalid ID' });
 			const doctor = await service.getDoctorById(id);
 			if (doctor) {
 				const updatedDoctor = await service.updateDoctor(id, req.body);
