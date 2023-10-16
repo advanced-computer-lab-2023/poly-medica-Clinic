@@ -40,7 +40,7 @@ const AuthGuard = ({ component: Component, Auth, isLazy, ...rest }) => {
         }
       } else {
         if (!Auth.includes(GUEST_ACCESS) && isRoute) {
-          history.push('/pages/login/login3');
+          history.push('/login/login3');
         }
       }
     }

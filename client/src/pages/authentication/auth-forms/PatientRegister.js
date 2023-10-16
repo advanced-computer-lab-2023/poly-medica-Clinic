@@ -93,7 +93,7 @@ const FirebaseRegister = () => {
 			title: 'Sign-up Success!',
 			text: 'You have successfully signed up, you can now login',
 		});	
-		navigate('/pages/login/login3');
+		navigate('/login/login3');
 		setIsSubmitting(false);
 		} else{
 			Swal.fire({

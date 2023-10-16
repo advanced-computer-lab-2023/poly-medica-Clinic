@@ -33,11 +33,11 @@ const FirebaseLogin = () => {
 	useEffect(() => {
 		setIsLoading(true);
 		if(user){
-			navigate('/');
+			navigate(`/${user.type}`);
 		}else {
 			axios.get('http://localhost:8004/check-user', { withCredentials: true }).then(user => {
 				dispatch({ auth: true, payload: user.data });
-				navigate('/');
+				navigate(`/${user.type}`);
 			}).catch( () => {
 				setIsLoading(false);
 			});	
@@ -53,7 +53,7 @@ const FirebaseLogin = () => {
 		const data = response.data;		
 		if(response.status === 200){
 			dispatch({ auth: true, payload:data });
-			navigate('/');
+			navigate(`/${data.type}`);
 			setIsSubmitting(false);
 		} else{
 			Swal.fire({
