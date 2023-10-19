@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-const generateUserData = (patientId, doctorId) => {
+const generateAppointment = (patientId, doctorId) => {
 	return {
 		patientId,
 		doctorId,
@@ -11,4 +11,4 @@ const generateUserData = (patientId, doctorId) => {
 	};
 };
 
-export default generateUserData;
+export default generateAppointment;

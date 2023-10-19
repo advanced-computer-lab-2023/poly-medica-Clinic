@@ -4,7 +4,11 @@ import {
 	connectDBTest,
 	disconnectDBTest
 } from '../../utils/testing-utils.js';
-import { OK_STATUS_CODE } from '../../utils/Constants.js';
+import { 
+	OK_STATUS_CODE, 
+	NOT_FOUND_STATUS_CODE, 
+	ERROR_STATUS_CODE 
+} from '../../utils/Constants.js';
 
 import DoctorModel from '../../database/models/Doctor.js';
 import AppointmentModel from '../../database/models/Appointment.js';
@@ -14,6 +18,7 @@ import generateAppointment from '../model-generators/generateAppointment.js';
 import { describe, beforeEach, afterEach, expect, it, jest } from '@jest/globals';
 import { faker } from '@faker-js/faker';
 import axios from 'axios';
+jest.mock('axios');
 
 describe('GET /doctor/:id', () => {
     
@@ -30,12 +35,24 @@ describe('GET /doctor/:id', () => {
 		expect(res._body.doctor._id).toBe(doctor.id);
 	});
 
+	it('should return 404 NOT FOUND when the doctor is not found', async () => {
+		const id = faker.database.mongodbObjectId();
+		const res = await request(app).get(`/doctor/${id}`);
+		expect(res.status).toBe(NOT_FOUND_STATUS_CODE);
+	});
+
+	it('should return 500 ERROR when the id is invalid', async () => {
+		const id = faker.lorem.word();
+		const res = await request(app).get(`/doctor/${id}`);
+		expect(res.status).toBe(ERROR_STATUS_CODE);
+	});
+
 	afterEach(async () => {
 		await disconnectDBTest();
 	});
 });
 
-jest.mock('axios');
+
 describe('GET /doctors/:id/patients', () => {
 	
 	beforeEach(async () => {
