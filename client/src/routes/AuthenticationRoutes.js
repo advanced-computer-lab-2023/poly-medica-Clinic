@@ -1,3 +1,4 @@
+import AuthRoutesWrapper from 'pages/authentication/AuthRoutesWrapper';
 import { lazy } from 'react';
 
 // project imports
@@ -11,6 +12,7 @@ const AuthRegister3 = Loadable(lazy(() => import('pages/authentication/authentic
 
 const AuthenticationRoutes = {
 	path: '/login',
+	element:<AuthRoutesWrapper />,
 	children: [
 		{
 			path: '/login/login3',

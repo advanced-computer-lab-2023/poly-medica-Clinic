@@ -26,7 +26,7 @@ const LazyAppointments = Loadable(
     lazy(() => import('pages/Appointment/Appointment'))
 );
 
-const Account = Loadable(lazy(() => import('pages/profile/Account')));
+const Account = Loadable(lazy(() => import('pages/profile/Account'))); //TODO: generalize this
 // utilities routing
 const UtilsTypography = Loadable(
     lazy(() => import('pages/utilities/Typography'))

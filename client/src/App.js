@@ -37,7 +37,7 @@ const App = () => {
 					setIsLoading(false);
 				}
 			if(location.pathname == '/login/login3' || location.pathname == '/login/register/register3'){
-				navigate('/');
+				navigate(`/${userCheck.data.type}`);
 				setIsLoading(false);
 			}
 			

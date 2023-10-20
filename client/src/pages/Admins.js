@@ -74,6 +74,8 @@ const Admins = () => {
 				setAdminToDelete(null);
 				setConfirmDeleteDialogOpen(false);
 			});
+
+			//TODO: delete from user auth
 	};
 
 	const handleCancelDelete = () => {
