@@ -1,7 +1,11 @@
 import UserService from '../service/user-service.js';
 import {
-	ADMIN_SIGNUP_URL,
+	ADMIN_Clinic_SIGNUP_URL,
+	ADMIN_FRONT_ENUM,
+	ADMIN_Pharmacy_SIGNUP_URL,
 	BAD_REQUEST_CODE_400,
+	CLINIC_ADMIN_ENUM,
+	CLINIC_REQ,
 	DOCOTOR_CHECK_DOC_USERS,
 	DOCOTOR_SIGNUP_URL,
 	DOCTOR_ENUM,
@@ -13,6 +17,11 @@ import {
 	ONE_DAY_MAX_AGE_IN_MILLEMIINUTS,
 	PATIENT_ENUM,
 	PATIENT_SIGNUP_URL,
+	PHARMACIST_BASE_URL,
+	PHARMACIST_ENUM,
+	PHARMACIST_SIGNUP_URL,
+	PHARMACY_ADMIN_ENUM,
+	PHARMACY_REQ,
 	SERVER_ERROR_REQUEST_CODE_500,
 } from '../utils/Constants.js';
 import jwt from 'jsonwebtoken';
@@ -30,8 +39,9 @@ export const user = (app) => {
 
 	
 
-	app.post('/signup', async (req, res) => {
+	app.post('/signup/:request', async (req, res) => {
 		try {
+			const requestFrom = req.params.request; // clinic, pharmacy
 			const { type } = req.body;
 			delete req.body.type;
 			let signupData = null;
@@ -42,13 +52,14 @@ export const user = (app) => {
 				email = req.body.email;
 				userName = req.body.userName;
 				break;
-			case DOCTOR_ENUM:
+			case DOCTOR_ENUM:case PHARMACIST_ENUM:
 				email = req.body.userData.email;
 				userName = req.body.userData.userName;
 				break;
 			default:
 				throw new Error('invalid type of user');
 			}
+
 			const checkEmail = await user.findUserByEmail(email);
 			if (checkEmail) {
 				throw new Error(DUB_EMAIL_ERROR_MESSAGE);
@@ -57,9 +68,12 @@ export const user = (app) => {
 			const checkUserName = await user.findUserByUserName(userName);
 			if (checkUserName) {
 				throw new Error(DUB_USERNAME_ERROR_MESSAGE);
+			} // <= here same
+			switch(requestFrom){
+			case CLINIC_REQ:await axios.post(DOCOTOR_CHECK_DOC_USERS, { email, userName });break;
+			case PHARMACY_REQ:await axios.post(`${PHARMACIST_BASE_URL}check-pharmacist-req`, { email, userName });break;
+			default: throw new Error('invalid system');
 			}
-
-			await axios.post(DOCOTOR_CHECK_DOC_USERS, { email, userName });
 
 			switch (type) {
 			case PATIENT_ENUM:
@@ -68,11 +82,14 @@ export const user = (app) => {
 			case DOCTOR_ENUM:
 				signupData = await axios.post(DOCOTOR_SIGNUP_URL, req.body);
 				break;
+			case PHARMACIST_ENUM:
+				signupData = await axios.post(PHARMACIST_SIGNUP_URL, req.body);
+				break;
 			default:
 				throw new Error('invalid type of user');
 			}
 
-			if (type != DOCTOR_ENUM) {
+			if (type != DOCTOR_ENUM && type != PHARMACIST_ENUM) {
 				await user.signupUser(signupData.data);
 			}
 			res.status(OK_REQUEST_CODE_200).end();
@@ -92,6 +109,9 @@ export const user = (app) => {
 		}
 	});
 
+	// 
+
+	// 
 	app.delete('/users/:id', async (req, res) => {
 		try {
 			const userId = req.params.id;
@@ -116,8 +136,21 @@ export const user = (app) => {
 		}
 	});
 
-	app.post('/admins', async (req, res) => {
+	app.post('/pharmacists', async (req, res) => {
 		try {
+			await user.signupUser(req.body);
+			res.status(OK_REQUEST_CODE_200).end();
+		} catch (err) {
+			console.log(err.message);
+			res
+				.status(SERVER_ERROR_REQUEST_CODE_500)
+				.send({ errMessage: 'coudn\'t add the doctor' });
+		}
+	});
+
+	app.post('/admins/:request', async (req, res) => {
+		try {
+			const requestFrom = req.params.request; // clinic, pharmacy
 			const userName = req.body.userName;
 
 			const checkUserName = await user.findUserByUserName(userName);
@@ -126,13 +159,20 @@ export const user = (app) => {
 			}
 
 			await axios.post(DOCOTOR_CHECK_DOC_USERS, { userName });
+			await axios.post(`${PHARMACIST_BASE_URL}check-pharmacist-req`, { userName });
 
-			const signupData = await axios.post(ADMIN_SIGNUP_URL, req.body);
+			let signupData = null;
+			switch(requestFrom){
+			case CLINIC_REQ: signupData = await axios.post(ADMIN_Clinic_SIGNUP_URL, req.body);break;
+			case PHARMACY_REQ: signupData = await axios.post(ADMIN_Pharmacy_SIGNUP_URL, req.body);break;
+			default: throw new Error('invalid system');
+			}
 
 			await user.signupUser(signupData.data);
 
 			res.status(OK_REQUEST_CODE_200).send({ message: 'admin added' });
 		} catch (err) {
+			console.log(err);
 			if (err.response) {
 				// coming from other services
 				if (err.response.data.errCode == DUPLICATE_KEY_ERROR_CODE) {
@@ -150,9 +190,15 @@ export const user = (app) => {
 		}
 	});
 
-	app.post('/login', async (req, res) => {
+	app.post('/login/:request', async (req, res) => {
 		try {
+			const requestFrom =  req.params.request;
 			const logedinUser = await user.loginUser(req);
+			switch(requestFrom){
+			case CLINIC_REQ: if (logedinUser.type == PHARMACIST_ENUM || logedinUser.type == PHARMACY_ADMIN_ENUM) throw new Error('invalid user'); break; //TODO: admin in login
+			case PHARMACY_REQ: if (logedinUser.type == DOCTOR_ENUM || logedinUser.type == CLINIC_ADMIN_ENUM) throw new Error('invalid user'); break; //TODO: admin in login
+			default: throw new Error('invalid system');
+			}
 			const token = createToken(
 				logedinUser.userId,
 				logedinUser.userName,
@@ -165,7 +211,7 @@ export const user = (app) => {
 			res.send({
 				id: logedinUser.userId,
 				userName: logedinUser.userName,
-				type: logedinUser.type,
+				type: (logedinUser.type == PHARMACY_ADMIN_ENUM || logedinUser.type == CLINIC_ADMIN_ENUM) ?ADMIN_FRONT_ENUM:logedinUser.type,
 			});
 		} catch (err) {
 			res.status(BAD_REQUEST_CODE_400).send({ message: err.message });
@@ -191,6 +237,8 @@ export const user = (app) => {
 			res.status(401).send({ message: 'you are not Auth' });
 		}
 	});
+
+
 
 	app.get('/remove-cookie', (req, res) => {
 		res.cookie('jwt', '', { expires: new Date(0), path: '/' });

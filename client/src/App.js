@@ -9,12 +9,14 @@ import Routes from 'routes';
 // defaultTheme
 import themes from 'themes';
 import axios from 'axios';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useUserContext } from 'hooks/useUserContext';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import Loader from 'ui-component/Loader';
+
 
 
 // ==============================|| APP ||============================== //
@@ -23,24 +25,34 @@ const App = () => {
 	const customization = useSelector((state) => state.customization);
 	const { dispatch, user } = useUserContext();
 	const navigate = useNavigate();
+	const [isLoading, setIsLoading] = useState(true);
 	const location = useLocation();
 	useEffect(() => {
-		axios.get('http://localhost:8004/check-user', {  withCredentials:true }).then(userCheck => {
+		setIsLoading(true);
+		axios.get('http://localhost:8004/check-user', {  withCredentials:true }).then(async userCheck => {
+			console.log({ ckeckData: userCheck.data });
 			if(!user)
-				dispatch({ auth: true, payload: userCheck.data });
-			if(location.pathname == '/pages/login/login3' || location.pathname == '/pages/register/register3'){
-				navigate('/');
+				{
+					await dispatch({ auth: true, payload: userCheck.data });
+					setIsLoading(false);
+				}
+			if(location.pathname == '/login/login3' || location.pathname == '/login/register/register3'){
+				navigate(`/${userCheck.data.type}`);
+				setIsLoading(false);
 			}
-		}).catch( () => {
-			if(location.pathname != '/pages/login/login3' && location.pathname != '/pages/register/register3'){
+			
+		}).catch( async () => {
+			if(location.pathname != '/login/login3' && location.pathname != '/login/register/register3'){
 				Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
 				text: 'you are not autherized, please login',
 			});
-			navigate('/pages/login/login3');
+			navigate('/login/login3');
+			setIsLoading(false);
 		}
-			dispatch({ auth: false, payload: null });
+			await dispatch({ auth: false, payload: null });
+			setIsLoading(false);
 		});
 	
 	}, []);
@@ -49,7 +61,8 @@ const App = () => {
 			<ThemeProvider theme={themes(customization)}>
 				<CssBaseline />
 				<LocalizationProvider dateAdapter={AdapterDateFns}>
-				<Routes />
+				{isLoading && <Loader />}
+				{!isLoading && <Routes />}
 				</LocalizationProvider>
 			</ThemeProvider>
 	);
