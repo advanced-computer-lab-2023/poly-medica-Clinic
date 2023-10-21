@@ -15,6 +15,16 @@ import { ZERO_INDEX } from '../../../clinic/src/utils/Constants.js';
 export const patient = (app) => {
 	const service = new PatientService();
 
+	app.get('/patients/:patientId', async (req, res) =>{
+		try{
+			const patientId = req.params.patientId;
+			const patient = await service.findPatient(patientId);
+			res.send(patient);
+		} catch(err){
+			res.status(BAD_REQUEST_CODE_400).send({errMessage: "coudn't fetch patient data"});
+		}
+	})
+
 	app.get('/patients', async (req, res) => {
 		try {
 			const patients = await service.findAllPatients();

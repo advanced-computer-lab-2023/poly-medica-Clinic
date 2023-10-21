@@ -13,60 +13,45 @@ import {
 } from '@mui/material';
 import Swal from 'sweetalert2';
 import { useUserContext } from 'hooks/useUserContext';
+import format from 'date-fns/format';
 
-// const states = [
-// 	{
-// 		value: 'alabama',
-// 		label: 'Alabama'
-// 	},
-// 	{
-// 		value: 'new-york',
-// 		label: 'New York'
-// 	},
-// 	{
-// 		value: 'san-francisco',
-// 		label: 'San Francisco'
-// 	},
-// 	{
-// 		value: 'los-angeles',
-// 		label: 'Los Angeles'
-// 	}
-// ];
-
-export const AccountProfileDetails = () => {
+export const PatientAccountProfileDetails = () => {
     const [values, setValues] = useState({
         name: '',
         userName: '',
         dateOfBirth: '',
-        speciality: '',
         email: '',
-        hourlyRate: '',
-        affiliation: '',
-        educationalBackground: '',
+        mobileNumber: '',
+        gender: '',
+        emergencyName: '',
+        emergencyMobile: '',
+        emergencyRelation: ''
     });
     const [loading, setLoading] = useState(false);
     const { user } = useUserContext();
     useEffect(() => {
-        const getPatientsURL = 'http://localhost:8001/doctor/' + user.id;
-        // let user;
 
+        const getPatientsURL = `http://localhost:8002/patients/${user.id}`;
+        
         axios
             .get(getPatientsURL, { withCredentials: true })
             .then((response) => {
-                const values = response.data.doctor;
-                console.log('values', values);
+                const patientData = response.data;
+                console.log('values', patientData);
 
                 setValues({
-                    name: values.userData.name,
-                    userName: values.userData.userName,
-                    dateOfBirth: values.userData.dateOfBirth,
-                    speciality: values.speciality,
-                    email: values.userData.email,
-                    hourlyRate: values.hourlyRate,
-                    affiliation: values.affiliation,
-                    educationalBackground: values.educationalBackground,
+                    name: patientData.name,
+                    userName: patientData.userName,
+                    dateOfBirth: format(new Date(patientData.dateOfBirth), 'yyyy-MM-dd'),
+                    email: patientData.email,
+                    mobileNumber: patientData.mobileNumber,
+                    gender: patientData.gender.toLowerCase(),
+                    emergencyName: patientData.emergencyContact.name,
+                    emergencyMobile: patientData.emergencyContact.mobile,
+                    emergencyRelation: patientData.emergencyContact.relation,
                 });
             })
+            
             .catch((err) => {
                 console.log('here', err);
             });
@@ -138,6 +123,19 @@ export const AccountProfileDetails = () => {
                             <Grid xs={12} md={6}>
                                 <TextField
                                     fullWidth
+                                    label='email'
+                                    name='email'
+                                    required
+                                    disabled
+                                    onChange={handleChange}
+                                    type='email'
+                                    value={values.email}
+                                />
+                            </Grid>
+
+                            <Grid xs={12} md={6}>
+                                <TextField
+                                    fullWidth
                                     label='dateOfBirth'
                                     name='dateOfBirth'
                                     onChange={handleChange}
@@ -146,72 +144,76 @@ export const AccountProfileDetails = () => {
                                     value={values.dateOfBirth}
                                 />
                             </Grid>
+
                             <Grid xs={12} md={6}>
                                 <TextField
                                     fullWidth
-                                    label='speciality'
-                                    name='speciality'
+                                    label='mobile number'
+                                    name='mobileNumber'
                                     onChange={handleChange}
-                                    type='text'
+                                    required
                                     disabled
-                                    value={values.speciality}
+                                    value={values.mobileNumber}
                                 />
                             </Grid>
+
                             <Grid xs={12} md={6}>
                                 <TextField
                                     fullWidth
-                                    label='email'
-                                    name='email'
-                                    required
-                                    onChange={handleChange}
-                                    type='email'
-                                    value={values.email}
-                                />
-                            </Grid>
-                            <Grid xs={12} md={6}>
-                                <TextField
-                                    fullWidth
-                                    label='hourlyRate'
-                                    name='hourlyRate'
-                                    type='number'
-                                    inputProps={{
-                                        min:0
-                                    }}
+                                    label='gender'
+                                    name='gender'
                                     onChange={handleChange}
                                     required
-                                    value={values.hourlyRate}
-                                />
-                            </Grid>
-                            <Grid xs={12} md={6}>
-                                <TextField
-                                    fullWidth
-                                    label='affiliation'
-                                    name='affiliation'
-                                    onChange={handleChange}
-                                    required
-                                    value={values.affiliation}
-                                />
-                            </Grid>
-                            <Grid
-                                xs={12}
-                                // md={6}
-                            >
-                                <TextField
-                                    fullWidth
-                                    label='educationalBackground'
-                                    name='educationalBackground'
-                                    onChange={handleChange}
                                     disabled
-                                    required
-                                    value={values.educationalBackground}
+                                    value={values.gender}
                                 />
                             </Grid>
+                                                        
                         </Grid>
+                        <Divider sx={{ mt:5 }}/>
+                        <CardHeader
+                    title='Emergency contact'
+                />
+                <Grid xs={12} md={6}>
+                                <TextField
+                                    fullWidth
+                                    label='name'
+                                    name='emergencyName'
+                                    onChange={handleChange}
+                                    required
+                                    disabled
+                                    value={values.emergencyName}
+                                />
+                            </Grid>
+
+                            <Grid xs={12} md={6}>
+                                <TextField
+                                    fullWidth
+                                    label='mobile'
+                                    name='emergencyMobile'
+                                    onChange={handleChange}
+                                    required
+                                    disabled
+                                    value={values.emergencyMobile}
+                                />
+                            </Grid>
+
+                            <Grid xs={12} md={6}>
+                                <TextField
+                                    fullWidth
+                                    label='relation'
+                                    name='emergencyRelation'
+                                    onChange={handleChange}
+                                    required
+                                    disabled
+                                    value={values.emergencyRelation}
+                                />
+                            </Grid>
                     </Box>
                 </CardContent>
-                <Divider />
+                <Divider/>
                 <CardActions sx={{ justifyContent: 'flex-end' }}>
-                    <Button
+                <Button
                         variant='contained'
                         type='submit'
                         disabled={loading}
@@ -223,3 +225,5 @@ export const AccountProfileDetails = () => {
         </form>
     );
 };
+
+export default PatientAccountProfileDetails;

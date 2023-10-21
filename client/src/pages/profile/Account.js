@@ -1,18 +1,16 @@
 import { Box, Container, Stack, Typography, Unstable_Grid2 as Grid } from '@mui/material';
-import { AccountProfile } from './AccountProfile';
-import { AccountProfileDetails } from './AccountProfileDetails';
+import AccountProfile from './AccountProfile';
+import DcotorAccountProfileDetails from './accountProfileDetails/DoctorAccountProfileDetails';
+import PatientAccountProfileDetails from './accountProfileDetails/PatientAccountProfileDetails';
+import { useUserContext } from 'hooks/useUserContext';
+import { ADMIN_TYPE_ENUM, DOCTOR_TYPE_ENUM, PATIENT_TYPE_ENUM } from 'utils/Constants';
 
 const Page = () => {
     
     
-    
+    const { user } = useUserContext();
 	return (
 		<>
-			<main>
-				<title>
-        Account | Devias Kit
-				</title>
-			</main>
 			<Box
 				component="main"
 				sx={{
@@ -44,7 +42,10 @@ const Page = () => {
 									md={6}
 									lg={8}
 								>
-									<AccountProfileDetails />
+									{user.type == DOCTOR_TYPE_ENUM &&<DcotorAccountProfileDetails />}
+									{user.type == PATIENT_TYPE_ENUM &&<PatientAccountProfileDetails />}
+									{user.type == ADMIN_TYPE_ENUM &&<PatientAccountProfileDetails />}
+									{/* here will be the gener */}
 								</Grid>
 							</Grid>
 						</div>
