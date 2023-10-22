@@ -1,4 +1,4 @@
-import ResetPasswordRepository from "../database/repository/reset-password-repository.js";
+import ResetPasswordRepository from '../database/repository/reset-password-repository.js';
 
 class ResetPasswordService {
 	constructor() {
@@ -6,20 +6,20 @@ class ResetPasswordService {
 
 	}
 
-    async getRecordByEmail(email){
-        const user = await this.repository.getRecordByEmail(email);
-        return user;
-    }
+	async getRecordByEmail(email){
+		const user = await this.repository.getRecordByEmail(email);
+		return user;
+	}
 
-    async removeRecordByEmail(email){
-        const user = await this.repository.removeRecordByEmail(email);
-        return user;
-    }
+	async removeRecordByEmail(email){
+		const user = await this.repository.removeRecordByEmail(email);
+		return user;
+	}
 
-    async addRecord(email, OTP){
-        const user = await this.repository.addRecord(email, OTP);
-        return user;
-    }
+	async addRecord(email, OTP){
+		const user = await this.repository.addRecord(email, OTP);
+		return user;
+	}
 
 }
 
