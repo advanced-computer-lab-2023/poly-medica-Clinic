@@ -26,6 +26,10 @@ const Doctor = mongoose.Schema({
 		type: Array,
 		default: [],
 	},
+	walletAmount: {
+		type: Number,
+		default: 0,
+	},
 });
 
 Doctor.statics.addUser = async function (

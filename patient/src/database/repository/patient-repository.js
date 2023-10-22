@@ -54,6 +54,10 @@ class PatientRepository {
 		const user = await PatientModel.signup(name, email, password, userName, dateOfBirth, gender, mobileNumber, emergencyContact);
 		return user;
 	}
+	async getWalletAmount(id) {
+		const user = await PatientModel.findById(id);
+		return user.walletAmount;
+	}
 }
 
 export default PatientRepository;

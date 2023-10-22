@@ -61,6 +61,10 @@ class DoctorService {
 	async checkDoctorReqUser(req) {
 		await this.repository.checkDoctorReqUser(req);
 	}
+	async getWalletAmount(id) {
+		const amount = await this.repository.getWalletAmount(id);
+		return amount;
+	}
 }
 
 export default DoctorService;

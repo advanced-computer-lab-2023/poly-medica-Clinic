@@ -180,4 +180,15 @@ export const patient = (app) => {
 			else res.status(BAD_REQUEST_CODE_400).send({ errMessage: err.message });
 		}
 	});
+
+	app.get('/patient/:pateintId/wallet', async (req, res) => {
+		try{
+			const id = req.params.pateintId;
+			const walletAmount = await service.getWalletAmount(id);
+			res.status(OK_STATUS_CODE).json({ walletAmount });
+		} catch(err){
+			res.status(ERROR_STATUS_CODE).json({ err: err.message });
+		}
+	}
+	);
 };

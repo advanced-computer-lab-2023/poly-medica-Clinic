@@ -58,6 +58,11 @@ class PatientService {
 			return prescription;
 		return null;
 	}
+
+	async getWalletAmount(id) {
+		const amount = await this.repository.getWalletAmount(id);
+		return amount;
+	}
 }
 
 export default PatientService;

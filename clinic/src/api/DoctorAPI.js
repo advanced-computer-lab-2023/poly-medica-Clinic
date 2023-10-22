@@ -210,4 +210,24 @@ export const doctor = (app) => {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
 	});
+
+	app.get('/doctors/:id/wallet', async (req, res) => {
+		try {
+			const id = req.params.id;
+			if (!isValidMongoId(id))
+				return res
+					.status(ERROR_STATUS_CODE)
+					.json({ message: 'Invalid ID' });
+			const amount = await service.getWalletAmount(id);
+			if (amount) {
+				res.status(OK_STATUS_CODE).json({ amount });
+			} else {
+				res.status(NOT_FOUND_STATUS_CODE).json({
+					message: 'amount not found',
+				});
+			}
+		} catch (error) {
+			res.status(ERROR_STATUS_CODE).json({ message: error });
+		}
+	});
 };

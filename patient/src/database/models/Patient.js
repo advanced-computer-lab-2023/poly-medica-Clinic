@@ -97,6 +97,10 @@ const patientSchema = mongoose.Schema({
 			},
 		},
 	],
+	walletAmount: {
+		type: Number,
+		default: 0,
+	},
 
 	//.....
 });

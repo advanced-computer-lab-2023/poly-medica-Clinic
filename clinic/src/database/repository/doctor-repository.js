@@ -124,6 +124,10 @@ class DoctorRepository {
 
 		return doctor;
 	}
+	async getWalletAmount(id) {
+		const user = await DoctorModel.findById(id);
+		return user.walletAmount;
+	}
 }
 
 export default DoctorRepository;
