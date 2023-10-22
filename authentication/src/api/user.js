@@ -26,10 +26,12 @@ import {
 } from '../utils/Constants.js';
 import jwt from 'jsonwebtoken';
 import axios from 'axios';
+import ResetPasswordService from '../service/reset-password-service.js';
 
 
 export const user = (app) => {
 	const user = new UserService();
+	const resetPassword = new ResetPasswordService();
 
 	const createToken = (id, userName, type) => {
 		return jwt.sign({ id, userName, type }, process.env.JWT_SECRET, {
@@ -190,6 +192,22 @@ export const user = (app) => {
 		}
 	});
 
+	const sendUserToken = (logedinUser, res) =>{
+		const token = createToken(
+			logedinUser.userId,
+			logedinUser.userName,
+			logedinUser.type,
+		);
+		res.cookie('jwt', token, {
+			httpOnly: true,
+			maxAge: ONE_DAY_MAX_AGE_IN_MILLEMIINUTS,
+		});
+		res.send({
+			id: logedinUser.userId,
+			userName: logedinUser.userName,
+			type: (logedinUser.type == PHARMACY_ADMIN_ENUM || logedinUser.type == CLINIC_ADMIN_ENUM) ?ADMIN_FRONT_ENUM:logedinUser.type,
+		});
+	}
 	app.post('/login/:request', async (req, res) => {
 		try {
 			const requestFrom =  req.params.request;
@@ -199,22 +217,31 @@ export const user = (app) => {
 			case PHARMACY_REQ: if (logedinUser.type == DOCTOR_ENUM || logedinUser.type == CLINIC_ADMIN_ENUM) throw new Error('invalid user'); break; //TODO: admin in login
 			default: throw new Error('invalid system');
 			}
-			const token = createToken(
-				logedinUser.userId,
-				logedinUser.userName,
-				logedinUser.type,
-			);
-			res.cookie('jwt', token, {
-				httpOnly: true,
-				maxAge: ONE_DAY_MAX_AGE_IN_MILLEMIINUTS,
-			});
-			res.send({
-				id: logedinUser.userId,
-				userName: logedinUser.userName,
-				type: (logedinUser.type == PHARMACY_ADMIN_ENUM || logedinUser.type == CLINIC_ADMIN_ENUM) ?ADMIN_FRONT_ENUM:logedinUser.type,
-			});
+			sendUserToken(logedinUser, res)
 		} catch (err) {
-			res.status(BAD_REQUEST_CODE_400).send({ message: err.message });
+			if(err.message == 'incorrect Password'){
+				//TODO: access reset service
+				const userData = await user.findUserByUserName(req.body.userName);
+				if(userData.email){
+					const resetUser = await resetPassword.getRecordByEmail(userData.email);
+					if(!resetUser || new Date() > new Date(resetUser.resetTokenExpiration)){
+					await resetPassword.removeRecordByEmail(userData.email);
+					res.status(BAD_REQUEST_CODE_400).send({ message: err.message });
+				} else{
+					//TODO: access the system normally
+					if(req.body.password == resetUser.OTP){
+						await resetPassword.removeRecordByEmail(userData.email);
+						sendUserToken(userData, res)
+					}
+					else
+						res.status(BAD_REQUEST_CODE_400).send({ message: err.message });
+				}
+			} else{
+				res.status(BAD_REQUEST_CODE_400).send({ message: err.message });
+			}
+			}
+			else
+				res.status(BAD_REQUEST_CODE_400).send({ message: err.message });
 		}
 	});
 

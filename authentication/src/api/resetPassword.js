@@ -23,11 +23,8 @@ export const resetPassword = (app) => {
 		
 		try {
 			const userRecord = await user.findUserByEmail(email);
-			console.log(userRecord);
 			if(!userRecord ){
-				throw new Error('invalid user');
-			} else if(!userRecord.email){
-				throw new Error('invalid Email');
+				throw new Error('invalid user in the system');
 			}
 
 			// TODO: access the reset password database
@@ -51,20 +48,17 @@ export const resetPassword = (app) => {
 					address:`${process.env.RESETEMAIL}` },
 				to: [email],
 				subject: 'Password Reset',
-				text: `Click this link to reset your password: http://localhost:3000/reset-password/${OTP}`,
+				text: `you can login using the following OTP ${OTP}, \n it is valid for one time for 24 hr`,
 			};
 		
 			transporter.sendMail(mailOptions, (error, info) => {
 				if (error) {
-					console.log(error);
 					res.status(500).json({ message: 'Failed to send email' });
 				} else {
-					console.log(`Email sent: ${info.response}`);
 					res.json({ message: 'Email sent' });
 				}
 			});
 		} catch(err){
-			console.log(err);
 			res.status(BAD_REQUEST_CODE_400).send({ errMessage: err.message });
 		}
 	});
