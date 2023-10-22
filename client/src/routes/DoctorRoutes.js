@@ -25,6 +25,7 @@ const LazyClinicDoctors = Loadable(lazy(() => import('pages/Doctors/Doctors')));
 const LazyAppointments = Loadable(
     lazy(() => import('pages/Appointment/Appointment'))
 );
+ const LazyWalletAmount=Loadable(lazy(() => import('pages/Wallet/WalletAmount')));
 
 const Account = Loadable(lazy(() => import('pages/profile/Account')));
 // utilities routing
@@ -36,6 +37,7 @@ const UtilsShadow = Loadable(lazy(() => import('pages/utilities/Shadow')));
 
 // sample page routing
 const SamplePage = Loadable(lazy(() => import('pages/sample-page')));
+
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -113,6 +115,10 @@ const DoctorRoutes = {
                 {
                     path: 'My Patients',
                     element: <lazyDoctorListofPatients />,
+                },
+                {
+                    path: 'wallet',
+                    element: <LazyWalletAmount />,
                 },
             ],
         },

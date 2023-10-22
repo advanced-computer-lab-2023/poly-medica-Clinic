@@ -21,6 +21,8 @@ const LazyDoctorRequests = Loadable(lazy(() => import('pages/DoctorRequests')));
 const LazyPackages = Loadable(
     lazy(() => import('pages/HealthPackages/HealthPackage'))
 );
+const LazyWalletAmount=Loadable(lazy(() => import('pages/Wallet/WalletAmount')));
+
 const LazyClinicDoctors = Loadable(lazy(() => import('pages/Doctors/Doctors')));
 const LazyAppointments = Loadable(
     lazy(() => import('pages/Appointment/Appointment'))
@@ -109,12 +111,10 @@ const MainRoutes = {
                         },
                     ],
                 },
+                
 
-                {
-                    path: 'My Patients',
-                    element: <lazyDoctorListofPatients />,
-                },
             ],
+
         },
         {
             path: 'utils',
@@ -137,6 +137,10 @@ const MainRoutes = {
             path: 'sample-page',
             element: <SamplePage />,
         },
+        {
+            path: 'wallet',
+            element: <LazyWalletAmount />,
+        }
     ],
 };
 

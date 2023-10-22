@@ -1,18 +1,18 @@
-import { render, screen, fireEvent, findByTitle } from "@testing-library/react";
+import { render, screen, fireEvent, findByTitle } from '@testing-library/react';
 // import AuthLogin from '../auth-forms/AuthLogin';
 import '@testing-library/jest-dom/jest-globals';
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter } from 'react-router-dom';
 // import { expect } from '@testing-library/jest-dom';
 // import Test from './test';
-import Login from "../authentication3/Login3";
+import Login from '../authentication3/Login3';
 
-const  LoginMockRouter = () =>{
+const  LoginMockRouter = () => {
     return (
         <BrowserRouter>
             <Login />
         </BrowserRouter>
-    )
-}
+    );
+};
 
 const mockFunc = jest.fn();
 
@@ -229,7 +229,7 @@ const mockFunc = jest.fn();
 
 // integration test
 
-describe("we are here" , () =>{
+describe('we are here' , () => {
     // beforeEach(()=>{
 
     // });
@@ -237,7 +237,7 @@ describe("we are here" , () =>{
         
     // })
 
-    it("trying integ", () =>{
+    it('trying integ', () => {
         render(<LoginMockRouter/>);
         // const textField = screen.getByRole( "textbox", {name: "username"});
 
@@ -248,5 +248,5 @@ describe("we are here" , () =>{
         // await findByTitle("div-1")
         // const findText = screen.getByText(/new Element/i);
         expect(textField).toBeInTheDocument();
-    })
-})
+    });
+});
