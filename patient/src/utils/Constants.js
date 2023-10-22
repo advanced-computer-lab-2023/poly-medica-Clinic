@@ -13,23 +13,23 @@ export const OK_STATUS_CODE = 200;
 export const NOT_FOUND_STATUS_CODE = 404;
 export const ERROR_STATUS_CODE = 500;
 export const EMPTY_SIZE = 0;
-export const PORT_NUMBER = 8002;
+export const PORT = 8002;
 
 export const MONGO_URI = 'mongodb://localhost:27017';
 
 export const FAMILIY_EMERGENCY = [
-    'Parent',
-    'Child',
-    'Sibling',
-    'Spouse',
-    'Grandparent',
-    'Grandchild',
-    'Aunt',
-    'Uncle',
-    'Niece',
-    'Nephew',
-    'Cousin',
-    'Other',
+	'Parent',
+	'Child',
+	'Sibling',
+	'Spouse',
+	'Grandparent',
+	'Grandchild',
+	'Aunt',
+	'Uncle',
+	'Niece',
+	'Nephew',
+	'Cousin',
+	'Other',
 ];
 
 export const FAMILY_RELATIONS = ['HUSBAND', 'WIFE', 'CHILD'];
