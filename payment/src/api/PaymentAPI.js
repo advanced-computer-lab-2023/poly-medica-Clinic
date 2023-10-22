@@ -27,8 +27,5 @@ export const payment = (app) => {
             res.status(ERROR_STATUS_CODE).send({err: err.message, status: ERROR_STATUS_CODE});
         }
     });
-    app.post('/testing', async (req, res) => {
-        console.log(req.body);
-        res.send(req.body);
-    });
+    
 };
