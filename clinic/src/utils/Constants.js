@@ -33,3 +33,6 @@ export const AUTH_BASE_URL = 'http://localhost:8004';
 export const DOCTOR_PROJECTION = '-userData.password';
 export const ADMIN_PROJECTION = '-password';
 
+
+export const ZERO = 0;
+

@@ -218,14 +218,9 @@ export const doctor = (app) => {
 				return res
 					.status(ERROR_STATUS_CODE)
 					.json({ message: 'Invalid ID' });
-			const amount = await service.getWalletAmount(id);
-			if (amount) {
-				res.status(OK_STATUS_CODE).json({ amount });
-			} else {
-				res.status(NOT_FOUND_STATUS_CODE).json({
-					message: 'amount not found',
-				});
-			}
+			const walletAmount = await service.getWalletAmount(id);
+			
+			res.status(OK_STATUS_CODE).json({ walletAmount });
 		} catch (error) {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}

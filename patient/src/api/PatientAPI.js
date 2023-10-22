@@ -181,7 +181,7 @@ export const patient = (app) => {
 		}
 	});
 
-	app.get('/patient/:pateintId/wallet', async (req, res) => {
+	app.get('/patients/:pateintId/wallet', async (req, res) => {
 		try{
 			const id = req.params.pateintId;
 			const walletAmount = await service.getWalletAmount(id);
