@@ -13,3 +13,9 @@ export const APPOINTMENT_FILTER_ARRAY = [{
     values: DATE_FILTER_ARRAY
 }
 ];
+
+export const PATIENT_TYPE_ENUM = 'patient';
+
+export const DOCTOR_TYPE_ENUM = 'doctor';
+
+export const ADMIN_TYPE_ENUM = 'admin';

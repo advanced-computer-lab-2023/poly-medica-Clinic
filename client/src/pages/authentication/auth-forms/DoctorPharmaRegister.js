@@ -56,7 +56,7 @@ const FirebaseRegister = ({ type }) => {
 		e.preventDefault();
 		setIsSubmitting(true);
 		const sendData = { type: type,  userData: { name: name, email: email, password: password, userName: userName, dateOfBirth: selectedDate }, speciality: speciality, hourlyRate: hourlyRating, affiliation: affiliation, educationalBackground: educationalBackground  };
-		const response = await axiosInstanceAuthSer.post('/signup', sendData);
+		const response = await axiosInstanceAuthSer.post('/signup/clinic', sendData);
 		if(response.status === 200){		
             Swal.fire({
                 icon: 'success',

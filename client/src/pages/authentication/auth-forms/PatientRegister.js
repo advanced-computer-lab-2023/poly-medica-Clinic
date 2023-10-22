@@ -84,7 +84,7 @@ const FirebaseRegister = () => {
 		e.preventDefault();
 		setIsSubmitting(true);
 		const sendData = { type: 'patient' ,name: name, email: email, password: password, userName: userName, dateOfBirth: selectedDate, gender: selectedGender, mobileNumber: mobileNumber, emergencyContact: { name: emergencyFullName, mobile: emergencyMobileNumber, relation: selectedRelation } };
-		const response = await axiosInstanceAuthSer.post('/signup', sendData);
+		const response = await axiosInstanceAuthSer.post('/signup/clinic', sendData);
 		const data = response.data;
 		console.log({ response , data });
 		if(response.status === 200){		
@@ -93,7 +93,7 @@ const FirebaseRegister = () => {
 			title: 'Sign-up Success!',
 			text: 'You have successfully signed up, you can now login',
 		});	
-		navigate('/pages/login/login3');
+		navigate('/login/login3');
 		setIsSubmitting(false);
 		} else{
 			Swal.fire({
