@@ -3,11 +3,18 @@ import { Typography } from '@mui/material';
 
 // project imports
 import NavGroup from './NavGroup';
-import menuItem from 'layout/MainLayout/Sidebar/MenuList/menu-items';
+import patientMenuItem from 'layout/MainLayout/Sidebar/MenuList/patient-menu-items';
+import doctortMenuItem from 'layout/MainLayout/Sidebar/MenuList/doctor-menu-items';
+import admintMenuItem from 'layout/MainLayout/Sidebar/MenuList/admin-menu-items';
+import { useUserContext } from 'hooks/useUserContext';
+import { ADMIN_TYPE_ENUM, PATIENT_TYPE_ENUM } from 'utils/Constants';
 
 // ==============================|| SIDEBAR MENU LIST ||============================== //
 
 const MenuList = () => {
+	const { user } = useUserContext();
+	const menuItem = user.type == PATIENT_TYPE_ENUM? patientMenuItem: user.type == ADMIN_TYPE_ENUM? admintMenuItem: doctortMenuItem;
+	
 	const navItems = menuItem.items.map((item) => {
 		switch (item.type) {
 		case 'group':
