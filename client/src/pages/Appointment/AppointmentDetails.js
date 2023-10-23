@@ -43,6 +43,10 @@ const AppointmentDetails = ({ selectedAppointment, handleDialogClose }) => {
                         <Typography variant='body1'>
                             {selectedAppointment.status}
                         </Typography>
+                        <Typography variant='subtitle1'>Type:</Typography>
+                        <Typography variant='body1'>
+                            {selectedAppointment.type}
+                        </Typography>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleDialogClose} color='primary'>

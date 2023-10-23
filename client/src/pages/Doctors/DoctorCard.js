@@ -1,12 +1,7 @@
 import { ListItemButton, ListItemText, ListItemAvatar } from '@mui/material';
 import DoctorIcon from '../../assets/images/icons/DoctorIcon.png';
+import { calcPrice } from '../../utils/PriceCalculator.js';
 
-const calcPrice =  (price) => {
-    const userDiscount = 0.2; // needs user to get the id to get the discount
-    const priceWithDiscount = price * (1 - userDiscount);
-    const final = 1.1 * priceWithDiscount;
-    return final;
-};
 
 const DoctorCard = ({ doctor, setSelectedDoctor }) => {
     const price = calcPrice(doctor.hourlyRate);
@@ -21,7 +16,7 @@ const DoctorCard = ({ doctor, setSelectedDoctor }) => {
                 />
             </ListItemAvatar>
             <ListItemText
-                primary={doctor.userData.name}
+                primary={`Dr. ${doctor.userData.name}`}
                 secondary={doctor.speciality}
                 sx={{
                     width: '60%',
