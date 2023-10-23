@@ -174,6 +174,7 @@ export const PatientAccountProfileDetails = () => {
                         <CardHeader
                     title='Emergency contact'
                 />
+                <Grid container spacing={3}>
                 <Grid xs={12} md={6}>
                                 <TextField
                                     fullWidth
@@ -209,6 +210,7 @@ export const PatientAccountProfileDetails = () => {
                                     value={values.emergencyRelation}
                                 />
                             </Grid>
+                        </Grid>
                     </Box>
                 </CardContent>
                 <Divider/>

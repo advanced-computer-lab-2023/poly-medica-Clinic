@@ -34,7 +34,10 @@ const FirebaseLogin = () => {
 		const data = response.data;		
 		if(response.status === 200){
 			dispatch({ auth: true, payload:data });
-			navigate(`/${data.type}`);
+			if(data.reset)
+				navigate(`/${data.type}/pages/profile`);
+			else
+				navigate(`/${data.type}`);
 			setIsSubmitting(false);
 		} else{
 			Swal.fire({

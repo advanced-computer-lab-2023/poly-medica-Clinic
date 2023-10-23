@@ -192,7 +192,7 @@ export const user = (app) => {
 		}
 	});
 
-	const sendUserToken = (logedinUser, res) =>{
+	const sendUserToken = (logedinUser, res, reset) =>{
 		const token = createToken(
 			logedinUser.userId,
 			logedinUser.userName,
@@ -206,6 +206,7 @@ export const user = (app) => {
 			id: logedinUser.userId,
 			userName: logedinUser.userName,
 			type: (logedinUser.type == PHARMACY_ADMIN_ENUM || logedinUser.type == CLINIC_ADMIN_ENUM) ?ADMIN_FRONT_ENUM:logedinUser.type,
+			reset:reset
 		});
 	}
 	app.post('/login/:request', async (req, res) => {
@@ -217,10 +218,10 @@ export const user = (app) => {
 			case PHARMACY_REQ: if (logedinUser.type == DOCTOR_ENUM || logedinUser.type == CLINIC_ADMIN_ENUM) throw new Error('invalid user'); break; //TODO: admin in login
 			default: throw new Error('invalid system');
 			}
-			sendUserToken(logedinUser, res)
+			sendUserToken(logedinUser, res, false)
 		} catch (err) {
 			if(err.message == 'incorrect Password'){
-				//TODO: access reset service
+				// access reset service
 				const userData = await user.findUserByUserName(req.body.userName);
 				if(userData.email){
 					const resetUser = await resetPassword.getRecordByEmail(userData.email);
@@ -228,10 +229,10 @@ export const user = (app) => {
 					await resetPassword.removeRecordByEmail(userData.email);
 					res.status(BAD_REQUEST_CODE_400).send({ message: err.message });
 				} else{
-					//TODO: access the system normally
 					if(req.body.password == resetUser.OTP){
 						await resetPassword.removeRecordByEmail(userData.email);
-						sendUserToken(userData, res)
+						//TODO: let him 
+						sendUserToken(userData, res, true)
 					}
 					else
 						res.status(BAD_REQUEST_CODE_400).send({ message: err.message });
@@ -265,7 +266,17 @@ export const user = (app) => {
 		}
 	});
 
-
+	app.patch('/change-password/:userId', async (req, res) => {
+		try{
+			const userId = req.params.userId;
+			const { password } = req.body;
+			await user.updatePassword(userId, password);
+			res.status(OK_REQUEST_CODE_200).end();
+		} catch (err){
+			console.log(err);
+			res.status(SERVER_ERROR_REQUEST_CODE_500).send({ message:err.message });
+		}
+	})
 
 	app.get('/remove-cookie', (req, res) => {
 		res.cookie('jwt', '', { expires: new Date(0), path: '/' });

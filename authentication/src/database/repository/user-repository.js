@@ -42,6 +42,14 @@ class UserRepository {
 		const user = await User.deleteOne({ userId: userId }).lean();
 		return user;
 	}
+
+	async updatePassword(userId, password){
+		const user = await User.findOne({ userId: userId })
+		const salt = await bcrypt.genSalt();
+		password = await bcrypt.hash(password, salt);
+		user.password = password;
+		await user.save();
+	}
 }
 
 export default UserRepository;
