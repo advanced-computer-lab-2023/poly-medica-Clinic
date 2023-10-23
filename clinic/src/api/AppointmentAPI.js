@@ -25,8 +25,7 @@ export const appointment = (app) => {
 			});
 		}
 	});
-
-	// create appointment
+	
 	app.post('/appointments', async (req, res) => {
 		const appointment = req.body;
 		try {
