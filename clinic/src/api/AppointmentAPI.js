@@ -25,4 +25,17 @@ export const appointment = (app) => {
 			});
 		}
 	});
+
+	// create appointment
+	app.post('/appointments', async (req, res) => {
+		const appointment = req.body;
+		try {
+			const newAppointment = await service.createAppointment(appointment);
+			res.status(OK_STATUS_CODE).json(newAppointment);
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({
+				message: 'appointment not created due to an error',
+			});
+		}
+	});
 };

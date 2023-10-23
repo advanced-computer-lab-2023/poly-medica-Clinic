@@ -26,6 +26,11 @@ const Appointment = mongoose.Schema({
 	status: {
 		type: String,
 	},
+	type: {
+		type: String,
+		enum: ['appointment', 'follow-up'],
+		required: true,
+	},
 	//.....
 });
 
