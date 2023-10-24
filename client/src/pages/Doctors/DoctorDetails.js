@@ -7,11 +7,11 @@ import {
     Button,
 } from '@mui/material';
 import DoctorDetailsHeader from './DoctorDetailsHeader.js';
-import DoctorDetailsAppointments from './DoctorDetailsAppointments.js';
+import DoctorDetailsAppointmentsList from './DoctorDetailsAppointmentsList.js';
 
 
 
-const DoctorDetails = ({ selectedDoctor, handleDialogClose }) => {
+const DoctorDetails = ({ selectedDoctor, handleDialogClose, patientId }) => {
     return (
         <Dialog
             open={selectedDoctor}
@@ -28,7 +28,10 @@ const DoctorDetails = ({ selectedDoctor, handleDialogClose }) => {
 
                     <DialogContent>
                         <DoctorDetailsHeader selectedDoctor={selectedDoctor} />
-                        <DoctorDetailsAppointments selectedDoctor={selectedDoctor} />
+                        <DoctorDetailsAppointmentsList
+                            selectedDoctor={selectedDoctor}
+                            patientId={patientId}
+                        />
                     </DialogContent>
                     
                     

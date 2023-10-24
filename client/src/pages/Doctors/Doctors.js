@@ -3,11 +3,14 @@ import { doctorAxios } from 'pages/utilities/AxiosConfig';
 import MainCard from 'ui-component/cards/MainCard';
 import DoctorList from './DoctorList.js';
 import DoctorDetails from './DoctorDetails.js';
+import { useUserContext } from 'hooks/useUserContext';
 import { useFilter } from 'contexts/FilterContext.js';
 import { useSearch } from 'contexts/SearchContext.js';
 import { isDateInAvailableSlots } from 'utils/AppointmentUtils.js';
 
 const Doctors = () => {
+    const { user } = useUserContext();
+	const patientID = user.id;
     const [doctors, setDoctors] = useState([]);
     const [selectedDoctor, setSelectedDoctor] = useState(null);
     const [originalDoctors, setOriginalDoctors] = useState([]);
@@ -98,6 +101,7 @@ const Doctors = () => {
             <DoctorDetails
                 selectedDoctor={selectedDoctor}
                 handleDialogClose={handleDialogClose}
+                patientID={patientID}
             />
         </MainCard>
     );

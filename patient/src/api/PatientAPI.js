@@ -29,7 +29,7 @@ export const patient = (app) => {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}
 	});
-
+	
 	app.post('/patients', async (req, res) => {
 		try {
 			const newPatient = await service.createPatient(req.body);
