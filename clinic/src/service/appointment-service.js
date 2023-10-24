@@ -10,7 +10,20 @@ class AppointmentService {
 	}
 
 	async createAppointment(appointment) {
-		return await this.repository.createAppointment(appointment);
+		const { patientId, doctorId, patientName, doctorName, date, status, type } = appointment;
+		const appointmentModelData = {
+			patientId,
+			doctorId,
+			patientName,
+			doctorName,
+			date,
+			status,
+			type,
+		};
+		const { availableSlotsIdx } = appointment;
+		// deletes the available slot from the doctor's availableSlots array
+		await this.repository.updateAvailableSlots(doctorId, availableSlotsIdx);
+		return await this.repository.createAppointment(appointmentModelData);
 	}
 }
 

@@ -1,4 +1,6 @@
 import AppointmentModel from '../models/Appointment.js';
+import DoctorModel from '../models/Doctor.js';
+import { ONE } from '../../utils/Constants.js';
 
 class AppointmentRepository {
 	async findAppointmentsByUserId(id) {
@@ -9,17 +11,17 @@ class AppointmentRepository {
 	}
 
 	async createAppointment(appointment) {
-		const { patientId, doctorId, patientName, doctorName, date, status, type } = appointment;
-		const newAppointment = new AppointmentModel({
-			patientId,
-			doctorId,
-			patientName,
-			doctorName,
-			date,
-			status,
-			type,
-		});
+		
+		const newAppointment = new AppointmentModel(appointment);
 		return await newAppointment.save();
+	}
+
+	// deletes the available slot from the doctor's availableSlots array
+	async updateAvailableSlots(doctorId, availableSlotsIdx) {
+		const doctor = await DoctorModel.findById(doctorId);
+		const availableSlots = doctor.availableSlots;
+		availableSlots.splice(availableSlotsIdx, ONE);
+		await DoctorModel.findByIdAndUpdate(doctorId, { availableSlots });
 	}
 }
 
