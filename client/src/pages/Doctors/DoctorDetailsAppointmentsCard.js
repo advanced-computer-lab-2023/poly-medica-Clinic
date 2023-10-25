@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// import { useTheme } from '@mui/material/styles';
 
 import { 
     Typography, 
@@ -17,24 +16,7 @@ import { format } from 'date-fns';
 const allMembers = [
     'Ahmad1',
     'Ahmad2',
-    'Ahmad3',
-    'Ahmad4',
-    'Ahmad5',
-    'Ahmad6',
-    'Ahmad7',
-    'Ahmad8',
-    'Ahmad9',
-    'Ahmad10',
-    'Ahmad11',
-    'Ahmad12',
-    'Ahmad13',
-    'Ahmad14',
-    'Ahmad15',
-    'Ahmad16',
-    'Ahmad17',
-    'Ahmad18',
-    'Ahmad19',
-    'Ahmad20',
+    'Ahmad3'
 ];
 
 // assuming that from and until have the same day
@@ -48,30 +30,26 @@ const getTime = (date) => {
 const DoctorDetailsAppointmentsCard = ({ selectedDoctor, availableSlotsIdx/*, patientId */ }) => {
     const { availableSlots } = selectedDoctor;
     const slot = availableSlots[availableSlotsIdx];
-    // const theme = useTheme();
+    
     const [expanded, setExpanded] = useState(false);
-	const handleExpand = () => {
+    const [selectedBookingType, setSelectedBookingType] = useState('myself');
+    const [selectedMember, setSelectedMember] = useState(null); // for autocomplete
+	
+    const handleExpand = () => {
 		setExpanded(oldExpanded => !oldExpanded);
 	};
-    
-    const [selectedValue, setSelectedValue] = useState('myself');
-    console.log('selectedValue: ', selectedValue);
-
-    const [selectedMember, setSelectedMember] = useState(null); // for autocomplete
     const handleChange = (event, value) => {
-        console.log('value: ', value);
         setSelectedMember(value);
     };
-    console.log('selectedMember: ', selectedMember);
-    // console.log('selectedDoctor: ', selectedDoctor._id);
-    // const handleBookNow = () => {
-    //     const appointment = {
-    //         patientId,
-    //         doctorId: selectedDoctor._id,
-    //         patientName: '',
-    //         doctorName: selectedDoctor.userData.name,
-    //     };
-    // };
+    const handleBookNow = () => {
+        console.log('Book Now');
+        // const appointment = {
+        //     patientId,
+        //     doctorId: selectedDoctor._id,
+        //     patientName: '',
+        //     doctorName: selectedDoctor.userData.name,
+        // };
+    };
     return(
         <>
             <Card 
@@ -125,30 +103,30 @@ const DoctorDetailsAppointmentsCard = ({ selectedDoctor, availableSlotsIdx/*, pa
                             >
                                 <Button
                                     size="small"
-                                    variant= {selectedValue=='myself'?'outlined':'text'}
+                                    variant= {selectedBookingType=='myself'?'outlined':'text'}
                                     color= 'secondary'
                                     sx = {{ 
-                                        color: (selectedValue=='myself'?'secondary': '#808080')
+                                        color: (selectedBookingType=='myself'?'secondary': '#808080')
                                     }}
-                                    onClick={() => setSelectedValue('myself')}
+                                    onClick={() => setSelectedBookingType('myself')}
                                 >
                                     Myself
                                 </Button>
                                 <Button
                                     size="small"
-                                    variant= {selectedValue=='family'?'outlined':'text'}
+                                    variant= {selectedBookingType=='family'?'outlined':'text'}
                                     color= 'secondary'
                                     sx = {{ 
-                                        color: (selectedValue=='family'?'secondary': '#808080')
+                                        color: (selectedBookingType=='family'?'secondary': '#808080')
                                     }}
-                                    onClick={() => setSelectedValue('family')}
+                                    onClick={() => setSelectedBookingType('family')}
                                 >
                                     Family Member
                                 </Button>
                             </div>
                             
                             {
-                                selectedValue=='family' && 
+                                selectedBookingType=='family' && 
                                 <div 
                                     style={{
                                         display: 'flex',
@@ -175,7 +153,8 @@ const DoctorDetailsAppointmentsCard = ({ selectedDoctor, availableSlotsIdx/*, pa
                                 sx = {{
                                     borderRadius: 5
                                 }}
-                                disabled={selectedValue=='family' && !selectedMember}
+                                disabled={selectedBookingType=='family' && !selectedMember}
+                                onClick={handleBookNow}
                             >
                                 Book Now
                             </Button>
