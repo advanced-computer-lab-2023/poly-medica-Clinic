@@ -128,6 +128,7 @@ class DoctorRepository {
 	async addAppointment(id, from) {
 		const dateFrom = new Date(from); 
 		const until = new Date(dateFrom.getTime() + SIXTY *SIXTY* THOUSAND); 
+		
 		const doctor = await DoctorModel.findByIdAndUpdate(
 			id,
 			{
@@ -139,9 +140,7 @@ class DoctorRepository {
 				},
 			},
 			{ new: true, runValidators: true },
-		);
-
-
+		); 
 		return doctor;
 	}
 }
