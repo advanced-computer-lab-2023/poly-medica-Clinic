@@ -134,7 +134,7 @@ class DoctorRepository {
 				$push: {
 					availableSlots: {
 						from: dateFrom,
-						to: until,
+						until: until,
 					},
 				},
 			},
