@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import UserSchema from './UserSchema.js';
-
+ 
 const Doctor = mongoose.Schema({
 	userData: {
 		type: UserSchema,
@@ -22,9 +22,16 @@ const Doctor = mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	//from is a data and utile is derieved from it which is 60 min after it
 	availableSlots: {
 		type: Array,
-		default: [],
+		default: [
+			{
+				from: new Date(),
+				until: new Date()
+			},
+		],
+		
 	},
 });
 

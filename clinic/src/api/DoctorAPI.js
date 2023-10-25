@@ -210,4 +210,28 @@ export const doctor = (app) => {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
 	});
+
+
+	app.post('/doctors/:id/slots', async (req, res) => {
+		try {
+			const id = req.params.id;
+			const from = req.body.from;	// Date
+			if (!isValidMongoId(id))
+				return res
+					.status(ERROR_STATUS_CODE)
+					.json({ message: 'Invalid ID' });
+			const doctor = await service.addAppointment(id, from);
+			if (doctor) {
+				res.status(OK_STATUS_CODE).json({ doctor });
+			} else {
+				res.status(NOT_FOUND_STATUS_CODE).json({
+					message: 'doctor not found',
+				});
+			}
+		} catch (error) {
+			res.status(ERROR_STATUS_CODE).json({ message: error });
+		}
+	}
+	);
+			
 };

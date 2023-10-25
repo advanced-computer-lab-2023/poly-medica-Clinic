@@ -61,6 +61,11 @@ class DoctorService {
 	async checkDoctorReqUser(req) {
 		await this.repository.checkDoctorReqUser(req);
 	}
+
+	async addAppointment(id, from) {
+		const doctor = await this.repository.addAppointment(id, from);
+		return doctor;
+	}
 }
 
 export default DoctorService;
