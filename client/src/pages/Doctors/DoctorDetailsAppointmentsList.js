@@ -1,7 +1,7 @@
 import { Grid } from '@mui/material';
 import DoctorDetailsAppointmentsCard from './DoctorDetailsAppointmentsCard';
 
-const DoctorDetailsAppointmentsList = ({ selectedDoctor, pateintId }) => {
+const DoctorDetailsAppointmentsList = ({ selectedDoctor, loggedInPatient }) => {
     const { availableSlots } = selectedDoctor;
     return (
         <>
@@ -11,7 +11,7 @@ const DoctorDetailsAppointmentsList = ({ selectedDoctor, pateintId }) => {
                         <DoctorDetailsAppointmentsCard
                             selectedDoctor={selectedDoctor}
                             availableSlotsIdx={index}
-                            patientId={pateintId}
+                            loggedInPatient={loggedInPatient}
                         />
                     </Grid>
                 ))}

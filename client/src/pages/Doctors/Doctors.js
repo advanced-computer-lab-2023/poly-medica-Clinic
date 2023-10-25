@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { doctorAxios } from 'pages/utilities/AxiosConfig';
+import { doctorAxios, patientAxios } from 'pages/utilities/AxiosConfig';
 import MainCard from 'ui-component/cards/MainCard';
 import DoctorList from './DoctorList.js';
 import DoctorDetails from './DoctorDetails.js';
@@ -14,6 +14,7 @@ const Doctors = () => {
     const [doctors, setDoctors] = useState([]);
     const [selectedDoctor, setSelectedDoctor] = useState(null);
     const [originalDoctors, setOriginalDoctors] = useState([]);
+    const [loggedInPatient, setLoggedInPatient] = useState(null);
     const { filterData, updateFilter } = useFilter();
     const { searchQuery } = useSearch();
     const specialities = [];
@@ -92,6 +93,18 @@ const Doctors = () => {
         setSelectedDoctor(null);
     };
 
+    useEffect(() => {
+
+        patientAxios
+            .get(`/patients/${patientID}`)
+            .then((response) => {
+                setLoggedInPatient(response.data.patient);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
+
     return (
         <MainCard title='Doctors'>
             <DoctorList
@@ -101,7 +114,7 @@ const Doctors = () => {
             <DoctorDetails
                 selectedDoctor={selectedDoctor}
                 handleDialogClose={handleDialogClose}
-                patientID={patientID}
+                loggedInPatient={loggedInPatient}
             />
         </MainCard>
     );

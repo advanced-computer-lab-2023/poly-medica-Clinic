@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { 
     Typography, 
@@ -10,45 +10,85 @@ import {
     Autocomplete,
     TextField
 } from '@mui/material';
-
+import { doctorAxios } from 'pages/utilities/AxiosConfig';
 import { format } from 'date-fns';
+import Swal from 'sweetalert2';
+import './style.css';
 
-const allMembers = [
-    'Ahmad1',
-    'Ahmad2',
-    'Ahmad3'
-];
 
 // assuming that from and until have the same day
 const getDay = (date) => {
     return format(new Date(date), 'd MMM, yyyy');
 };
 const getTime = (date) => {
+    //Note: localizes the date 
+    //   adds 2 hours to the time considering our location and assuming given is GMT 
     return format(new Date(date), 'p');
 };
 
-const DoctorDetailsAppointmentsCard = ({ selectedDoctor, availableSlotsIdx/*, patientId */ }) => {
+const DoctorDetailsAppointmentsCard = ({ 
+    selectedDoctor,
+    availableSlotsIdx,
+    loggedInPatient 
+}) => {
     const { availableSlots } = selectedDoctor;
     const slot = availableSlots[availableSlotsIdx];
     
     const [expanded, setExpanded] = useState(false);
     const [selectedBookingType, setSelectedBookingType] = useState('myself');
+	const [allFamilyMembers, setAllFamilyMembers] = useState([]); // for autocomplete
     const [selectedMember, setSelectedMember] = useState(null); // for autocomplete
-	
+
+    useEffect(() => {
+        const familyMembers = [];
+        loggedInPatient.familyMembers.forEach((member) => {
+            familyMembers.push(member.name);
+        });
+        setAllFamilyMembers(familyMembers);
+    });
+
     const handleExpand = () => {
 		setExpanded(oldExpanded => !oldExpanded);
 	};
-    const handleChange = (event, value) => {
-        setSelectedMember(value);
+    const handleChange = (event) => {
+        console.log('event', event);
+        setSelectedMember({ 
+            index: parseInt(event.target.dataset.optionIndex), 
+        });
     };
-    const handleBookNow = () => {
-        console.log('Book Now');
-        // const appointment = {
-        //     patientId,
-        //     doctorId: selectedDoctor._id,
-        //     patientName: '',
-        //     doctorName: selectedDoctor.userData.name,
-        // };
+    const handleBookNow = async () => {
+        const appointment = {
+            // patientId: (to be filled in later)
+            doctorId: selectedDoctor._id,
+            // patientName: (to be filled in later)
+            doctorName: selectedDoctor.userData.name,
+            date: slot.from,
+            status: 'pending',
+            type: 'appointment',
+            availableSlotsIdx
+        };
+        if (selectedBookingType=='myself') {
+            appointment.patientId = loggedInPatient._id;
+            appointment.patientName = loggedInPatient.userName;
+        } else {
+            appointment.patientId = loggedInPatient.familyMembers[selectedMember.index].id;
+            appointment.patientName = loggedInPatient.familyMembers[selectedMember.index].name;
+        }
+        await doctorAxios
+                .post('/appointments', appointment)
+                .then(() => {
+                    Swal.fire(
+                        'Appointment Booked!',
+                        'Your appointment has been booked successfully!',
+                        'success'
+                    );
+                    // window.location.reload();
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+
+        
     };
     return(
         <>
@@ -137,7 +177,7 @@ const DoctorDetailsAppointmentsCard = ({ selectedDoctor, availableSlotsIdx/*, pa
                                     <Autocomplete
                                         disablePortal
                                         id="combo-box-demo"
-                                        options={allMembers}
+                                        options={allFamilyMembers}
                                         sx={{ 
                                             width: 160,
                                         }}

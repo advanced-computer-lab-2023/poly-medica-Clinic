@@ -11,7 +11,7 @@ import DoctorDetailsAppointmentsList from './DoctorDetailsAppointmentsList.js';
 
 
 
-const DoctorDetails = ({ selectedDoctor, handleDialogClose, patientId }) => {
+const DoctorDetails = ({ selectedDoctor, handleDialogClose, loggedInPatient }) => {
     return (
         <Dialog
             open={selectedDoctor}
@@ -30,7 +30,7 @@ const DoctorDetails = ({ selectedDoctor, handleDialogClose, patientId }) => {
                         <DoctorDetailsHeader selectedDoctor={selectedDoctor} />
                         <DoctorDetailsAppointmentsList
                             selectedDoctor={selectedDoctor}
-                            patientId={patientId}
+                            loggedInPatient={loggedInPatient}
                         />
                     </DialogContent>
                     
