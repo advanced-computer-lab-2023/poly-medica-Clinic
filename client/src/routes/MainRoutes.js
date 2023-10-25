@@ -30,6 +30,9 @@ const Account = Loadable(lazy(() => import('pages/profile/Account')));
 const UtilsTypography = Loadable(
     lazy(() => import('pages/utilities/Typography'))
 );
+const LazyPayment = Loadable(
+    lazy(() => import('pages/payment/Payment'))
+);
 const UtilsColor = Loadable(lazy(() => import('pages/utilities/Color')));
 const UtilsShadow = Loadable(lazy(() => import('pages/utilities/Shadow')));
 
@@ -98,6 +101,10 @@ const MainRoutes = {
                 {
                     path: 'packages',
                     element: <LazyPackages />,
+                },
+                {
+                    path: 'payment',
+                    element: <LazyPayment />,
                 },
                 {
                     path: 'clinic',

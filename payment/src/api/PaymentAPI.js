@@ -11,19 +11,22 @@ export const payment = (app) => {
     app.post('/pay', async (req, res) => {
         try{
             console.log(req.body);
-            const {total_amount} = req.body;
+            //const {total_amount} = req.body;
             
             const paymentIntent = await stripe.paymentIntents.create({
-                amount: total_amount,
+                amount: 50,
                 currency: "usd",
                 automatic_payment_methods: {
                   enabled: true,
                 },
-        });
+            });
             res.status(OK_STATUS_CODE).send({
                 clientSecret: paymentIntent.client_secret,
             });
         }catch(err){
+            console.log('====================================');
+            console.log(err.message);
+            console.log('====================================');
             res.status(ERROR_STATUS_CODE).send({err: err.message, status: ERROR_STATUS_CODE});
         }
     });
