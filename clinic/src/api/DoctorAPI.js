@@ -243,7 +243,7 @@ export const doctor = (app) => {
 					.json({ message: 'Invalid ID' });
 			const doctor = await service.getDoctorById(id);
 			if (doctor) {
-				res.status(OK_STATUS_CODE).json({ doctor });
+				res.status(OK_STATUS_CODE).json(  doctor.availableSlots  );
 			} else {
 				res.status(NOT_FOUND_STATUS_CODE).json({
 					message: 'doctor not found',

@@ -121,6 +121,14 @@ const pages = {
             url: '/doctor/pages/my-patients',
             target: false,
         },
+        {
+            id:'add-available-slots',
+            title:'Add Available Slots',
+            type:'item',
+            icon:icons.IconStethoscope,
+            url:'/doctor/pages/add-available-slots',
+            target:false,
+        }
     ],
 };
 

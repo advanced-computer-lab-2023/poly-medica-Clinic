@@ -125,7 +125,7 @@ class DoctorRepository {
 		return doctor;
 	}
 
-	async addAppointment(id, from) {
+	async addSlot(id, from) {
 		const dateFrom = new Date(from); 
 		const until = new Date(dateFrom.getTime() + SIXTY *SIXTY* THOUSAND); 
 		
