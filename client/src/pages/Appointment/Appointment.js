@@ -6,8 +6,11 @@ import AppointmentDetails from './AppointmentDetails.js';
 import { useUserContext } from 'hooks/useUserContext.js';
 import { useFilter } from 'contexts/FilterContext.js';
 import { APPOINTMENT_FILTER_ARRAY } from 'utils/Constants.js';
-import { filterAppointmentsByDate } from 'utils/AppointmentUtils.js';
-// import _ from 'lodash';
+import {
+	filterAppointmentsByDate,
+	filterAppointmentByChronology
+} from 'utils/AppointmentUtils.js';
+
 
 const Appointment = () => {
 	const [appointments, setAppointments] = useState(null);
@@ -33,8 +36,13 @@ const Appointment = () => {
 
 	useEffect(() => {
 		const filteredAppointments = originalAppointments.filter((appointment) =>
-		((!filterData[0].selectedValue || appointment.status.toString().toLowerCase() === filterData[0].selectedValue.toLowerCase()) &&
-			(!filterData[1].selectedValue || filterAppointmentsByDate(appointment, filterData[1].selectedValue)))
+			(
+				(!filterData[0].selectedValue || appointment.status.toString().toLowerCase() === filterData[0].selectedValue.toLowerCase())
+				&&
+				(!filterData[1].selectedValue || filterAppointmentsByDate(appointment, filterData[1].selectedValue))
+				&&
+				(!filterData[2].selectedValue || filterAppointmentByChronology(appointment, filterData[2].selectedValue))
+			)
 		);
 		setAppointments(filteredAppointments);
 	}, [filterData, originalAppointments]);
