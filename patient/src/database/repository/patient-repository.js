@@ -1,6 +1,8 @@
 import PatientModel from '../models/Patient.js';
 import PrescriptionModel from '../models/Prescription.js';
-import { FAMILY_MEMBERS_PROJECTION } from '../../utils/Constants.js';
+import axios from 'axios';
+import { CLINIC_BASE_URL, FAMILY_MEMBERS_PROJECTION, HEALTH_PACKAGE_STATUS } from '../../utils/Constants.js';
+import { patientHasPackage } from '../../utils/PatientUtils.js';
 
 class PatientRepository {
 	async findAllPatients() {
@@ -49,10 +51,39 @@ class PatientRepository {
 		return deletedPatient;
 	}
 
-	async signupUser(req){
+	async signupUser(req) {
 		const { name, email, password, userName, dateOfBirth, gender, mobileNumber, emergencyContact } = req.body;
 		const user = await PatientModel.signup(name, email, password, userName, dateOfBirth, gender, mobileNumber, emergencyContact);
 		return user;
+	}
+
+	async addHealthPackage(patientId, healthPackage) {
+		const patient = await PatientModel.findById(patientId);
+		patient.healthPackages.forEach((healthPackage) => {
+			if (healthPackage.status === HEALTH_PACKAGE_STATUS[1]) {
+				healthPackage.status = HEALTH_PACKAGE_STATUS[2];
+			}
+		})
+		patient.healthPackages.push(healthPackage);
+		await patient.save();
+		return patient;
+	}
+
+	async viewHealthPackages(patientId) {
+		const packagesURL = `${CLINIC_BASE_URL}/packages`;
+		let allPackages = await axios.get(packagesURL);
+		allPackages = allPackages.data.allPackages;
+		console.log('All packages == ', allPackages);
+		const patient = await PatientModel.findById(patientId);
+		return allPackages.filter((chosenPackage) => patientHasPackage(patient, chosenPackage));
+	}
+
+	async cancelHealthPackage(patientId, healthPackageId) {
+		const patient = await PatientModel.findById(patientId);
+		const chosenPackage = patient.healthPackages.filter((pack) => pack.packageId.toString() === healthPackageId.toString())[0];
+		chosenPackage.status = HEALTH_PACKAGE_STATUS[0];
+		await patient.save();
+		return patient;
 	}
 }
 

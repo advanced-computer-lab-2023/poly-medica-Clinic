@@ -93,7 +93,7 @@ export const patient = (app) => {
 		}
 		try {
 			const { name, userName, nationalId, age, gender, relation } =
-                req.body;
+				req.body;
 			const patient = await service.getPatientByUserName(userName);
 			if (patient) {
 				const data = await service.getFamilyMembers(id);
@@ -166,16 +166,49 @@ export const patient = (app) => {
 		}
 	);
 
+	app.get('/patient/:id/health-packages', async (req, res) => {
+		const { id } = req.params;
+		try {
+			const healthPackages = await service.viewHealthPackages(id);
+			res.status(OK_STATUS_CODE).json({ healthPackages });
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({ message: err.message });
+		}
+	});
+
+	app.patch('/patient/:id/health-packages', async (req, res) => {
+		const { id } = req.params;
+		const { healthPackage } = req.body;
+		try {
+			const data = await service.addHealthPackage(id, healthPackage);
+			if (data) res.status(OK_STATUS_CODE).json(data);
+			else res.status(NOT_FOUND_STATUS_CODE).json({ message: 'error occured' });
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({ message: err.message });
+		}
+	});
+
+	app.patch('/patient/:id/health-packages/:packageId', async (req, res) => {
+		const { id, packageId } = req.params;
+		try {
+			const updatedPatient = await service.cancelHealthPackage(id, packageId);
+			if (updatedPatient) res.status(OK_STATUS_CODE).json({ updatedPatient });
+			else res.status(NOT_FOUND_STATUS_CODE).json({ message: 'Patient not found' });
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({ message: err.message });
+		}
+	})
+
 	app.post('/signup', async (req, res) => {
-		try{
+		try {
 			const signedupUser = await service.signupUser(req);
-			req.body = { userId: signedupUser._id ,email: signedupUser.email , password:signedupUser.password, userName:signedupUser.userName, type: PATIENT_ENUM };
+			req.body = { userId: signedupUser._id, email: signedupUser.email, password: signedupUser.password, userName: signedupUser.userName, type: PATIENT_ENUM };
 			res.send(req.body);
-		} catch(err){
-			if(err.code == DUPLICATE_KEY_ERROR_CODE){
+		} catch (err) {
+			if (err.code == DUPLICATE_KEY_ERROR_CODE) {
 				const duplicateKeyAttrb = Object.keys(err.keyPattern)[ZERO_INDEX];
 				console.log(duplicateKeyAttrb);
-				res.status(BAD_REQUEST_CODE_400).send({ errCode:DUPLICATE_KEY_ERROR_CODE ,errMessage:`that ${duplicateKeyAttrb} is already registered` });
+				res.status(BAD_REQUEST_CODE_400).send({ errCode: DUPLICATE_KEY_ERROR_CODE, errMessage: `that ${duplicateKeyAttrb} is already registered` });
 			}
 			else res.status(BAD_REQUEST_CODE_400).send({ errMessage: err.message });
 		}

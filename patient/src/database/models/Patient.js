@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { FAMILIY_EMERGENCY, GENDERS } from '../../utils/Constants.js';
+import { FAMILIY_EMERGENCY, GENDERS, HEALTH_PACKAGE_STATUS, FAMILY_RELATIONS } from '../../utils/Constants.js';
 import bcrypt from 'bcrypt';
 
 const patientSchema = mongoose.Schema({
@@ -76,7 +76,7 @@ const patientSchema = mongoose.Schema({
 			},
 			relation: {
 				type: String,
-				enum: FAMILIY_EMERGENCY,
+				enum: FAMILY_RELATIONS,
 				required: true,
 			},
 		},
@@ -97,8 +97,22 @@ const patientSchema = mongoose.Schema({
 			},
 		},
 	],
-
-	//.....
+	healthPackages: [{
+		packageId: {
+			type: String
+		},
+		subscribtionDate: {
+			type: Date
+		},
+		renewalDate: {
+			type: Date
+		},
+		status: {
+			type: String,
+			enum: HEALTH_PACKAGE_STATUS
+		}
+	}
+	]
 });
 
 patientSchema.statics.signup = async function (

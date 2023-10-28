@@ -58,6 +58,22 @@ class PatientService {
 			return prescription;
 		return null;
 	}
+
+	async addHealthPackage(patientId, healthPackage) {
+		const updatedPatient = await this.repository.addHealthPackage(patientId, healthPackage);
+		return updatedPatient;
+	}
+
+	async viewHealthPackages(patientId) {
+		const healthPackages = await this.repository.viewHealthPackages(patientId);
+		return healthPackages;
+	}
+
+	async cancelHealthPackage(patientId, healthPackageId) {
+		const updatedPatient = await this.repository.cancelHealthPackage(patientId, healthPackageId);
+		return updatedPatient;
+	}
+
 }
 
 export default PatientService;

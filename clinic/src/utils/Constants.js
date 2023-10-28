@@ -27,7 +27,7 @@ export const UNAUTHORIZED_STATUS_CODE = 401;
 
 
 export const PATIENTS_BASE_URL = 'http://localhost:8002';
-
+export const CLINIC_BASE_URL = 'http://localhost:8001';
 export const AUTH_BASE_URL = 'http://localhost:8004';
 
 export const DOCTOR_PROJECTION = '-userData.password';

@@ -16,7 +16,9 @@ export const EMPTY_SIZE = 0;
 export const PORT_NUMBER = 8002;
 
 export const MONGO_URI = 'mongodb://localhost:27017';
-
+export const PATIENTS_BASE_URL = 'http://localhost:8002';
+export const CLINIC_BASE_URL = 'http://localhost:8001';
+export const AUTH_BASE_URL = 'http://localhost:8004';
 export const FAMILIY_EMERGENCY = [
 	'Parent',
 	'Child',
@@ -38,3 +40,5 @@ export const CREATED_STATUS_CODE = 201;
 export const UNAUTHORIZED_STATUS_CODE = 401;
 export const FAMILY_MEMBERS_PROJECTION = 'familyMembers';
 export const PATIENT_PROJECTION = '-password';
+
+export const HEALTH_PACKAGE_STATUS = ['CANCELLED', 'SUBSCRIBED WITH RENEWAL DATE', 'UNSUBSCRIBED'];
