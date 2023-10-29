@@ -8,6 +8,7 @@ import {
 
 export const payment = (app) => {
 
+
     app.post('/pay', async (req, res) => {
         try{
             console.log(req.body);
@@ -24,9 +25,6 @@ export const payment = (app) => {
                 clientSecret: paymentIntent.client_secret,
             });
         }catch(err){
-            console.log('====================================');
-            console.log(err.message);
-            console.log('====================================');
             res.status(ERROR_STATUS_CODE).send({err: err.message, status: ERROR_STATUS_CODE});
         }
     });
