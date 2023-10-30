@@ -75,4 +75,5 @@ export const healthPackage = (app) => {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}
 	});
+
 };

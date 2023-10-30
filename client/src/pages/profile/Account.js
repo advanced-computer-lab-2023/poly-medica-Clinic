@@ -1,16 +1,17 @@
 import { Box, Container, Stack, Typography, Unstable_Grid2 as Grid } from '@mui/material';
 import { AccountProfile } from './AccountProfile';
 import { AccountProfileDetails } from './AccountProfileDetails';
+import { ProfilePackages } from './ProfilePackages';
 
 const Page = () => {
-    
-    
-    
+
+
+
 	return (
 		<>
 			<main>
 				<title>
-        Account | Devias Kit
+					Account | Devias Kit
 				</title>
 			</main>
 			<Box
@@ -24,7 +25,7 @@ const Page = () => {
 					<Stack spacing={3}>
 						<div>
 							<Typography variant="h4">
-              Account
+								Account
 							</Typography>
 						</div>
 						<div>
@@ -46,13 +47,17 @@ const Page = () => {
 								>
 									<AccountProfileDetails />
 								</Grid>
+								<Grid xs={12}>
+									<ProfilePackages />
+								</Grid>
 							</Grid>
 						</div>
 					</Stack>
 				</Container>
 			</Box>
 		</>
-	);};
+	);
+};
 
 
 export default Page;

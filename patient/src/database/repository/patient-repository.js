@@ -73,10 +73,24 @@ class PatientRepository {
 		const packagesURL = `${CLINIC_BASE_URL}/packages`;
 		let allPackages = await axios.get(packagesURL);
 		allPackages = allPackages.data.allPackages;
-		console.log('All packages == ', allPackages);
 		const patient = await PatientModel.findById(patientId);
-		return allPackages.filter((chosenPackage) => patientHasPackage(patient, chosenPackage));
+
+		const combineAttributes = (healthPackage, patientPackage) => ({
+			name: healthPackage.name,
+			price: healthPackage.price,
+			doctorDiscount: healthPackage.discountOfDoctor,
+			medicineDiscoubnt: healthPackage.discountOfMedicin,
+			familyDiscount: healthPackage.discountOfFamily,
+			status: patientPackage.status,
+			subscribtionDate: patientPackage.subscribtionDate,
+		});
+
+		const filteredPackages = allPackages
+			.filter((chosenPackage) => patientHasPackage(patient, chosenPackage))
+			.map((chosenPackage) => combineAttributes(chosenPackage, patient.healthPackages.find((p) => p.packageId.toString() === chosenPackage._id.toString())));
+		return filteredPackages;
 	}
+
 
 	async cancelHealthPackage(patientId, healthPackageId) {
 		const patient = await PatientModel.findById(patientId);
