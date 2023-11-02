@@ -14,7 +14,7 @@ const HealthPackagesList = ({ packages, handleEditButtonClick, handleDeleteButto
 					item
 					key={pack.name}
 					xs={12}
-					sm={pack.name === 'platnium' ? 12 : 6}
+					sm={pack.name === 'platinium' ? 12 : 6}
 					md={4}
 				>
 					<Card>
@@ -61,17 +61,17 @@ const HealthPackagesList = ({ packages, handleEditButtonClick, handleDeleteButto
 							</ul>
 						</CardContent>
 						<Stack direction="row" spacing={2} justifyContent="center" >
-							<Button variant="outlined" startIcon={<DeleteIcon />} onClick={() => handleDeleteButtonClick(pack)}>
-								Delete
-							</Button>
-							<Button variant="contained" endIcon={<EditIcon />} onClick={(event) => handleEditButtonClick(pack, event)} >
+							<Button variant="contained" color='secondary' endIcon={<EditIcon />} onClick={(event) => handleEditButtonClick(pack, event)} >
 								Edit
+							</Button>
+							<Button variant="outlined" color='secondary' startIcon={<DeleteIcon />} onClick={() => handleDeleteButtonClick(pack)}>
+								Delete
 							</Button>
 						</Stack>
 						<CardActions>
-							<Button fullWidth variant="contained">
+							<Button fullWidth variant="contained" color='secondary'>
 								Buy Now
-						</Button>
+							</Button>
 						</CardActions>
 					</Card>
 				</Grid>
