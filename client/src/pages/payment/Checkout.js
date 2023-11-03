@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import {
   PaymentElement,
   useStripe,
-  useElements
+  useElements,
+  useNavigate
 } from '@stripe/react-stripe-js';
 
 import { Button } from '@mui/material';
@@ -16,6 +17,7 @@ export default function CheckoutForm() {
   const elements = useElements();
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -96,9 +98,8 @@ export default function CheckoutForm() {
       spacedAccordionItems: true
     }
   };
-
   
-
+  
   return (
     <form id='payment-form' onSubmit={handleSubmit}>
       
