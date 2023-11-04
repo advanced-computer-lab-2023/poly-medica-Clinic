@@ -16,6 +16,7 @@ export const EMPTY_SIZE = 0;
 export const PORT = 8002;
 
 export const MONGO_URI = 'mongodb://localhost:27017';
+export const ZERO_INDEX = 0;
 
 export const FAMILIY_EMERGENCY = [
 	'Parent',
