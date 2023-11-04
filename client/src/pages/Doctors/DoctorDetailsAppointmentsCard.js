@@ -11,20 +11,11 @@ import {
     TextField
 } from '@mui/material';
 import { doctorAxios } from 'pages/utilities/AxiosConfig';
-import { format } from 'date-fns';
 import Swal from 'sweetalert2';
-import './style.css';
+import '../../assets/css/swalStyle.css';
 
+import { getDay, getTime } from '../../utils/DateFormatter.js';
 
-// assuming that from and until have the same day
-const getDay = (date) => {
-    return format(new Date(date), 'd MMM, yyyy');
-};
-const getTime = (date) => {
-    //Note: localizes the date 
-    //   adds 2 hours to the time considering our location and assuming given is GMT 
-    return format(new Date(date), 'p');
-};
 
 const DoctorDetailsAppointmentsCard = ({ 
     selectedDoctor,
@@ -87,8 +78,6 @@ const DoctorDetailsAppointmentsCard = ({
                 .catch((error) => {
                     console.log(error);
                 });
-
-        
     };
     return(
         <>
