@@ -83,6 +83,7 @@ class PatientRepository {
 			familyDiscount: healthPackage.discountOfFamily,
 			status: patientPackage.status,
 			subscribtionDate: patientPackage.subscribtionDate,
+			packageId: patientPackage.packageId
 		});
 
 		const filteredPackages = allPackages
@@ -94,8 +95,7 @@ class PatientRepository {
 
 	async cancelHealthPackage(patientId, healthPackageId) {
 		const patient = await PatientModel.findById(patientId);
-		const chosenPackage = patient.healthPackages.filter((pack) => pack.packageId.toString() === healthPackageId.toString())[0];
-		chosenPackage.status = HEALTH_PACKAGE_STATUS[0];
+		patient.healthPackages = [];
 		await patient.save();
 		return patient;
 	}

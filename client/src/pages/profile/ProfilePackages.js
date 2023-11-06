@@ -18,7 +18,7 @@ export const ProfilePackages = () => {
             <CardContent>
                 <List>
                     {packages && packages.map(healthPackage => (
-                        <ListItem key={healthPackage._id} sx={{ background: healthPackage.status === HEALTH_PACKAGE_STATUS[1] ? '#29AB87' : '#ED2939', borderRadius: '20px', marginBottom: '2%' }}>
+                        <ListItem key={healthPackage._id} sx={{ background: healthPackage.status === HEALTH_PACKAGE_STATUS[1] ? 'gold' : '#ED2939', borderRadius: '20px', marginBottom: '2%' }}>
                             <ListItemText primary={healthPackage.name} secondary={healthPackage.status}
                                 primaryTypographyProps={{ style: { color: 'white' } }}
                                 secondaryTypographyProps={{ style: { color: 'white' } }} />

@@ -45,7 +45,6 @@ const UpgradePlanCard = () => {
 	const { user } = useUserContext();
 	useEffect(() => {
 		patientAxios.get(`/patient/${user.id}/health-packages`).then((response) => {
-			console.log(response.data.healthPackages[0]);
 			setHealthPackages(response.data.healthPackages);
 		});
 	}, []);
@@ -57,17 +56,17 @@ const UpgradePlanCard = () => {
 						<Typography variant="h4">{healthPackages[0] && healthPackages[0].name}</Typography>
 					</Grid>
 					<Grid item>
-						<Typography variant="subtitle2" color="grey.900" sx={{ opacity: 0.6 }}>
-							{ healthPackages[0] && healthPackages[0].doctorDiscount }% discount on appointments <br />
-							{ healthPackages[0] && healthPackages[0].medicineDiscoubnt }% discount on medicines <br />
-							{ healthPackages[0] && healthPackages[0].familyDiscount }% discount for family members <br />
-						</Typography>
+						{healthPackages[0] ? (<Typography variant="subtitle2" color="black" sx={{ opacity: 0.6 }}>
+							{healthPackages[0].doctorDiscount}% discount on appointments <br />
+							{healthPackages[0].medicineDiscoubnt}% discount on medicines <br />
+							{healthPackages[0].familyDiscount}% discount for family members <br />
+						</Typography>) : (<Typography>You are not subscribed to a package yet</Typography>)}
 					</Grid>
 					<Grid item>
 						<Stack direction="row">
 							<AnimateButton>
 								<Button variant="contained" color="warning" sx={{ boxShadow: 'none' }}>
-									Upgrade Plan
+									{healthPackages[0]? 'Upgrade Plan': 'Subscribe now'}
 								</Button>
 							</AnimateButton>
 						</Stack>

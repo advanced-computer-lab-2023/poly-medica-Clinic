@@ -6,10 +6,12 @@ import HealthPackagesList from './HealthPackagesList';
 import { Add } from '@mui/icons-material';
 import AddHealthPackages from './AddHealthPackages';
 import EditHealthPackages from './EditHealthPackage';
+import { useUserContext } from 'hooks/useUserContext';
+import { patientAxios } from 'pages/utilities/AxiosConfig';
 
 const HealthPackages = () => {
 	const [packages, setPackage] = useState([]);
-
+	const [subscribedPackage, setSubscribedPackage] = useState(null);
 	const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 	const [loading, setLoading] = useState(true);
 	const [newPackage, setNewPackage] = useState({
@@ -21,18 +23,26 @@ const HealthPackages = () => {
 	});
 	const [selectedEditPackages, setSelectedEditPackages] = useState(null);
 	const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+	const { user } = useUserContext();
 
 	useEffect(() => {
 		clinicAxios.get('/packages')
 			.then((response) => {
 				setPackage(response.data.allPackages);
-				setLoading(false);
-				
+
+			}).then(() => {
+				patientAxios.get(`/patient/${user.id}/health-packages`).then((response) => {
+					setSubscribedPackage(response.data.healthPackages[0]);
+					console.log('fetched health subscribed: ', response.data.healthPackages[0]);
+					setLoading(false);
+				});
 			})
 			.catch(error => {
 				console.log(error);
 				setLoading(true);
 			});
+
+
 	}, []);
 
 	const handleAddDialogOpen = () => {
@@ -60,8 +70,8 @@ const HealthPackages = () => {
 
 	const handleAddPackages = (e) => {
 		e.preventDefault();
-		
-		clinicAxios.post('/packages', { newPackage  }).then((response) => {
+
+		clinicAxios.post('/packages', { newPackage }).then((response) => {
 			const newPackageData = response.data.data;
 			setPackage((prevPackage) => [...prevPackage, newPackageData]);
 			handleAddDialogClose();
@@ -81,18 +91,18 @@ const HealthPackages = () => {
 	const handleDeleteButtonClick = (pack) => {
 		console.log(pack);
 		clinicAxios.delete(`/packages/${pack._id}`)
-		.then(() => {
+			.then(() => {
 				setPackage((prevPackage) => {
-						const updatedPackages = prevPackage.filter((packages) => {
-							if (pack._id !== packages._id) {
-								return packages;
-							}
-						});
-						return updatedPackages;
+					const updatedPackages = prevPackage.filter((packages) => {
+						if (pack._id !== packages._id) {
+							return packages;
+						}
 					});
-		}).catch((error) => {
-			console.log('Error deleting health package:', error);
-		});
+					return updatedPackages;
+				});
+			}).catch((error) => {
+				console.log('Error deleting health package:', error);
+			});
 	};
 
 	const handleSaveEdit = (e) => {
@@ -122,7 +132,7 @@ const HealthPackages = () => {
 	else {
 		return (
 			<MainCard title="Packages">
-				<HealthPackagesList packages={packages} handleEditButtonClick={handleEditButtonClick} handleDeleteButtonClick={handleDeleteButtonClick}/>
+				<HealthPackagesList packages={packages} handleEditButtonClick={handleEditButtonClick} handleDeleteButtonClick={handleDeleteButtonClick} subscribedPackage={subscribedPackage} setSubscribedPackage={setSubscribedPackage} />
 				<Fab
 					color="secondary"
 					aria-label="Add"
@@ -139,7 +149,7 @@ const HealthPackages = () => {
 				<AddHealthPackages isAddDialogOpen={isAddDialogOpen} handleAddDialogClose={handleAddDialogClose}
 					handleFormInputChange={handleFormInputChange} handleAddPackage={handleAddPackages} newPackage={newPackage} />
 				<EditHealthPackages isEditDialogOpen={isEditDialogOpen} setIsEditDialogOpen={setIsEditDialogOpen}
-				setSelectedEditPackage={setSelectedEditPackages} handleSaveEdit={handleSaveEdit} selectedEditPackage={selectedEditPackages} />
+					setSelectedEditPackage={setSelectedEditPackages} handleSaveEdit={handleSaveEdit} selectedEditPackage={selectedEditPackages} />
 			</MainCard>
 		);
 	}
