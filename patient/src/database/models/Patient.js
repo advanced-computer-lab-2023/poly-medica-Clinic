@@ -115,6 +115,10 @@ const patientSchema = mongoose.Schema({
                 type: String,
                 required: true,
             },
+            primary:{
+                type: Boolean,
+                default: false,
+            }
         },
     ],
 

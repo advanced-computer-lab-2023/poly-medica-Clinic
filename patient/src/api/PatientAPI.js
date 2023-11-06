@@ -194,7 +194,7 @@ export const patient = (app) => {
         }
     });
 
-    app.get('/addresses/:pateintId', async (req, res) => {
+    app.get('/address/:pateintId', async (req, res) => {
         const { pateintId } = req.params;
         if (!isValidMongoId(pateintId)) {
             return res.status(ERROR_STATUS_CODE).json({
@@ -215,7 +215,7 @@ export const patient = (app) => {
         }
     });
 
-    app.patch('/addresses/:pateintId', async (req, res) => {
+    app.patch('/address/:pateintId', async (req, res) => {
         const { pateintId } = req.params;
         if (!isValidMongoId(pateintId)) {
             return res.status(ERROR_STATUS_CODE).json({
@@ -223,9 +223,8 @@ export const patient = (app) => {
             });
         }
         try {
-            const { city, street, buildingName, phoneNumber } = req.body;
-            const address = { city, street, buildingName, phoneNumber };
-            console.log(address);
+            const { city, street, buildingName, phoneNumber, primary } = req.body;
+            const address = { city, street, buildingName, phoneNumber, primary };
             const data = await service.addAddress(pateintId, address);
             if (data) res.status(OK_STATUS_CODE).json(data);
             else

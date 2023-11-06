@@ -19,3 +19,5 @@ export const PATIENT_TYPE_ENUM = 'patient';
 export const DOCTOR_TYPE_ENUM = 'doctor';
 
 export const ADMIN_TYPE_ENUM = 'admin';
+
+export const ADDRESS_ATTRIBUTES = ['city', 'street', 'buildingName', 'phoneNumber'];

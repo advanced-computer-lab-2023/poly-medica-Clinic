@@ -60,12 +60,12 @@ class PatientService {
     }
 
     async getAddresses(id) {
-        const addresses = await this.repository.getAddresses(id);
+        const addresses = await this.repository.findPatientAddresses(id);
         return addresses;
     }
 
     async addAddress(id, address) {
-        const newAddresses = await this.repository.addAddress(id, address);
+        const newAddresses = await this.repository.addPatientAddress(id, address);
         return newAddresses;
     }
 }

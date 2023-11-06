@@ -76,7 +76,7 @@ class PatientRepository {
         return user;
     }
 
-    async getAddresses(id) {
+    async findPatientAddresses(id) {
         const addresses = await PatientModel.findById(
             id,
             PATIENT_ADDRESSES_PROJECTION
@@ -84,16 +84,15 @@ class PatientRepository {
         return addresses;
     }
 
-    async addAddress(id, address) {
-        const { deliveryAddresses } = await this.getAddresses(id);
-        const addresses = [...deliveryAddresses, address];
-        console.log(id, address, addresses);
-        const newAddresses = await PatientModel.findOneAndUpdate(
+    async addPatientAddress(id, address) {
+        const { deliveryAddresses } = await this.findPatientAddresses(id);
+        const newAddresses = [...deliveryAddresses, address];
+        const addresses = await PatientModel.findOneAndUpdate(
             { _id: id },
-            { deliveryAddresses: addresses },
+            { deliveryAddresses: newAddresses },
             { new: true, runValidators: true }
         ).select(PATIENT_ADDRESSES_PROJECTION);
-        return newAddresses;
+        return addresses;
     }
 }
 
