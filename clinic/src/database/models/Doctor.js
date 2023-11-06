@@ -22,7 +22,7 @@ const Doctor = mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	//from is a data and utile is derieved from it which is 60 min after it
+	
 	availableSlots: {
 		type: Array,
 		default: [
@@ -34,6 +34,7 @@ const Doctor = mongoose.Schema({
 		
 	},
 });
+ 
 
 Doctor.statics.addUser = async function (
 	userData,

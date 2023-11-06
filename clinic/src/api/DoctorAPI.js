@@ -216,13 +216,14 @@ export const doctor = (app) => {
 		try {
 			const id = req.params.id;
 			const from = req.body.from;	// Date
+			console.log('from'+' '+from);
 			if (!isValidMongoId(id))
 				return res
 					.status(ERROR_STATUS_CODE)
 					.json({ message: 'Invalid ID' });
-			const doctor = await service.addAppointment(id, from);
+			const doctor = await service.addSlot(id, from);
 			if (doctor) {
-				res.status(OK_STATUS_CODE).json({ doctor });
+				res.status(OK_STATUS_CODE).json( doctor.availableSlots  );
 			} else {
 				res.status(NOT_FOUND_STATUS_CODE).json({
 					message: 'doctor not found',

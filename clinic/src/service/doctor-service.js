@@ -62,7 +62,7 @@ class DoctorService {
 		await this.repository.checkDoctorReqUser(req);
 	}
 
-	async addAppointment(id, from) {
+	async addSlot(id, from) {
 		const doctor = await this.repository.addSlot(id, from);
 		return doctor;
 	}
