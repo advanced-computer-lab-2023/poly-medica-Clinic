@@ -1,47 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Fab } from '@mui/material';
-// import MainCard from '../../ui-component/cards/MainCard';
+import { Typography ,Button, Fab,   Table,TableBody, TableCell, TableContainer, TableHead, TableRow, Paper  } from '@mui/material';
+ 
 import { useUserContext } from 'hooks/useUserContext'; 
 import { clinicAxios } from '../../utils/AxiosConfig';
-import { Add } from '@mui/icons-material';
-//date picker
+import { Add } from '@mui/icons-material'; 
 import { DatePicker } from '@mui/x-date-pickers';
 import{ TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 //import swal from 'sweetalert';
  
 import Swal from 'sweetalert2';
-
-
-
-
-
-
-//doctor add available slots through this component from dateInput and timeInput
+ 
 const DoctorAddAvailableSlots = () => {
     const [availableSlots, setAvailableSlots] = useState([]);
     const [selectedDate, setSelectedDate] = useState(null);
-    const [selectedTime, setSelectedTime] = useState(null);  
-    
-    const isButtonDisabled = !selectedDate || !selectedTime;
-    // const selectedDate= new Date();
-    // const selectedTime= new Date();
-
-    //const [loading, setLoading] = useState(true);
-    // const [newSlot, setNewSlot] = useState({
-    //     from: '',
-    //     until: '',
-    // });
-    const getTime = (date) => {
-        const hours = date.getHours();
-        const minutes = date.getMinutes();
-        const seconds = date.getSeconds();
-        return `${hours}:${minutes}:${seconds}`;
+    const [selectedTime, setSelectedTime] = useState(null);   
+    const isButtonDisabled = !selectedDate || !selectedTime; 
 
     const { user } = useUserContext(); 
     useEffect(() => {
         clinicAxios.get(`/doctors/${user.id}/slots`)
-            .then((res) => {
+            .then((res) => { 
                 setAvailableSlots(res.data);
                 
             })
@@ -53,19 +32,17 @@ const DoctorAddAvailableSlots = () => {
     }
         , []);
         const isIntersect = (from) => { 
-            console.log('from'+' '+'chk');
-                //copy from to until and add one hour to it
-                const until = new Date(from.getTime() + 60 * 60 * 1000);
-                console.log('fromchk'+' '+from);   
-                console.log('utilchk'+' '+until);
-                 
+            
+                const until = new Date(from.getTime() + 60 * 60 * 1000); 
+                
                 
                 for(let i = 0; i < availableSlots.length; i++) {
                     const slot = availableSlots[i];
-                    const slotFrom = slot.from;
-                    const slotUntil = slot.until;
-                    console.log('slotFrom'+' '+slotFrom);
-                    console.log('slotUntil'+' '+slotUntil);
+                    
+                    const slotFrom = new Date(slot.from);
+                    const slotUntil = new Date(slot.until);
+                    
+
                     if (
                         (from >= slotFrom && from < slotUntil) ||
                         (until > slotFrom && until <= slotUntil) ||
@@ -73,36 +50,41 @@ const DoctorAddAvailableSlots = () => {
                     ) {
                         return true;
                     }
-                } 
-                console.log('false');                
+                }           
                 return false;
             };
-    const handleSubmit = () => {
-        //construct new date object from date and time
-        const from = new Date(selectedDate);
+    const onClick = () => {
+         
+        const from = new Date(selectedDate);  
         from.setHours(selectedTime.getHours());
         from.setMinutes(selectedTime.getMinutes());
         from.setSeconds(selectedTime.getSeconds());
-        from.setMilliseconds(selectedTime.getMilliseconds()); 
-        //check if the data intersect with the existing slots the date is one hour ahead
+        from.setMilliseconds(selectedTime.getMilliseconds());
+          
         if (isIntersect(from)) {
-            
            Swal.fire({
                 title: 'Error!',
                 text: 'The entered slot intersects with an existing slot',
                 icon: 'error',
                 button: 'OK',
-            });
- 
+            }); 
         }
         else{
         clinicAxios.post(`/doctors/${user.id}/slots`,{ from })
-            .then((res) => {
-                setAvailableSlots(res.data);
+            .then((res) => { 
+                  setAvailableSlots(res.data); 
             })
             .catch((err) => {
                 console.log(err);
-            });}
+            });
+
+            Swal.fire({
+                title: 'Success!',
+                text: 'The slot has been added successfully',
+                icon: 'success',
+                button: 'OK',
+            });
+        }
     };
     const handleSelectedDate = (date) => {
         setSelectedDate(date);
@@ -113,21 +95,25 @@ const DoctorAddAvailableSlots = () => {
     const getTodayDate = () => {
         const today = new Date(); 
         today.setDate(today.getDate() + 1);
-        today.setHours(0, 0, 0, 0); // Set time to the beginning of the day
+        today.setHours(0, 0, 0, 0);  
         return today;
       };
+       
 
 
     return(
-        <div> 
+        <> 
             <DatePicker 
              sx={{
                 margin: '10px',
                
-             }}  dateAdapter={AdapterDayjs}
+             }} 
+             
+              dateAdapter={AdapterDayjs}
               
              value={selectedDate} 
-             onChange={handleSelectedDate}
+             onChange={(date) => handleSelectedDate(date)}
+             timezone='Africa/Cairo'
 			minDate={getTodayDate()}
             >
 
@@ -142,34 +128,71 @@ const DoctorAddAvailableSlots = () => {
             sx={{
                 margin: '10px',
                
-             }}
+             }}    
              dateAdapter={AdapterDayjs} 
              
-             value={selectedTime} 
-             onChange={handleSelectedTime}
+             value={selectedTime}  
+             
+             onChange={(time) => handleSelectedTime(time)}
 			minTime={getTodayDate()}>
             <Fab color="primary" aria-label="add" size="small">
                 <Add />
             </Fab>
             <input type="text" required />
             </TimePicker>
-          
-            <br></br>
-            
-            <Button variant="contained" color="primary" sx={{
+        
+              <Typography marginLeft={
+                '10px'
+              } variant="caption" display="block" gutterBottom>
+                Note: The slot duration is 1 hour
+            </Typography>
+ 
+        <Button variant="contained" color="primary" sx={{
                 margin: '10px',
                
              }}
-             onClick={handleSubmit}
+             onClick={ onClick }
              disabled={isButtonDisabled} >
                 Add New Slot
-            </Button>             
-           
-        </div>
+            </Button>  
+            {/*add header to the Table    */}
 
+            <Typography marginLeft={
+                '10px'
+              } 
+              fontSize={20} 
+              variant="caption" display="block" gutterBottom>
+                The available slots
+            </Typography>
 
-    ) ;
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>From</TableCell>
+                            <TableCell>Until</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {Array.isArray(availableSlots) &&
+                            availableSlots.map((slot) => (
+                                <TableRow key={slot.from}>
+                                    <TableCell> 
+                                        {new Date(slot.from).toLocaleString()}
+                                    </TableCell>
+                                    <TableCell>
+                                        {new Date(slot.until).toLocaleString()}
+                                    </TableCell>
+                                </TableRow>
 
+                            ))}
 
+                    </TableBody>
+                </Table>
+
+                                
+            </TableContainer>
+        </>
+    ) ; 
 };
 export default DoctorAddAvailableSlots;
