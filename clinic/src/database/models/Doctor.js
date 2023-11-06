@@ -40,7 +40,7 @@ Doctor.statics.addUser = async function (
 		speciality,
 		hourlyRate,
 		affiliation,
-		educationalBackground,
+		educationalBackground
 	});
 	const user = await newRecord.save();
 	return user;

@@ -9,8 +9,8 @@ import {
 	DUPLICATE_KEY_ERROR_CODE,
 	BAD_REQUEST_CODE_400,
 	PATIENT_ENUM,
+	ZERO_INDEX
 } from '../utils/Constants.js';
-import { ZERO_INDEX } from '../../../clinic/src/utils/Constants.js';
 
 export const patient = (app) => {
 	const service = new PatientService();
@@ -34,7 +34,7 @@ export const patient = (app) => {
 		const { id } = req.params;
 		if (!isValidMongoId(id)) {
 			return res
-				.status(NOT_FOUND_STATUS_CODE)
+				.status(ERROR_STATUS_CODE)
 				.json({ message: 'Invalid ID' });
 		}
 		try {

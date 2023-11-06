@@ -73,7 +73,6 @@ const DoctorDetailsAppointmentsCard = ({
                         'Your appointment has been booked successfully!',
                         'success'
                     );
-                    // window.location.reload();
                 })
                 .catch((error) => {
                     console.log(error);
