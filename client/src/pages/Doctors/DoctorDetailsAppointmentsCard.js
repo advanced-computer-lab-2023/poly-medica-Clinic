@@ -29,7 +29,7 @@ const DoctorDetailsAppointmentsCard = ({
     const [selectedBookingType, setSelectedBookingType] = useState('myself');
 	const [allFamilyMembers, setAllFamilyMembers] = useState([]); // for autocomplete
     const [selectedMember, setSelectedMember] = useState(null); // for autocomplete
-
+    
     useEffect(() => {
         const familyMembers = [];
         loggedInPatient.familyMembers.forEach((member) => {
@@ -42,10 +42,11 @@ const DoctorDetailsAppointmentsCard = ({
 		setExpanded(oldExpanded => !oldExpanded);
 	};
     const handleChange = (event) => {
-        console.log('event', event);
-        setSelectedMember({ 
-            index: parseInt(event.target.dataset.optionIndex), 
-        });
+        const index = parseInt(event.target.dataset.optionIndex);
+        if(isNaN(index))
+            setSelectedMember(null);
+        else
+            setSelectedMember({ index });
     };
     const handleBookNow = async () => {
         const appointment = {
@@ -166,8 +167,13 @@ const DoctorDetailsAppointmentsCard = ({
                                         disablePortal
                                         id="combo-box-demo"
                                         options={allFamilyMembers}
-                                        sx={{ 
-                                            width: 160,
+                                        sx={{
+                                            '&.MuiAutocomplete-hasPopupIcon .MuiAutocomplete-inputRoot':{
+                                                padding: '0.3em',
+                                                fontSize: '1em',
+                                                fontWeight: 500,
+                                            },
+                                            width: 160
                                         }}
                                         renderInput={(params) => <TextField {...params} label="Select member" />}
                                         onChange={handleChange}

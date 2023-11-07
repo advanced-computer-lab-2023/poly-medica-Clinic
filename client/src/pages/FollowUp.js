@@ -65,8 +65,13 @@ const FollowUp = ({
 					</DialogTitle>
                     <DialogContent>
 						<Typography align='center' variant='h4' sx={{ marginBottom: '3em' }}>{`Patient: ${selectedPatient.userName}`}</Typography>
+						{(!availableSlots || !availableSlots.length) && 
+							<Typography align='center' variant='subtitle1'> Sorry, There are no available slots</Typography>
+						}
 						<Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-							{Array.isArray(availableSlots) && availableSlots.map((slot, index) => (
+
+							{Array.isArray(availableSlots) && availableSlots.length > 0 
+								&& availableSlots.map((slot, index) => (
 								<Grid item key={index} xs={4} sm={6}>
 									<Card 
 										sx = {{ 
