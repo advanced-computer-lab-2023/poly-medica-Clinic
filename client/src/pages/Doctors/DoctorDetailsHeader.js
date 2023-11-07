@@ -12,7 +12,7 @@ const DoctorDetailsHeader = ({ selectedDoctor }) => {
             <div
                 style={{
                     display: 'flex',
-                    justifyContent: 'space-around   ',
+                    justifyContent: 'space-around',
                     alignItems: 'center',
                     flexDirection: 'row',
                     marginBottom: '5em',

@@ -56,10 +56,11 @@ const Appointment = () => {
 			{appointments && <AppointmentList
 				appointments={appointments}
 				setSelectedAppointment={setSelectedAppointment}
-			/>}
+				/>}
 			<AppointmentDetails
 				selectedAppointment={selectedAppointment}
 				handleDialogClose={handleDialogClose}
+				user={user}
 			/>
 		</MainCard>
 	);
