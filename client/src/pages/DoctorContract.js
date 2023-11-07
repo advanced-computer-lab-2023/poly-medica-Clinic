@@ -1,17 +1,14 @@
 //contract description and a button to accept the contract
-
-import React, { useState } from 'react';
-
+ 
 import { Container, Paper, Typography, Grid, Button } from '@mui/material';
 
-
-import MainCard from 'ui-component/cards/MainCard';
+ 
 import { useUserContext } from 'hooks/useUserContext'; 
 import { clinicAxios } from 'utils/AxiosConfig';
 
-const DoctorContract = ({setStatus}) => {
+const DoctorContract = ({ setStatus }) => {
 
-    const{user} = useUserContext();
+    const{ user } = useUserContext();
     const id = user.id;
 
     const handleFormSubmit = (e) => {
@@ -38,7 +35,7 @@ const DoctorContract = ({setStatus}) => {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <Typography variant="body1">
-                  This Doctor Employment Contract ("Contract") is entered into between Poly-Medica Clinic, hereinafter referred to as "Poly-Medica," and the doctor, hereinafter referred to as "Doctor," on [Date of Contract].
+                  This Doctor Employment Contract ( Contract) is entered into between Poly-Medica Clinic, hereinafter referred to as Poly-Medica, and the doctor, hereinafter referred to as Doctor, on [Date of Contract].
 
 1. POSITION AND DUTIES
 
