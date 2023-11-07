@@ -1,8 +1,7 @@
 import { Box, Container, Stack, Typography, Unstable_Grid2 as Grid } from '@mui/material';
-import { AccountProfile } from './AccountProfile';
 import { AccountProfileDetails } from './AccountProfileDetails';
-import { ProfilePackages } from './ProfilePackages';
-
+import MedicalHistory from './MedicalHistory';
+import { AccountProfile } from './AccountProfile';
 const Page = () => {
 
 
@@ -47,8 +46,8 @@ const Page = () => {
 								>
 									<AccountProfileDetails />
 								</Grid>
-								<Grid xs={12}>
-									<ProfilePackages />
+								<Grid item xs={12}>
+									<MedicalHistory />
 								</Grid>
 							</Grid>
 						</div>

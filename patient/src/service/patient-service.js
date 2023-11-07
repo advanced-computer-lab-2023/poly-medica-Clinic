@@ -74,6 +74,30 @@ class PatientService {
 		return updatedPatient;
 	}
 
+	async getHealthRecords(patientId) {
+		const healthRecords = await this.repository.getHealthRecords(patientId);
+		return healthRecords;
+	}
+
+	async addHealthRecord(patientId, healthRecord) {
+		const updatedPatient = await this.repository.addHealthRecord(patientId, healthRecord);
+		return updatedPatient;
+	}
+
+	async deleteHealthRecord(patientId, recordId) {
+		const deletedRecord = await this.repository.deleteHealthRecord(patientId, recordId);
+		return deletedRecord;
+	}
+
+	async getOneRecord(patientId, recordId) {
+		const record = await this.repository.getOneRecord(patientId, recordId);
+		return record;
+	}
+
+	getPicture(pictureName) {
+		return this.repository.getPicture(pictureName);
+	}
+
 }
 
 export default PatientService;

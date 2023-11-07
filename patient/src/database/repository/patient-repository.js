@@ -1,9 +1,9 @@
 import PatientModel from '../models/Patient.js';
 import PrescriptionModel from '../models/Prescription.js';
 import axios from 'axios';
-import { CLINIC_BASE_URL, FAMILY_MEMBERS_PROJECTION, HEALTH_PACKAGE_STATUS } from '../../utils/Constants.js';
+import { CLINIC_BASE_URL, FAMILY_MEMBERS_PROJECTION, HEALTH_PACKAGE_STATUS, PATIENT_FOLDER_NAME } from '../../utils/Constants.js';
 import { patientHasPackage } from '../../utils/PatientUtils.js';
-
+import { getImage } from '../../utils/ImageUtils.js';
 class PatientRepository {
 	async findAllPatients() {
 		const allPatients = await PatientModel.find();
@@ -59,11 +59,7 @@ class PatientRepository {
 
 	async addHealthPackage(patientId, healthPackage) {
 		const patient = await PatientModel.findById(patientId);
-		patient.healthPackages.forEach((healthPackage) => {
-			if (healthPackage.status === HEALTH_PACKAGE_STATUS[1]) {
-				healthPackage.status = HEALTH_PACKAGE_STATUS[2];
-			}
-		})
+		patient.healthPackages = [];
 		patient.healthPackages.push(healthPackage);
 		await patient.save();
 		return patient;
@@ -74,7 +70,6 @@ class PatientRepository {
 		let allPackages = await axios.get(packagesURL);
 		allPackages = allPackages.data.allPackages;
 		const patient = await PatientModel.findById(patientId);
-
 		const combineAttributes = (healthPackage, patientPackage) => ({
 			name: healthPackage.name,
 			price: healthPackage.price,
@@ -83,7 +78,8 @@ class PatientRepository {
 			familyDiscount: healthPackage.discountOfFamily,
 			status: patientPackage.status,
 			subscribtionDate: patientPackage.subscribtionDate,
-			packageId: patientPackage.packageId
+			packageId: patientPackage.packageId,
+			renewalDate: patientPackage.renewalDate
 		});
 
 		const filteredPackages = allPackages
@@ -95,10 +91,43 @@ class PatientRepository {
 
 	async cancelHealthPackage(patientId, healthPackageId) {
 		const patient = await PatientModel.findById(patientId);
-		patient.healthPackages = [];
+		patient.healthPackages[0].status = HEALTH_PACKAGE_STATUS[0];
 		await patient.save();
 		return patient;
 	}
+
+	async getHealthRecords(patientId) {
+		const patient = await PatientModel.findById(patientId);
+		return patient.healthRecords;
+	}
+
+	async addHealthRecord(patientId, healthRecord) {
+		const patient = await PatientModel.findById(patientId);
+		patient.healthRecords.push(healthRecord);
+		await patient.save();
+		return patient;
+	}
+
+	async deleteHealthRecord(patientId, recordId) {
+		const patient = await PatientModel.findById(patientId);
+		const deletedRecord = patient.healthRecords.find((record) => record._id.toString() === recordId.toString());
+		patient.healthRecords = patient.healthRecords.filter((record) => record._id.toString() !== recordId.toString());
+		await patient.save();
+		return deletedRecord;
+	}
+
+	async getOneRecord(patientId, recordId) {
+		const patient = await PatientModel.findById(patientId);
+		const record = patient.healthRecords.find((record) => record._id.toString() === recordId.toString());
+		return record;
+	}
+
+	getPicture(picName) {
+		const pictureName = picName;
+		const picturePath = getImage(PATIENT_FOLDER_NAME, pictureName);
+		return picturePath;
+	}
+
 }
 
 export default PatientRepository;

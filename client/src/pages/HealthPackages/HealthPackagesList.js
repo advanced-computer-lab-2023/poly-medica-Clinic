@@ -6,13 +6,26 @@ import Stack from '@mui/material/Stack';
 import { useUserContext } from 'hooks/useUserContext';
 import Swal from 'sweetalert2';
 import { patientAxios } from 'utils/AxiosConfig';
+import { HEALTH_PACKAGE_STATUS } from 'utils/Constants';
 const HealthPackagesList = ({ packages, handleEditButtonClick, handleDeleteButtonClick, subscribedPackage, setSubscribedPackage }) => {
 	const { user } = useUserContext();
-	///patient/:id/health-packages/
-	
-	// const handleSubscribe = () => {
-	// 	patientAxios
-	// }
+
+	const handleSubscribe = (pack) => {
+		const healthPackage = {};
+		healthPackage.packageId = pack._id;
+		healthPackage.subscribtionDate = new Date();
+		healthPackage.renewalDate = new Date(healthPackage.subscribtionDate);
+		healthPackage.renewalDate.setMonth(healthPackage.renewalDate.getMonth() + 1);
+		healthPackage.status = HEALTH_PACKAGE_STATUS[1];
+		const data = {};
+		data.healthPackage = healthPackage;
+		patientAxios.patch(`/patient/${user.id}/health-packages`, data).then((response) => {
+			if (response.status === 200) {
+				Swal.fire({ title: 'Subscribed Successfully', icon: 'success' });
+				setSubscribedPackage(healthPackage);
+			}
+		});
+	};
 
 	const handleCancel = () => {
 		Swal.fire({
@@ -24,10 +37,19 @@ const HealthPackagesList = ({ packages, handleEditButtonClick, handleDeleteButto
 		}).then((result) => {
 			if (result.isConfirmed) {
 				patientAxios.patch(`patient/${user.id}/health-packages/${subscribedPackage.packageId}`).then((response => {
-					if (response.status === 200) Swal.fire({ title: 'Cancelled successfully', icon: 'success' });
+					if (response.status === 200) {
+						Swal.fire({ title: 'Cancelled successfully', icon: 'success' });
+						setSubscribedPackage(null);
+					}
 				}));
 			}
 		});
+	};
+
+	const isSubscribedPackage = (pack) => {
+		console.log('Subscribed Package = ', subscribedPackage);
+		console.log('pack = ', pack);
+		return subscribedPackage && pack.name === subscribedPackage.name && subscribedPackage.status === HEALTH_PACKAGE_STATUS[1];
 	};
 
 	return (
@@ -93,9 +115,15 @@ const HealthPackagesList = ({ packages, handleEditButtonClick, handleDeleteButto
 							</Button>
 						</Stack>
 						<CardActions>
-							<Button fullWidth variant="contained" color='secondary' sx={{ background: (subscribedPackage && pack._id.toString() === subscribedPackage.packageId.toString()) ? 'red' : '' }}
-								onClick={(subscribedPackage && pack._id.toString() === subscribedPackage.packageId.toString()) ? handleCancel : setSubscribedPackage}>
-								{(subscribedPackage && pack.name === subscribedPackage.name) ? 'Cancel Subscribtion' : 'Buy Now'}
+							<Button fullWidth variant="contained" color='secondary' sx={{ background: isSubscribedPackage(pack) ? '#C71585' : '' }}
+								onClick={() => {
+									if (isSubscribedPackage(pack)) {
+										handleCancel();
+									} else {
+										handleSubscribe(pack);
+									}
+								}}>
+								{(isSubscribedPackage(pack)) ? 'Cancel Subscribtion' : 'Subscribe Now'}
 							</Button>
 						</CardActions>
 					</Card>

@@ -81,20 +81,14 @@ const patientSchema = mongoose.Schema({
 			},
 		},
 	],
-	healthrecords: [
+	healthRecords: [
 		{
-			healthIssue: {
+			recordTitle: {
 				type: String,
-				required: true,
 			},
-			healthIssueDate: {
-				type: Date,
-				required: true,
-			},
-			healthIssueDescription: {
+			documentName: {
 				type: String,
-				required: true,
-			},
+			}
 		},
 	],
 	healthPackages: [{

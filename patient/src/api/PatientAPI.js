@@ -1,6 +1,6 @@
 import PatientService from '../service/patient-service.js';
 import { isValidMongoId } from '../utils/Validation.js';
-
+import upload from '../config/multerConfig.js';
 import {
 	EMPTY_SIZE,
 	NOT_FOUND_STATUS_CODE,
@@ -9,6 +9,7 @@ import {
 	DUPLICATE_KEY_ERROR_CODE,
 	BAD_REQUEST_CODE_400,
 	PATIENT_ENUM,
+	PATIENT_FOLDER_NAME,
 } from '../utils/Constants.js';
 import { ZERO_INDEX } from '../../../clinic/src/utils/Constants.js';
 
@@ -173,6 +174,7 @@ export const patient = (app) => {
 			res.status(OK_STATUS_CODE).json({ healthPackages });
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ message: err.message });
+			console.log(err.message);
 		}
 	});
 
@@ -185,6 +187,7 @@ export const patient = (app) => {
 			else res.status(NOT_FOUND_STATUS_CODE).json({ message: 'error occured' });
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ message: err.message });
+			console.log(err.message);
 		}
 	});
 
@@ -197,7 +200,64 @@ export const patient = (app) => {
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ message: err.message });
 		}
-	})
+	});
+
+	app.get('/patient/:id/medical-history', async (req, res) => {
+		try {
+			const { id } = req.params;
+			const medicalHistory = await service.getHealthRecords(id);
+			res.status(OK_STATUS_CODE).json(medicalHistory);
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({ message: err.message });
+		}
+	});
+
+	app.patch('/patient/:id/medical-history', upload(PATIENT_FOLDER_NAME).single('image'), async (req, res) => {
+		try {
+			const { id } = req.params;
+			const { title } = req.body;
+			const healthRecord = {};
+			healthRecord.recordTitle = title;
+			healthRecord.documentName = req.file.filename;
+			const updatedPatient = await service.addHealthRecord(id, healthRecord);
+			if (updatedPatient) {
+				res.status(OK_STATUS_CODE).json(updatedPatient);
+			} else {
+				res.status(NOT_FOUND_STATUS_CODE).json({ message: 'patient not found' });
+			}
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({ message: err.message });
+		}
+	});
+
+	app.get('/patient/:id/medical-history/:recordId', async (req, res) => {
+		try {
+			const { id, recordId } = req.params;
+			const healthRecord = await service.getOneRecord(id, recordId);
+			const picturePath = service.getPicture(healthRecord.documentName);
+			if (picturePath) {
+				res.status(OK_STATUS_CODE).sendFile(picturePath);
+			} else {
+				res.status(NOT_FOUND_STATUS_CODE).json({ message: 'No picture found' });
+			}
+		} catch (error) {
+			res.status(ERROR_STATUS_CODE).json({ message: error.message });
+		}
+	});
+
+	app.patch('/patient/:id/medical-history/:recordId', async (req, res) => {
+		try {
+			const { id, recordId } = req.params;
+			const deletedRecord = await service.deleteHealthRecord(id, recordId);
+			if (deletedRecord) {
+				res.status(OK_STATUS_CODE).json(deletedRecord);
+			} else {
+				res.status(NOT_FOUND_STATUS_CODE).json({ message: 'record not found' });
+			}
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({ message: err.message });
+		}
+	});
 
 	app.post('/signup', async (req, res) => {
 		try {

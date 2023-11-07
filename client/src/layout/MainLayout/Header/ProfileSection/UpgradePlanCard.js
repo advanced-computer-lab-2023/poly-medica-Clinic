@@ -6,7 +6,8 @@ import { useUserContext } from 'hooks/useUserContext';
 // project imports
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import { patientAxios } from 'utils/AxiosConfig';
-
+import { HEALTH_PACKAGE_STATUS } from 'utils/Constants';
+import { useNavigate } from 'react-router-dom';
 // styles
 const CardStyle = styled(Card)(({ theme }) => ({
 	background: theme.palette.warning.light,
@@ -43,6 +44,10 @@ const CardStyle = styled(Card)(({ theme }) => ({
 const UpgradePlanCard = () => {
 	const [healthPackages, setHealthPackages] = useState([]);
 	const { user } = useUserContext();
+	const renewalDate = healthPackages[0] ? new Date(healthPackages[0].renewalDate) : new Date();
+	const options = { day: 'numeric', month: 'long' };
+	const formattedRenewalDate = renewalDate.toLocaleString('en-US', options);
+	const navigate = useNavigate();
 	useEffect(() => {
 		patientAxios.get(`/patient/${user.id}/health-packages`).then((response) => {
 			setHealthPackages(response.data.healthPackages);
@@ -65,11 +70,29 @@ const UpgradePlanCard = () => {
 					<Grid item>
 						<Stack direction="row">
 							<AnimateButton>
-								<Button variant="contained" color="warning" sx={{ boxShadow: 'none' }}>
-									{healthPackages[0]? 'Upgrade Plan': 'Subscribe now'}
+								<Button variant="contained" color="warning" sx={{ boxShadow: 'none' }} onClick={() => { navigate('/patient/pages/packages'); }}>
+									{healthPackages[0] ? 'Upgrade Plan' : 'Subscribe now'}
 								</Button>
 							</AnimateButton>
 						</Stack>
+						{healthPackages[0] &&
+							<Typography variant='subtitle2' color='darkgreen' sx={{ marginTop: '2%' }}>
+								{healthPackages[0].status === HEALTH_PACKAGE_STATUS[1]
+									? (
+										<span>
+											Your subscription renews on:<br />
+											{formattedRenewalDate}
+										</span>
+									)
+									: (
+										<span>
+											Your subscription is cancelled, ends on:<br />
+											{formattedRenewalDate}
+										</span>
+									)
+								}
+							</Typography>
+						}
 					</Grid>
 				</Grid>
 			</CardContent>
