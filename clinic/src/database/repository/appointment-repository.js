@@ -2,15 +2,6 @@ import AppointmentModel from '../models/Appointment.js';
 import DoctorModel from '../models/Doctor.js';
 import { ONE } from '../../utils/Constants.js';
 
-// const printAllDoctors = async () => {
-// 	const num = 0;
-// 	const docs = await DoctorModel.find({});
-// 	console.log('docsLen', docs.length, 'num', num);
-// 	docs.forEach((doc) => {
-// 		console.log('doc', doc);
-// 	});
-// };
-
 class AppointmentRepository {
 	async findAppointmentsByUserId(id) {
 		const appointments = await AppointmentModel.find({});

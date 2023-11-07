@@ -4,7 +4,7 @@ import {
 	connectDBTest,
 	disconnectDBTest,
 } from '../../utils/testing-utils.js';
-import { OK_STATUS_CODE } from '../../utils/Constants.js';
+import { OK_STATUS_CODE, ONE } from '../../utils/Constants.js';
 
 import DoctorModel from '../../database/models/Doctor.js';
 import generateDoctor from '../model-generators/generateDoctor.js';
@@ -13,10 +13,7 @@ import generateAppointment from '../model-generators/generateAppointment.js';
 
 import { describe, beforeEach, afterEach, expect, it } from '@jest/globals';
 import { faker } from '@faker-js/faker';
-const ONE = 1;
 
-// const TIME = 4000;
-// const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 // const NEGONE = -1;
 // const printAllDoctors = async (num) => {
@@ -46,8 +43,7 @@ describe('POST /appointments', () => {
 		appointmentData.date = selectedSlot.from;
 		appointmentData.availableSlotsIdx = availableSlotsIdx;
 
-		// await printAllDoctors(NEGONE);
-		// await sleep(TIME);
+		// await printAllDoctors(NEGONE); //(runInBand needed here)
 		const res = await request(app)
 			.post('/appointments')
 			.send(appointmentData);
@@ -56,6 +52,7 @@ describe('POST /appointments', () => {
 		expect(res.status).toBe(OK_STATUS_CODE);
 		expect(res._body.patientId).toEqual(patientId);
 		expect(res._body.doctorId).toEqual(doctorId);
+		// ensuring that the selected availableSlot is removed
 		doctor = await DoctorModel.findById(doctorId);
 		availableSlots = doctor.availableSlots;
 		for(let i=0 ; i<availableSlots.length ; i++){

@@ -1,6 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { FAMILIY_EMERGENCY, GENDERS } from '../../utils/Constants.js';
-const ONE = 1;
+import { FAMILIY_EMERGENCY, GENDERS, ONE } from '../../utils/Constants.js';
 
 const generateGender = () => {
 	const genderIdx = faker.number.int({ min: 0, max: GENDERS.length - ONE });
