@@ -1,7 +1,7 @@
 import { Grid, Typography } from '@mui/material';
 import DoctorDetailsAppointmentsCard from './DoctorDetailsAppointmentsCard';
 
-const DoctorDetailsAppointmentsList = ({ selectedDoctor, loggedInPatient }) => {
+const DoctorDetailsAppointmentsList = ({ selectedDoctor, loggedInPatient, loggedInPatientHealthPackage }) => {
     const { availableSlots } = selectedDoctor;
     return (
         <>
@@ -15,6 +15,7 @@ const DoctorDetailsAppointmentsList = ({ selectedDoctor, loggedInPatient }) => {
                             selectedDoctor={selectedDoctor}
                             availableSlotsIdx={index}
                             loggedInPatient={loggedInPatient}
+                            loggedInPatientHealthPackage={loggedInPatientHealthPackage}
                         />
                     </Grid>
                 ))}

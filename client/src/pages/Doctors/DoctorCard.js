@@ -3,8 +3,8 @@ import DoctorIcon from '../../assets/images/icons/DoctorIcon.png';
 import { calcPrice } from '../../utils/PriceCalculator.js';
 
 
-const DoctorCard = ({ doctor, setSelectedDoctor }) => {
-    const price = calcPrice(doctor.hourlyRate);
+const DoctorCard = ({ doctor, setSelectedDoctor, loggedInPatientHealthPackage }) => {
+    const price = calcPrice(doctor.hourlyRate, loggedInPatientHealthPackage.doctorDiscount);
     return (
         <ListItemButton onClick={() => setSelectedDoctor(doctor)}>
             <ListItemAvatar sx={{ paddingRight: '2%' }}>

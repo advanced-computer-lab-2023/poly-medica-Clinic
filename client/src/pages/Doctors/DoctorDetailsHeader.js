@@ -6,7 +6,7 @@ import WorkIcon from '@mui/icons-material/Work';
 import SchoolIcon from '@mui/icons-material/School';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 
-const DoctorDetailsHeader = ({ selectedDoctor }) => {
+const DoctorDetailsHeader = ({ selectedDoctor, loggedInPatientHealthPackage }) => {
     return (
         <>
             <div
@@ -46,7 +46,7 @@ const DoctorDetailsHeader = ({ selectedDoctor }) => {
                     <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
                         <AttachMoneyIcon style={{ marginRight: '0.4em' }}/>
                         <Typography variant='body1'>
-                            {`${calcPrice(selectedDoctor.hourlyRate)}`}
+                            {`${calcPrice(selectedDoctor.hourlyRate, loggedInPatientHealthPackage.doctorDiscount)}`}
                         </Typography>
                     </div>
                 </div>

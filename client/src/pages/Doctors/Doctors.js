@@ -15,6 +15,7 @@ const Doctors = () => {
     const [selectedDoctor, setSelectedDoctor] = useState(null);
     const [originalDoctors, setOriginalDoctors] = useState([]);
     const [loggedInPatient, setLoggedInPatient] = useState(null);
+    const [loggedInPatientHealthPackage, setLoggedInPatientHealthPackage] = useState(null);
     const { filterData, updateFilter } = useFilter();
     const { searchQuery } = useSearch();
     const specialities = [];
@@ -105,16 +106,41 @@ const Doctors = () => {
             });
     }, []);
 
+    useEffect(() => {
+        setLoggedInPatientHealthPackage({
+            doctorDiscount: '0.2'
+        });
+
+        // to be uncommented after merge
+        // patientAxios
+        //     .get(`/patient/${patientID}/health-packages`)
+        //     .then((response) => {
+        //         let healthPackage = {
+        //             doctorDiscount: '0'
+        //         };
+        //         const healthPackages = response.data.healthPackages; 
+        //         if(healthPackages.length){
+        //             healthPackage = healthPackages[0];
+        //         }
+        //         setLoggedInPatientHealthPackage(healthPackage);
+        //     })
+        //     .catch((error) => {
+        //         console.log(error);
+        //     });
+    }, []);
+
     return (
         <MainCard title='Doctors'>
             <DoctorList
                 doctors={doctors}
                 setSelectedDoctor={setSelectedDoctor}
+                loggedInPatientHealthPackage={loggedInPatientHealthPackage}
             />
             <DoctorDetails
                 selectedDoctor={selectedDoctor}
                 handleDialogClose={handleDialogClose}
                 loggedInPatient={loggedInPatient}
+                loggedInPatientHealthPackage={loggedInPatientHealthPackage}
             />
         </MainCard>
     );

@@ -10,18 +10,20 @@ import {
     Autocomplete,
     TextField
 } from '@mui/material';
-import { doctorAxios } from 'pages/utilities/AxiosConfig';
-import Swal from 'sweetalert2';
-import '../../assets/css/swalStyle.css';
 
 import { getDay, getTime } from '../../utils/DateFormatter.js';
 
+import { calcPrice } from '../../utils/PriceCalculator.js';
+// to be uncommented after merge
+// import { choosePayment } from '../../utils/PaymentOptions';
 
 const DoctorDetailsAppointmentsCard = ({ 
     selectedDoctor,
     availableSlotsIdx,
-    loggedInPatient 
-}) => {
+    loggedInPatient,
+    loggedInPatientHealthPackage
+}
+) => {
     const { availableSlots } = selectedDoctor;
     const slot = availableSlots[availableSlotsIdx];
     
@@ -37,6 +39,7 @@ const DoctorDetailsAppointmentsCard = ({
         });
         setAllFamilyMembers(familyMembers);
     });
+
 
     const handleExpand = () => {
 		setExpanded(oldExpanded => !oldExpanded);
@@ -55,7 +58,7 @@ const DoctorDetailsAppointmentsCard = ({
             // patientName: (to be filled in later)
             doctorName: selectedDoctor.userData.name,
             date: slot.from,
-            status: 'pending',
+            status: 'Incomplete',
             type: 'appointment',
             availableSlotsIdx
         };
@@ -66,18 +69,12 @@ const DoctorDetailsAppointmentsCard = ({
             appointment.patientId = loggedInPatient.familyMembers[selectedMember.index].id;
             appointment.patientName = loggedInPatient.familyMembers[selectedMember.index].name;
         }
-        await doctorAxios
-                .post('/appointments', appointment)
-                .then(() => {
-                    Swal.fire(
-                        'Appointment Booked!',
-                        'Your appointment has been booked successfully!',
-                        'success'
-                    );
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+        
+        const price = calcPrice(selectedDoctor.hourlyRate, loggedInPatientHealthPackage.doctorDiscount);
+        console.log(price);
+        // to be uncommented after merge
+        // choosePayment(appointment, price, 'appointment');        
+
     };
     return(
         <>
