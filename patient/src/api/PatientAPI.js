@@ -223,9 +223,8 @@ export const patient = (app) => {
             });
         }
         try {
-            const { city, street, buildingName, phoneNumber, primary } = req.body;
-            const address = { city, street, buildingName, phoneNumber, primary };
-            const data = await service.addAddress(pateintId, address);
+            const { deliveryAddresses } = req.body;
+            const data = await service.updateAddress(pateintId, deliveryAddresses);
             if (data) res.status(OK_STATUS_CODE).json(data);
             else
                 res.status(NOT_FOUND_STATUS_CODE).json({

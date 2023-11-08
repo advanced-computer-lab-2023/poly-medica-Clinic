@@ -6,29 +6,15 @@ import {
     TableBody,
     TableRow,
     Typography,
+    Button,
 } from '@mui/material';
 // import HomeIcon from '@mui/icons-material/Home';
 
-const AddressCard = ({ address }) => {
+const AddressCard = ({ address, handleEditDialogOpen, setSelectedAddress }) => {
+    handleEditDialogOpen;
+    setSelectedAddress;
     return (
-        // <ListItem>
-        //     <ListItemAvatar sx={{ paddingRight: '2%' }}>
-        //         <HomeIcon />
-        //     </ListItemAvatar>
-        //     <ListItemText
-        //         primary={`${address.city},  ${address.street},  ${address.buildingName}`}
-        //         sx={{
-        //             marginLeft: '2%',
-        //             width: '50%',
-        //             lineHeight: '1.5em',
-        //             maxHeight: '3em',
-        //         }}
-        //         secondary={`Phone :  ${address.phoneNumber}`}
-        //     />
-        //     {/* <ListItemText sx={{ paddingLeft: '2%' }} primary={``} /> */}
-        // </ListItem>
-
-        <Card>
+        <Card sx={{ maxWidth: '70%', margin: '0 auto' }}>
             <CardContent>
                 <Table>
                     <TableBody>
@@ -37,22 +23,57 @@ const AddressCard = ({ address }) => {
                                 sx={{
                                     border: 0,
                                     padding: 0,
-                                    width: '35%',
+                                    width: '30%',
+                                    fontWeight: 'bold'
                                 }}>
                                 Address
                             </TableCell>
                             <TableCell
-                                color='text.secondary'
-                                align='start'
+                                align='left'
+                                sx={{
+                                    border: 0,
+                                    padding: 0,
+                                    width: '40%',
+                                }}>
+                                <Typography variant='body1' color='black'>
+                                    {`${address.city}, ${address.street}, ${address.buildingName}`}
+                                </Typography>
+                            </TableCell>
+                            <TableCell
+                                align='center'
                                 sx={{
                                     border: 0,
                                     padding: 0,
                                 }}>
                                 <Typography
-                                    variant='body2'
-                                    color='textSecondary'>
-                                    {`${address.city}, ${address.street}, ${address.buildingName}`}
+                                    variant={address.primary ? 'h4' : 'body2'}
+                                    color={
+                                        address.primary
+                                            ? 'GrayText'
+                                            : 'textSecondary'
+                                    }>
+                                    {address.primary
+                                        ? 'Primary'
+                                        : 'Not Primary'}
                                 </Typography>
+                            </TableCell>
+                            <TableCell
+                                align='right'
+                                sx={{
+                                    border: 0,
+                                    padding: 0,
+                                }}>
+                                <Button
+                                variant='outlined'
+                                    onClick={() => {
+                                        const tmpAddress = JSON.parse(
+                                            JSON.stringify(address)
+                                        );
+                                        setSelectedAddress(tmpAddress);
+                                        handleEditDialogOpen();
+                                    }}>
+                                    Edit
+                                </Button>
                             </TableCell>
                         </TableRow>
                         <TableRow>
@@ -60,12 +81,13 @@ const AddressCard = ({ address }) => {
                                 sx={{
                                     padding: 0,
                                     paddingBottom: 5,
-                                    width: '35%',
+                                    width: '30%',
+                                    fontWeight: 'bold'
                                 }}>
                                 Phone Number
                             </TableCell>
                             <TableCell
-                                align='start'
+                                align='left'
                                 sx={{
                                     padding: 0,
                                     paddingBottom: 5,
@@ -76,13 +98,12 @@ const AddressCard = ({ address }) => {
                                     {`${address.phoneNumber}`}
                                 </Typography>
                             </TableCell>
+                            <TableCell />
+                            <TableCell />
                         </TableRow>
                     </TableBody>
                 </Table>
             </CardContent>
-            {/* <CardActions>
-                <Button size='small'>Learn More</Button>
-            </CardActions> */}
         </Card>
     );
 };

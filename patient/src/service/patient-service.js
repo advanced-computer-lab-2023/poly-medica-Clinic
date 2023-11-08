@@ -64,9 +64,12 @@ class PatientService {
         return addresses;
     }
 
-    async addAddress(id, address) {
-        const newAddresses = await this.repository.addPatientAddress(id, address);
-        return newAddresses;
+    async updateAddress(id, address) {
+        const updatedAddresses = await this.repository.updatePatientAddress(
+            id,
+            address
+        );
+        return updatedAddresses;
     }
 }
 

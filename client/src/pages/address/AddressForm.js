@@ -33,6 +33,7 @@ const AddressForm = ({
                         object.primary = !object.primary;
                         handleFormInputChange(e);
                     }}
+                    checked={object.primary}
                     control={<Checkbox />}
                     label='primary'
                 />

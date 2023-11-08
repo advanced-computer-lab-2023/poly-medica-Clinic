@@ -6,11 +6,13 @@ import AddAddress from './AddAddress.js';
 import { useUserContext } from 'hooks/useUserContext.js';
 import { Fab } from '@mui/material';
 import { Add } from '@mui/icons-material';
+import EditAddress from './EditAddress.js';
 
 const Address = () => {
     const [addresses, setAddresses] = useState(null);
+    const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-    const [newAddress, setNewAddress] = useState({
+    const [address, setAddress] = useState({
         city: '',
         street: '',
         buildingName: '',
@@ -34,9 +36,24 @@ const Address = () => {
         setIsAddDialogOpen(true);
     };
 
+    const handleEditDialogOpen = () => {
+        setIsEditDialogOpen(true);
+    };
+
     const handleAddDialogClose = () => {
         setIsAddDialogOpen(false);
-        setNewAddress({
+        setAddress({
+            city: '',
+            street: '',
+            buildingName: '',
+            phoneNumber: '',
+            primary: false,
+        });
+    };
+
+    const handleEditDialogClose = () => {
+        setIsEditDialogOpen(false);
+        setAddress({
             city: '',
             street: '',
             buildingName: '',
@@ -47,17 +64,18 @@ const Address = () => {
 
     const handleFormInputChange = (e) => {
         const { name, value } = e.target;
-        setNewAddress((prevAddress) => ({
+        setAddress((prevAddress) => ({
             ...prevAddress,
             [name]: value,
         }));
-        console.log(newAddress);
+        console.log(Address);
     };
 
     const handleAddAddress = (e) => {
         e.preventDefault();
+        const deliveryAddresses = [...addresses, address];
         patientAxios
-            .patch('/address/' + userId, newAddress)
+            .patch('/address/' + userId, { deliveryAddresses })
             .then((response) => {
                 const newAddresses = response.data.deliveryAddresses;
                 setAddresses(newAddresses);
@@ -69,11 +87,36 @@ const Address = () => {
             });
     };
 
+    const handleEditAddress = (e) => {
+        e.preventDefault();
+        const deliveryAddresses = addresses.map((curAddress) => {
+            if (curAddress._id === address._id) {
+                return address;
+            }
+            if (address.primary) curAddress.primary = false;
+            return curAddress;
+        });
+        patientAxios
+            .patch(`/address/${userId}`, { deliveryAddresses })
+            .then((response) => {
+                const newAddresses = response.data.deliveryAddresses;
+                console.log(newAddresses);
+                setAddresses(newAddresses);
+                handleEditDialogClose();
+            })
+            .catch((error) => {
+                console.log('Error Editting address:', error);
+                handleEditDialogClose();
+            });
+    };
+
     return (
         <MainCard title='Addresses'>
             {addresses && (
                 <AddressList
                     addresses={addresses}
+                    setSelectedAddress={setAddress}
+                    handleEditDialogOpen={handleEditDialogOpen}
                 />
             )}
             <Fab
@@ -93,7 +136,14 @@ const Address = () => {
                 handleAddDialogClose={handleAddDialogClose}
                 handleFormInputChange={handleFormInputChange}
                 handleAddAddress={handleAddAddress}
-                newAddress={newAddress}
+                newAddress={address}
+            />
+            <EditAddress
+                address={address}
+                handleDialogClose={handleEditDialogClose}
+                handleFormInputChange={handleFormInputChange}
+                handleSaveAddress={handleEditAddress}
+                isEditDialogOpen={isEditDialogOpen}
             />
         </MainCard>
     );

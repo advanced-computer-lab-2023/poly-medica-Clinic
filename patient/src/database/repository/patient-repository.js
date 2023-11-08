@@ -4,6 +4,7 @@ import {
     FAMILY_MEMBERS_PROJECTION,
     PATIENT_ADDRESSES_PROJECTION,
 } from '../../utils/Constants.js';
+import mongoose from 'mongoose';
 
 class PatientRepository {
     async findAllPatients() {
@@ -81,17 +82,21 @@ class PatientRepository {
             id,
             PATIENT_ADDRESSES_PROJECTION
         );
+        addresses.deliveryAddresses.sort((a, b) => {
+            return a.primary ? -1 : b.primary ? 1 : 0;
+        });
         return addresses;
     }
 
-    async addPatientAddress(id, address) {
-        const { deliveryAddresses } = await this.findPatientAddresses(id);
-        const newAddresses = [...deliveryAddresses, address];
+    async updatePatientAddress(id, address){
         const addresses = await PatientModel.findOneAndUpdate(
             { _id: id },
-            { deliveryAddresses: newAddresses },
+            { deliveryAddresses : address },
             { new: true, runValidators: true }
         ).select(PATIENT_ADDRESSES_PROJECTION);
+        addresses.deliveryAddresses.sort((a, b) => {
+            return a.primary ? -1 : b.primary ? 1 : 0;
+        });
         return addresses;
     }
 }
