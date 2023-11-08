@@ -21,3 +21,5 @@ export const DOCTOR_TYPE_ENUM = 'doctor';
 export const ADMIN_TYPE_ENUM = 'admin';
 
 export const HEALTH_PACKAGE_STATUS = ['CANCELLED', 'SUBSCRIBED WITH RENEWAL DATE', 'UNSUBSCRIBED'];
+
+export const OK_STATUS_CODE = 200;

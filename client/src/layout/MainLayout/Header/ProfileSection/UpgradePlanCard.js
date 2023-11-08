@@ -80,13 +80,13 @@ const UpgradePlanCard = () => {
 								{healthPackages[0].status === HEALTH_PACKAGE_STATUS[1]
 									? (
 										<span>
-											Your subscription renews on:<br />
+											Your subscribtion renews on:<br />
 											{formattedRenewalDate}
 										</span>
 									)
 									: (
 										<span>
-											Your subscription is cancelled, ends on:<br />
+											Your subscribtion is cancelled, ends on:<br />
 											{formattedRenewalDate}
 										</span>
 									)
