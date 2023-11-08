@@ -26,6 +26,10 @@ const LazyAppointments = Loadable(
     lazy(() => import('pages/Appointment/Appointment'))
 );
 
+const LazyOrders = Loadable(
+    lazy(() => import('pages/orders/Orders'))
+);
+
 const Account = Loadable(lazy(() => import('pages/profile/Account'))); //TODO: generalize this
 // utilities routing
 const UtilsTypography = Loadable(
@@ -99,6 +103,10 @@ const MainRoutes = {
                 {
                     path: 'packages',
                     element: <LazyPackages />,
+                },
+                {
+                    path: 'orders',
+                    element: <LazyOrders />,
                 },
                 {
                     path: 'clinic',

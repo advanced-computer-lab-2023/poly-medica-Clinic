@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import { ORDER_STATUS } from '../../utils/Constants';
-import { ZERO_INDEX } from '../../../../clinic/src/utils/Constants';
+import { ORDER_STATUS } from '../../utils/Constants.js';
+import { ZERO_INDEX } from '../../../../clinic/src/utils/Constants.js';
 
 const orderSchema = mongoose.Schema({
     patientId: {
@@ -8,10 +8,22 @@ const orderSchema = mongoose.Schema({
         ref: 'Patient',
         required: true,
     },
-    details: {
-        type: String,
-        required: true,
-    },
+    details: [
+        {
+            name: {
+                type: String,
+                required: true,
+            },
+            price: {
+                type: Number,
+                required: true,
+            },
+            quantity: {
+				type: Number,
+				default: 1,
+			},
+        }
+    ],
     amount: {
         type: Number,
         required: true,
@@ -21,7 +33,7 @@ const orderSchema = mongoose.Schema({
         enum: ORDER_STATUS,
         default: ORDER_STATUS[ZERO_INDEX],
     },
-});
+}, {timestamps: true});
 
 const OrderModel = mongoose.model('order', orderSchema);
 

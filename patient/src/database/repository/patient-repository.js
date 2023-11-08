@@ -80,17 +80,17 @@ class PatientRepository {
     }
 
     async addOrder(order) {
-        const order = await OrderModel.create(order);
-        return order;
+        const newOrder = await OrderModel.create(order);
+        return newOrder;
     }
 
     async updateOrder(order) {
-        const order = await OrderModel.findOneAndUpdate(
+        const updatedOrder = await OrderModel.findOneAndUpdate(
             { _id: order._id },
             order,
             { new: true, runValidators: true }
         );
-        return order;
+        return updatedOrder;
     }
 }
 

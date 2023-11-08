@@ -234,12 +234,6 @@ export const patient = (app) => {
     });
 
     app.patch('/order', async (req, res) => {
-        const { pateintId } = req.params;
-        if (!isValidMongoId(pateintId)) {
-            return res.status(ERROR_STATUS_CODE).json({
-                message: 'Patient ID is invalid',
-            });
-        }
         try {
             const order = req.body;
             const data = await service.updateOrder(order);

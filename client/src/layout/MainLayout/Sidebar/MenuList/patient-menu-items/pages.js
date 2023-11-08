@@ -7,6 +7,7 @@ import {
     IconRegistered,
     IconPrescription,
 } from '@tabler/icons';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 import MedicationIcon from '@mui/icons-material/Medication';
 import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
@@ -23,6 +24,7 @@ const icons = {
     IconPrescription,
     IconRegistered,
     AccountBoxIcon,
+    ReceiptLongIcon,
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
@@ -95,6 +97,14 @@ const pages = {
             type: 'item',
             icon: icons.SubscriptionsIcon,
             url: '/patient/pages/packages',
+            target: false,
+        },
+        {
+            id: 'Orders',
+            title: 'Orders',
+            type: 'item',
+            icon: icons.ReceiptLongIcon,
+            url: '/patient/pages/orders',
             target: false,
         },
         {

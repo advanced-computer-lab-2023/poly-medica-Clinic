@@ -24,6 +24,7 @@
     "install": "^0.13.0",
     "lodash": "^4.17.21",
     "material-ui-popup-state": "^4.0.1",
+    "moment": "^2.29.4",
     "npm": "^10.2.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
