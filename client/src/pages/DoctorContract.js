@@ -2,21 +2,51 @@
  
 import { Container, Paper, Typography, Grid, Button } from '@mui/material';
 
+import Swal from 'sweetalert2';
+import { useEffect, useState } from 'react'; 
  
 import { useUserContext } from 'hooks/useUserContext'; 
-import { clinicAxios } from 'utils/AxiosConfig';
+import { clinicAxios } from 'utils/AxiosConfig'; 
 
-const DoctorContract = ({ setStatus }) => {
+ 
+const DoctorContract = () => {
+     
 
     const{ user } = useUserContext();
     const id = user.id;
+    const [active, setActive] = useState(true); 
+    
 
-    const handleFormSubmit = (e) => {
-        e.preventDefault();
-        clinicAxios.post('doctors/'+id+'/contract')
-        .then((res) => {
+
+    useEffect(() => {
+        clinicAxios.get('doctors/'+id+'/status')
+        .then((res) => {  
+            const status = res.data.status;
+            if(status){
+                setActive(true);
+            }
+            else{
+                setActive(false);
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }, []);
+
+    const onClick = () => { 
+        clinicAxios.post('doctors/'+id+'/status')
+        .then((res) => { 
             console.log(res);
-            setStatus(res.data.status);
+            //fire a swal to welcome the doctor as a new employee
+            Swal.fire({
+                icon: 'success',
+                title: 'Welcome to Poly-Medica!',
+                text: 'You are now an employee of Poly-Medica Clinic',
+                confirmButtonText: 'OK'
+             });
+             setActive(true);
+            
         })
         .catch((err) => {
             console.log(err);
@@ -31,7 +61,7 @@ const DoctorContract = ({ setStatus }) => {
             <Typography variant="h5" align="center">
               Employment Contract
             </Typography>
-            <form onSubmit={handleFormSubmit}>
+            {/* <form onSubmit={handleFormSubmit}> */}
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <Typography variant="body1">
@@ -107,10 +137,11 @@ Doctor:
                 </Grid>
                 {/* Add more contract clauses as needed */}
               </Grid>
-              <Button type="submit" variant="contained" color="primary">
+              <Button disabled={active} fullWidth
+               onClick={onClick} variant="contained" color="primary">
                 Accept
               </Button>
-            </form>
+            {/* </form> */}
           </Paper>
         </Container>
       );
