@@ -64,17 +64,13 @@ class PatientService {
         return orders;
     }
 
-    async addOrder(id, order) {
-        const orders = await this.repository.addOrder(id, order);
+    async addOrder(order) {
+        const orders = await this.repository.addOrder(order);
         return orders;
     }
 
-    async updateOrder(pateintId, orderId, status) {
-        const orders = await this.repository.updateOrderStatus(
-            pateintId,
-            orderId,
-            status
-        );
+    async updateOrder(order) {
+        const orders = await this.repository.updateOrder(order);
         return orders;
     }
 }

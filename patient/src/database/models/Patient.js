@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 import {
     FAMILIY_EMERGENCY,
     GENDERS,
-    ORDER_STATUS,
 } from '../../utils/Constants.js';
 import bcrypt from 'bcrypt';
 
@@ -101,20 +100,6 @@ const patientSchema = mongoose.Schema({
             },
         },
     ],
-    orders: [
-        {
-            details: {
-                type: String,
-                required: true,
-            },
-            status: {
-                type: String,
-                enum: ORDER_STATUS,
-                default: ORDER_STATUS[0],
-            },
-        },
-    ],
-
     //.....
 });
 

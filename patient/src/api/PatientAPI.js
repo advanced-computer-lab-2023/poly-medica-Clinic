@@ -194,7 +194,7 @@ export const patient = (app) => {
         }
     });
 
-    app.get('/patient/:pateintId/orders', async (req, res) => {
+    app.get('/order/:pateintId', async (req, res) => {
         const { pateintId } = req.params;
         if (!isValidMongoId(pateintId)) {
             return res.status(ERROR_STATUS_CODE).json({
@@ -215,17 +215,11 @@ export const patient = (app) => {
         }
     });
 
-    app.patch('/patient/:pateintId/orders', async (req, res) => {
-        const { pateintId } = req.params;
-        if (!isValidMongoId(pateintId)) {
-            return res.status(ERROR_STATUS_CODE).json({
-                message: 'Patient ID is invalid',
-            });
-        }
+    app.post('/order', async (req, res) => {
         try {
-            const { details } = req.body;
-            const order = { details };
-            const data = await service.addOrder(pateintId, order);
+            const { amount, details, patientId } = req.body;
+            const order = { amount, details, patientId };
+            const data = await service.addOrder(order);
             if (data) res.status(OK_STATUS_CODE).json(data);
             else
                 res.status(NOT_FOUND_STATUS_CODE).json({
@@ -239,16 +233,16 @@ export const patient = (app) => {
         }
     });
 
-    app.patch('/patient/:pateintId/orders/:orderId', async (req, res) => {
-        const { pateintId, orderId } = req.params;
-        if (!isValidMongoId(pateintId) || !isValidMongoId(orderId)) {
+    app.patch('/order', async (req, res) => {
+        const { pateintId } = req.params;
+        if (!isValidMongoId(pateintId)) {
             return res.status(ERROR_STATUS_CODE).json({
-                message: 'Patient ID or order ID is invalid',
+                message: 'Patient ID is invalid',
             });
         }
         try {
-            const { status } = req.body;
-            const data = await service.updateOrder(pateintId, orderId, status);
+            const order = req.body;
+            const data = await service.updateOrder(order);
             if (data) res.status(OK_STATUS_CODE).json(data);
             else
                 res.status(NOT_FOUND_STATUS_CODE).json({

@@ -1,9 +1,7 @@
 import PatientModel from '../models/Patient.js';
 import PrescriptionModel from '../models/Prescription.js';
-import {
-    FAMILY_MEMBERS_PROJECTION,
-    ORDER_PROJECTION,
-} from '../../utils/Constants.js';
+import OrderModel from '../models/Order.js';
+import { FAMILY_MEMBERS_PROJECTION } from '../../utils/Constants.js';
 
 class PatientRepository {
     async findAllPatients() {
@@ -77,35 +75,22 @@ class PatientRepository {
     }
 
     async findOrders(id) {
-        const orders = await PatientModel.findById(id, ORDER_PROJECTION);
+        const orders = await OrderModel.find({ patientId: id });
         return orders;
     }
 
-    async addOrder(id, order) {
-        const { orders } = await this.findOrders(id);
-        const newOrders = [...orders, order];
-        const updatedOrders = await PatientModel.findOneAndUpdate(
-            { _id: id },
-            { orders: newOrders },
-            { new: true, runValidators: true }
-        ).select(ORDER_PROJECTION);
-        return updatedOrders;
+    async addOrder(order) {
+        const order = await OrderModel.create(order);
+        return order;
     }
 
-    async updateOrderStatus(patientId, orderId, status) {
-        const { orders } = await this.findOrders(patientId);
-        orders.forEach((order) => {
-            console.log(order, order._id);
-            if (order._id.toString() === orderId.toString()) {
-                order.status = status;
-            }
-        });
-        const newOrders = await PatientModel.findOneAndUpdate(
-            { _id: patientId },
-            { orders },
+    async updateOrder(order) {
+        const order = await OrderModel.findOneAndUpdate(
+            { _id: order._id },
+            order,
             { new: true, runValidators: true }
-        ).select(ORDER_PROJECTION);
-        return newOrders;
+        );
+        return order;
     }
 }
 
