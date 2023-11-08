@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
 	Dialog,
@@ -24,8 +23,8 @@ const FollowUp = ({
     loggedInDoctor
 }) => {
 	const { availableSlots } = loggedInDoctor;
-	const handleSchedule = async () => {
-		const availableSlotsIdx = parseInt(event.target.id);
+	const handleSchedule = async (availableSlotsIdx) => {
+		console.log('availableSlotsIdx', availableSlotsIdx);
 		const slot = availableSlots[availableSlotsIdx];
 		const appointment = {
             patientId: selectedPatient._id,
@@ -50,6 +49,22 @@ const FollowUp = ({
                     console.log(error);
                 });
 	};
+	const handleConfirmation = (event) => {
+		Swal.fire({
+			title: 'Confirm Scheduling',
+			text: 'Are you sure you want to schedule this follow-up?',
+			icon: 'question',
+			confirmButtonText: 'Yes',
+			showCancelButton: 'true',
+			cancelButtonText: 'No'
+		})
+		.then( async (result) => {
+			if (result['isConfirmed']){
+				await handleSchedule(parseInt(event.target.id));
+			}
+		});
+	};
+
     return (
 		<Dialog 
 			open={isFollowUpOpen} 
@@ -105,7 +120,7 @@ const FollowUp = ({
 												size="small" 
 												variant="text" 
 												color="primary"
-												onClick={handleSchedule}
+												onClick={handleConfirmation}
 											>
 												Schedule Now
 											</Button>
