@@ -7,6 +7,7 @@ import Loader from 'ui-component/Loader';
 import { Attachment } from '@mui/icons-material';
 import Swal from 'sweetalert2';
 import { downloadDocument } from 'utils/CommonUtils';
+import { OK_STATUS_CODE } from 'utils/Constants';
 
 const MedicalHistory = () => {
     const [documents, setDocuments] = useState();
@@ -37,13 +38,13 @@ const MedicalHistory = () => {
     const handleDeleteDocument = (document) => {
         try {
             patientAxios.patch(`/patient/${user.id}/medical-history/${document._id}`).then((response) => {
-                if (response.status === 200) {
+                if (response.status === OK_STATUS_CODE) {
                     Swal.fire({ title: 'Deleted Successfully', icon: 'success' });
                     setDocuments(documents.filter((doc) => doc._id !== document._id));
                 }
             });
         } catch (err) {
-            Swal.fire('Deletion Failed', 'Failed to delete the health record, please try again', 'error');
+            Swal.fire({ title: 'Deletion Failed', icon: 'error' });
         }
     };
 
