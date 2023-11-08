@@ -5,27 +5,14 @@ import {
 	OK_STATUS_CODE,
 	ERROR_STATUS_CODE,
     PATIENTS_BASE_URL,
-    CLIENT_BASE_URL
 } from '../utils/Constants.js';
 
 
 export const payment = (app) => {
-    let items = [];
-    let total_amount = 0;
-    let byWallet = false;
 
-    app.post('/pay', async (req, res) => {
-        items = req.body.items;
-        total_amount = req.body.total_amount;
-        type = req.body.type;
-    })
-
-    app.post('/pay-with-card', async (req, res) => {
+    app.post('/payment/card', async (req, res) => {
         try{
-            total_amount = 50;
-            if(byWallet){
-                total_amount = amountToPayByCard;
-            }
+            const total_amount = req.body.paymentAmount;
             const paymentIntent = await stripe.paymentIntents.create({
                 amount: (total_amount * 100),
                 currency: "usd",
@@ -41,17 +28,16 @@ export const payment = (app) => {
         }
     });
     
-    app.post('wallet-pay', async (req, res) => {
+    app.post('payment/wallet', async (req, res) => {
         try{
-            byWallet = true;
+            const amountToPay = req.body.amountToPayByWallet;
             const amountInWallet = await axios.get(`${PATIENTS_BASE_URL}/wallet`);
-            if(total_amount <= amountInWallet){
-                amountInWallet = amountInWallet - total_amount;
-                await axios.post(`${PATIENTS_BASE_URL}/wallet`, {amount : amountInWallet} );
+            if(amountToPay <= amountInWallet){
+                amountInWallet = amountInWallet - amountToPay;
+                await axios.patch(`${PATIENTS_BASE_URL}/wallet`, {amount : amountInWallet} );
                 res.status(OK_STATUS_CODE);
             }else{
-                amountToPayByCard = amountInWallet - total_amount;
-                res.json({ redirectUrl: `${CLIENT_BASE_URL}/pages/payment` });
+                res.status(ERROR_STATUS_CODE).json("insufficient amount in the wallet");
             }
         }catch(err){
             res.status(ERROR_STATUS_CODE).send({err: err.message, status: ERROR_STATUS_CODE});

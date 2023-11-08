@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   PaymentElement,
   useStripe,
-  useElements,
-  useNavigate
+  useElements
 } from '@stripe/react-stripe-js';
-
+import { successfulPayment } from '../../utils/PaymentUtils';
 import { Button } from '@mui/material';
 import Swal from 'sweetalert2';
+import { useNavigate,useLocation } from 'react-router-dom';
 
-
-export default function CheckoutForm() {
+export default function CheckoutForm({ item, type }) {
 
   const stripe = useStripe();
   const [status, setStatus] = useState(null);
   const elements = useElements();
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
   const navigate = useNavigate();
-
 
   useEffect(() => {
     if (!stripe) {
@@ -32,21 +32,29 @@ export default function CheckoutForm() {
     if (!clientSecret) {
       return;
     }
-    
+
     stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
-      
+      const deserializedItem = queryParams.get('item');
+      item = JSON.parse(decodeURIComponent(deserializedItem));
+      type = queryParams.get('type');
+
       switch (paymentIntent.status) {
-        case 'succeeded':{
+        case 'succeeded': {
           setMessage('Payment succeeded!');
-          Swal.fire('success', 'Payment Succeeded', 'success');
-           // TODO: to redirect the user after payment is successful
+          Swal.fire('success', 'Payment Succeeded', 'success').then(() => {
+            const callBackUrl = successfulPayment(item,type);
+            navigate(callBackUrl, { replace: true });
+            }
+          ).catch((error) => {
+            console.log('Error the purchase', error);
+          });
         }
           break;
-        case 'processing':{
+        case 'processing': {
           setMessage('Your payment is processing.');
         }
           break;
-        case 'requires_payment_method':{
+        case 'requires_payment_method': {
           setMessage('Your payment was not successful, please try again.');
           Swal.fire('error', 'failed payment', 'error');
         }
@@ -60,7 +68,7 @@ export default function CheckoutForm() {
 
   }, [stripe]);
 
-  if(status === 'succeeded'){
+  if (status === 'succeeded') {
     // TODO: to redirect the user after payment is successful
   }
 
@@ -72,11 +80,11 @@ export default function CheckoutForm() {
     }
 
     setIsLoading(true);
-
+    const serializedItem = JSON.stringify(item);
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: 'http://localhost:3000/pages/payment',
+        return_url: `http://localhost:3000/pages/payment?item=${encodeURIComponent(serializedItem)}&type=${encodeURIComponent(type)}`,
       },
     });
 
@@ -98,14 +106,14 @@ export default function CheckoutForm() {
       spacedAccordionItems: true
     }
   };
-  
-  
+
+
   return (
     <form id='payment-form' onSubmit={handleSubmit}>
-      
+
       <PaymentElement id='payment-element' options={paymentElementOptions} />
       <Button disabled={isLoading || !stripe || !elements} fullWidth variant="contained" onClick={handleSubmit}>
-          { 'Pay now'}
+        {'Pay now'}
       </Button>
       {/* Show any error or success messages */}
       {message && <div id='payment-message' style={
