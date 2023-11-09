@@ -19,11 +19,7 @@ export const order = (app) => {
         }
         try {
             const data = await service.getOrders(pateintId);
-            if (data) res.status(OK_STATUS_CODE).json(data);
-            else
-                res.status(NOT_FOUND_STATUS_CODE).json({
-                    message: 'orders not found',
-                });
+            res.status(OK_STATUS_CODE).json(data);
         } catch (err) {
             res.status(ERROR_STATUS_CODE).json({
                 message: 'error occurred while fetching orders',
@@ -33,14 +29,9 @@ export const order = (app) => {
 
     app.post('/order', async (req, res) => {
         try {
-            const { amount, details, patientId } = req.body;
-            const order = { amount, details, patientId };
+            const { order } = req.body;
             const data = await service.addOrder(order);
-            if (data) res.status(OK_STATUS_CODE).json(data);
-            else
-                res.status(NOT_FOUND_STATUS_CODE).json({
-                    message: 'orders not found',
-                });
+            res.status(OK_STATUS_CODE).json(data);
         } catch (err) {
             res.status(ERROR_STATUS_CODE).json({
                 message: 'error occurred while adding order',
@@ -49,15 +40,17 @@ export const order = (app) => {
         }
     });
 
-    app.patch('/order', async (req, res) => {
+    app.patch('/order/:orderId', async (req, res) => {
+        const { orderId } = req.params;
+        if (!isValidMongoId(orderId)) {
+            return res.status(ERROR_STATUS_CODE).json({
+                message: 'Order ID is invalid',
+            });
+        }
         try {
-            const order = req.body;
-            const data = await service.updateOrder(order);
-            if (data) res.status(OK_STATUS_CODE).json(data);
-            else
-                res.status(NOT_FOUND_STATUS_CODE).json({
-                    message: 'orders not found',
-                });
+            const { order } = req.body;
+            const data = await service.updateOrder(orderId, order);
+            res.status(OK_STATUS_CODE).json(data);
         } catch (err) {
             res.status(ERROR_STATUS_CODE).json({
                 message: 'error occurred while updating order',

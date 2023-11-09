@@ -15,7 +15,7 @@ const OrderCard = ({ order, setSelectedOrder }) => {
                 <ReceiptLongIcon />
             </ListItemAvatar>
             <ListItemText
-                primary={`Order Id : ${Math.ceil(Math.abs(parseInt(order._id, 16)) / 1e22)}`}
+                primary={`Order Id : ${Math.ceil(Math.abs(parseInt(order._id, 16)) / 1e21)}`}
                 secondary={formatDate(order.createdAt)}
                 sx={{
                     width: '60%',

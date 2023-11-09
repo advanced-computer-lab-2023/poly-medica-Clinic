@@ -11,9 +11,9 @@ class OrderRepository {
         return newOrder;
     }
 
-    async updateOrder(order) {
+    async updateOrder(id, order) {
         const updatedOrder = await OrderModel.findOneAndUpdate(
-            { _id: order._id },
+            { _id: id },
             order,
             { new: true, runValidators: true }
         );

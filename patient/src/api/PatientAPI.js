@@ -9,8 +9,10 @@ import {
     DUPLICATE_KEY_ERROR_CODE,
     BAD_REQUEST_CODE_400,
     PATIENT_ENUM,
+    ZERO_INDEX,
 } from '../utils/Constants.js';
-import { ZERO_INDEX } from '../../../clinic/src/utils/Constants.js';
+
+import { faker } from '@faker-js/faker';
 
 export const patient = (app) => {
     const service = new PatientService();
@@ -224,7 +226,10 @@ export const patient = (app) => {
         }
         try {
             const { deliveryAddresses } = req.body;
-            const data = await service.updateAddress(pateintId, deliveryAddresses);
+            const data = await service.updateAddress(
+                pateintId,
+                deliveryAddresses
+            );
             if (data) res.status(OK_STATUS_CODE).json(data);
             else
                 res.status(NOT_FOUND_STATUS_CODE).json({
@@ -233,62 +238,6 @@ export const patient = (app) => {
         } catch (err) {
             res.status(ERROR_STATUS_CODE).json({
                 message: 'error occurred while updating addresses',
-            });
-        }
-    });
-
-    app.get('/order/:pateintId', async (req, res) => {
-        const { pateintId } = req.params;
-        if (!isValidMongoId(pateintId)) {
-            return res.status(ERROR_STATUS_CODE).json({
-                message: 'Patient ID is invalid',
-            });
-        }
-        try {
-            const data = await service.getOrders(pateintId);
-            if (data) res.status(OK_STATUS_CODE).json(data);
-            else
-                res.status(NOT_FOUND_STATUS_CODE).json({
-                    message: 'orders not found',
-                });
-        } catch (err) {
-            res.status(ERROR_STATUS_CODE).json({
-                message: 'error occurred while fetching orders',
-            });
-        }
-    });
-
-    app.post('/order', async (req, res) => {
-        try {
-            const { amount, details, patientId } = req.body;
-            const order = { amount, details, patientId };
-            const data = await service.addOrder(order);
-            if (data) res.status(OK_STATUS_CODE).json(data);
-            else
-                res.status(NOT_FOUND_STATUS_CODE).json({
-                    message: 'orders not found',
-                });
-        } catch (err) {
-            res.status(ERROR_STATUS_CODE).json({
-                message: 'error occurred while adding order',
-                error: err.message,
-            });
-        }
-    });
-
-    app.patch('/order', async (req, res) => {
-        try {
-            const order = req.body;
-            const data = await service.updateOrder(order);
-            if (data) res.status(OK_STATUS_CODE).json(data);
-            else
-                res.status(NOT_FOUND_STATUS_CODE).json({
-                    message: 'orders not found',
-                });
-        } catch (err) {
-            res.status(ERROR_STATUS_CODE).json({
-                message: 'error occurred while updating order',
-                error: err.message,
             });
         }
     });

@@ -82,9 +82,11 @@ class PatientRepository {
             id,
             PATIENT_ADDRESSES_PROJECTION
         );
-        addresses.deliveryAddresses.sort((a, b) => {
-            return a.primary ? -1 : b.primary ? 1 : 0;
-        });
+        if (addresses) {
+            addresses.deliveryAddresses.sort((a, b) => {
+                return a.primary ? -1 : b.primary ? 1 : 0;
+            });
+        }
         return addresses;
     }
 
@@ -94,9 +96,11 @@ class PatientRepository {
             { deliveryAddresses: address },
             { new: true, runValidators: true }
         ).select(PATIENT_ADDRESSES_PROJECTION);
-        addresses.deliveryAddresses.sort((a, b) => {
-            return a.primary ? -1 : b.primary ? 1 : 0;
-        });
+        if (addresses) {
+            addresses.deliveryAddresses.sort((a, b) => {
+                return a.primary ? -1 : b.primary ? 1 : 0;
+            });
+        }
         return addresses;
     }
 

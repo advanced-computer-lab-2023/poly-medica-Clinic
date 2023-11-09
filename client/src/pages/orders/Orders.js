@@ -9,7 +9,7 @@ import { CANCELLED_STATUS } from 'utils/Constants.js';
 const Orders = () => {
     const [orders, setOrders] = useState([]);
     const [selectedOrder, setSelectedOrder] = useState(null);
-    
+
     const { user } = useUserContext();
     const userId = user.id;
     useEffect(() => {
@@ -30,7 +30,7 @@ const Orders = () => {
     const handleCancleOrder = () => {
         selectedOrder.status = CANCELLED_STATUS;
         patientAxios
-            .patch('/order', selectedOrder)
+            .patch(`/order/${selectedOrder._id}`, { order: selectedOrder })
             .then((response) => {
                 const order = response.data;
                 setOrders((prevOrders) => {

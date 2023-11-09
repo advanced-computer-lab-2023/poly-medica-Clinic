@@ -15,8 +15,8 @@ class OrderService {
         return orders;
     }
 
-    async updateOrder(order) {
-        const orders = await this.repository.updateOrder(order);
+    async updateOrder(id, order) {
+        const orders = await this.repository.updateOrder(id, order);
         return orders;
     }
 }

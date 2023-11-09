@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
-import { ORDER_STATUS } from '../../utils/Constants.js';
-import { ZERO_INDEX } from '../../../../clinic/src/utils/Constants.js';
+import { ORDER_STATUS, ZERO_INDEX } from '../../utils/Constants.js';
 
 const orderSchema = mongoose.Schema({
     patientId: {
