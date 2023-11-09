@@ -7,16 +7,24 @@ import { useEffect, useState } from 'react';
  
 import { useUserContext } from 'hooks/useUserContext'; 
 import { clinicAxios } from 'utils/AxiosConfig'; 
-
  
 const DoctorContract = () => {
      
 
+  
     const{ user } = useUserContext();
     const id = user.id;
     const [active, setActive] = useState(true); 
     
-
+     useEffect(() => {
+      clinicAxios.get('contract')
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }, []);
 
     useEffect(() => {
         clinicAxios.get('doctors/'+id+'/status')
@@ -32,7 +40,9 @@ const DoctorContract = () => {
         .catch((err) => {
             console.log(err);
         });
-    }, []);
+    }
+    
+    , []);
 
     const onClick = () => { 
         clinicAxios.post('doctors/'+id+'/status')
