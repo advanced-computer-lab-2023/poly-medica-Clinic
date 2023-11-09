@@ -27,3 +27,5 @@ export const PENDING_STATUS = 'pending';
 export const CANCELLED_STATUS = 'cancelled';
 
 export const DATE_FORAMT = 'MMMM Do YYYY, h:mm a';
+
+export const ZERO_INDEX = 0;

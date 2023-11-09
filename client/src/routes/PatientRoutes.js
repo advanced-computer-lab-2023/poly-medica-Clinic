@@ -29,6 +29,9 @@ const LazyAppointments = Loadable(
 const LazyOrders = Loadable(
     lazy(() => import('pages/orders/Orders'))
 );
+const LazyCheckout = Loadable(
+    lazy(() => import('pages/checkout/Checkout'))
+);
 
 const Account = Loadable(lazy(() => import('pages/profile/Account'))); //TODO: generalize this
 const LazyAddress = Loadable(lazy(() => import('pages/address/Address')));
@@ -107,6 +110,10 @@ const MainRoutes = {
                 {
                     path: 'orders',
                     element: <LazyOrders />,
+                },
+                {
+                    path: 'checkout',
+                    element: <LazyCheckout />,
                 },
                 {
                     path: 'clinic',

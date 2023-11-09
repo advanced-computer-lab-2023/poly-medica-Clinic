@@ -30,7 +30,7 @@ const AddressForm = ({
             <FormControl required fullWidth key={'primaryAddress'}>
                 <FormControlLabel
                     onChange={(e) => {
-                        object.primary = !object.primary;
+                        object.primary = true;
                         handleFormInputChange(e);
                     }}
                     checked={object.primary}

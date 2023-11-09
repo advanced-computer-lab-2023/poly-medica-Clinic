@@ -6,6 +6,7 @@ const AddressList = ({
     addresses,
     setSelectedAddress,
     handleEditDialogOpen,
+    handleDelete,
 }) => {
     return (
         <List>
@@ -15,7 +16,9 @@ const AddressList = ({
                         <div key={index}>
                             <AddressCard
                                 address={address}
+                                sxx={{ width: '80%', margin: '0 auto' }}
                                 setSelectedAddress={setSelectedAddress}
+                                handleDelete={handleDelete}
                                 handleEditDialogOpen={
                                     handleEditDialogOpen
                                 }></AddressCard>

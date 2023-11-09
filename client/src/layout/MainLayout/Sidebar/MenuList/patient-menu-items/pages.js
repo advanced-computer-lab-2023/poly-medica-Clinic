@@ -13,6 +13,7 @@ import MedicationIcon from '@mui/icons-material/Medication';
 import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import HomeIcon from '@mui/icons-material/Home';
+import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 // constant
 const icons = {
     IconKey,
@@ -27,6 +28,7 @@ const icons = {
     AccountBoxIcon,
     ReceiptLongIcon,
     HomeIcon,
+    PointOfSaleIcon,
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
@@ -107,6 +109,14 @@ const pages = {
             type: 'item',
             icon: icons.ReceiptLongIcon,
             url: '/patient/pages/orders',
+            target: false,
+        },
+        {
+            id: 'Checkout',
+            title: 'Checkout',
+            type: 'item',
+            icon: icons.PointOfSaleIcon,
+            url: '/patient/pages/checkout',
             target: false,
         },
         {

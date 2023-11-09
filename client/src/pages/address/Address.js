@@ -7,6 +7,7 @@ import { useUserContext } from 'hooks/useUserContext.js';
 import { Fab } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import EditAddress from './EditAddress.js';
+import { ZERO_INDEX } from 'utils/Constants.js';
 
 const Address = () => {
     const [addresses, setAddresses] = useState(null);
@@ -68,11 +69,35 @@ const Address = () => {
             ...prevAddress,
             [name]: value,
         }));
-        console.log(Address);
+    };
+
+    const handleDelete = (addressToDelete) => {
+        const deliveryAddresses = addresses.filter((curAddress) => {
+            if (curAddress._id !== addressToDelete._id) return curAddress;
+        });
+        if (addressToDelete.primary && deliveryAddresses.length) {
+            deliveryAddresses[ZERO_INDEX].primary = true;
+        }
+        patientAxios
+            .patch(`/address/${userId}`, { deliveryAddresses })
+            .then((response) => {
+                const newAddresses = response.data.deliveryAddresses;
+                setAddresses(newAddresses);
+                handleEditDialogClose();
+            })
+            .catch((error) => {
+                console.log('Error Editting address:', error);
+                handleEditDialogClose();
+            });
     };
 
     const handleAddAddress = (e) => {
         e.preventDefault();
+        addresses.map((addres) => {
+            addres.primary = false;
+            return addres;
+        });
+        address.primary = true;
         const deliveryAddresses = [...addresses, address];
         patientAxios
             .patch('/address/' + userId, { deliveryAddresses })
@@ -100,7 +125,6 @@ const Address = () => {
             .patch(`/address/${userId}`, { deliveryAddresses })
             .then((response) => {
                 const newAddresses = response.data.deliveryAddresses;
-                console.log(newAddresses);
                 setAddresses(newAddresses);
                 handleEditDialogClose();
             })
@@ -111,12 +135,13 @@ const Address = () => {
     };
 
     return (
-        <MainCard title='Addresses'>
+        <MainCard title='Addresses' sx={{ width: '90%', margin: '0 auto' }}>
             {addresses && (
                 <AddressList
                     addresses={addresses}
                     setSelectedAddress={setAddress}
                     handleEditDialogOpen={handleEditDialogOpen}
+                    handleDelete={handleDelete}
                 />
             )}
             <Fab

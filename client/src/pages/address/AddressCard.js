@@ -10,11 +10,18 @@ import {
 } from '@mui/material';
 // import HomeIcon from '@mui/icons-material/Home';
 
-const AddressCard = ({ address, handleEditDialogOpen, setSelectedAddress }) => {
+const AddressCard = ({
+    address,
+    handleEditDialogOpen,
+    setSelectedAddress,
+    handleDelete,
+    includeEdit = true,
+    sxx = {},
+}) => {
     handleEditDialogOpen;
     setSelectedAddress;
     return (
-        <Card sx={{ maxWidth: '70%', margin: '0 auto' }}>
+        <Card sx={sxx}>
             <CardContent>
                 <Table>
                     <TableBody>
@@ -24,7 +31,7 @@ const AddressCard = ({ address, handleEditDialogOpen, setSelectedAddress }) => {
                                     border: 0,
                                     padding: 0,
                                     width: '30%',
-                                    fontWeight: 'bold'
+                                    fontWeight: 'bold',
                                 }}>
                                 Address
                             </TableCell>
@@ -49,7 +56,7 @@ const AddressCard = ({ address, handleEditDialogOpen, setSelectedAddress }) => {
                                     variant={address.primary ? 'h4' : 'body2'}
                                     color={
                                         address.primary
-                                            ? 'GrayText'
+                                            ? 'primary'
                                             : 'textSecondary'
                                     }>
                                     {address.primary
@@ -63,17 +70,36 @@ const AddressCard = ({ address, handleEditDialogOpen, setSelectedAddress }) => {
                                     border: 0,
                                     padding: 0,
                                 }}>
-                                <Button
-                                variant='outlined'
-                                    onClick={() => {
-                                        const tmpAddress = JSON.parse(
-                                            JSON.stringify(address)
-                                        );
-                                        setSelectedAddress(tmpAddress);
-                                        handleEditDialogOpen();
-                                    }}>
-                                    Edit
-                                </Button>
+                                {includeEdit && (
+                                    <>
+                                        <Button
+                                            color='secondary'
+                                            sx={{
+                                                borderRightStyle: 'groove',
+                                                borderRightWidth: 1,
+                                            }}
+                                            onClick={() => {
+                                                const tmpAddress = JSON.parse(
+                                                    JSON.stringify(address)
+                                                );
+                                                setSelectedAddress(tmpAddress);
+                                                handleEditDialogOpen();
+                                            }}>
+                                            Edit
+                                        </Button>
+                                        <Button
+                                            color='error'
+                                            onClick={() => {
+                                                const tmpAddress = JSON.parse(
+                                                    JSON.stringify(address)
+                                                );
+                                                setSelectedAddress(tmpAddress);
+                                                handleDelete(tmpAddress);
+                                            }}>
+                                            Delete
+                                        </Button>
+                                    </>
+                                )}
                             </TableCell>
                         </TableRow>
                         <TableRow>
@@ -82,7 +108,7 @@ const AddressCard = ({ address, handleEditDialogOpen, setSelectedAddress }) => {
                                     padding: 0,
                                     paddingBottom: 5,
                                     width: '30%',
-                                    fontWeight: 'bold'
+                                    fontWeight: 'bold',
                                 }}>
                                 Phone Number
                             </TableCell>
