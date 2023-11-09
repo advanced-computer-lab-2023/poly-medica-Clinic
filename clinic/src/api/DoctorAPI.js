@@ -222,7 +222,7 @@ export const doctor = (app) => {
 			
 			res.status(OK_STATUS_CODE).json({ walletAmount });
 		} catch (error) {
-			res.status(ERROR_STATUS_CODE).json({ message: error });
+			res.status(NOT_FOUND_STATUS_CODE).json({ message: error });
 		}
 	});
 };
