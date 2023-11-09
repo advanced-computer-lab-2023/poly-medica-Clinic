@@ -7,7 +7,9 @@ import {
 import { 
 	OK_STATUS_CODE, 
 	NOT_FOUND_STATUS_CODE, 
-	ERROR_STATUS_CODE 
+	ERROR_STATUS_CODE, 
+	SIXTY,
+	THOUSAND
 } from '../../utils/Constants.js';
 
 import DoctorModel from '../../database/models/Doctor.js';
@@ -101,4 +103,97 @@ describe('GET /doctors/:id/patients', () => {
 	afterEach(async () => {
 		await disconnectDBTest();
 	});
-});
+}
+);
+describe('GET /doctors/:id/slots', () => {
+
+	beforeEach(async () => {
+		await connectDBTest();
+	});
+	it('should return 200 OK and retrieve the slots correctly', async () => {
+		const doctor = new DoctorModel(generateDoctor());
+		await doctor.save();
+		const id = doctor._id.toString();
+		const res = await request(app).get(`/doctors/${id}/slots`);
+		expect(res.status).toBe(OK_STATUS_CODE);
+		console.log('dsdsddsds',res._body);
+
+		for(let i=0 ; i<doctor.availableSlots.length ; i++){
+			expect(new Date(res._body[i].from)).toStrictEqual(doctor.availableSlots[i].from);
+			expect(new Date(res._body[i].until)).toStrictEqual(doctor.availableSlots[i].until);
+		}
+
+	});
+
+	it('should return 404 NOT FOUND when the doctor is not found', async () => {
+		const id = faker.database.mongodbObjectId();
+		const res = await request(app).get(`/doctors/${id}/slots`);
+		expect(res.status).toBe(NOT_FOUND_STATUS_CODE);
+	});
+
+	it('should return 500 ERROR when the id is invalid', async () => {
+		const id = faker.lorem.word();
+		const res = await request(app).get(`/doctors/${id}/slots`);
+		expect(res.status).toBe(ERROR_STATUS_CODE);
+	});
+ 
+
+
+
+	afterEach(async () => {
+		await disconnectDBTest();
+	});
+} 	
+);
+
+describe('POST /doctors/:id/slots', () => {
+
+	beforeEach(async () => {
+		await connectDBTest();
+	});
+
+	it('should return 200 OK and post the slots correctly', async () => {
+		const doctor = new DoctorModel(generateDoctor()); 
+		//generate random date
+		const from = faker.date.future();
+		//utile is a date after from by 1 hour
+		const until = new Date(from.getTime() + SIXTY*SIXTY*THOUSAND);
+		
+		await doctor.save();
+		const id = doctor._id.toString();
+		const res = await request(app).post(`/doctors/${id}/slots`).send({ from });
+		expect(res.status).toBe(OK_STATUS_CODE); 
+
+		console.log('dsdsddsds',res._body);
+		for(let i=0 ; i<doctor.availableSlots.length ; i++){
+			expect(new Date(res._body[i].from)).toStrictEqual(doctor.availableSlots[i].from);
+			expect(new Date(res._body[i].until)).toStrictEqual(doctor.availableSlots[i].until);
+		}
+		expect(new Date(res._body[doctor.availableSlots.length].from)).toStrictEqual(from);
+		expect(new Date(res._body[doctor.availableSlots.length].until)).toStrictEqual(until);
+	});
+
+	it('should return 404 NOT FOUND when the doctor is not found', async () => {
+		const id = faker.database.mongodbObjectId();
+		const res = await request(app).post(`/doctors/${id}/slots`);
+		expect(res.status).toBe(NOT_FOUND_STATUS_CODE);
+	}
+	);
+
+	it('should return 500 ERROR when the id is invalid', async () => {
+		const id = faker.lorem.word();
+		const res = await request(app).post(`/doctors/${id}/slots`);
+		expect(res.status).toBe(ERROR_STATUS_CODE);
+	}
+	);
+
+
+
+	afterEach(async () => {
+		await disconnectDBTest();
+	});
+}
+);
+
+
+
