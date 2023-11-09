@@ -103,6 +103,60 @@ describe('GET /doctors/:id/patients', () => {
 	});
 });
 
+describe('GET /doctors/:id/status', () => {
+	beforeEach(async () => {
+		await connectDBTest();
+	});
+	it('should return 200 OK and retrieve the status correctly', async () => {
+		const doctor = new DoctorModel(generateDoctor());
+		await doctor.save();
+		const id = doctor._id.toString();
+		const res = await request(app).get(`/doctors/${id}/status`);
+		expect(res.status).toBe(OK_STATUS_CODE);
+		expect(res._body.status).toBe(doctor.status);
+	});
+
+	it('should return 404 NOT FOUND when the doctor is not found', async () => {
+		const id = faker.database.mongodbObjectId();
+		const res = await request(app).get(`/doctors/${id}/status`);
+		expect(res.status).toBe(NOT_FOUND_STATUS_CODE);
+	});
+
+	it('should return 500 ERROR when the id is invalid', async () => {
+		const id = faker.lorem.word();
+		const res = await request(app).get(`/doctors/${id}/status`);
+		expect(res.status).toBe(ERROR_STATUS_CODE);
+	});
+});
+
+
+describe('POST /doctors/:id/status', () => {
+	beforeEach(async () => {
+		await connectDBTest();
+	});
+	it('should return 200 OK and update the status correctly', async () => {
+		const doctor = new DoctorModel(generateDoctor());
+		await doctor.save();
+		const id = doctor._id.toString();
+		const res = await request(app).post(`/doctors/${id}/status`);
+		expect(res.status).toBe(OK_STATUS_CODE);
+		const updatedDoctor = await DoctorModel.findById(id);
+		expect(updatedDoctor.status).toBe(true);
+	});
+
+	it('should return 404 NOT FOUND when the doctor is not found', async () => {
+		const id = faker.database.mongodbObjectId();
+		const res = await request(app).post(`/doctors/${id}/status`);
+		expect(res.status).toBe(NOT_FOUND_STATUS_CODE);
+	});
+
+	it('should return 500 ERROR when the id is invalid', async () => {
+		const id = faker.lorem.word();
+		const res = await request(app).post(`/doctors/${id}/status`);
+		expect(res.status).toBe(ERROR_STATUS_CODE);
+	});
+}
+);
 
 
 describe('GET /doctors/:id/name', () => {
