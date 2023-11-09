@@ -1,9 +1,17 @@
 import request from 'supertest';
 import app from '../../../app.js';
+import {
+	OK_STATUS_CODE,
+	ERROR_STATUS_CODE,
+} from '../../utils/Constants.js';
 
-// Mocking the 'stripe' module
-jest.mock('stripe');
-import paymentIntents from 'stripe';
+const mockPaymentsIntentsCreate = jest.fn();
+const paymentAmount = 50;
+jest.mock('stripe', () => jest.fn(() => ({
+    paymentIntents: {
+        create: (...args) => mockPaymentsIntentsCreate(...args)
+    },
+})));
 
 
 describe('POST /payment/card', () => {
@@ -13,30 +21,29 @@ describe('POST /payment/card', () => {
         };
 
         // Mock the Stripe API call
-        paymentIntents.create.mockResolvedValue(mockPaymentIntent);
+        mockPaymentsIntentsCreate.mockResolvedValue(mockPaymentIntent);
 
         const response = await request(app)
             .post('/payment/card')
-            .send({ paymentAmount: 50 });
+            .send({ paymentAmount: paymentAmount });
 
-        expect(response.status).toBe(200);
+        expect(response.status).toBe(OK_STATUS_CODE);
         expect(response.body).toHaveProperty('clientSecret', 'mockClientSecret');
     });
 
     it('should handle errors and return the appropriate response', async () => {
         const mockError = new Error('Mocked error');
 
-        // Mock the Stripe API call to throw an error
-        paymentIntents.create.mockRejectedValue(mockError);
-
+        mockPaymentsIntentsCreate.mockRejectedValueOnce(mockError);
+        
         const response = await request(app)
             .post('/payment/card')
-            .send({ paymentAmount: 50 });
+            .send({ paymentAmount: paymentAmount });
 
-        expect(response.status).toBe(500); // Adjust the status code based on your error handling
+        expect(response.status).toBe(ERROR_STATUS_CODE); 
         expect(response.body).toEqual({
             err: 'Mocked error',
-            status: 500,
+            status: ERROR_STATUS_CODE,
         });
     });
 });
