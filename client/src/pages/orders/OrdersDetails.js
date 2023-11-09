@@ -28,7 +28,7 @@ const OrdersDetails = ({
             }}>
             {selectedOrder && (
                 <>
-                    <DialogTitle align='left' variant='h2'>
+                    <DialogTitle align='center' variant='h2'>
                         Order Details
                     </DialogTitle>
                     <DialogContent>
@@ -40,7 +40,7 @@ const OrdersDetails = ({
                                 flexDirection: 'column',
                             }}></div>
                         <Typography variant='subtitle1'>Status:</Typography>
-                        <Typography variant='body1'>
+                        <Typography variant='body2'>
                             {selectedOrder.status}
                         </Typography>
                         <br />
@@ -56,7 +56,7 @@ const OrdersDetails = ({
                             selectedOrder.status === PENDING_STATUS && (
                                 <Button
                                     variant='contained'
-                                    sx={{ margin:2 }}
+                                    sx={{ margin: 2 }}
                                     onClick={handleCancleOrder}
                                     color='error'>
                                     Cancle Order
