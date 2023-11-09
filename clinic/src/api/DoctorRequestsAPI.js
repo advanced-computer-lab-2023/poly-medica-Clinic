@@ -1,4 +1,5 @@
 import DoctorService from '../service/doctor-service.js';
+import upload from '../config/MulterConfig.js';
 import {
 	BAD_REQUEST_CODE_400,
 	DOCTOR_ENUM,
@@ -7,6 +8,7 @@ import {
 	EXTRA_INDEX,
 	OK_STATUS_CODE,
 	ERROR_STATUS_CODE,
+	DOCTOR_FOLDER_NAME,
 } from '../utils/Constants.js';
 import { isValidMongoId } from '../utils/Validation.js';
 
@@ -22,30 +24,39 @@ export const doctorRequests = (app) => {
 		}
 	});
 
-	app.post('/doctor-requests', async (req, res) => {
-		try {
-			const doctorUser = await service.addReqDoctor(req);
-			req.body = {
-				userId: doctorUser._id,
-				email: doctorUser.userData.email,
-				password: doctorUser.userData.password,
-				userName: doctorUser.userData.userName,
-				type: DOCTOR_ENUM,
-			};
-			res.send(req.body);
-		} catch (err) {
-			if (err.code == DUPLICATE_KEY_ERROR_CODE) {
-				const duplicateKeyAttrb = Object.keys(err.keyPattern)[ZERO_INDEX];
-				const keyAttrb = duplicateKeyAttrb.split('.');
-				res.status(BAD_REQUEST_CODE_400).send({
-					errCode: DUPLICATE_KEY_ERROR_CODE,
-					errMessage: `that ${
-						keyAttrb[keyAttrb.length - EXTRA_INDEX]
-					} is already registered`,
-				});
-			} else res.status(BAD_REQUEST_CODE_400).send({ errMessage: err.message });
-		}
-	});
+	app.post(
+		'/add-doctor-req',
+		upload(DOCTOR_FOLDER_NAME).array('file'),
+		async (req, res) => {
+			try {
+				console.log('req.body', req.body);
+				const { sendData } = req.body;
+				const parsedData = JSON.parse(sendData);
+				parsedData.documentsNames = req.files.map((file) => file.filename);
+				const doctorUser = await service.addReqDoctor(parsedData);
+				req.body = {
+					userId: doctorUser._id,
+					email: doctorUser.userData.email,
+					password: doctorUser.userData.password,
+					userName: doctorUser.userData.userName,
+					type: DOCTOR_ENUM,
+				};
+				res.send(req.body);
+			} catch (err) {
+				if (err.code == DUPLICATE_KEY_ERROR_CODE) {
+					const duplicateKeyAttrb = Object.keys(err.keyPattern)[ZERO_INDEX];
+					const keyAttrb = duplicateKeyAttrb.split('.');
+					res.status(BAD_REQUEST_CODE_400).send({
+						errCode: DUPLICATE_KEY_ERROR_CODE,
+						errMessage: `that ${
+							keyAttrb[keyAttrb.length - EXTRA_INDEX]
+						} is already registered`,
+					});
+				} else
+					res.status(BAD_REQUEST_CODE_400).send({ errMessage: err.message });
+			}
+		},
+	);
 
 	app.delete('/doctor-requests/:id', async (req, res) => {
 		try {

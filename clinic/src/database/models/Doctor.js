@@ -26,6 +26,10 @@ const Doctor = mongoose.Schema({
 		type: Array,
 		default: [],
 	},
+	documentsNames: {
+		type: [String],
+		required: true,
+	},
 });
 
 Doctor.statics.addUser = async function (
@@ -33,7 +37,8 @@ Doctor.statics.addUser = async function (
 	speciality,
 	hourlyRate,
 	affiliation,
-	educationalBackground
+	educationalBackground,
+	documentsNames,
 ) {
 	const newRecord = new this({
 		userData,
@@ -41,6 +46,7 @@ Doctor.statics.addUser = async function (
 		hourlyRate,
 		affiliation,
 		educationalBackground,
+		documentsNames,
 	});
 	const user = await newRecord.save();
 	return user;

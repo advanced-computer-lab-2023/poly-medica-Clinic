@@ -15,8 +15,8 @@ class DoctorService {
 		return doctorUser;
 	}
 
-	async addReqDoctor(req) {
-		const doctorUser = await this.repository.addDoctorReq(req);
+	async addReqDoctor(data) {
+		const doctorUser = await this.repository.addDoctorReq(data);
 		return doctorUser;
 	}
 

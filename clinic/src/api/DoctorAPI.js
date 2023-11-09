@@ -19,36 +19,6 @@ import {
 export const doctor = (app) => {
 	const service = new DoctorService();
 
-	app.post('/add-doctor-req', async (req, res) => {
-		try {
-			const doctorUser = await service.addReqDoctor(req);
-			req.body = {
-				userId: doctorUser._id,
-				email: doctorUser.userData.email,
-				password: doctorUser.userData.password,
-				userName: doctorUser.userData.userName,
-				type: DOCTOR_ENUM,
-			};
-			res.send(req.body);
-		} catch (err) {
-			if (err.code == DUPLICATE_KEY_ERROR_CODE) {
-				const duplicateKeyAttrb = Object.keys(err.keyPattern)[
-					ZERO_INDEX
-				];
-				const keyAttrb = duplicateKeyAttrb.split('.');
-				res.status(BAD_REQUEST_CODE_400).send({
-					errCode: DUPLICATE_KEY_ERROR_CODE,
-					errMessage: `that ${
-						keyAttrb[keyAttrb.length - EXTRA_INDEX]
-					} is already registered`,
-				});
-			} else
-				res.status(BAD_REQUEST_CODE_400).send({
-					errMessage: err.message,
-				});
-		}
-	});
-
 	app.post('/check-doctor', async (req, res) => {
 		try {
 			await service.checkDoctorReqUser(req);
@@ -64,19 +34,17 @@ export const doctor = (app) => {
 	app.get('/doctors/:id/patients', async (req, res) => {
 		const id = req.params.id;
 		if (!isValidMongoId(id))
-			return res
-				.status(ERROR_STATUS_CODE)
-				.json({ message: 'Invalid ID' });
+			return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
 		let patientsWithDoctor = await service.findAllPatients(id);
 		const getPatientsURL = `${PATIENTS_BASE_URL}/patients`;
 		const allPatients = await axios.get(getPatientsURL);
 
 		if (patientsWithDoctor) {
 			patientsWithDoctor = patientsWithDoctor.map((patient) =>
-				patient.toString()
+				patient.toString(),
 			);
-			const finalListOFPatients = allPatients.data.patients.filter(
-				(patient) => patientsWithDoctor.includes(patient._id)
+			const finalListOFPatients = allPatients.data.patients.filter((patient) =>
+				patientsWithDoctor.includes(patient._id),
 			);
 			res.status(OK_STATUS_CODE).json({ finalListOFPatients });
 		} else {
@@ -89,9 +57,7 @@ export const doctor = (app) => {
 		try {
 			const id = req.params.id;
 			if (!isValidMongoId(id))
-				return res
-					.status(ERROR_STATUS_CODE)
-					.json({ message: 'Invalid ID' });
+				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
 			const doctor = await service.getDoctorById(id);
 			if (doctor) {
 				res.status(OK_STATUS_CODE).send({ doctor });
@@ -126,7 +92,7 @@ export const doctor = (app) => {
 				userName: newDoctor.userData.userName,
 				type: DOCTOR_ENUM,
 			});
-		
+
 			res
 				.status(CREATED_STATUS_CODE)
 				.json({ message: 'Doctor created!', newDoctor });
@@ -139,9 +105,7 @@ export const doctor = (app) => {
 		try {
 			const id = req.params.id;
 			if (!isValidMongoId(id))
-				return res
-					.status(ERROR_STATUS_CODE)
-					.json({ message: 'Invalid ID' });
+				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
 			const deletedDoctor = await service.deleteDoctor(id);
 			if (deletedDoctor) {
 				await axios.delete(`${AUTH_BASE_URL}/users/${id}`);
@@ -194,9 +158,7 @@ export const doctor = (app) => {
 		try {
 			const id = req.params.id;
 			if (!isValidMongoId(id))
-				return res
-					.status(ERROR_STATUS_CODE)
-					.json({ message: 'Invalid ID' });
+				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
 			const doctor = await service.getDoctorById(id);
 			if (doctor) {
 				const updatedDoctor = await service.updateDoctor(id, req.body);

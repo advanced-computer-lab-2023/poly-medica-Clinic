@@ -24,7 +24,7 @@ export const EXTRA_INDEX = 1;
 export const CREATED_STATUS_CODE = 201;
 export const UNAUTHORIZED_STATUS_CODE = 401;
 
-
+export const DOCTOR_FOLDER_NAME = 'doctors';
 
 export const PATIENTS_BASE_URL = 'http://localhost:8002';
 

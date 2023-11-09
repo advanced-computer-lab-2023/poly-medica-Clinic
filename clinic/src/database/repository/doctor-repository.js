@@ -31,20 +31,22 @@ class DoctorRepository {
 		return user;
 	}
 
-	async addDoctorReq(req) {
+	async addDoctorReq(data) {
 		const {
 			userData,
 			speciality,
 			hourlyRate,
 			affiliation,
 			educationalBackground,
-		} = req.body;
+			documentsNames,
+		} = data;
 		const user = await DoctoerReqModel.addUser(
 			userData,
 			speciality,
 			hourlyRate,
 			affiliation,
 			educationalBackground,
+			documentsNames,
 		);
 		return user;
 	}
