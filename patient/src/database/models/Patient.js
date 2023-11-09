@@ -58,15 +58,15 @@ const patientSchema = mongoose.Schema({
 			id: {
 				type: mongoose.Schema.Types.ObjectId,
 				// ref: 'Patient',
-				require: true	
+				// required: true	
 			},
 			name: {
 				type: String,
-				required: true,
+				// required: true,
 			},
 			nationalId: {
 				type: String,
-				required: true,
+				// required: true,
 				unique: true,
 				sparse: true,
 			},
@@ -77,7 +77,7 @@ const patientSchema = mongoose.Schema({
 			gender: {
 				type: String,
 				enum: GENDERS,
-				required: true,
+				// required: true,
 			},
 			relation: {
 				type: String,

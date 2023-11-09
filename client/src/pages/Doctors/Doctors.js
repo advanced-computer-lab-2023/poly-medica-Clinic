@@ -95,11 +95,13 @@ const Doctors = () => {
     };
 
     useEffect(() => {
-
         patientAxios
             .get(`/patients/${patientID}`)
             .then((response) => {
-                setLoggedInPatient(response.data.patient);
+                const patient = response.data.patient;
+                const filteredMembers = patient.familyMembers.filter(member => !member.id);
+                patient.familyMembers = filteredMembers;
+                setLoggedInPatient(patient);
             })
             .catch((error) => {
                 console.log(error);

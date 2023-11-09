@@ -33,6 +33,8 @@ const DoctorDetailsAppointmentsCard = ({
     const [selectedMember, setSelectedMember] = useState(null); // for autocomplete
     
     useEffect(() => {
+        // loggedInPatient.family members are already 
+        // filtered [only unregistered/minors] from Doctor.js
         const familyMembers = [];
         loggedInPatient.familyMembers.forEach((member) => {
             familyMembers.push(member.name);
@@ -53,21 +55,17 @@ const DoctorDetailsAppointmentsCard = ({
     };
     const handleBookNow = async () => {
         const appointment = {
-            // patientId: (to be filled in later)
+            patientId: loggedInPatient._id,
             doctorId: selectedDoctor._id,
-            // patientName: (to be filled in later)
+            patientName: loggedInPatient.userName,
             doctorName: selectedDoctor.userData.name,
             date: slot.from,
             status: 'Incomplete',
             type: 'appointment',
             availableSlotsIdx
         };
-        if (selectedBookingType=='myself') {
-            appointment.patientId = loggedInPatient._id;
-            appointment.patientName = loggedInPatient.userName;
-        } else {
-            appointment.patientId = loggedInPatient.familyMembers[selectedMember.index].id;
-            appointment.patientName = loggedInPatient.familyMembers[selectedMember.index].name;
+        if (selectedBookingType=='family') {
+            appointment.patientFamilyMemberId = loggedInPatient.familyMembers[selectedMember.index]._id;
         }
         
         const price = calcPrice(selectedDoctor.hourlyRate, loggedInPatientHealthPackage.doctorDiscount);

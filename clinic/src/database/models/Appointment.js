@@ -31,7 +31,9 @@ const Appointment = mongoose.Schema({
 		enum: ['appointment', 'follow-up'],
 		required: true,
 	},
-	//.....
+	patientFamilyMemberId: { // if exists
+		type: mongoose.Schema.Types.ObjectId
+	}
 });
 
 const AppointmentModel = mongoose.model('Appointment', Appointment);
