@@ -17,8 +17,8 @@ export const choosePayment = (items, amountToPay, type) => {
   var paymentOptions = new Promise(function (resolve) {
     setTimeout(function () {
       resolve({
-        'credit-card': 'Using Credit Card',
-        'wallet': `Using Wallet  ${amountInWallet}`
+        'credit-card': '<i class="fas fa-credit-card"></i> Using Credit Card',
+        'wallet': `<i class="fas fa-wallet"></i> Using Wallet  ${amountInWallet}`
       });
     }, 2000);
   });
