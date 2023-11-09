@@ -1,7 +1,11 @@
 import PatientModel from '../models/Patient.js';
 import PrescriptionModel from '../models/Prescription.js';
 import OrderModel from '../models/Order.js';
-import { FAMILY_MEMBERS_PROJECTION } from '../../utils/Constants.js';
+import {
+    FAMILY_MEMBERS_PROJECTION,
+    PATIENT_ADDRESSES_PROJECTION,
+} from '../../utils/Constants.js';
+import mongoose from 'mongoose';
 
 class PatientRepository {
     async findAllPatients() {
@@ -72,6 +76,29 @@ class PatientRepository {
             emergencyContact
         );
         return user;
+    }
+
+    async findPatientAddresses(id) {
+        const addresses = await PatientModel.findById(
+            id,
+            PATIENT_ADDRESSES_PROJECTION
+        );
+        addresses.deliveryAddresses.sort((a, b) => {
+            return a.primary ? -1 : b.primary ? 1 : 0;
+        });
+        return addresses;
+    }
+
+    async updatePatientAddress(id, address){
+        const addresses = await PatientModel.findOneAndUpdate(
+            { _id: id },
+            { deliveryAddresses : address },
+            { new: true, runValidators: true }
+        ).select(PATIENT_ADDRESSES_PROJECTION);
+        addresses.deliveryAddresses.sort((a, b) => {
+            return a.primary ? -1 : b.primary ? 1 : 0;
+        });
+        return addresses;
     }
 
     async findOrders(id) {

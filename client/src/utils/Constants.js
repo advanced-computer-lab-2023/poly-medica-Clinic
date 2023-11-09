@@ -21,6 +21,8 @@ export const DOCTOR_TYPE_ENUM = 'doctor';
 
 export const ADMIN_TYPE_ENUM = 'admin';
 
+export const ADDRESS_ATTRIBUTES = ['city', 'street', 'buildingName', 'phoneNumber'];
+
 export const PENDING_STATUS = 'pending';
 export const CANCELLED_STATUS = 'cancelled';
 

@@ -100,6 +100,31 @@ const patientSchema = mongoose.Schema({
             },
         },
     ],
+    deliveryAddresses: [
+        {
+            city: {
+                type: String,
+                required: true,
+            },
+            street: {
+                type: String,
+                required: true,
+            },
+            buildingName: {
+                type: String,
+                required: true,
+            },
+            phoneNumber: {
+                type: String,
+                required: true,
+            },
+            primary:{
+                type: Boolean,
+                default: false,
+            }
+        },
+    ],
+
     //.....
 });
 

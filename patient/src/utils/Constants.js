@@ -45,3 +45,4 @@ export const ORDER_STATUS = [
     'rejected',
     'cancelled',
 ];
+export const PATIENT_ADDRESSES_PROJECTION = 'deliveryAddresses';

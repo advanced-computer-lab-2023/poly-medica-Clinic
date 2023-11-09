@@ -59,6 +59,19 @@ class PatientService {
         return null;
     }
 
+    async getAddresses(id) {
+        const addresses = await this.repository.findPatientAddresses(id);
+        return addresses;
+    }
+
+    async updateAddress(id, address) {
+        const updatedAddresses = await this.repository.updatePatientAddress(
+            id,
+            address
+        );
+        return updatedAddresses;
+    }
+
     async getOrders(id) {
         const orders = await this.repository.findOrders(id);
         return orders;

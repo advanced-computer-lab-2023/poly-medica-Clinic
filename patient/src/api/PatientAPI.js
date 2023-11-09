@@ -194,6 +194,49 @@ export const patient = (app) => {
         }
     });
 
+    app.get('/address/:pateintId', async (req, res) => {
+        const { pateintId } = req.params;
+        if (!isValidMongoId(pateintId)) {
+            return res.status(ERROR_STATUS_CODE).json({
+                message: 'Patient ID is invalid',
+            });
+        }
+        try {
+            const data = await service.getAddresses(pateintId);
+            if (data) res.status(OK_STATUS_CODE).json(data);
+            else
+                res.status(NOT_FOUND_STATUS_CODE).json({
+                    message: 'addresses not found',
+                });
+        } catch (err) {
+            res.status(ERROR_STATUS_CODE).json({
+                message: 'error occurred while fetching addresses',
+            });
+        }
+    });
+
+    app.patch('/address/:pateintId', async (req, res) => {
+        const { pateintId } = req.params;
+        if (!isValidMongoId(pateintId)) {
+            return res.status(ERROR_STATUS_CODE).json({
+                message: 'Patient ID is invalid',
+            });
+        }
+        try {
+            const { deliveryAddresses } = req.body;
+            const data = await service.updateAddress(pateintId, deliveryAddresses);
+            if (data) res.status(OK_STATUS_CODE).json(data);
+            else
+                res.status(NOT_FOUND_STATUS_CODE).json({
+                    message: 'addresses not found',
+                });
+        } catch (err) {
+            res.status(ERROR_STATUS_CODE).json({
+                message: 'error occurred while updating addresses',
+            });
+        }
+    });
+
     app.get('/order/:pateintId', async (req, res) => {
         const { pateintId } = req.params;
         if (!isValidMongoId(pateintId)) {

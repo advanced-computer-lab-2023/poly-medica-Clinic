@@ -12,6 +12,7 @@ import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettin
 import MedicationIcon from '@mui/icons-material/Medication';
 import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import HomeIcon from '@mui/icons-material/Home';
 // constant
 const icons = {
     IconKey,
@@ -25,6 +26,7 @@ const icons = {
     IconRegistered,
     AccountBoxIcon,
     ReceiptLongIcon,
+    HomeIcon,
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
@@ -129,6 +131,14 @@ const pages = {
             type: 'item',
             icon: icons.IconStethoscope,
             url: '/patient/pages/my-patients',
+            target: false,
+        },
+        {
+            id: 'addresses',
+            title: 'Address',
+            type: 'item',
+            icon: icons.HomeIcon,
+            url: '/patient/pages/address',
             target: false,
         },
     ],
