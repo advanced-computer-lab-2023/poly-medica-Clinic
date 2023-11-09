@@ -16,6 +16,7 @@
     "@stripe/react-stripe-js": "^2.3.1",
     "@stripe/stripe-js": "^2.1.10",
     "@tabler/icons": "^1.72.0",
+    "@testing-library/jest-dom": "^6.1.4",
     "apexcharts": "^3.35.3",
     "axios": "^1.5.1",
     "date-fns": "^2.30.0",
@@ -71,6 +72,8 @@
   "devDependencies": {
     "@babel/core": "^7.21.4",
     "@babel/eslint-parser": "^7.21.3",
+    "@testing-library/dom": "^9.3.3",
+    "@testing-library/react": "^14.0.0",
     "eslint": "^8.38.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-config-react-app": "^7.0.1",

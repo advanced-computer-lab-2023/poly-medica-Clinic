@@ -4,7 +4,7 @@ export const BAD_REQUEST_CODE_400 = 400;
 
 export const OK_REQUEST_CODE_200 = 200;
 
-export const ADMIN_ENUM = 'admin';
+export const ADMIN_ENUM = 'clinic admin';
 
 export const DOCTOR_ENUM = 'doctor';
 
