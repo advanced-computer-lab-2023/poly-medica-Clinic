@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { GENDERS } from '../../utils/Constants';
+import { FAMILIY_EMERGENCY, GENDERS } from '../../utils/Constants';
 
 const generatePatient = () => {
     return {
@@ -8,8 +8,13 @@ const generatePatient = () => {
         email: faker.internet.email(),
         password: faker.internet.password(),
         dateOfBirth: faker.date.birthdate(),
-        gender: faker.random.arrayElement(GENDERS),
-        mobileNumber: faker.phone.phoneNumber(),
+        gender: faker.helpers.arrayElement(GENDERS),
+        mobileNumber: faker.phone.number(),
+        emergencyContact: {
+            relation: faker.helpers.arrayElement(FAMILIY_EMERGENCY),
+            mobile: faker.phone.number(),
+            name: faker.person.firstName
+        }
     };
 };
 

@@ -68,6 +68,7 @@ class PatientRepository {
 	async viewHealthPackages(patientId) {
 		const packagesURL = `${CLINIC_BASE_URL}/packages`;
 		let allPackages = await axios.get(packagesURL);
+		console.log('All packages =================== ', allPackages.data);
 		allPackages = allPackages.data.allPackages;
 		const patient = await PatientModel.findById(patientId);
 		const combineAttributes = (healthPackage, patientPackage) => ({
@@ -81,7 +82,7 @@ class PatientRepository {
 			packageId: patientPackage.packageId,
 			renewalDate: patientPackage.renewalDate
 		});
-
+		console.log('All packages before filter  ', allPackages);
 		const filteredPackages = allPackages
 			.filter((chosenPackage) => patientHasPackage(patient, chosenPackage))
 			.map((chosenPackage) => combineAttributes(chosenPackage, patient.healthPackages.find((p) => p.packageId.toString() === chosenPackage._id.toString())));

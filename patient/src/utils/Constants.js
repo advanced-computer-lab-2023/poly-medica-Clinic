@@ -42,3 +42,4 @@ export const FAMILY_MEMBERS_PROJECTION = 'familyMembers';
 export const PATIENT_PROJECTION = '-password';
 export const PATIENT_FOLDER_NAME = 'patients';
 export const HEALTH_PACKAGE_STATUS = ['CANCELLED', 'SUBSCRIBED WITH RENEWAL DATE', 'UNSUBSCRIBED'];
+export const ZERO_INDEX = 0;

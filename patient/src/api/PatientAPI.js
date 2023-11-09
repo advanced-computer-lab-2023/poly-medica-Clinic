@@ -11,8 +11,7 @@ import {
 	PATIENT_ENUM,
 	PATIENT_FOLDER_NAME,
 } from '../utils/Constants.js';
-import { ZERO_INDEX } from '../../../clinic/src/utils/Constants.js';
-
+import { ZERO_INDEX } from '../utils/Constants.js';
 export const patient = (app) => {
 	const service = new PatientService();
 
@@ -216,9 +215,10 @@ export const patient = (app) => {
 		try {
 			const { id } = req.params;
 			const { title } = req.body;
+			console.log('title ======================================= ', title);
 			const healthRecord = {};
 			healthRecord.recordTitle = title;
-			healthRecord.documentName = req.file.filename;
+			healthRecord.documentName = req.file?req.file.filename:'';
 			const updatedPatient = await service.addHealthRecord(id, healthRecord);
 			if (updatedPatient) {
 				res.status(OK_STATUS_CODE).json(updatedPatient);
