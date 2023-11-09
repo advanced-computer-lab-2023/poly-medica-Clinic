@@ -34,3 +34,17 @@ export const AUTH_BASE_URL = 'http://localhost:8004';
 export const DOCTOR_PROJECTION = '-userData.password';
 export const ADMIN_PROJECTION = '-password';
 
+export const FAMILIY_EMERGENCY = [
+	'Parent',
+	'Child',
+	'Sibling',
+	'Spouse',
+	'Grandparent',
+	'Grandchild',
+	'Aunt',
+	'Uncle',
+	'Niece',
+	'Nephew',
+	'Cousin',
+	'Other',
+];

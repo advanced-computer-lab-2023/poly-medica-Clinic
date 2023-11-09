@@ -65,9 +65,17 @@ const DoctorDetailsAppointmentsCard = ({
             availableSlotsIdx
         };
         if (selectedBookingType=='family') {
-            appointment.patientFamilyMemberId = loggedInPatient.familyMembers[selectedMember.index]._id;
+            const familyMember = loggedInPatient.familyMembers[selectedMember.index];
+            const patientFamilyMember = {
+                name: familyMember.name,
+                nationalId: familyMember.nationalId,
+                age: familyMember.age,
+                gender: familyMember.gender,
+                relation: familyMember.relation
+            };
+            appointment.patientFamilyMember = patientFamilyMember;
         }
-        
+        console.log('appointment', appointment);
         const price = calcPrice(selectedDoctor.hourlyRate, loggedInPatientHealthPackage.doctorDiscount);
         console.log(price);
         // to be uncommented after merge

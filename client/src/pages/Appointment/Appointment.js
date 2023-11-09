@@ -24,10 +24,11 @@ const Appointment = () => {
 		clinicAxios
 			.get('/appointments/' + userId)
 			.then((response) => {
-				setAppointments(response.data);
-				setOriginalAppointments(response.data);
+				const resAppointments = response.data;
+				setAppointments(resAppointments);
+				setOriginalAppointments(resAppointments);
 				updateFilter(APPOINTMENT_FILTER_ARRAY);
-				console.log('appoitments = ', response.data);
+				console.log('appoitments = ', resAppointments);
 			})
 			.catch((error) => {
 				console.log(error);

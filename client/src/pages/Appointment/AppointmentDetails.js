@@ -10,7 +10,6 @@ import {
 import { getDay, getTime } from '../../utils/DateFormatter.js';
 
 const AppointmentDetails = ({ selectedAppointment, handleDialogClose, user }) => {
-    console.log(user);
     return (
         <Dialog
             open={selectedAppointment}
@@ -57,6 +56,16 @@ const AppointmentDetails = ({ selectedAppointment, handleDialogClose, user }) =>
                         <Typography variant='body1'>
                             {selectedAppointment.type}
                         </Typography>
+                        {/* {  
+                            selectedAppointment.patientFamilyMemberId
+                            &&
+                            <>
+                                <Typography variant='subtitle1'>Notes:</Typography>
+                                <Typography variant='body1'>
+                                    {selectedAppointment.type}
+                                </Typography>
+                            </>
+                        } */}
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleDialogClose} color='primary'>
