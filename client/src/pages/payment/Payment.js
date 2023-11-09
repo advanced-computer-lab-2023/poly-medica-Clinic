@@ -23,7 +23,7 @@ export default function App() {
   } else {
     paymentAmount = 1;
   }
-
+  console.log('the payment amount is : ', paymentAmount);
   useEffect(() => {
     // Create PaymentIntent as soon as the page loads
     paymentAxios.post('/payment/card', { paymentAmount })

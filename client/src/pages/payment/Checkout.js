@@ -84,7 +84,7 @@ export default function CheckoutForm({ item, type }) {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `http://localhost:3000/pages/payment?item=${encodeURIComponent(serializedItem)}&type=${encodeURIComponent(type)}`,
+        return_url: `http://localhost:3000/patient/pages/payment?item=${encodeURIComponent(serializedItem)}&type=${encodeURIComponent(type)}`,
       },
     });
 

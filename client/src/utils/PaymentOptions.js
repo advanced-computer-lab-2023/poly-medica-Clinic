@@ -38,7 +38,7 @@ export const choosePayment = (items, amountToPay, type) => {
   }).then(function (result) {
     console.log('result = ', result.value);
     if (result.value === 'credit-card') {
-      navigate('/pages/payment', { state: { items , amountToPay , type }, replace: true });
+      navigate('/patient/pages/payment', { state: { items , amountToPay , type }, replace: true });
     } else {
       if (amountInWallet >= amountToPay) {
         paymentAxios.post('/payment/wallet', { amountToPayByWallet: amountToPay })
@@ -67,7 +67,7 @@ export const choosePayment = (items, amountToPay, type) => {
                 console.log('Error in payment with the wallet', error);
               });
             const amountToPayByCard = amountToPay - amountToPayByWallet;
-            navigate('/pages/payment', { state: { amountToPayByCard, items, type }, replace: true });
+            navigate('/patient/pages/payment', { state: { amountToPayByCard, items, type }, replace: true });
           }
         });
       }

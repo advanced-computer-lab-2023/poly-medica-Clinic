@@ -20,7 +20,6 @@ describe('POST /payment/card', () => {
             client_secret: 'mockClientSecret',
         };
 
-        // Mock the Stripe API call
         mockPaymentsIntentsCreate.mockResolvedValue(mockPaymentIntent);
 
         const response = await request(app)
@@ -47,3 +46,4 @@ describe('POST /payment/card', () => {
         });
     });
 });
+

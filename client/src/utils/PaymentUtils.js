@@ -7,12 +7,12 @@ export const successfulPayment = (items, type) => {
       .catch((error) => {
         console.log('Error in placing the order', error);
       });
-      return '/pages/packages';
+      return '/patient/pages/packages';
     } else if(type === 'appointment'){
       clinicAxios.post('/appointment', { items })
       .catch((error) => {
         console.log('Error in placing the order', error);
       });
-      return '/pages/appointments';
+      return '/patient/pages/appointments';
     }
 };
