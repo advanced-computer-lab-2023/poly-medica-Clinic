@@ -3,7 +3,7 @@ import app from '../../../app.js';
 
 // Mocking the 'stripe' module
 jest.mock('stripe');
-import  paymentIntents from 'stripe';
+import paymentIntents from 'stripe';
 
 
 describe('POST /payment/card', () => {

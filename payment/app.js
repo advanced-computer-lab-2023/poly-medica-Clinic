@@ -1,13 +1,10 @@
 import express from 'express';
-import dotenv from 'dotenv';
-import { PORT_NUMBER } from './src/utils/Constants.js';
 import morgan from 'morgan';
 import {payment} from './src/api/PaymentAPI.js';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 
 
-dotenv.config();
 const app = express();
 
 app.use(morgan('dev'));
@@ -19,12 +16,9 @@ app.use(cors({
 	credentials: true
 }));
 
-
 payment(app);
 
-const port = process.env.PORT || PORT_NUMBER;
+export default app;
 
-app.listen(port, () => {
-	console.log(`Server is running on port ${port}`);
-});
+
 
