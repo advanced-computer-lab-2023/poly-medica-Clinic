@@ -1,20 +1,20 @@
-import { render, screen, fireEvent, findByTitle } from "@testing-library/react";
-// import AuthLogin from '../auth-forms/AuthLogin';
-import '@testing-library/jest-dom/jest-globals';
-import { BrowserRouter } from "react-router-dom";
-// import { expect } from '@testing-library/jest-dom';
-// import Test from './test';
-import Login from "../authentication3/Login3";
+// import { render, screen, fireEvent, findByTitle } from '@testing-library/react';
+// // import AuthLogin from '../auth-forms/AuthLogin';
+// import '@testing-library/jest-dom/jest-globals';
+// import { BrowserRouter } from 'react-router-dom';
+// // import { expect } from '@testing-library/jest-dom';
+// // import Test from './test';
+// import Login from '../authentication3/Login3';
 
-const  LoginMockRouter = () =>{
-    return (
-        <BrowserRouter>
-            <Login />
-        </BrowserRouter>
-    )
-}
+// const  LoginMockRouter = () => {
+//     return (
+//         <BrowserRouter>
+//             <Login />
+//         </BrowserRouter>
+//     );
+// };
 
-const mockFunc = jest.fn();
+// const mockFunc = jest.fn();
 
 
 
@@ -245,31 +245,8 @@ const mockFunc = jest.fn();
 //         // fireEvent.change(textField, { target: { value: "new Element" } });
 //         // expect(textField.value).toBe("new Element")
 //         // fireEvent.click(Buttonfie)
-//         expect(textField).toHaveValue("")
-//     })
-// })
-
-
-// integration test
-
-describe("we are here" , () =>{
-    // beforeEach(()=>{
-
-    // });
-    // beforeAll(()=>{
-        
-    // })
-
-    it("trying integ", () =>{
-        render(<LoginMockRouter/>);
-        // const textField = screen.getByRole( "textbox", {name: "username"});
-
-        // const Buttonfie = screen.getByRole("button", {name:"butto"});
-        // fireEvent.change(textField, { target: { value: "new Element" } });
-        // expect(textField.value).toBe("new Element")
-        // fireEvent.click(Buttonfie)
-        // await findByTitle("div-1")
-        // const findText = screen.getByText(/new Element/i);
-        expect(textField).toBeInTheDocument();
-    })
-})
+//         // await findByTitle("div-1")
+//         // const findText = screen.getByText(/new Element/i);
+//         expect(textField).toBeInTheDocument();
+//     });
+// });
