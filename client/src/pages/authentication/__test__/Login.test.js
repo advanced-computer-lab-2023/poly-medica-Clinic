@@ -2,41 +2,51 @@ import { render, screen } from '@testing-library/react';
 import { expect } from '@testing-library/jest-dom';
 // import AuthLogin from '../auth-forms/AuthLogin';
 // import '@testing-library/jest-dom/jest-globals';
-// import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 // import Test from './test';
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
+// import MockAdapter from 'axios-mock-adapter';
+
+import React, { Component } from "react";
 import Login from '../authentication3/Login3';
 
 // const axios = require('axios');
 
-// const  LoginMockRouter = () => {
-//     return (
-//         <BrowserRouter>
-//             <Login />
-//         </BrowserRouter>
-//     );
-// };
+const  LoginMockRouter = () => {
+    return (
+        <BrowserRouter>
+            <Login />
+        </BrowserRouter>
+    );
+};
 
-const mockFunc = jest.fn();
+// const mockFunc = jest.fn();
+// jest.mock('axios');
 
 
+// const mock = new MockAdapter(axios);
+// jest.mock('axios');
 
-const mock = new MockAdapter(axios);
+// mock.onPost('http://localhost:8004/login/clinic').reply(200, {
+//   data: 'Mocked data',
+// });
 
-mock.onPost('http://localhost:8004/login/clinic').reply(200, {
-  data: 'Mocked data',
-});
-
-afterEach(() => {
-  mock.reset();
-});
+// afterEach(() => {
+//   mock.reset();
+// });
 
 
 it('test the login', async () => {
     // 1- render
-    render(<Login />);
+    
+    // axios.create.mockReturnValue({
+    //     get: jest.fn(() => Promise.resolve({ data: {} })),
+    //     post: jest.fn(() => Promise.resolve({ data: {} })),
+    //     // Add other methods you use as needed
+    //   });
+    
+    render(<LoginMockRouter />);
 
+    
     // 2- find the element
     const authTitleElemen = screen.findByTitle("authTitleElemen");
     // const authTitleEleme = screen.getByTitle("first-text-field");
