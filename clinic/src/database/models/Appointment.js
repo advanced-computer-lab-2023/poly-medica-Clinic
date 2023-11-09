@@ -38,8 +38,6 @@ const Appointment = mongoose.Schema({
 		},
 		nationalId: {
 			type: String,
-			unique: true,
-			sparse: true,
 		},
 		age: {
 			type: Number,
