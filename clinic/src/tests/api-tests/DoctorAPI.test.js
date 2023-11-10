@@ -49,7 +49,7 @@ describe('GET /doctor/:id', () => {
 		const res = await request(app).get(`/doctor/${id}`);
 		expect(res.status).toBe(ERROR_STATUS_CODE);
 	});
-	
+
 	afterEach(async () => {
 		await disconnectDBTest();
 	});
@@ -139,6 +139,10 @@ describe('GET /doctors/:id/status', () => {
 		const res = await request(app).get(`/doctors/${id}/status`);
 		expect(res.status).toBe(ERROR_STATUS_CODE);
 	});
+
+	afterEach(async () => {
+		await disconnectDBTest();
+	});
 });
 
 
@@ -166,6 +170,10 @@ describe('POST /doctors/:id/status', () => {
 		const id = faker.lorem.word();
 		const res = await request(app).post(`/doctors/${id}/status`);
 		expect(res.status).toBe(ERROR_STATUS_CODE);
+	});
+
+	afterEach(async () => {
+		await disconnectDBTest();
 	});
 }
 );
@@ -219,7 +227,7 @@ describe('PATCH /doctors/:id', () => {
 		const doctor = new DoctorModel(generateDoctor());
 		await doctor.save();
 		const id = doctor._id.toString();
-		const number= faker.number.int({ min: 20, max: 1000 });
+		const number = faker.number.int({ min: 20, max: 1000 });
 		const RandomAffiliation = faker.company.name();
 		const randomEmail = faker.internet.email();
 		const res = await request(app).patch(`/doctors/${id}`).send({
@@ -239,16 +247,16 @@ describe('PATCH /doctors/:id', () => {
 	it('should return 200 OK and update the doctor correctly', async () => {
 		const doctor = new DoctorModel(generateDoctor());
 		await doctor.save();
-		const id = doctor._id.toString(); 
+		const id = doctor._id.toString();
 		const randomEmail = faker.internet.email();
 		const res = await request(app).patch(`/doctors/${id}`).send({
-			email: randomEmail, 
+			email: randomEmail,
 		}
 		);
 		expect(res.status).toBe(OK_STATUS_CODE);
 
-		const updatedDoctor = await DoctorModel.findById(id); 
-		expect(updatedDoctor.userData.email).toBe(randomEmail); 
+		const updatedDoctor = await DoctorModel.findById(id);
+		expect(updatedDoctor.userData.email).toBe(randomEmail);
 	}
 	);
 
@@ -256,9 +264,9 @@ describe('PATCH /doctors/:id', () => {
 		const doctor = new DoctorModel(generateDoctor());
 		await doctor.save();
 		const id = doctor._id.toString();
-		const number= faker.number.int({ min: 20, max: 1000 });
-		const RandomAffiliation = faker.company.name(); 
-		const res = await request(app).patch(`/doctors/${id}`).send({ 
+		const number = faker.number.int({ min: 20, max: 1000 });
+		const RandomAffiliation = faker.company.name();
+		const res = await request(app).patch(`/doctors/${id}`).send({
 			hourlyRate: number,
 			affiliation: RandomAffiliation,
 		}
@@ -266,11 +274,11 @@ describe('PATCH /doctors/:id', () => {
 		expect(res.status).toBe(OK_STATUS_CODE);
 
 		const updatedDoctor = await DoctorModel.findById(id);
-		expect(updatedDoctor.hourlyRate).toBe(number); 
+		expect(updatedDoctor.hourlyRate).toBe(number);
 		expect(updatedDoctor.affiliation).toBe(RandomAffiliation);
 	}
 	);
-	
+
 
 	it('should return 404 NOT FOUND when the doctor is not found', async () => {
 		const id = faker.database.mongodbObjectId();
@@ -302,24 +310,24 @@ describe('GET /appointments', () => {
 	}
 	);
 
-	it('should return 200 OK and retrieve the appointments correctly', async () => {	
-		
+	it('should return 200 OK and retrieve the appointments correctly', async () => {
+
 		await AppointmentModel.deleteMany({});
-		const firstDoctor = new DoctorModel(generateDoctor()); 
+		const firstDoctor = new DoctorModel(generateDoctor());
 		const len = faker.number.int({ min: 2, max: 10 });
 		const appointments = [];
-		for(let i=0 ; i<len ; i++){
+		for (let i = 0; i < len; i++) {
 			const patientId = faker.database.mongodbObjectId();
 			const appointment = new AppointmentModel(generateAppointment(patientId, firstDoctor._id));
 			await appointment.save();
 			appointments.push(appointment);
-		} 
-	
+		}
+
 		const res = await request(app).get('/appointments');
-		console.log('dsdsds',res._body);
+		console.log('dsdsds', res._body);
 		expect(res.status).toBe(OK_STATUS_CODE);
 		expect(res._body.allAppointments.length).toBe(len);
-		for(let i=0 ; i<len ; i++){
+		for (let i = 0; i < len; i++) {
 			expect(res._body.allAppointments[i]._id).toBe(appointments[i]._id.toString());
 		}
 
@@ -331,14 +339,10 @@ describe('GET /appointments', () => {
 	}
 	);
 
-	
-
 	afterEach(async () => {
 		await disconnectDBTest();
 	}
 	);
-
-
 
 }
 );
@@ -349,16 +353,16 @@ describe('GET /patients', () => {
 	}
 	);
 
-	it('should return 200 OK and retrieve the patients correctly', async () => {	
-		
+	it('should return 200 OK and retrieve the patients correctly', async () => {
+
 		const len = faker.number.int({ min: 2, max: 10 });
 		const patients = [];
-		for(let i=0 ; i<len ; i++){
+		for (let i = 0; i < len; i++) {
 			const patientId = faker.database.mongodbObjectId();
-			patients.push(patientId); 
-			
+			patients.push(patientId);
+
 		}
-		
+
 		const axiosResponse = {
 			data: {
 				patients: patients.map((patient) => {
@@ -377,12 +381,12 @@ describe('GET /patients', () => {
 			retrievedPatientsIds.push(patient._id);
 		});
 		expect(retrievedPatientsIds.length).toBe(len);
-		for(let i=0 ; i<len ; i++){
+		for (let i = 0; i < len; i++) {
 			expect(retrievedPatientsIds.includes(patients[i])).toBe(true);
 		}
 		expect(retrievedPatientsIds.includes(patients[len])).toBe(false);
-		
-		
+
+
 	}
 	);
 
@@ -400,15 +404,10 @@ describe('GET /patients', () => {
 
 	);
 
-		
-		
-		
-
-
 	afterEach(async () => {
 		await disconnectDBTest();
 	}
-	);	
+	);
 });
 
 
@@ -443,9 +442,6 @@ describe('GET /doctors/:id/slots', () => {
 		const res = await request(app).get(`/doctors/${id}/slots`);
 		expect(res.status).toBe(ERROR_STATUS_CODE);
 	});
-
-
-
 
 	afterEach(async () => {
 		await disconnectDBTest();
