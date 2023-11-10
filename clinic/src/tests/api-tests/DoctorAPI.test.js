@@ -31,6 +31,7 @@ describe('GET /doctor/:id', () => {
 	it('should return 200 OK and retrieve the doctor correctly', async () => {
 		const doctor = new DoctorModel(generateDoctor());
 		await doctor.save();
+		// console.log('DoctorAPI doctor', doctor);
 		const id = doctor._id.toString();
 		const res = await request(app).get(`/doctor/${id}`);
 		expect(res.status).toBe(OK_STATUS_CODE);
@@ -48,7 +49,7 @@ describe('GET /doctor/:id', () => {
 		const res = await request(app).get(`/doctor/${id}`);
 		expect(res.status).toBe(ERROR_STATUS_CODE);
 	});
-
+	
 	afterEach(async () => {
 		await disconnectDBTest();
 	});

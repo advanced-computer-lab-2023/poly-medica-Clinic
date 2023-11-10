@@ -11,6 +11,7 @@ export const DOCTOR_ENUM = 'doctor';
 export const GENDERS = ['MALE', 'FEMALE'];
 
 export const EMPTY_SIZE = 0;
+export const ONE = 1;
 export const OK_STATUS_CODE = 200;
 export const NOT_FOUND_STATUS_CODE = 404;
 export const ERROR_STATUS_CODE = 500;
@@ -33,6 +34,20 @@ export const AUTH_BASE_URL = 'http://localhost:8004';
 export const DOCTOR_PROJECTION = '-userData.password';
 export const ADMIN_PROJECTION = '-password';
 
+export const FAMILIY_EMERGENCY = [
+	'Parent',
+	'Child',
+	'Sibling',
+	'Spouse',
+	'Grandparent',
+	'Grandchild',
+	'Aunt',
+	'Uncle',
+	'Niece',
+	'Nephew',
+	'Cousin',
+	'Other',
+];
 export const SIXTY=60;
 export const THOUSAND=1000;
 

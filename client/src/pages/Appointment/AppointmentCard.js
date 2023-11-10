@@ -1,5 +1,6 @@
 import { ListItemButton, ListItemText, ListItemAvatar } from '@mui/material';
 import TodayIcon from '@mui/icons-material/Today';
+import { getDay, getTime } from '../../utils/DateFormatter.js';
 
 const AppointmentCard = ({ appointment, setSelectedAppointment }) => {
     return (
@@ -8,7 +9,8 @@ const AppointmentCard = ({ appointment, setSelectedAppointment }) => {
                 <TodayIcon />
             </ListItemAvatar>
             <ListItemText
-                primary={appointment.date}
+                primary={`${getDay(appointment.date)}`}
+                secondary={`at ${getTime(appointment.date)}`}
                 sx={{
                     width: '60%',
                     lineHeight: '1.5em',

@@ -174,7 +174,7 @@ export const doctor = (app) => {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
 	});
-
+	
 	app.get('/appointments', async (req, res) => {
 		try {
 			const allAppointments = await service.getAllAppointments();

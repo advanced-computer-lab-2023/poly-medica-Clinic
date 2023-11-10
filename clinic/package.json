@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon ./start.js",
-    "test": "jest -i --watch",
+    "test": "jest -i",
     "lint": "eslint . --fix"
   },
   "author": "",

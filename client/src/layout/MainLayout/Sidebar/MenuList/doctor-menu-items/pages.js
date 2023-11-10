@@ -6,6 +6,7 @@ import {
     IconStethoscope,
     IconRegistered,
     IconPrescription,
+    IconCalendarTime
 } from '@tabler/icons';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 import MedicationIcon from '@mui/icons-material/Medication';
@@ -23,6 +24,7 @@ const icons = {
     IconPrescription,
     IconRegistered,
     AccountBoxIcon,
+    IconCalendarTime
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
@@ -76,7 +78,7 @@ const pages = {
             id: 'appointments',
             title: 'Appointments',
             type: 'item',
-            icon: icons.TodayIcon,
+            icon: icons.IconCalendarTime,
             url: '/doctor/pages/appointments',
             target: false,
         },

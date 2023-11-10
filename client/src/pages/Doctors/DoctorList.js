@@ -2,7 +2,7 @@ import React from 'react';
 import { List } from '@mui/material';
 import DoctorCard from './DoctorCard.js';
 
-const DoctorList = ({ doctors, setSelectedDoctor }) => {
+const DoctorList = ({ doctors, setSelectedDoctor, loggedInPatientHealthPackage }) => {
     return (
         <List>
             {Array.isArray(doctors) &&
@@ -12,6 +12,7 @@ const DoctorList = ({ doctors, setSelectedDoctor }) => {
                             <DoctorCard
                                 doctor={doctor}
                                 setSelectedDoctor={setSelectedDoctor}
+                                loggedInPatientHealthPackage={loggedInPatientHealthPackage}
                             ></DoctorCard>
                         </div>
                     </div>
