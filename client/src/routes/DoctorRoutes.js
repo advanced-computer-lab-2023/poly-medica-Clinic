@@ -30,6 +30,10 @@ const LazyAddAvailableSlots = Loadable(
     lazy(() => import('pages/DoctorAddAvailableSlots/AddAvailableSlots'))
 );
 
+const LazyDoctorContract = Loadable(
+    lazy(() => import('pages/DoctorContract'))
+);
+
 const Account = Loadable(lazy(() => import('pages/profile/Account')));
 // utilities routing
 const UtilsTypography = Loadable(
@@ -114,14 +118,19 @@ const DoctorRoutes = {
                     ],
                 },
 
-                // {
-                //     path: 'My Patients',
-                //     element: <lazyDoctorListofPatients />,
-                // },
                 {
                     path:'add-available-slots',
                     element: <LazyAddAvailableSlots />,
-                }
+                },
+                {
+
+                    path: 'my-patients',
+                    element: <lazyDoctorListofPatients />,
+                },
+                {
+                    path: 'contract',
+                    element: <LazyDoctorContract />,
+                },
             ],
         },
         {

@@ -38,9 +38,8 @@ export const doctor = (app) => {
 				const keyAttrb = duplicateKeyAttrb.split('.');
 				res.status(BAD_REQUEST_CODE_400).send({
 					errCode: DUPLICATE_KEY_ERROR_CODE,
-					errMessage: `that ${
-						keyAttrb[keyAttrb.length - EXTRA_INDEX]
-					} is already registered`,
+					errMessage: `that ${keyAttrb[keyAttrb.length - EXTRA_INDEX]
+						} is already registered`,
 				});
 			} else
 				res.status(BAD_REQUEST_CODE_400).send({
@@ -126,7 +125,7 @@ export const doctor = (app) => {
 				userName: newDoctor.userData.userName,
 				type: DOCTOR_ENUM,
 			});
-		
+
 			res
 				.status(CREATED_STATUS_CODE)
 				.json({ message: 'Doctor created!', newDoctor });
@@ -211,19 +210,41 @@ export const doctor = (app) => {
 		}
 	});
 
-
-	app.post('/doctors/:id/slots', async (req, res) => {
+	app.get('/doctors/:id/status', async (req, res) => {
+		//get the doctor status
 		try {
 			const id = req.params.id;
-			const from = req.body.from;	// Date
-			console.log('from'+' '+from);
 			if (!isValidMongoId(id))
 				return res
 					.status(ERROR_STATUS_CODE)
 					.json({ message: 'Invalid ID' });
-			const doctor = await service.addSlot(id, from);
+			const doctor = await service.getDoctorById(id);
 			if (doctor) {
-				res.status(OK_STATUS_CODE).json( doctor.availableSlots  );
+				res.status(OK_STATUS_CODE).json({ status: doctor.status });
+			} else {
+				res.status(NOT_FOUND_STATUS_CODE).json({
+					message: 'doctor not found',
+				});
+			}
+		} catch (error) {
+			res.status(ERROR_STATUS_CODE).json({ message: error });
+		}
+
+	});
+	app.post('/doctors/:id/status', async (req, res) => {
+		try {
+			const id = req.params.id;
+			if (!isValidMongoId(id))
+				return res
+					.status(ERROR_STATUS_CODE)
+					.json({ message: 'Invalid ID' });
+			const doctor = await service.getDoctorById(id);
+			if (doctor) {
+				let status = await service.updateDoctor(id, {
+					status: true,
+				});
+				status = status.status;
+				res.status(OK_STATUS_CODE).json({ status });
 			} else {
 				res.status(NOT_FOUND_STATUS_CODE).json({
 					message: 'doctor not found',
@@ -234,7 +255,50 @@ export const doctor = (app) => {
 		}
 	}
 	);
-	
+
+	app.get('/doctors/:id/name', async (req, res) => {
+		try {
+			const id = req.params.id;
+			if (!isValidMongoId(id))
+				return res
+					.status(ERROR_STATUS_CODE)
+					.json({ message: 'Invalid ID' });
+			const doctor = await service.getDoctorById(id);
+			if (doctor) {
+				res.status(OK_STATUS_CODE).json({ name: doctor.userData.name });
+			} else {
+				res.status(NOT_FOUND_STATUS_CODE).json({
+					message: 'doctor not found',
+				});
+			}
+		} catch (error) {
+			res.status(ERROR_STATUS_CODE).json({ message: error });
+		}
+	});
+
+	app.post('/doctors/:id/slots', async (req, res) => {
+		try {
+			const id = req.params.id;
+			const from = req.body.from;	// Date
+			console.log('from' + ' ' + from);
+			if (!isValidMongoId(id))
+				return res
+					.status(ERROR_STATUS_CODE)
+					.json({ message: 'Invalid ID' });
+			const doctor = await service.addSlot(id, from);
+			if (doctor) {
+				res.status(OK_STATUS_CODE).json(doctor.availableSlots);
+			} else {
+				res.status(NOT_FOUND_STATUS_CODE).json({
+					message: 'doctor not found',
+				});
+			}
+		} catch (error) {
+			res.status(ERROR_STATUS_CODE).json({ message: error });
+		}
+	}
+	);
+
 	app.get('/doctors/:id/slots', async (req, res) => {
 		try {
 			const id = req.params.id;
@@ -244,7 +308,7 @@ export const doctor = (app) => {
 					.json({ message: 'Invalid ID' });
 			const doctor = await service.getDoctorById(id);
 			if (doctor) {
-				res.status(OK_STATUS_CODE).json(  doctor.availableSlots  );
+				res.status(OK_STATUS_CODE).json(doctor.availableSlots);
 			} else {
 				res.status(NOT_FOUND_STATUS_CODE).json({
 					message: 'doctor not found',
@@ -255,5 +319,4 @@ export const doctor = (app) => {
 		}
 	}
 	);
-			
 };

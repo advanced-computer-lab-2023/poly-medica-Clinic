@@ -33,6 +33,11 @@ const Doctor = mongoose.Schema({
 		],
 		
 	},
+	status:{
+		type: Boolean,
+		default: false,
+		
+	}
 });
  
 
