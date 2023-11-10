@@ -12,7 +12,11 @@ import {
     ZERO_INDEX,
 } from '../utils/Constants.js';
 
-import { faker } from '@faker-js/faker';
+const calcAge = (dateOfBirth) => {
+    const today = new Date();
+    const birthDate = new Date(dateOfBirth);
+    return today.getFullYear() - birthDate.getFullYear();
+};
 
 export const patient = (app) => {
     const service = new PatientService();
@@ -103,6 +107,10 @@ export const patient = (app) => {
                     });
                 }
                 member.patientId = patient._id;
+                member.name = patient.name;
+                member.gender = patient.gender;
+                member.age = calcAge(patient.dateOfBirth);
+                member.nationalId = Math.ceil(parseInt(patient._id, 16) / 1e18);
             }
             const data = await service.getFamilyMembers(id);
             const newFamilyMem = [member, ...data.familyMembers];

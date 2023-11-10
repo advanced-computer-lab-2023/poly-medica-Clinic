@@ -11,9 +11,6 @@ import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettin
 import MedicationIcon from '@mui/icons-material/Medication';
 import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import HomeIcon from '@mui/icons-material/Home';
-import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
-import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 // constant
 const icons = {
     IconKey,
@@ -26,9 +23,6 @@ const icons = {
     IconPrescription,
     IconRegistered,
     AccountBoxIcon,
-    ReceiptLongIcon,
-    HomeIcon,
-    PointOfSaleIcon,
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
@@ -103,22 +97,7 @@ const pages = {
             url: '/patient/pages/packages',
             target: false,
         },
-        {
-            id: 'Orders',
-            title: 'Orders',
-            type: 'item',
-            icon: icons.ReceiptLongIcon,
-            url: '/patient/pages/orders',
-            target: false,
-        },
-        {
-            id: 'Checkout',
-            title: 'Checkout',
-            type: 'item',
-            icon: icons.PointOfSaleIcon,
-            url: '/patient/pages/checkout',
-            target: false,
-        },
+
         {
             id: 'clinic',
             title: 'Clinic',
@@ -141,14 +120,6 @@ const pages = {
             type: 'item',
             icon: icons.IconStethoscope,
             url: '/patient/pages/my-patients',
-            target: false,
-        },
-        {
-            id: 'addresses',
-            title: 'Address',
-            type: 'item',
-            icon: icons.HomeIcon,
-            url: '/patient/pages/address',
             target: false,
         },
     ],
