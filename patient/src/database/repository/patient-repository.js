@@ -21,8 +21,8 @@ class PatientRepository {
         return familyMembers;
     }
 
-    async findPatientByUserName(userN) {
-        return await PatientModel.findOne({ userName: userN });
+    async findRegeisteredFamilyMember(attributes) {
+        return await PatientModel.findOne({ $or: [{ email: attributes.email }, { mobileNumber: attributes.mobileNumber }]  });
     }
 
     async addFamilyMember(id, familyMembers) {
@@ -104,24 +104,7 @@ class PatientRepository {
         return addresses;
     }
 
-    async findOrders(id) {
-        const orders = await OrderModel.find({ patientId: id });
-        return orders;
-    }
-
-    async addOrder(order) {
-        const newOrder = await OrderModel.create(order);
-        return newOrder;
-    }
-
-    async updateOrder(order) {
-        const updatedOrder = await OrderModel.findOneAndUpdate(
-            { _id: order._id },
-            order,
-            { new: true, runValidators: true }
-        );
-        return updatedOrder;
-    }
+    
 }
 
 export default PatientRepository;

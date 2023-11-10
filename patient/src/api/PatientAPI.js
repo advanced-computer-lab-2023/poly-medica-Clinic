@@ -94,23 +94,20 @@ export const patient = (app) => {
             });
         }
         try {
-            const { name, userName, nationalId, age, gender, relation } =
-                req.body;
-            const patient = await service.getPatientByUserName(userName);
-            if (patient) {
-                const data = await service.getFamilyMembers(id);
-                console.log('Data = ', data);
-                const newFamilyMem = [
-                    { name, userName, nationalId, age, gender, relation },
-                    ...data.familyMembers,
-                ];
-                const newData = await service.addFamilyMember(id, newFamilyMem);
-                res.status(OK_STATUS_CODE).json(newData);
-            } else {
-                res.status(NOT_FOUND_STATUS_CODE).json({
-                    message: 'username not found',
-                });
+            const { member } = req.body;
+            if (member.email || member.mobileNumber) {
+                const patient = await service.getPatient(member);
+                if (!patient) {
+                    res.status(NOT_FOUND_STATUS_CODE).json({
+                        message: 'family member is not registered',
+                    });
+                }
+                member.patientId = patient._id;
             }
+            const data = await service.getFamilyMembers(id);
+            const newFamilyMem = [member, ...data.familyMembers];
+            const newData = await service.addFamilyMember(id, newFamilyMem);
+            res.status(OK_STATUS_CODE).json(newData);
         } catch (err) {
             res.status(ERROR_STATUS_CODE).json({
                 message: err.message,

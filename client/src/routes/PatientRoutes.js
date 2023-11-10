@@ -32,9 +32,10 @@ const LazyOrders = Loadable(
 const LazyCheckout = Loadable(
     lazy(() => import('pages/checkout/Checkout'))
 );
+const LazyAddress = Loadable(lazy(() => import('pages/address/Address')));
 
 const Account = Loadable(lazy(() => import('pages/profile/Account'))); //TODO: generalize this
-const LazyAddress = Loadable(lazy(() => import('pages/address/Address')));
+
 // utilities routing
 const UtilsTypography = Loadable(
     lazy(() => import('pages/utilities/Typography'))

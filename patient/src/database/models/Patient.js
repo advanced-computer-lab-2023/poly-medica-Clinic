@@ -1,8 +1,5 @@
 import mongoose from 'mongoose';
-import {
-    FAMILIY_EMERGENCY,
-    GENDERS,
-} from '../../utils/Constants.js';
+import { FAMILIY_EMERGENCY, GENDERS } from '../../utils/Constants.js';
 import bcrypt from 'bcrypt';
 
 const patientSchema = mongoose.Schema({
@@ -40,6 +37,7 @@ const patientSchema = mongoose.Schema({
     mobileNumber: {
         type: String,
         required: true,
+        unique: true,
     },
     emergencyContact: {
         name: {
@@ -60,27 +58,25 @@ const patientSchema = mongoose.Schema({
         {
             name: {
                 type: String,
-                required: true,
             },
             nationalId: {
                 type: String,
-                required: true,
                 unique: true,
                 sparse: true,
             },
             age: {
                 type: Number,
-                required: true,
             },
             gender: {
                 type: String,
                 enum: GENDERS,
-                required: true,
             },
             relation: {
                 type: String,
                 enum: FAMILIY_EMERGENCY,
-                required: true,
+            },
+            patientId: {
+                type: mongoose.Schema.Types.ObjectId,
             },
         },
     ],
@@ -118,10 +114,10 @@ const patientSchema = mongoose.Schema({
                 type: String,
                 required: true,
             },
-            primary:{
+            primary: {
                 type: Boolean,
                 default: false,
-            }
+            },
         },
     ],
 

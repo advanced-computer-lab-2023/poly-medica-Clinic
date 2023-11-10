@@ -7,13 +7,13 @@ import {
     IconRegistered,
     IconPrescription,
 } from '@tabler/icons';
-import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 import MedicationIcon from '@mui/icons-material/Medication';
 import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import HomeIcon from '@mui/icons-material/Home';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 // constant
 const icons = {
     IconKey,

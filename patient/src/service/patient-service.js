@@ -30,8 +30,8 @@ class PatientService {
         return familyMembers;
     }
 
-    async getPatientByUserName(userName) {
-        const patient = await this.repository.findPatientByUserName(userName);
+    async getPatient(attributes) {
+        const patient = await this.repository.findRegeisteredFamilyMember(attributes);
         return patient;
     }
 
