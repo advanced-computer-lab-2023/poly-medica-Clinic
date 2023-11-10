@@ -13,11 +13,7 @@ import {
 	INF
 } from '../utils/Constants.js';
 
-const calcAge = (dateOfBirth) => {
-	const today = new Date();
-	const birthDate = new Date(dateOfBirth);
-	return today.getFullYear() - birthDate.getFullYear();
-};
+import { calcAge } from '../utils/Patient-utils.js';
 
 export const patient = (app) => {
 	const service = new PatientService();

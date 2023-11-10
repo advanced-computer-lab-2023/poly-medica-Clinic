@@ -13,7 +13,6 @@ export const OK_STATUS_CODE = 200;
 export const NOT_FOUND_STATUS_CODE = 404;
 export const ERROR_STATUS_CODE = 500;
 export const EMPTY_SIZE = 0;
-export const ZERO_INDEX = 0;
 export const ONE = 1;
 export const ZERO = 0;
 export const INF = 1e18;
@@ -50,3 +49,4 @@ export const ORDER_STATUS = [
 	'cancelled',
 ];
 export const PATIENT_ADDRESSES_PROJECTION = 'deliveryAddresses';
+export const ZERO_INDEX = 0;
