@@ -121,6 +121,14 @@ const pages = {
             url: '/doctor/pages/my-patients',
             target: false,
         },
+        {
+            id: 'Contract',
+            title: 'Contract',
+            type: 'item',
+            icon: icons.IconKey,
+            url: '/doctor/pages/contract',
+            target: false,
+        }
     ],
 };
 
