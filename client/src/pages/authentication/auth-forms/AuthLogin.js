@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState } from 'react';
 import {
 	Box,
@@ -8,12 +9,12 @@ import {
 	TextField,
 	Typography,
 } from '@mui/material';
-import { useUserContext } from 'hooks/useUserContext';
+import { useUserContext } from '../../../hooks/useUserContext';
 import { useNavigate } from 'react-router-dom';
 // project imports
-import AnimateButton from 'ui-component/extended/AnimateButton';
+import AnimateButton from '../../../ui-component/extended/AnimateButton';
 import Swal from 'sweetalert2';
-import { AuthenticationAxios } from 'utils/AxiosConfig';
+import { AuthenticationAxios } from '../../../utils/AxiosConfig';
 
 
 // ============================|| FIREBASE - LOGIN ||============================ //
@@ -65,27 +66,28 @@ const FirebaseLogin = () => {
 							label="username"
 							value={userName}
 							onChange={e => setUserName(e.target.value)}
+							title='AuthLoginTextFieldUserName'
 							/>
 						</FormControl>
 
 						<FormControl fullWidth required>
 							<TextField
-							title='authTitleElemen'
 							type={'password'}
 							label="password"
 							value={password}
 							required
 							onChange={e => setPassword(e.target.value)}
+							title='AuthLoginTextFieldPassword'
 							/>
 						</FormControl>
 						<Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-							<Typography Button onClick={ () => { navigate('/login/reset-password'); } } variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
+							<Typography data-testid="AuthLoginTypographyForgotPassword" Button onClick={ () => { navigate('/login/reset-password'); } } variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
 								Forgot Password?
 							</Typography>
 						</Stack>
 						<Box sx={{ mt: 2 }}>
 							<AnimateButton>
-								<Button disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">
+								<Button title='AuthLoginButtonSignIn' disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">
                   Sign in
 								</Button>
 							</AnimateButton>

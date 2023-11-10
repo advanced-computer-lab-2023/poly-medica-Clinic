@@ -174,7 +174,6 @@ export const user = (app) => {
 
 			res.status(OK_REQUEST_CODE_200).send({ message: 'admin added' });
 		} catch (err) {
-			console.log(err);
 			if (err.response) {
 				// coming from other services
 				if (err.response.data.errCode == DUPLICATE_KEY_ERROR_CODE) {
@@ -217,6 +216,9 @@ export const user = (app) => {
 			case CLINIC_REQ: if (logedinUser.type == PHARMACIST_ENUM || logedinUser.type == PHARMACY_ADMIN_ENUM) throw new Error('invalid user'); break; //TODO: admin in login
 			case PHARMACY_REQ: if (logedinUser.type == DOCTOR_ENUM || logedinUser.type == CLINIC_ADMIN_ENUM) throw new Error('invalid user'); break; //TODO: admin in login
 			default: throw new Error('invalid system');
+			}
+			if(logedinUser.type == PHARMACY_ADMIN_ENUM || logedinUser.type == CLINIC_ADMIN_ENUM){
+				logedinUser.type = ADMIN_FRONT_ENUM
 			}
 			sendUserToken(logedinUser, res, false)
 		} catch (err) {

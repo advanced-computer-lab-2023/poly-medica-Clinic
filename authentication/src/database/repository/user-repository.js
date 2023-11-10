@@ -1,16 +1,16 @@
+import { INCORRECT_PASSWORD_ERROR_MESSAGE, INCORRECT_USER_ERROR_MESSAGE } from '../../utils/Constants.js';
 import User from '../models/Users.js';
 import bcrypt from 'bcrypt';
 
 class UserRepository {
 	async signupUser(data) {
-		const { userId, email, password, userName, type, state } = data;
+		const { userId, email, password, userName, type } = data;
 		const user = await User.signup(
 			userId,
 			email,
 			password,
 			userName,
 			type,
-			state,
 		);
 		return user;
 	}
@@ -25,9 +25,9 @@ class UserRepository {
 					return user;
 				}
 			}
-			throw Error('incorrect Password');
+			throw Error(INCORRECT_PASSWORD_ERROR_MESSAGE);
 		}
-		throw Error('incorrect userName');
+		throw Error(INCORRECT_USER_ERROR_MESSAGE);
 	}
 	async findUserByEmail(email) {
 		const user = await User.findOne({ email: email }).lean();

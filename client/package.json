@@ -15,8 +15,6 @@
     "@tabler/icons": "^1.72.0",
     "@testing-library/dom": "^9.3.3",
     "@testing-library/jest-dom": "^6.1.4",
-    "@testing-library/react": "^14.0.0",
-    "@testing-library/user-event": "^13.5.0",
     "apexcharts": "^3.35.3",
     "date-fns": "^2.30.0",
     "dayjs": "^1.11.10",
@@ -44,7 +42,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest --config jest.config.js",
+    "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint . --fix"
   },
@@ -81,7 +79,8 @@
     "@babel/preset-env": "^7.23.2",
     "@testing-library/dom": "^9.3.3",
     "@testing-library/jest-dom": "^6.1.4",
-    "@testing-library/react": "^14.0.0",
+    "@testing-library/react": "^14.1.0",
+    "@testing-library/user-event": "^14.5.1",
     "axios": "^1.6.0",
     "axios-mock-adapter": "^1.22.0",
     "babel-jest": "^29.7.0",
@@ -94,8 +93,10 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "faker": "^6.6.6",
     "immutable": "^4.3.0",
     "jest": "^29.7.0",
+    "jest-fetch-mock": "^3.0.3",
     "jsdom": "^22.1.0",
     "prettier": "^2.8.7",
     "sass": "^1.53.0"

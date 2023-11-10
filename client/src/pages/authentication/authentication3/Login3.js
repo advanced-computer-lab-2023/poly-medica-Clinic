@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { useTheme } from '@mui/material/styles';
@@ -6,9 +7,8 @@ import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
 import AuthWrapper1 from '../AuthWrapper1';
 import AuthCardWrapper from '../AuthCardWrapper';
 import AuthLogin from '../auth-forms/AuthLogin';
-import Logo from 'ui-component/Logo';
-import AuthFooter from 'ui-component/cards/AuthFooter';
-import React from 'react';
+import Logo from '../../../ui-component/Logo';
+import AuthFooter from '../../../ui-component/cards/AuthFooter';
 // assets
 
 // ================================|| AUTH3 - LOGIN ||================================ //
@@ -34,7 +34,7 @@ const Login = () => {
 										<Grid container direction={matchDownSM ? 'column-reverse' : 'row'} alignItems="center" justifyContent="center">
 											<Grid item>
 												<Stack alignItems="center" justifyContent="center" spacing={1}>
-													<Typography title='authTitleElemen' color={theme.palette.secondary.main} gutterBottom variant={matchDownSM ? 'h3' : 'h2'}>
+													<Typography color={theme.palette.secondary.main} gutterBottom variant={matchDownSM ? 'h3' : 'h2'}>
                             Hi, Welcome Back
 													</Typography>
 													<Typography variant="caption" fontSize="16px" textAlign={matchDownSM ? 'center' : 'inherit'}>
