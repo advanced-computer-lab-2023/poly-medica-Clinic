@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { FAMILIY_EMERGENCY, GENDERS, ONE } from '../../utils/Constants.js';
+import { FAMILIY_EMERGENCY, FAMILY_RELATIONS, GENDERS, ONE } from '../../utils/Constants.js';
 
 const generateGender = () => {
     const genderIdx = faker.number.int({ min: 0, max: GENDERS.length - ONE });
@@ -14,6 +14,14 @@ const generateRelation = () => {
     return FAMILIY_EMERGENCY[relationIdx];
 };
 
+const generateFamilyMemberRelation = () => {
+    const relationIdx = faker.number.int({
+        min: 0,
+        max: FAMILY_RELATIONS.length - ONE,
+    });
+    return FAMILY_RELATIONS[relationIdx];
+}
+
 const generateFamilyMember = () => {
     return {
         id: faker.database.mongodbObjectId(),
@@ -21,7 +29,7 @@ const generateFamilyMember = () => {
         nationalId: faker.string.uuid(),
         age: faker.number.int({ min: 2, max: 90 }),
         gender: generateGender(),
-        relation: generateRelation(),
+        relation: generateFamilyMemberRelation(),
     };
 };
 

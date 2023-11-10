@@ -1,8 +1,20 @@
 import OrderModel from '../models/Order.js';
+import { ORDER_STATUS, ZERO_INDEX } from '../../utils/Constants.js';
 
 class OrderRepository {
     async findOrders(id) {
-        const orders = await OrderModel.find({ patientId: id });
+        const orders = await OrderModel.find({ patientId: id }).sort({
+            createdAt: -1,
+        });
+        return orders;
+    }
+
+    async findPendingOrders() {
+        const orders = await OrderModel.find({
+            status: ORDER_STATUS[ZERO_INDEX],
+        }).sort({
+            createdAt: -1,
+        });
         return orders;
     }
 

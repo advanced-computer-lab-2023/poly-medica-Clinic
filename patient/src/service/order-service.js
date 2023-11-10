@@ -10,6 +10,11 @@ class OrderService {
         return orders;
     }
 
+    async getPendingOrders() {
+        const orders = await this.repository.findPendingOrders();
+        return orders;
+    }
+
     async addOrder(order) {
         const orders = await this.repository.addOrder(order);
         return orders;
