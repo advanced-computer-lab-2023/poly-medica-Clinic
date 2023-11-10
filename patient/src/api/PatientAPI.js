@@ -15,6 +15,7 @@ import {
 
 import { calcAge } from '../utils/Patient-utils.js';
 
+
 export const patient = (app) => {
 	const service = new PatientService();
 

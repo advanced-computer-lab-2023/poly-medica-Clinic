@@ -42,6 +42,7 @@ export const UNAUTHORIZED_STATUS_CODE = 401;
 export const FAMILY_MEMBERS_PROJECTION = 'familyMembers';
 export const PATIENT_PROJECTION = '-password';
 
+
 export const ORDER_STATUS = [
 	'pending',
 	'accepted',
@@ -49,4 +50,5 @@ export const ORDER_STATUS = [
 	'cancelled',
 ];
 export const PATIENT_ADDRESSES_PROJECTION = 'deliveryAddresses';
+
 export const ZERO_INDEX = 0;

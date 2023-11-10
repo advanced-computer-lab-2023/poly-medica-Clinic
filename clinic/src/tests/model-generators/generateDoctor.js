@@ -6,7 +6,10 @@ const generateDoctor = () => {
 	const len = faker.number.int({ min: 2, max: 10 });
 	const availableSlots = [];
 	for(let i=0 ; i<len ; i++){
-		availableSlots.push(faker.date.anytime());
+		availableSlots.push({
+			from: faker.date.anytime(),
+			until: faker.date.anytime(),
+		});
 	}
 	return {
 		userData,

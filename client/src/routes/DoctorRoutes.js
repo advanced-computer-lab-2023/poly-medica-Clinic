@@ -26,6 +26,10 @@ const LazyAppointments = Loadable(
     lazy(() => import('pages/Appointment/Appointment'))
 );
 
+const LazyDoctorContract = Loadable(
+    lazy(() => import('pages/DoctorContract'))
+);
+
 const Account = Loadable(lazy(() => import('pages/profile/Account')));
 // utilities routing
 const UtilsTypography = Loadable(
@@ -113,6 +117,10 @@ const DoctorRoutes = {
                 {
                     path: 'My Patients',
                     element: <lazyDoctorListofPatients />,
+                },
+                {
+                    path: 'Contract',
+                    element: <LazyDoctorContract />,
                 },
             ],
         },

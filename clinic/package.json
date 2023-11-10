@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon ./start.js",
-    "test": "jest --runInBand --detectOpenHandles",
+    "test": "jest -i --watch",
     "lint": "eslint . --fix"
   },
   "author": "",
