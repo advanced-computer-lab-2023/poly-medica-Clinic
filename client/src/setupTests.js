@@ -3,9 +3,9 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
-import fetchMock from "jest-fetch-mock";
+import fetchMock from 'jest-fetch-mock';
 // import '@testing-library/jest-dom/extend-expect';
 // import 'faker';
-import "@mui/icons-material";
+import '@mui/icons-material';
 
-fetchMock.enableMocks()
+fetchMock.enableMocks();

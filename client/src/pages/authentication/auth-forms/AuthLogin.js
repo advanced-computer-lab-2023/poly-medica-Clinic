@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
 	Box,
 	Button,
@@ -37,7 +36,7 @@ const FirebaseLogin = () => {
 			if(data.reset)
 				navigate(`/${data.type}/pages/profile`);
 			else
-				navigate(`/${data.type}`);
+					navigate(`/${data.type}`);
 			setIsSubmitting(false);
 		} else{
 			Swal.fire({
