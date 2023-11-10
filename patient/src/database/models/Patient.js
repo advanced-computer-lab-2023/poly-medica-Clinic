@@ -79,6 +79,12 @@ const patientSchema = mongoose.Schema({
 				enum: FAMILY_RELATIONS,
 				required: true,
 			},
+			email: {
+				type: String
+			},
+			mobileNumber: {
+				type: String
+			}
 		},
 	],
 	healthRecords: [

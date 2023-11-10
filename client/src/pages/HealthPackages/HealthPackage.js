@@ -8,12 +8,14 @@ import AddHealthPackages from './AddHealthPackages';
 import EditHealthPackages from './EditHealthPackage';
 import { useUserContext } from 'hooks/useUserContext';
 import { patientAxios } from 'pages/utilities/AxiosConfig';
+import Loader from 'ui-component/Loader';
 
 const HealthPackages = () => {
 	const [packages, setPackage] = useState([]);
 	const [subscribedPackage, setSubscribedPackage] = useState(null);
 	const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 	const [loading, setLoading] = useState(true);
+	const [discount, setDiscount] = useState(0);
 	const [newPackage, setNewPackage] = useState({
 		name: '',
 		price: '',
@@ -33,8 +35,12 @@ const HealthPackages = () => {
 			}).then(() => {
 				patientAxios.get(`/patient/${user.id}/health-packages`).then((response) => {
 					setSubscribedPackage(response.data.healthPackages[0]);
-					console.log('fetched health subscribed: ', response.data.healthPackages[0]);
-					setLoading(false);
+				}).then(() => {
+					patientAxios.get(`/patient/${user.id}/discount`).then((response) => {
+						setDiscount(response.data.maxDiscount);
+						setLoading(false);
+					}
+					);
 				});
 			})
 			.catch(error => {
@@ -128,11 +134,12 @@ const HealthPackages = () => {
 		}
 	};
 
-	if (loading) return (<>Loading...</>);
+	if (loading) return (<Loader></Loader>);
 	else {
+		console.log(discount);
 		return (
 			<MainCard title="Packages">
-				<HealthPackagesList packages={packages} handleEditButtonClick={handleEditButtonClick} handleDeleteButtonClick={handleDeleteButtonClick} subscribedPackage={subscribedPackage} setSubscribedPackage={setSubscribedPackage} />
+				<HealthPackagesList packages={packages} handleEditButtonClick={handleEditButtonClick} handleDeleteButtonClick={handleDeleteButtonClick} subscribedPackage={subscribedPackage} setSubscribedPackage={setSubscribedPackage} discount = {discount} />
 				<Fab
 					color="secondary"
 					aria-label="Add"

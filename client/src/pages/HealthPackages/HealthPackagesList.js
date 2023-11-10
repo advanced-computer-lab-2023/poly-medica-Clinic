@@ -7,7 +7,7 @@ import { useUserContext } from 'hooks/useUserContext';
 import Swal from 'sweetalert2';
 import { patientAxios } from 'utils/AxiosConfig';
 import { HEALTH_PACKAGE_STATUS } from 'utils/Constants';
-const HealthPackagesList = ({ packages, handleEditButtonClick, handleDeleteButtonClick, subscribedPackage, setSubscribedPackage }) => {
+const HealthPackagesList = ({ packages, handleEditButtonClick, handleDeleteButtonClick, subscribedPackage, setSubscribedPackage, discount }) => {
 	const { user } = useUserContext();
 
 	const handleSubscribe = (pack) => {
@@ -87,9 +87,25 @@ const HealthPackagesList = ({ packages, handleEditButtonClick, handleDeleteButto
 									mb: 2,
 								}}
 							>
-								<Typography component="h2" variant="h3" color="text.primary">
-									{`$ ${pack.price}`}
-								</Typography>
+								{discount > 0 ? (
+									<Typography
+										component="h2"
+										variant="h4"
+										color="text.secondary"
+										sx={{ textDecoration: 'line-through' }}
+									>
+										{`$ ${pack.price}`}
+									</Typography>
+								) : (
+									<Typography component="h2" variant="h3" color="text.primary">
+										{`$ ${pack.price}`}
+									</Typography>
+								)}
+								{discount > 0 && (
+									<Typography sx={ { marginLeft: '2%' } } component="h2" variant="h4" color="text.primary">
+										{`$ ${pack.price - (pack.price * (discount / 100))}`}
+									</Typography>
+								)}
 								<Typography variant="h6" color="text.secondary">
 									/mo
 								</Typography>

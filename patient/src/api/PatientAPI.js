@@ -166,6 +166,36 @@ export const patient = (app) => {
 		}
 	);
 
+	app.get('/patient/:id/discount', async (req, res) => {
+		try {
+			const { id } = req.params;
+			const patient = await service.findOnePatient(id);
+			const patients = await service.findAllPatients();
+			let maxDiscount = 0;
+
+			for (let i = 0; i < patients.length; i++) {
+				const systemPatient = patients[i];
+				for (let j = 0; j < systemPatient.familyMembers.length; j++) {
+					const familyMember = systemPatient.familyMembers[j];
+					if (
+						(familyMember.email && familyMember.email.toString() === patient.email.toString()) ||
+						(familyMember.mobileNumber && familyMember.mobileNumber.toString() === patient.mobileNumber.toString())
+					) {
+						const healthPackage = await service.viewHealthPackages(systemPatient._id);
+						if (healthPackage[0]) {
+							maxDiscount = Math.max(healthPackage[0].familyDiscount, maxDiscount);
+						}
+					}
+				}
+			}
+
+			res.status(OK_STATUS_CODE).json({ maxDiscount: maxDiscount });
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({ message: err.message });
+		}
+	});
+
+
 	app.get('/patient/:id/health-packages', async (req, res) => {
 		const { id } = req.params;
 		try {
@@ -218,7 +248,7 @@ export const patient = (app) => {
 			console.log('title ======================================= ', title);
 			const healthRecord = {};
 			healthRecord.recordTitle = title;
-			healthRecord.documentName = req.file?req.file.filename:'';
+			healthRecord.documentName = req.file ? req.file.filename : '';
 			const updatedPatient = await service.addHealthRecord(id, healthRecord);
 			if (updatedPatient) {
 				res.status(OK_STATUS_CODE).json(updatedPatient);
