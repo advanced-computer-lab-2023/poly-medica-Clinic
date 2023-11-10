@@ -15,23 +15,25 @@ export const ERROR_STATUS_CODE = 500;
 export const EMPTY_SIZE = 0;
 export const ZERO_INDEX = 0;
 export const ONE = 1;
+export const ZERO = 0;
+export const INF = 1e18;
 export const PORT = 8002;
 
 export const MONGO_URI = 'mongodb://localhost:27017';
 
 export const FAMILIY_EMERGENCY = [
-    'Parent',
-    'Child',
-    'Sibling',
-    'Spouse',
-    'Grandparent',
-    'Grandchild',
-    'Aunt',
-    'Uncle',
-    'Niece',
-    'Nephew',
-    'Cousin',
-    'Other',
+	'Parent',
+	'Child',
+	'Sibling',
+	'Spouse',
+	'Grandparent',
+	'Grandchild',
+	'Aunt',
+	'Uncle',
+	'Niece',
+	'Nephew',
+	'Cousin',
+	'Other',
 ];
 
 export const FAMILY_RELATIONS = ['HUSBAND', 'WIFE', 'CHILD'];
@@ -42,9 +44,9 @@ export const FAMILY_MEMBERS_PROJECTION = 'familyMembers';
 export const PATIENT_PROJECTION = '-password';
 
 export const ORDER_STATUS = [
-    'pending',
-    'accepted',
-    'rejected',
-    'cancelled',
+	'pending',
+	'accepted',
+	'rejected',
+	'cancelled',
 ];
 export const PATIENT_ADDRESSES_PROJECTION = 'deliveryAddresses';
