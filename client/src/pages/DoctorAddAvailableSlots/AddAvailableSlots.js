@@ -7,7 +7,7 @@ import { Add } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers';
 import{ TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-//import swal from 'sweetalert';
+import { isIntersect } from '../../utils/DoctorUtils';
  
 import Swal from 'sweetalert2';
  
@@ -31,28 +31,7 @@ const DoctorAddAvailableSlots = () => {
             
     }
         , []);
-        const isIntersect = (from) => { 
-            
-                const until = new Date(from.getTime() + 60 * 60 * 1000); 
-                
-                
-                for(let i = 0; i < availableSlots.length; i++) {
-                    const slot = availableSlots[i];
-                    
-                    const slotFrom = new Date(slot.from);
-                    const slotUntil = new Date(slot.until);
-                    
-
-                    if (
-                        (from >= slotFrom && from < slotUntil) ||
-                        (until > slotFrom && until <= slotUntil) ||
-                        (from <= slotFrom && until >= slotUntil)
-                    ) {
-                        return true;
-                    }
-                }           
-                return false;
-            };
+        
     const onClick = () => {
          
         const from = new Date(selectedDate);  
@@ -61,7 +40,7 @@ const DoctorAddAvailableSlots = () => {
         from.setSeconds(selectedTime.getSeconds());
         from.setMilliseconds(selectedTime.getMilliseconds());
           
-        if (isIntersect(from)) {
+        if (isIntersect(from,availableSlots)) {
            Swal.fire({
                 title: 'Error!',
                 text: 'The entered slot intersects with an existing slot',
