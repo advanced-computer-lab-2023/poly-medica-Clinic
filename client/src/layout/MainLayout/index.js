@@ -1,5 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Outlet } from 'react-router-dom';
+import { DOCTOR_TYPE_ENUM } from 'utils/Constants';
+ 
 
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
@@ -17,9 +19,9 @@ import { SearchProvider } from 'contexts/SearchContext';
 import { FilterProvider } from 'contexts/FilterContext';
 import { useUserContext } from 'hooks/useUserContext';
 import { useEffect } from 'react';
+import { clinicAxios } from 'utils/AxiosConfig';
 
-// assets
-// import { IconChevronRight } from '@tabler/icons';
+ 
 
 // styles
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
@@ -62,11 +64,23 @@ const MainLayout = ({ userType }) => {
 	const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
 	const navigate = useNavigate();
 	const leftDrawerOpened = useSelector((state) => state.customization.opened);
-	const { user } = useUserContext();
+	const { user } = useUserContext(); 
+	const id=user.id;
 	useEffect(() => {
-		if(!user || user.type != userType){
-			navigate(`/${user.type}`);
-		}
+		clinicAxios.get('/doctors/'+id+'/status').then((res) => {
+			const status=res.data.status;
+			if(user && user.type === DOCTOR_TYPE_ENUM && !status){ 
+				navigate('/doctor/pages/contract');
+			}
+			else if(!user || user.type != userType){ 
+				navigate(`/${user.type}`);
+			}
+		}).catch((err) => {
+			console.log(err);
+		});
+
+		
+		
 	},[]);
 	const dispatch = useDispatch();
 	const handleLeftDrawerToggle = () => {

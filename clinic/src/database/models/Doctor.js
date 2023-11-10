@@ -26,6 +26,11 @@ const Doctor = mongoose.Schema({
 		type: Array,
 		default: [],
 	},
+	status:{
+		type: Boolean,
+		default: false,
+		
+	}
 });
 
 Doctor.statics.addUser = async function (
