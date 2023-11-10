@@ -10,7 +10,7 @@ import { isDateInAvailableSlots } from 'utils/AppointmentUtils.js';
 
 const Doctors = () => {
     const { user } = useUserContext();
-	const patientID = user.id;
+    const patientID = user.id;
     const [doctors, setDoctors] = useState([]);
     const [selectedDoctor, setSelectedDoctor] = useState(null);
     const [originalDoctors, setOriginalDoctors] = useState([]);
@@ -79,7 +79,7 @@ const Doctors = () => {
                 ) &&
                 (!filterData[0].selectedValue ||
                     doctor.speciality.toString() ===
-                        filterData[0].selectedValue.toString()) &&
+                    filterData[0].selectedValue.toString()) &&
                 (!filterData[1].selectedValue ||
                     isDateInAvailableSlots(
                         new Date(filterData[1].selectedValue),
@@ -109,26 +109,21 @@ const Doctors = () => {
     }, []);
 
     useEffect(() => {
-        setLoggedInPatientHealthPackage({
-            doctorDiscount: '0.2'
-        });
-
-        // to be uncommented after merge
-        // patientAxios
-        //     .get(`/patient/${patientID}/health-packages`)
-        //     .then((response) => {
-        //         let healthPackage = {
-        //             doctorDiscount: '0'
-        //         };
-        //         const healthPackages = response.data.healthPackages; 
-        //         if(healthPackages.length){
-        //             healthPackage = healthPackages[0];
-        //         }
-        //         setLoggedInPatientHealthPackage(healthPackage);
-        //     })
-        //     .catch((error) => {
-        //         console.log(error);
-        //     });
+        patientAxios
+            .get(`/patient/${patientID}/health-packages`)
+            .then((response) => {
+                let healthPackage = {
+                    doctorDiscount: '0'
+                };
+                const healthPackages = response.data.healthPackages;
+                if (healthPackages.length) {
+                    healthPackage = healthPackages[0];
+                }
+                setLoggedInPatientHealthPackage(healthPackage);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }, []);
 
     return (

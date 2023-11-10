@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-import { 
-    Typography, 
+import {
+    Typography,
     Card,
     CardContent,
     Button,
@@ -15,9 +15,9 @@ import { getDay, getTime } from '../../utils/DateFormatter.js';
 
 import { calcPrice } from '../../utils/PriceCalculator.js';
 // to be uncommented after merge
-// import { choosePayment } from '../../utils/PaymentOptions';
+import { choosePayment } from '../../utils/PaymentOptions';
 
-const DoctorDetailsAppointmentsCard = ({ 
+const DoctorDetailsAppointmentsCard = ({
     selectedDoctor,
     availableSlotsIdx,
     loggedInPatient,
@@ -26,12 +26,12 @@ const DoctorDetailsAppointmentsCard = ({
 ) => {
     const { availableSlots } = selectedDoctor;
     const slot = availableSlots[availableSlotsIdx];
-    
+
     const [expanded, setExpanded] = useState(false);
     const [selectedBookingType, setSelectedBookingType] = useState('myself');
-	const [allFamilyMembers, setAllFamilyMembers] = useState([]); // for autocomplete
+    const [allFamilyMembers, setAllFamilyMembers] = useState([]); // for autocomplete
     const [selectedMember, setSelectedMember] = useState(null); // for autocomplete
-    
+
     useEffect(() => {
         // loggedInPatient.family members are already 
         // filtered [only unregistered/minors] from Doctor.js
@@ -44,11 +44,11 @@ const DoctorDetailsAppointmentsCard = ({
 
 
     const handleExpand = () => {
-		setExpanded(oldExpanded => !oldExpanded);
-	};
+        setExpanded(oldExpanded => !oldExpanded);
+    };
     const handleChange = (event) => {
         const index = parseInt(event.target.dataset.optionIndex);
-        if(isNaN(index))
+        if (isNaN(index))
             setSelectedMember(null);
         else
             setSelectedMember({ index });
@@ -64,7 +64,7 @@ const DoctorDetailsAppointmentsCard = ({
             type: 'appointment',
             availableSlotsIdx
         };
-        if (selectedBookingType=='family') {
+        if (selectedBookingType == 'family') {
             const familyMember = loggedInPatient.familyMembers[selectedMember.index];
             const patientFamilyMember = {
                 name: familyMember.name,
@@ -79,25 +79,25 @@ const DoctorDetailsAppointmentsCard = ({
         const price = calcPrice(selectedDoctor.hourlyRate, loggedInPatientHealthPackage.doctorDiscount);
         console.log(price);
         // to be uncommented after merge
-        // choosePayment(appointment, price, 'appointment');        
+        choosePayment(appointment, price, 'appointment');
 
     };
-    return(
+    return (
         <>
-            <Card 
-                sx = {{ 
+            <Card
+                sx={{
                     backgroundColor: (theme) =>
                         theme.palette.mode === 'light'
                             ? theme.palette.grey[200]
                             : theme.palette.grey[700],
                 }}
             >
-                <CardContent 
-                    sx={{ 
-                        display: 'flex', 
-                        justifyContent: 'center', 
-                        flexDirection: 'column', 
-                        textAlign: 'center' 
+                <CardContent
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        flexDirection: 'column',
+                        textAlign: 'center'
                     }}
                 >
                     <Typography sx={{ mb: 1.5 }} variant="h5">
@@ -105,40 +105,40 @@ const DoctorDetailsAppointmentsCard = ({
                     </Typography>
 
                     <Typography component="h6" color="text.primary">
-                            {`From : ${getTime(slot.from)}`}
+                        {`From : ${getTime(slot.from)}`}
                     </Typography>
                     <Typography component="h6" color="text.primary" sx={{ mb: '1.5em' }}>
-                            {`To : ${getTime(slot.until)}`}
+                        {`To : ${getTime(slot.until)}`}
                     </Typography>
-                    
-                    <Button 
-                        size="small" 
-                        variant="text" 
+
+                    <Button
+                        size="small"
+                        variant="text"
                         color="primary"
                         onClick={handleExpand}
                     >
-                        {`${expanded? 'Hide': 'View'} Booking Options`} 
+                        {`${expanded ? 'Hide' : 'View'} Booking Options`}
                     </Button>
                     <Accordion expanded={expanded}>
                         {/* must have this empty typography for the accordion 
                         to work properly (acts as summary) */}
                         <Typography />
                         <AccordionDetails>
-                            <div 
+                            <div
                                 style={{
-                                    display: 'flex', 
-                                    justifyContent: 'space-around', 
-                                    flexDirection: 'row', 
+                                    display: 'flex',
+                                    justifyContent: 'space-around',
+                                    flexDirection: 'row',
                                     textAlign: 'center',
                                     marginBottom: '2em'
                                 }}
                             >
                                 <Button
                                     size="small"
-                                    variant= {selectedBookingType=='myself'?'outlined':'text'}
-                                    color= 'secondary'
-                                    sx = {{ 
-                                        color: (selectedBookingType=='myself'?'secondary': '#808080')
+                                    variant={selectedBookingType == 'myself' ? 'outlined' : 'text'}
+                                    color='secondary'
+                                    sx={{
+                                        color: (selectedBookingType == 'myself' ? 'secondary' : '#808080')
                                     }}
                                     onClick={() => setSelectedBookingType('myself')}
                                 >
@@ -146,20 +146,20 @@ const DoctorDetailsAppointmentsCard = ({
                                 </Button>
                                 <Button
                                     size="small"
-                                    variant= {selectedBookingType=='family'?'outlined':'text'}
-                                    color= 'secondary'
-                                    sx = {{ 
-                                        color: (selectedBookingType=='family'?'secondary': '#808080')
+                                    variant={selectedBookingType == 'family' ? 'outlined' : 'text'}
+                                    color='secondary'
+                                    sx={{
+                                        color: (selectedBookingType == 'family' ? 'secondary' : '#808080')
                                     }}
                                     onClick={() => setSelectedBookingType('family')}
                                 >
                                     Family Member
                                 </Button>
                             </div>
-                            
+
                             {
-                                selectedBookingType=='family' && 
-                                <div 
+                                selectedBookingType == 'family' &&
+                                <div
                                     style={{
                                         display: 'flex',
                                         justifyContent: 'center',
@@ -171,7 +171,7 @@ const DoctorDetailsAppointmentsCard = ({
                                         id="combo-box-demo"
                                         options={allFamilyMembers}
                                         sx={{
-                                            '&.MuiAutocomplete-hasPopupIcon .MuiAutocomplete-inputRoot':{
+                                            '&.MuiAutocomplete-hasPopupIcon .MuiAutocomplete-inputRoot': {
                                                 padding: '0.3em',
                                                 fontSize: '1em',
                                                 fontWeight: 500,
@@ -186,11 +186,11 @@ const DoctorDetailsAppointmentsCard = ({
                             <Button
                                 size="small"
                                 variant="contained"
-                                color= 'primary'
-                                sx = {{
+                                color='primary'
+                                sx={{
                                     borderRadius: 5
                                 }}
-                                disabled={selectedBookingType=='family' && !selectedMember}
+                                disabled={selectedBookingType == 'family' && !selectedMember}
                                 onClick={handleBookNow}
                             >
                                 Book Now
