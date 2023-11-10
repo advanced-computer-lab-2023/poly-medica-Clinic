@@ -210,4 +210,74 @@ export const doctor = (app) => {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
 	});
+
+
+
+
+	app.get('/doctors/:id/status', async (req, res) => {
+		//get the doctor status
+		try {
+			const id = req.params.id;
+			if (!isValidMongoId(id))
+				return res
+					.status(ERROR_STATUS_CODE)
+					.json({ message: 'Invalid ID' });
+			const doctor = await service.getDoctorById(id);
+			if (doctor) {
+				res.status(OK_STATUS_CODE).json({ status: doctor.status });
+			} else {
+				res.status(NOT_FOUND_STATUS_CODE).json({
+					message: 'doctor not found',
+				});
+			}
+		} catch (error) {
+			res.status(ERROR_STATUS_CODE).json({ message: error });
+		}
+
+	});
+	app.post('/doctors/:id/status', async (req, res) => { 
+		try {
+			const id = req.params.id;
+			if (!isValidMongoId(id))
+				return res
+					.status(ERROR_STATUS_CODE)
+					.json({ message: 'Invalid ID' });
+			const doctor = await service.getDoctorById(id);
+			if (doctor) {
+				let status = await service.updateDoctor(id, {
+					status: true,
+				});
+				status=status.status;
+				res.status(OK_STATUS_CODE).json({ status });
+			} else {
+				res.status(NOT_FOUND_STATUS_CODE).json({
+					message: 'doctor not found',
+				});
+			}
+		} catch (error) {
+			res.status(ERROR_STATUS_CODE).json({ message: error });
+		}
+	}
+	);
+
+	app.get('/doctors/:id/name', async (req, res) => {
+		try {
+			const id = req.params.id;
+			if (!isValidMongoId(id))
+				return res
+					.status(ERROR_STATUS_CODE)
+					.json({ message: 'Invalid ID' });
+			const doctor = await service.getDoctorById(id);
+			if (doctor) {
+				res.status(OK_STATUS_CODE).json({ name: doctor.userData.name });
+			} else {
+				res.status(NOT_FOUND_STATUS_CODE).json({
+					message: 'doctor not found',
+				});
+			}
+		} catch (error) {
+			res.status(ERROR_STATUS_CODE).json({ message: error });
+		}
+	});
+
 };
