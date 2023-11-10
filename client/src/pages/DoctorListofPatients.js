@@ -19,6 +19,7 @@ const Patients = () => {
     const [originalPatients, setOriginalPatients] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [appointments, setAppointments] = useState([]);
+    const [loggedInDoctor, setLoggedInDoctor] = useState(null);
     const { searchQuery } = useSearch();
     const { filterData, updateFilter } = useFilter();
     const { user } = useUserContext();
@@ -62,6 +63,17 @@ const Patients = () => {
         setPatients(filteredPatients);
     }, [originalPatients, searchQuery, filterData]);
 
+    useEffect(() => {
+        clinicAxios
+            .get(`/doctor/${id}`)
+            .then((response) => {
+                setLoggedInDoctor(response.data.doctor);  
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    });
+
     return (
         <MainCard title='Patients'>
             {isLoading ? (
@@ -77,6 +89,7 @@ const Patients = () => {
                                     <TableCell>Date of Birth</TableCell>
                                     <TableCell>Gender</TableCell>
                                     <TableCell>Mobile Number</TableCell>
+                                    <TableCell>Follow up</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -85,6 +98,7 @@ const Patients = () => {
                                         <PatientRow
                                             key={patient._id}
                                             patient={patient}
+                                            loggedInDoctor={loggedInDoctor}
                                         />
                                     ))}
                             </TableBody>
