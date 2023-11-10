@@ -27,6 +27,10 @@ class PatientRepository {
 		return await PatientModel.findOne({ userName: userN });
 	}
 
+	async findPatientById(PatientId) {
+		return await PatientModel.findOne({ _id: PatientId }, '-password -healthrecords -familyMembers');
+	}
+
 	async addFamilyMember(id, familyMembers) {
 		return await PatientModel.findOneAndUpdate(
 			{ _id: id },
