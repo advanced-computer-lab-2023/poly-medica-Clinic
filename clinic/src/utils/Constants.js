@@ -48,3 +48,6 @@ export const FAMILIY_EMERGENCY = [
 	'Cousin',
 	'Other',
 ];
+export const SIXTY=60;
+export const THOUSAND=1000;
+
