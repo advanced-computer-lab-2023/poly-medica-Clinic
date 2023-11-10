@@ -44,7 +44,10 @@ export const choosePayment = (items, amountToPay, type) => {
         paymentAxios.post('/payment/wallet', { amountToPayByWallet: amountToPay })
           .then(
             Swal.fire('success', 'Payment Succeeded', 'success').then(
-              successfulPayment(items, type)
+              () => {
+                const callBackUrl = successfulPayment(items,type);
+                navigate(callBackUrl, { replace: true });
+              }
             )
           )
           .catch((error) => {
