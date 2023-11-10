@@ -5,6 +5,7 @@ import {
 	OK_STATUS_CODE,
 	ERROR_STATUS_CODE,
     PATIENTS_BASE_URL,
+    BAD_REQUEST_CODE_400
 } from '../utils/Constants.js';
 
 
@@ -28,17 +29,17 @@ export const payment = (app) => {
         }
     });
     
-    app.post('payment/wallet', async (req, res) => {
+    app.post('/payment/wallet', async (req, res) => {
         try{
             const amountToPay = req.body.amountToPayByWallet;
             const userId = req.body.userId;
-            const amountInWallet = await axios.get(`${PATIENTS_BASE_URL}/${userId}/wallet`);
+            let amountInWallet = await axios.get(`${PATIENTS_BASE_URL}/${userId}/wallet`);
             if(amountToPay <= amountInWallet){
                 amountInWallet = amountInWallet - amountToPay;
                 await axios.patch(`${PATIENTS_BASE_URL}/wallet`, {amount : amountInWallet} );
-                res.status(OK_STATUS_CODE);
+                res.status(OK_STATUS_CODE).send("Payment successful");
             }else{
-                res.status(ERROR_STATUS_CODE).json("insufficient amount in the wallet");
+                res.status(BAD_REQUEST_CODE_400).json("insufficient amount in the wallet");
             }
         }catch(err){
             res.status(ERROR_STATUS_CODE).send({err: err.message, status: ERROR_STATUS_CODE});
