@@ -190,6 +190,7 @@ export const doctor = (app) => {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
 	});
+	//done
 	app.patch('/doctors/:id', async (req, res) => {
 		try {
 			const id = req.params.id;
@@ -214,8 +215,7 @@ export const doctor = (app) => {
 
 
 
-	app.get('/doctors/:id/status', async (req, res) => {
-		//get the doctor status
+	app.get('/doctors/:id/status', async (req, res) => { 
 		try {
 			const id = req.params.id;
 			if (!isValidMongoId(id))
