@@ -7,7 +7,7 @@ class ResetPasswordRepository{
 	}
 
 	async removeRecordByEmail(email){
-		const user = await ResetPassword.deleteOne({ email: email });
+		const user = await ResetPassword.deleteMany({ email: email });
 		return user;
 	}
 

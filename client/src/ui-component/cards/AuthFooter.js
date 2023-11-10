@@ -1,4 +1,4 @@
-// material-ui
+import React from 'react';
 import { Link, Typography, Stack } from '@mui/material';
 
 // ==============================|| FOOTER - AUTHENTICATION 2 & 3 ||============================== //

@@ -56,6 +56,11 @@ const patientSchema = mongoose.Schema({
 	},
 	familyMembers: [
 		{
+			id: {
+				type: mongoose.Schema.Types.ObjectId,
+				// ref: 'Patient',
+				// required: true	
+			},
 			name: {
 				type: String,
 			},
