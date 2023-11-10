@@ -31,7 +31,8 @@ export const payment = (app) => {
     app.post('payment/wallet', async (req, res) => {
         try{
             const amountToPay = req.body.amountToPayByWallet;
-            const amountInWallet = await axios.get(`${PATIENTS_BASE_URL}/wallet`);
+            const userId = req.body.userId;
+            const amountInWallet = await axios.get(`${PATIENTS_BASE_URL}/${userId}/wallet`);
             if(amountToPay <= amountInWallet){
                 amountInWallet = amountInWallet - amountToPay;
                 await axios.patch(`${PATIENTS_BASE_URL}/wallet`, {amount : amountInWallet} );

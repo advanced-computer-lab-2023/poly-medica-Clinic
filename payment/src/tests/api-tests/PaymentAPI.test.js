@@ -12,6 +12,9 @@ jest.mock('stripe', () => jest.fn(() => ({
         create: (...args) => mockPaymentsIntentsCreate(...args)
     },
 })));
+import axios from 'axios';
+jest.mock('axios');
+
 
 
 describe('POST /payment/card', () => {

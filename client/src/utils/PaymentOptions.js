@@ -3,14 +3,16 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { successfulPayment } from './PaymentUtils';
 import { useState } from 'react';
-
+import { useUserContext } from 'hooks/useUserContext';
 
 export const choosePayment = (items, amountToPay, type) => {
 
   const [amountInWallet, setAmountInWallet] = useState(0);
   const navigate = useNavigate();
+  const { user } = useUserContext();
+  const userId = user.id;
 
-  patientAxios.get('/wallet').then((response) => {
+  patientAxios.get('/wallet/' + userId).then((response) => {
     setAmountInWallet(response.data.amountInWallet);
   });
 
@@ -38,14 +40,14 @@ export const choosePayment = (items, amountToPay, type) => {
   }).then(function (result) {
     console.log('result = ', result.value);
     if (result.value === 'credit-card') {
-      navigate('/patient/pages/payment', { state: { items , amountToPay , type }, replace: true });
+      navigate('/patient/pages/payment', { state: { items, amountToPay, type }, replace: true });
     } else {
       if (amountInWallet >= amountToPay) {
-        paymentAxios.post('/payment/wallet', { amountToPayByWallet: amountToPay })
+        paymentAxios.post('/payment/wallet', { amountToPayByWallet: amountToPay, userId: userId })
           .then(
             Swal.fire('success', 'Payment Succeeded', 'success').then(
               () => {
-                const callBackUrl = successfulPayment(items,type);
+                const callBackUrl = successfulPayment(items, type);
                 navigate(callBackUrl, { replace: true });
               }
             )
@@ -65,7 +67,7 @@ export const choosePayment = (items, amountToPay, type) => {
         }).then((result) => {
           if (result.isConfirmed) {
             const amountToPayByWallet = amountToPay - amountInWallet;
-            paymentAxios.post('/payment/wallet', { amountToPayByWallet })
+            paymentAxios.post('/payment/wallet', { amountToPayByWallet, userId: userId })
               .catch((error) => {
                 console.log('Error in payment with the wallet', error);
               });
