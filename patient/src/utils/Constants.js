@@ -18,6 +18,9 @@ export const PORT = 8002;
 export const MONGO_URI = 'mongodb://localhost:27017';
 export const ZERO_INDEX = 0;
 
+export const ONE = 1;
+
+
 export const FAMILIY_EMERGENCY = [
 	'Parent',
 	'Child',
@@ -39,3 +42,5 @@ export const CREATED_STATUS_CODE = 201;
 export const UNAUTHORIZED_STATUS_CODE = 401;
 export const FAMILY_MEMBERS_PROJECTION = 'familyMembers';
 export const PATIENT_PROJECTION = '-password';
+
+export const ZERO_INDEX = 0;

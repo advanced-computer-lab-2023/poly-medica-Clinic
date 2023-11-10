@@ -7,6 +7,12 @@ class PatientRepository {
 		const allPatients = await PatientModel.find();
 		return allPatients;
 	}
+
+	async findPatientById(id) {
+		const patient = await PatientModel.findById(id);
+		return patient;
+	}
+
 	async findFamilyMembers(id) {
 		console.log('id = ', id);
 		const familyMembers = await PatientModel.findById(

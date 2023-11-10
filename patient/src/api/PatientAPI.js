@@ -29,6 +29,27 @@ export const patient = (app) => {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}
 	});
+	
+	app.get('/patients/:id', async (req, res) => {
+		const { id } = req.params;
+		if (!isValidMongoId(id)) {
+			return res
+				.status(ERROR_STATUS_CODE)
+				.json({ message: 'Invalid ID' });
+		}
+		try {
+			const patient = await service.getPatientById(id);
+			if (patient) {
+				res.status(OK_STATUS_CODE).json({ patient });
+			} else {
+				res.status(NOT_FOUND_STATUS_CODE).json({
+					message: 'patient not found!',
+				});
+			}
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({ err: err.message });
+		}
+	});
 
 	app.post('/patients', async (req, res) => {
 		try {
