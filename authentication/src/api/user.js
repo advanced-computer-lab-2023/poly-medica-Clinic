@@ -199,6 +199,11 @@ export const user = (app) => {
 			case PHARMACY_REQ: if (logedinUser.type == DOCTOR_ENUM || logedinUser.type == CLINIC_ADMIN_ENUM) throw new Error('invalid user'); break; //TODO: admin in login
 			default: throw new Error('invalid system');
 			}
+			
+			if(logedinUser.type == PHARMACY_ADMIN_ENUM || logedinUser.type == CLINIC_ADMIN_ENUM){
+				logedinUser.type = ADMIN_FRONT_ENUM;
+			}
+			
 			const token = createToken(
 				logedinUser.userId,
 				logedinUser.userName,

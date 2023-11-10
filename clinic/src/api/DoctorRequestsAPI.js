@@ -58,11 +58,46 @@ export const doctorRequests = (app) => {
 		},
 	);
 
+	app.get('/doctor-requests/files/:fileName', async (req, res) => {
+		try {
+			const { fileName } = req.params;
+			const filePath = service.getFile(fileName);
+			if (filePath) {
+				res.status(OK_STATUS_CODE).sendFile(filePath);
+			} else {
+				res.status(ERROR_STATUS_CODE).json({ message: 'No file found' });
+			}
+		} catch (error) {
+			res.status(ERROR_STATUS_CODE).json({ message: error.message });
+		}
+	});
+
 	app.delete('/doctor-requests/:id', async (req, res) => {
 		try {
-			const id = req.params.id;
+			const { id } = req.params;
+			const { accept } = req.query;
+			console.log('accept', accept);
 			if (!isValidMongoId(id))
 				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
+
+			if (accept === 'false') {
+				await service
+					.getDoctorRequestById(id)
+					.then((doctorRequest) => {
+						if (!doctorRequest) {
+							return res
+								.status(ERROR_STATUS_CODE)
+								.json({ message: 'Pharmacist request not found' });
+						}
+						doctorRequest.documentsNames.forEach((fileName) => {
+							service.deleteFile(fileName);
+						});
+					})
+					.catch((err) => {
+						return res.status(ERROR_STATUS_CODE).json({ message: err.message });
+					});
+			}
+
 			const doctorRequest = await service.deleteDoctorRequest(id);
 			if (doctorRequest) {
 				res.status(OK_STATUS_CODE).json({ message: 'doctor deleted' });

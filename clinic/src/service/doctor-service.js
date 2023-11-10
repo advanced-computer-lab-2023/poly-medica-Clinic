@@ -20,6 +20,11 @@ class DoctorService {
 		return doctorUser;
 	}
 
+	async getDoctorRequestById(id) {
+		const doctorRequest = await this.repository.findDoctorRequestById(id);
+		return doctorRequest;
+	}
+
 	async deleteDoctorRequest(id) {
 		const doctorRequest = await this.repository.deleteDoctorRequest(id);
 		return doctorRequest;
@@ -60,6 +65,14 @@ class DoctorService {
 
 	async checkDoctorReqUser(req) {
 		await this.repository.checkDoctorReqUser(req);
+	}
+
+	getFile(fileName) {
+		return this.repository.getFile(fileName);
+	}
+
+	deleteFile(fileName) {
+		return this.repository.deleteFile(fileName);
 	}
 }
 

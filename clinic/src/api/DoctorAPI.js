@@ -12,8 +12,6 @@ import {
 	BAD_REQUEST_CODE_400,
 	DOCTOR_ENUM,
 	DUPLICATE_KEY_ERROR_CODE,
-	ZERO_INDEX,
-	EXTRA_INDEX,
 } from '../utils/Constants.js';
 
 export const doctor = (app) => {
@@ -103,9 +101,25 @@ export const doctor = (app) => {
 
 	app.delete('/doctors/:id', async (req, res) => {
 		try {
-			const id = req.params.id;
+			const { id } = req.params;
 			if (!isValidMongoId(id))
 				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
+			await service
+				.getDoctorById(id)
+				.then((doctor) => {
+					if (!doctor) {
+						return res
+							.status(ERROR_STATUS_CODE)
+							.json({ message: 'doctor not found' });
+					}
+					doctor.documentsNames.forEach((fileName) => {
+						service.deleteFile(fileName);
+					});
+				})
+				.catch((err) => {
+					return res.status(ERROR_STATUS_CODE).json({ message: err.message });
+				});
+
 			const deletedDoctor = await service.deleteDoctor(id);
 			if (deletedDoctor) {
 				await axios.delete(`${AUTH_BASE_URL}/users/${id}`);

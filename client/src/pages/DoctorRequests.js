@@ -22,9 +22,12 @@ const DoctorRequests = () => {
 
 	const handleAccept = (doctorReq) => {
 		// Delete the doctor request from the database
-		fetch(`http://localhost:8001/doctor-requests/${doctorReq._id}`, {
-			method: 'DELETE',
-		})
+		fetch(
+			`http://localhost:8001/doctor-requests/${doctorReq._id}?accept=${true}`,
+			{
+				method: 'DELETE',
+			},
+		)
 			.then((response) => response.json())
 			.then(() => {
 				setDoctorRequests((prevDoctorRequests) =>
@@ -54,14 +57,16 @@ const DoctorRequests = () => {
 			.catch((error) => {
 				console.error('Error accepting doctor request:', error);
 			});
-
 	};
 
 	const handleReject = (doctorReq) => {
-		fetch(`http://localhost:8001/doctor-requests/${doctorReq._id}`, {
-			method: 'DELETE',
-		})
-			.then((response) => response.json())
+		console.log('in handle reject doctor request');
+		fetch(
+			`http://localhost:8001/doctor-requests/${doctorReq._id}?accept=${false}`,
+			{
+				method: 'DELETE',
+			},
+		)
 			.then(() => {
 				setDoctorRequests((prevDoctorRequests) =>
 					prevDoctorRequests.filter(
