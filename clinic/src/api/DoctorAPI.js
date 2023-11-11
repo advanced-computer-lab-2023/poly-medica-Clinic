@@ -51,6 +51,7 @@ export const doctor = (app) => {
 			});
 		}
 	});
+
 	app.get('/doctor/:id', async (req, res) => {
 		try {
 			const id = req.params.id;
@@ -91,9 +92,10 @@ export const doctor = (app) => {
 				type: DOCTOR_ENUM,
 			});
 
-			res
-				.status(CREATED_STATUS_CODE)
-				.json({ message: 'Doctor created!', newDoctor });
+			res.status(CREATED_STATUS_CODE).json({
+				message: 'Doctor created!',
+				newDoctor,
+			});
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}
@@ -153,7 +155,7 @@ export const doctor = (app) => {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
 	});
-	
+
 	app.get('/appointments', async (req, res) => {
 		try {
 			const allAppointments = await service.getAllAppointments();
@@ -189,7 +191,6 @@ export const doctor = (app) => {
 	});
 
 	app.get('/doctors/:id/status', async (req, res) => {
-
 		try {
 			const id = req.params.id;
 			if (!isValidMongoId(id))
@@ -207,7 +208,6 @@ export const doctor = (app) => {
 		} catch (error) {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
-
 	});
 	app.post('/doctors/:id/status', async (req, res) => {
 		try {
@@ -231,8 +231,7 @@ export const doctor = (app) => {
 		} catch (error) {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
-	}
-	);
+	});
 
 	app.get('/doctors/:id/name', async (req, res) => {
 		try {
@@ -257,7 +256,7 @@ export const doctor = (app) => {
 	app.post('/doctors/:id/slots', async (req, res) => {
 		try {
 			const id = req.params.id;
-			const from = req.body.from;	// Date
+			const from = req.body.from; // Date
 			console.log('from' + ' ' + from);
 			if (!isValidMongoId(id))
 				return res
@@ -274,8 +273,7 @@ export const doctor = (app) => {
 		} catch (error) {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
-	}
-	);
+	});
 
 	app.get('/doctors/:id/slots', async (req, res) => {
 		try {
@@ -295,6 +293,5 @@ export const doctor = (app) => {
 		} catch (error) {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
-	}
-	);
+	});
 };
