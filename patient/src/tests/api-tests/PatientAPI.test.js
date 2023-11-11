@@ -2,15 +2,11 @@ import request from 'supertest';
 import app from '../../../app.js';
 import { connectDBTest, disconnectDBTest } from '../../utils/testing-utils.js';
 import {
-    connectDBTest,
-    disconnectDBTest
-} from '../../utils/testing-utils.js';
-import {
-    OK_STATUS_CODE,
-    NOT_FOUND_STATUS_CODE,
-    ERROR_STATUS_CODE,
-    TIME_OUT,
-    ZERO_INDEX
+	OK_STATUS_CODE,
+	NOT_FOUND_STATUS_CODE,
+	ERROR_STATUS_CODE,
+	TIME_OUT,
+	ZERO_INDEX
 } from '../../utils/Constants.js';
 
 import PrescriptionModel from '../../database/models/Prescription.js';

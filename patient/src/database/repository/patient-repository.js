@@ -14,7 +14,7 @@ class PatientRepository {
 	}
 
 	async findPatientById(id) {
-		const patient = await PatientModel.findById(id);
+		const patient = await PatientModel.findById(id, ' -password');
 		return patient;
 	}
 
@@ -35,10 +35,6 @@ class PatientRepository {
 				{ mobileNumber: attributes.mobileNumber },
 			],
 		});
-	}
-
-	async findPatientById(PatientId) {
-		return await PatientModel.findOne({ _id: PatientId }, '-password -healthrecords -familyMembers');
 	}
 
 	async addFamilyMember(id, familyMembers) {
