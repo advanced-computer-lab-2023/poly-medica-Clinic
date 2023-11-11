@@ -25,7 +25,8 @@ const icons = {
     IconPrescription,
     IconRegistered,
     AccountBoxIcon,
-    IconCalendarTime
+    IconCalendarTime,
+    Wallet
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
