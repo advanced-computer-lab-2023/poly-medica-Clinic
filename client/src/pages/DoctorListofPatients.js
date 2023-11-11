@@ -29,9 +29,9 @@ const Patients = () => {
         clinicAxios.get(`/appointments/${id}`).then((response) => {
             setAppointments(response.data);
         }).catch(err => console.log(err.message));
-        fetch('http://localhost:8001/doctors/' + id + '/patients')
-            .then((response) => response.json())
-            .then((data) => {
+        clinicAxios.get('/doctors/' + id + '/patients')
+            .then((response) => {
+                const data = response.data;
                 setPatients(data.finalListOFPatients);
                 setOriginalPatients(data.finalListOFPatients);
                 updateFilter([{

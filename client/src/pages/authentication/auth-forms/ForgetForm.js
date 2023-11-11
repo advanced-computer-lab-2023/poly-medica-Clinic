@@ -7,7 +7,7 @@ import {
 	Stack,
 	TextField,
 } from '@mui/material';
-import { AuthenticationAxios } from 'utils/AxiosConfig';
+import { authenticationAxios } from 'utils/AxiosConfig';
 // project imports
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import Swal from 'sweetalert2';
@@ -23,7 +23,7 @@ const ForgetForm = () => {
 		e.preventDefault();
 		setIsSubmitting(true);
 		const postData = { 'email': email };
-		const response = await AuthenticationAxios.post('/reset-password', postData);		
+		const response = await authenticationAxios.post('/reset-password', postData);		
 		if(response.status === 200){
 			Swal.fire({
                 icon: 'success',

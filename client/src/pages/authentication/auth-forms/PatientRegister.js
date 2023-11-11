@@ -15,7 +15,7 @@ import {
 	Typography,
 	useMediaQuery
 } from '@mui/material';
-import { AuthenticationAxios } from 'utils/AxiosConfig';
+import { authenticationAxios } from 'utils/AxiosConfig';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import { DatePicker } from '@mui/x-date-pickers';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
@@ -83,7 +83,7 @@ const FirebaseRegister = () => {
 		e.preventDefault();
 		setIsSubmitting(true);
 		const sendData = { type: 'patient' ,name: name, email: email, password: password, userName: userName, dateOfBirth: selectedDate, gender: selectedGender, mobileNumber: mobileNumber, emergencyContact: { name: emergencyFullName, mobile: emergencyMobileNumber, relation: selectedRelation } };
-		const response = await AuthenticationAxios.post('/signup/clinic', sendData);
+		const response = await authenticationAxios.post('/signup/clinic', sendData);
 		const data = response.data;
 		console.log({ response , data });
 		if(response.status === 200){		

@@ -1,8 +1,8 @@
 import { TextField, MenuItem, Button, IconButton } from '@mui/material';
 import { useState } from 'react';
 import MainCard from 'ui-component/cards/MainCard';
-import axios from 'axios';
 import CloseIcon from '@mui/icons-material/Close';
+import { patientAxios } from '../utils/AxiosConfig';
 
 const genders = ['Male', 'Female'];
 const relations = ['Husband', 'Wife', 'Child'];
@@ -18,8 +18,8 @@ const AddFamilyMember = ({ setIsAddingMember, setFamilyMembers }) => {
         e.preventDefault();
         const Gen = gender.toUpperCase(),
             Rel = relation.toUpperCase();
-        axios
-            .patch('http://localhost:8002/family-members/' + userId, {
+        patientAxios
+            .patch('/family-members/' + userId, {
                 name,
                 nationalId,
                 age,
