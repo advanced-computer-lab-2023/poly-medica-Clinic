@@ -28,7 +28,6 @@ const Doctor = mongoose.Schema({
 	},
 	documentsNames: {
 		type: [String],
-		required: true,
 	},
 });
 
