@@ -41,3 +41,6 @@ export const FAMILY_MEMBERS_PROJECTION = 'familyMembers';
 export const PATIENT_PROJECTION = '-password';
 
 export const ZERO = 0;
+
+export const ZERO_INDEX = 0;
+
