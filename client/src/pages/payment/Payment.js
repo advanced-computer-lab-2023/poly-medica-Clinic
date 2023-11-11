@@ -5,8 +5,8 @@ import { paymentAxios } from '../../utils/AxiosConfig';
 import CheckoutForm from './Checkout';
 import MainCard from '../../ui-component/cards/MainCard';
 import { useLocation } from 'react-router-dom';
-
-const stripePromise = loadStripe('pk_test_51O42p1LtBZHl10napsQI3fM0sBwi0QLCZJc7k8wpLLfbGVnpf8QcQvBUkNiNVL6TGkqMzL5bADebhcTdZhKDNiqv00ESfjq69z');
+import { PUBLIC_KEY } from '../../utils/Constants';
+const stripePromise = loadStripe(PUBLIC_KEY);
 
 export default function App() {
   const [clientSecret, setClientSecret] = useState('');

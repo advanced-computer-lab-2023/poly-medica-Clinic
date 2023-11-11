@@ -19,3 +19,5 @@ export const PATIENT_TYPE_ENUM = 'patient';
 export const DOCTOR_TYPE_ENUM = 'doctor';
 
 export const ADMIN_TYPE_ENUM = 'admin';
+
+export const PUBLIC_KEY = 'pk_test_51O42p1LtBZHl10napsQI3fM0sBwi0QLCZJc7k8wpLLfbGVnpf8QcQvBUkNiNVL6TGkqMzL5bADebhcTdZhKDNiqv00ESfjq69z';

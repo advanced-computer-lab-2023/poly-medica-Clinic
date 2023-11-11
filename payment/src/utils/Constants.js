@@ -18,3 +18,5 @@ export const CLIENT_BASE_URL = 'http://localhost:3000';
 
 export const CREATED_STATUS_CODE = 201;
 export const UNAUTHORIZED_STATUS_CODE = 401;
+
+export const SECRET_KEY = 'sk_test_51O42p1LtBZHl10nadD0az9nHXUqknNUgso0DR5mQ45NxR1lMxGy0zbcTzPWedSOXeTwG7xlAqm309wE1KV0kOvoJ00LrXdt0FT';

@@ -1,13 +1,14 @@
 import Stripe from 'stripe';
 import axios from 'axios';
-const stripe = new Stripe('sk_test_51O42p1LtBZHl10nadD0az9nHXUqknNUgso0DR5mQ45NxR1lMxGy0zbcTzPWedSOXeTwG7xlAqm309wE1KV0kOvoJ00LrXdt0FT');
+
 import {
 	OK_STATUS_CODE,
 	ERROR_STATUS_CODE,
     PATIENTS_BASE_URL,
-    BAD_REQUEST_CODE_400
+    BAD_REQUEST_CODE_400,
+    SECRET_KEY
 } from '../utils/Constants.js';
-
+const stripe = new Stripe(SECRET_KEY);
 
 export const payment = (app) => {
 
