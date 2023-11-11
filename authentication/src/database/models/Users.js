@@ -32,7 +32,6 @@ userSchema.statics.signup = async function (
 	password,
 	userName,
 	type,
-	state,
 ) {
 	const userRecord = new this({
 		userId: new mongoose.Types.ObjectId(userId),
@@ -40,7 +39,6 @@ userSchema.statics.signup = async function (
 		password,
 		userName,
 		type,
-		state,
 	});
 	const result = await userRecord.save();
 	return result;

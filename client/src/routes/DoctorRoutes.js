@@ -5,6 +5,7 @@ import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
 import FamilyMembers from 'pages/family-member/FamilyMembers.js';
 import { DOCTOR_TYPE_ENUM } from 'utils/Constants';
+ 
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
@@ -24,6 +25,9 @@ const LazyPackages = Loadable(
 const LazyClinicDoctors = Loadable(lazy(() => import('pages/Doctors/Doctors')));
 const LazyAppointments = Loadable(
     lazy(() => import('pages/Appointment/Appointment'))
+);
+const LazyAddAvailableSlots = Loadable(
+    lazy(() => import('pages/DoctorAddAvailableSlots/AddAvailableSlots'))
 );
 
 const LazyDoctorContract = Loadable(
@@ -115,11 +119,16 @@ const DoctorRoutes = {
                 },
 
                 {
-                    path: 'My Patients',
+                    path:'add-available-slots',
+                    element: <LazyAddAvailableSlots />,
+                },
+                {
+
+                    path: 'my-patients',
                     element: <lazyDoctorListofPatients />,
                 },
                 {
-                    path: 'Contract',
+                    path: 'contract',
                     element: <LazyDoctorContract />,
                 },
             ],
