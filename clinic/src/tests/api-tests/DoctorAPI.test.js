@@ -7,8 +7,7 @@ import {
 	ERROR_STATUS_CODE,
 	SIXTY,
 	THOUSAND,
-	ONE,
-	ZERO_INDEX,
+	TIME_OUT,
 } from '../../utils/Constants.js';
 
 import DoctorModel from '../../database/models/Doctor.js';
@@ -27,10 +26,7 @@ import {
 import { faker } from '@faker-js/faker';
 import axios from 'axios';
 jest.mock('axios');
-
-const SECONDS = 1000;
-jest.setTimeout(SIXTY * SECONDS);
-
+jest.setTimeout(TIME_OUT);
 describe('GET /doctor/:id', () => {
 	beforeEach(async () => {
 		await connectDBTest();
@@ -76,14 +72,14 @@ describe('GET /doctors/:id/patients', () => {
 			const patientId = faker.database.mongodbObjectId();
 			patients.push(patientId);
 			const appointment = new AppointmentModel(
-				generateAppointment(patientId, firstDoctor._id),
+				generateAppointment(patientId, firstDoctor._id)
 			);
 			await appointment.save();
 		}
 		const patientId = faker.database.mongodbObjectId();
 		patients.push(patientId);
 		const appointment = new AppointmentModel(
-			generateAppointment(patientId, secondDoctor._id),
+			generateAppointment(patientId, secondDoctor._id)
 		);
 		await appointment.save();
 
@@ -98,7 +94,9 @@ describe('GET /doctors/:id/patients', () => {
 		};
 
 		axios.get.mockResolvedValue(axiosResponse);
-		const res = await request(app).get(`/doctors/${firstDoctor._id}/patients`);
+		const res = await request(app).get(
+			`/doctors/${firstDoctor._id}/patients`
+		);
 		expect(res.status).toBe(OK_STATUS_CODE);
 		const retrievedPatientsIds = [];
 		res._body.finalListOFPatients.forEach((patient) => {
@@ -299,7 +297,7 @@ describe('GET /appointments', () => {
 		for (let i = 0; i < len; i++) {
 			const patientId = faker.database.mongodbObjectId();
 			const appointment = new AppointmentModel(
-				generateAppointment(patientId, firstDoctor._id),
+				generateAppointment(patientId, firstDoctor._id)
 			);
 			await appointment.save();
 			appointments.push(appointment);
@@ -311,7 +309,7 @@ describe('GET /appointments', () => {
 		expect(res._body.allAppointments.length).toBe(len);
 		for (let i = 0; i < len; i++) {
 			expect(res._body.allAppointments[i]._id).toBe(
-				appointments[i]._id.toString(),
+				appointments[i]._id.toString()
 			);
 		}
 	});
@@ -393,10 +391,10 @@ describe('GET /doctors/:id/slots', () => {
 
 		for (let i = 0; i < doctor.availableSlots.length; i++) {
 			expect(new Date(res._body[i].from)).toStrictEqual(
-				doctor.availableSlots[i].from,
+				doctor.availableSlots[i].from
 			);
 			expect(new Date(res._body[i].until)).toStrictEqual(
-				doctor.availableSlots[i].until,
+				doctor.availableSlots[i].until
 			);
 		}
 	});
@@ -432,23 +430,25 @@ describe('POST /doctors/:id/slots', () => {
 
 		await doctor.save();
 		const id = doctor._id.toString();
-		const res = await request(app).post(`/doctors/${id}/slots`).send({ from });
+		const res = await request(app)
+			.post(`/doctors/${id}/slots`)
+			.send({ from });
 		expect(res.status).toBe(OK_STATUS_CODE);
 
 		console.log('dsdsddsds', res._body);
 		for (let i = 0; i < doctor.availableSlots.length; i++) {
 			expect(new Date(res._body[i].from)).toStrictEqual(
-				doctor.availableSlots[i].from,
+				doctor.availableSlots[i].from
 			);
 			expect(new Date(res._body[i].until)).toStrictEqual(
-				doctor.availableSlots[i].until,
+				doctor.availableSlots[i].until
 			);
 		}
 		expect(
-			new Date(res._body[doctor.availableSlots.length].from),
+			new Date(res._body[doctor.availableSlots.length].from)
 		).toStrictEqual(from);
 		expect(
-			new Date(res._body[doctor.availableSlots.length].until),
+			new Date(res._body[doctor.availableSlots.length].until)
 		).toStrictEqual(until);
 	});
 
@@ -470,29 +470,59 @@ describe('POST /doctors/:id/slots', () => {
 });
 
 describe('GET /doctors', () => {
-	const getDoctors = async () => {
-		const response = await request(app).get('/doctors');
-		return response;
-	};
 
 	beforeEach(async () => {
 		await connectDBTest();
 	});
 
-	it('should return 200 upon getting all doctors', async () => {
-		const doctor = await DoctorModel(generateDoctor()).save();
-		const response = await getDoctors();
-
-		expect(response.status).toBe(OK_STATUS_CODE);
-		console.log(doctor.userName, 'userName');
-		expect(response.body.length).toBe(ONE);
-		expect(response.body[ZERO_INDEX].userData.userName).toBe(doctor.userData.userName);
+	it('should return 200 OK and retrieve all doctors correctly', async () => {
+		const len = faker.number.int({ min: 5, max: 10 });
+		for (let i = 0; i < len; i++) {
+			const doctor = new DoctorModel(generateDoctor());
+			await doctor.save();
+		}
+		const res = await request(app).get('/doctors');
+		expect(res.status).toBe(OK_STATUS_CODE);
+		expect(res._body.length).toBe(len);
 	});
-
 	afterEach(async () => {
 		await disconnectDBTest();
 	});
 });
+
+describe('GET /doctors/:id/wallet', () => {
+
+	beforeEach(async () => {
+		await connectDBTest();
+	});
+	it('should return 200 OK and retrieve the wallet correctly', async () => {
+		const doctor = new DoctorModel(generateDoctor());
+		await doctor.save();
+		const id = doctor._id.toString();
+		const res = await request(app).get(`/doctors/${id}/wallet`);
+		expect(res.status).toBe(OK_STATUS_CODE);
+		expect(res._body.wallet).toBe(doctor.wallet);
+	});
+
+	it('should return 404 NOT FOUND when the doctor is not found', async () => {
+		const id = faker.database.mongodbObjectId();
+		const res = await request(app).get(`/doctors/${id}/wallet`);
+		expect(res.status).toBe(NOT_FOUND_STATUS_CODE);
+	});
+
+	it('should return 500 ERROR when the id is invalid', async () => {
+		const id = faker.lorem.word();
+		const res = await request(app).get(`/doctors/${id}/wallet`);
+		expect(res.status).toBe(ERROR_STATUS_CODE);
+	}
+	);
+
+
+	afterEach(async () => {
+		await disconnectDBTest();
+	});
+}
+);
 
 describe('DELETE /doctors/:id', () => {
 	const deleteDoctor = async (id) => {
@@ -532,3 +562,4 @@ describe('DELETE /doctors/:id', () => {
 		await disconnectDBTest();
 	});
 });
+

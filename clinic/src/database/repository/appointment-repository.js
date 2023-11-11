@@ -5,8 +5,11 @@ import { ONE } from '../../utils/Constants.js';
 class AppointmentRepository {
 	async findAppointmentsByUserId(id) {
 		const appointments = await AppointmentModel.find({});
-		return appointments.filter((appointment) =>
-			appointment.patientId.toString() === id.toString() || appointment.doctorId.toString() === id.toString()
+		console.log(appointments);
+		return appointments.filter(
+			(appointment) =>
+				appointment.patientId.toString() === id.toString() ||
+                appointment.doctorId.toString() === id.toString()
 		);
 	}
 

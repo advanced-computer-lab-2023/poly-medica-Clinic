@@ -51,6 +51,7 @@ export const doctor = (app) => {
 			});
 		}
 	});
+
 	app.get('/doctor/:id', async (req, res) => {
 		try {
 			const id = req.params.id;
@@ -91,9 +92,10 @@ export const doctor = (app) => {
 				type: DOCTOR_ENUM,
 			});
 
-			res
-				.status(CREATED_STATUS_CODE)
-				.json({ message: 'Doctor created!', newDoctor });
+			res.status(CREATED_STATUS_CODE).json({
+				message: 'Doctor created!',
+				newDoctor,
+			});
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}
@@ -272,6 +274,21 @@ export const doctor = (app) => {
 			}
 		} catch (error) {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
+		}
+	});
+
+	app.get('/doctors/:id/wallet', async (req, res) => {
+		try {
+			const id = req.params.id;
+			if (!isValidMongoId(id))
+				return res
+					.status(ERROR_STATUS_CODE)
+					.json({ message: 'Invalid ID' });
+			const walletAmount = await service.getWalletAmount(id);
+
+			res.status(OK_STATUS_CODE).json({ walletAmount });
+		} catch (error) {
+			res.status(NOT_FOUND_STATUS_CODE).json({ message: error });
 		}
 	});
 };
