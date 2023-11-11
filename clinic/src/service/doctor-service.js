@@ -15,9 +15,14 @@ class DoctorService {
 		return doctorUser;
 	}
 
-	async addReqDoctor(req) {
-		const doctorUser = await this.repository.addDoctorReq(req);
+	async addReqDoctor(data) {
+		const doctorUser = await this.repository.addDoctorReq(data);
 		return doctorUser;
+	}
+
+	async getDoctorRequestById(id) {
+		const doctorRequest = await this.repository.findDoctorRequestById(id);
+		return doctorRequest;
 	}
 
 	async deleteDoctorRequest(id) {
@@ -60,6 +65,19 @@ class DoctorService {
 
 	async checkDoctorReqUser(req) {
 		await this.repository.checkDoctorReqUser(req);
+	}
+
+	getFile(fileName) {
+		return this.repository.getFile(fileName);
+	}
+
+	deleteFile(fileName) {
+		return this.repository.deleteFile(fileName);
+	}
+
+	async addSlot(id, from) {
+		const doctor = await this.repository.addSlot(id, from);
+		return doctor;
 	}
 }
 

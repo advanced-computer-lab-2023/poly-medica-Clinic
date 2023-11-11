@@ -9,8 +9,11 @@ import {
 	DUPLICATE_KEY_ERROR_CODE,
 	BAD_REQUEST_CODE_400,
 	PATIENT_ENUM,
-	ZERO_INDEX
-} from '../utils/Constants.js'; 
+	ZERO_INDEX,
+	INF,
+} from '../utils/Constants.js';
+
+import { calcAge } from '../utils/Patient-utils.js';
 
 export const patient = (app) => {
 	const service = new PatientService();
@@ -23,6 +26,27 @@ export const patient = (app) => {
 			} else {
 				res.status(NOT_FOUND_STATUS_CODE).json({
 					message: 'No patients found!',
+				});
+			}
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({ err: err.message });
+		}
+	});
+
+	app.get('/patients/:id', async (req, res) => {
+		const { id } = req.params;
+		if (!isValidMongoId(id)) {
+			return res
+				.status(ERROR_STATUS_CODE)
+				.json({ message: 'Invalid ID' });
+		}
+		try {
+			const patient = await service.getPatientById(id);
+			if (patient) {
+				res.status(OK_STATUS_CODE).json({ patient });
+			} else {
+				res.status(NOT_FOUND_STATUS_CODE).json({
+					message: 'patient not found!',
 				});
 			}
 		} catch (err) {
@@ -71,14 +95,20 @@ export const patient = (app) => {
 		const { id } = req.params;
 		if (!isValidMongoId(id)) {
 			return res
-				.status(NOT_FOUND_STATUS_CODE)
+				.status(ERROR_STATUS_CODE)
 				.json({ message: 'Invalid ID' });
 		}
 		try {
 			const data = await service.getFamilyMembers(id);
-			res.status(OK_STATUS_CODE).json(data);
+			if (data) {
+				res.status(OK_STATUS_CODE).json(data);
+			} else {
+				res.status(NOT_FOUND_STATUS_CODE).json({
+					message: 'family members not found',
+				});
+			}
 		} catch (err) {
-			res.status(NOT_FOUND_STATUS_CODE).json({
+			res.status(ERROR_STATUS_CODE).json({
 				message: 'family members not found',
 			});
 		}
@@ -87,28 +117,29 @@ export const patient = (app) => {
 	app.patch('/family-members/:id', async (req, res) => {
 		const { id } = req.params;
 		if (!isValidMongoId(id)) {
-			return res.status(NOT_FOUND_STATUS_CODE).json({
+			return res.status(ERROR_STATUS_CODE).json({
 				message: 'Invalid ID',
 			});
 		}
 		try {
-			const { name, userName, nationalId, age, gender, relation } =
-                req.body;
-			const patient = await service.getPatientByUserName(userName);
-			if (patient) {
-				const data = await service.getFamilyMembers(id);
-				console.log('Data = ', data);
-				const newFamilyMem = [
-					{ name, userName, nationalId, age, gender, relation },
-					...data.familyMembers,
-				];
-				const newData = await service.addFamilyMember(id, newFamilyMem);
-				res.status(OK_STATUS_CODE).json(newData);
-			} else {
-				res.status(NOT_FOUND_STATUS_CODE).json({
-					message: 'username not found',
-				});
+			const { member } = req.body;
+			if (member.email || member.mobileNumber) {
+				const patient = await service.getPatient(member);
+				if (!patient) {
+					res.status(NOT_FOUND_STATUS_CODE).json({
+						message: 'family member is not registered',
+					});
+				}
+				member.id = patient._id;
+				member.name = patient.name;
+				member.gender = patient.gender;
+				member.age = calcAge(patient.dateOfBirth);
+				member.nationalId = Math.ceil(parseInt(patient._id, 16) / INF);
 			}
+			const data = await service.getFamilyMembers(id);
+			const newFamilyMem = [member, ...data.familyMembers];
+			const newData = await service.addFamilyMember(id, newFamilyMem);
+			res.status(OK_STATUS_CODE).json(newData);
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({
 				message: err.message,
@@ -167,17 +198,76 @@ export const patient = (app) => {
 	);
 
 	app.post('/signup', async (req, res) => {
-		try{
+		try {
 			const signedupUser = await service.signupUser(req);
-			req.body = { userId: signedupUser._id ,email: signedupUser.email , password:signedupUser.password, userName:signedupUser.userName, type: PATIENT_ENUM };
+			req.body = {
+				userId: signedupUser._id,
+				email: signedupUser.email,
+				password: signedupUser.password,
+				userName: signedupUser.userName,
+				type: PATIENT_ENUM,
+			};
 			res.send(req.body);
-		} catch(err){
-			if(err.code == DUPLICATE_KEY_ERROR_CODE){
-				const duplicateKeyAttrb = Object.keys(err.keyPattern)[ZERO_INDEX];
+		} catch (err) {
+			if (err.code == DUPLICATE_KEY_ERROR_CODE) {
+				const duplicateKeyAttrb = Object.keys(err.keyPattern)[
+					ZERO_INDEX
+				];
 				console.log(duplicateKeyAttrb);
-				res.status(BAD_REQUEST_CODE_400).send({ errCode:DUPLICATE_KEY_ERROR_CODE ,errMessage:`that ${duplicateKeyAttrb} is already registered` });
-			}
-			else res.status(BAD_REQUEST_CODE_400).send({ errMessage: err.message });
+				res.status(BAD_REQUEST_CODE_400).send({
+					errCode: DUPLICATE_KEY_ERROR_CODE,
+					errMessage: `that ${duplicateKeyAttrb} is already registered`,
+				});
+			} else
+				res.status(BAD_REQUEST_CODE_400).send({
+					errMessage: err.message,
+				});
+		}
+	});
+
+	app.get('/address/:pateintId', async (req, res) => {
+		const { pateintId } = req.params;
+		if (!isValidMongoId(pateintId)) {
+			return res.status(ERROR_STATUS_CODE).json({
+				message: 'Patient ID is invalid',
+			});
+		}
+		try {
+			const data = await service.getAddresses(pateintId);
+			if (data) res.status(OK_STATUS_CODE).json(data);
+			else
+				res.status(NOT_FOUND_STATUS_CODE).json({
+					message: 'addresses not found',
+				});
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({
+				message: 'error occurred while fetching addresses',
+			});
+		}
+	});
+
+	app.patch('/address/:pateintId', async (req, res) => {
+		const { pateintId } = req.params;
+		if (!isValidMongoId(pateintId)) {
+			return res.status(ERROR_STATUS_CODE).json({
+				message: 'Patient ID is invalid',
+			});
+		}
+		try {
+			const { deliveryAddresses } = req.body;
+			const data = await service.updateAddress(
+				pateintId,
+				deliveryAddresses
+			);
+			if (data) res.status(OK_STATUS_CODE).json(data);
+			else
+				res.status(NOT_FOUND_STATUS_CODE).json({
+					message: 'addresses not found',
+				});
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({
+				message: 'error occurred while updating addresses',
+			});
 		}
 	});
 };

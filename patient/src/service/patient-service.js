@@ -10,9 +10,19 @@ class PatientService {
 		return user;
 	}
 
+	async findPatient(patientId){
+		const patient = await this.repository.findPatientById(patientId);
+		return patient;
+	}
+
 	async findAllPatients() {
 		const patients = await this.repository.findAllPatients();
 		return patients;
+	}
+
+	async getPatientById(patientId) {
+		const patient = await this.repository.findPatientById(patientId);
+		return patient;
 	}
 
 	async createPatient(patient) {
@@ -30,8 +40,8 @@ class PatientService {
 		return familyMembers;
 	}
 
-	async getPatientByUserName(userName) {
-		const patient = await this.repository.findPatientByUserName(userName);
+	async getPatient(attributes) {
+		const patient = await this.repository.findRegeisteredFamilyMember(attributes);
 		return patient;
 	}
 
@@ -52,11 +62,39 @@ class PatientService {
 
 	async getPrescription(patientId, prescriptionId) {
 		const prescription = await this.repository.findPrescriptionById(
-			prescriptionId,
+			prescriptionId
 		);
 		if (prescription && prescription.patientId.valueOf() == patientId)
 			return prescription;
 		return null;
+	}
+
+	async getAddresses(id) {
+		const addresses = await this.repository.findPatientAddresses(id);
+		return addresses;
+	}
+
+	async updateAddress(id, address) {
+		const updatedAddresses = await this.repository.updatePatientAddress(
+			id,
+			address
+		);
+		return updatedAddresses;
+	}
+
+	async getOrders(id) {
+		const orders = await this.repository.findOrders(id);
+		return orders;
+	}
+
+	async addOrder(order) {
+		const orders = await this.repository.addOrder(order);
+		return orders;
+	}
+
+	async updateOrder(order) {
+		const orders = await this.repository.updateOrder(order);
+		return orders;
 	}
 }
 

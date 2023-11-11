@@ -37,6 +37,7 @@ const patientSchema = mongoose.Schema({
 	mobileNumber: {
 		type: String,
 		required: true,
+		unique: true,
 	},
 	emergencyContact: {
 		name: {
@@ -55,29 +56,28 @@ const patientSchema = mongoose.Schema({
 	},
 	familyMembers: [
 		{
+			id: {
+				type: mongoose.Schema.Types.ObjectId,
+				// ref: 'Patient',
+				// required: true	
+			},
 			name: {
 				type: String,
-				required: true,
 			},
 			nationalId: {
 				type: String,
-				required: true,
-				unique: true,
 				sparse: true,
 			},
 			age: {
 				type: Number,
-				required: true,
 			},
 			gender: {
 				type: String,
 				enum: GENDERS,
-				required: true,
 			},
 			relation: {
 				type: String,
 				enum: FAMILY_RELATIONS,
-				required: true,
 			},
 		},
 	],
@@ -94,6 +94,30 @@ const patientSchema = mongoose.Schema({
 			healthIssueDescription: {
 				type: String,
 				required: true,
+			},
+		},
+	],
+	deliveryAddresses: [
+		{
+			city: {
+				type: String,
+				required: true,
+			},
+			street: {
+				type: String,
+				required: true,
+			},
+			buildingName: {
+				type: String,
+				required: true,
+			},
+			phoneNumber: {
+				type: String,
+				required: true,
+			},
+			primary: {
+				type: Boolean,
+				default: false,
 			},
 		},
 	],

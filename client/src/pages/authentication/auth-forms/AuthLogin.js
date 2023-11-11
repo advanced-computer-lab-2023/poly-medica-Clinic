@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
 	Box,
 	Button,
@@ -8,13 +8,12 @@ import {
 	TextField,
 	Typography,
 } from '@mui/material';
-import { useUserContext } from 'hooks/useUserContext';
+import { useUserContext } from '../../../hooks/useUserContext';
 import { useNavigate } from 'react-router-dom';
-import axiosInstanceAuthSer from 'utils/api/axiosInstanceAuthSer';
-
 // project imports
-import AnimateButton from 'ui-component/extended/AnimateButton';
+import AnimateButton from '../../../ui-component/extended/AnimateButton';
 import Swal from 'sweetalert2';
+import { AuthenticationAxios } from '../../../utils/AxiosConfig';
 
 
 // ============================|| FIREBASE - LOGIN ||============================ //
@@ -30,11 +29,14 @@ const FirebaseLogin = () => {
 		e.preventDefault();
 		setIsSubmitting(true);
 		const postData = { 'userName': userName, 'password': password };
-		const response = await axiosInstanceAuthSer.post('/login/clinic', postData);
+		const response = await AuthenticationAxios.post('/login/clinic', postData);
 		const data = response.data;		
 		if(response.status === 200){
 			dispatch({ auth: true, payload:data });
-			navigate(`/${data.type}`);
+			if(data.reset)
+				navigate(`/${data.type}/pages/profile`);
+			else
+					navigate(`/${data.type}`);
 			setIsSubmitting(false);
 		} else{
 			Swal.fire({
@@ -63,6 +65,7 @@ const FirebaseLogin = () => {
 							label="username"
 							value={userName}
 							onChange={e => setUserName(e.target.value)}
+							title='AuthLoginTextFieldUserName'
 							/>
 						</FormControl>
 
@@ -73,16 +76,17 @@ const FirebaseLogin = () => {
 							value={password}
 							required
 							onChange={e => setPassword(e.target.value)}
+							title='AuthLoginTextFieldPassword'
 							/>
 						</FormControl>
 						<Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-							<Typography variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
-                Forgot Password?
+							<Typography data-testid="AuthLoginTypographyForgotPassword" Button onClick={ () => { navigate('/login/reset-password'); } } variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
+								Forgot Password?
 							</Typography>
 						</Stack>
 						<Box sx={{ mt: 2 }}>
 							<AnimateButton>
-								<Button disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">
+								<Button title='AuthLoginButtonSignIn' disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">
                   Sign in
 								</Button>
 							</AnimateButton>

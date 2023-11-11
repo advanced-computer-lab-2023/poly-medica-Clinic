@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import UserSchema from './UserSchema.js';
-
+ 
 const Doctor = mongoose.Schema({
 	userData: {
 		type: UserSchema,
@@ -22,9 +22,19 @@ const Doctor = mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	
 	availableSlots: {
 		type: Array,
-		default: [],
+		default: [
+			{
+				from: new Date(),
+				until: new Date()
+			},
+		],
+		
+	},
+	documentsNames: {
+		type: [String],
 	},
 	status:{
 		type: Boolean,
@@ -32,13 +42,15 @@ const Doctor = mongoose.Schema({
 		
 	}
 });
+ 
 
 Doctor.statics.addUser = async function (
 	userData,
 	speciality,
 	hourlyRate,
 	affiliation,
-	educationalBackground
+	educationalBackground,
+	documentsNames,
 ) {
 	const newRecord = new this({
 		userData,
@@ -46,6 +58,7 @@ Doctor.statics.addUser = async function (
 		hourlyRate,
 		affiliation,
 		educationalBackground,
+		documentsNames,
 	});
 	const user = await newRecord.save();
 	return user;

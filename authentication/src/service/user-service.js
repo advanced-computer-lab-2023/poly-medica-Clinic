@@ -30,6 +30,11 @@ class UserService {
 		const user = await this.repository.deleteUser(userId);
 		return user;
 	}
+
+	async updatePassword(userId, password){
+		const user  = await this.repository.updatePassword(userId, password);
+		return user;
+	}
 }
 
 export default UserService;

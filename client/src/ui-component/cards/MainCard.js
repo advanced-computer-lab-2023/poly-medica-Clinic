@@ -1,5 +1,4 @@
-import PropTypes from 'prop-types';
-import { forwardRef } from 'react';
+import React, { forwardRef } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -63,18 +62,5 @@ const MainCard = forwardRef(
 	}
 );
 
-MainCard.propTypes = {
-	border: PropTypes.bool,
-	boxShadow: PropTypes.bool,
-	children: PropTypes.node,
-	content: PropTypes.bool,
-	contentClass: PropTypes.string,
-	contentSX: PropTypes.object,
-	darkTitle: PropTypes.bool,
-	secondary: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object]),
-	shadow: PropTypes.string,
-	sx: PropTypes.object,
-	title: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object])
-};
 
 export default MainCard;
