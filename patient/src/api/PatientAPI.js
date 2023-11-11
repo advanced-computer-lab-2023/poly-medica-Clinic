@@ -11,7 +11,8 @@ import {
 	PATIENT_ENUM,
 	PATIENT_FOLDER_NAME,
 	ZERO_INDEX,
-	INF
+	INF,
+	ZERO
 } from '../utils/Constants.js';
 
 import { calcAge } from '../utils/Patient-utils.js';
@@ -204,19 +205,19 @@ export const patient = (app) => {
 			const { id } = req.params;
 			const patient = await service.findPatientById(id);
 			const patients = await service.findAllPatients();
-			let maxDiscount = 0;
+			let maxDiscount = ZERO;
 
-			for (let i = 0; i < patients.length; i++) {
+			for (let i = ZERO; i < patients.length; i++) {
 				const systemPatient = patients[i];
-				for (let j = 0; j < systemPatient.familyMembers.length; j++) {
+				for (let j = ZERO; j < systemPatient.familyMembers.length; j++) {
 					const familyMember = systemPatient.familyMembers[j];
 					if (
 						(familyMember.email && familyMember.email.toString() === patient.email.toString()) ||
 						(familyMember.mobileNumber && familyMember.mobileNumber.toString() === patient.mobileNumber.toString())
 					) {
 						const healthPackage = await service.viewHealthPackages(systemPatient._id);
-						if (healthPackage[0]) {
-							maxDiscount = Math.max(healthPackage[0].familyDiscount, maxDiscount);
+						if (healthPackage[ZERO]) {
+							maxDiscount = Math.max(healthPackage[ZERO].familyDiscount, maxDiscount);
 						}
 					}
 				}

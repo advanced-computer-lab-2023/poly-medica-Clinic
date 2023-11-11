@@ -9,9 +9,9 @@ import {
     FormControl,
     Typography,
 } from '@mui/material';
-import axios from 'axios';
 import { useState } from 'react';
 import { useUserContext } from 'hooks/useUserContext';
+import { patientAxios } from '../../utils/AxiosConfig';
 import FamilyMemberOptions from './FamilyMemeberOptions';
 
 const genders = ['MALE', 'FEMALE'];
@@ -34,18 +34,8 @@ const AddFamilyMember = ({
         e.preventDefault();
         newMember.gender = newMember.gender.toUpperCase();
         newMember.relation = newMember.relation.toUpperCase();
-        if (
-            value === 'Registered-Family-Member' &&
-            !newMember.email &&
-            !newMember.mobileNumber
-        ) {
-            setError(true);
-            return;
-        }
-        axios
-            .patch('http://localhost:8002/family-members/' + userId, {
-                member: newMember,
-            })
+        patientAxios
+            .patch('/family-members/' + userId, newMember)
             .then((data) => {
                 setIsOpen(false);
                 setFamilyMembers(data.data.familyMembers);
