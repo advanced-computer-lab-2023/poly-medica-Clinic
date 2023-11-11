@@ -57,7 +57,7 @@ const Page = () => {
 					<Stack spacing={3}>
 						<div>
 							<Typography variant="h4">
-              Account
+								Account
 							</Typography>
 						</div>
 						<div>
@@ -117,13 +117,17 @@ const Page = () => {
 									{/* TODO: admin !! */}
 									{/* here will be the gener */}
 								</Grid>
+								<Grid item xs={12}>
+									<MedicalHistory />
+								</Grid>
 							</Grid>
 						</div>
 					</Stack>
 				</Container>
 			</Box>
 		</>
-	);};
+	);
+};
 
 
 export default Page;

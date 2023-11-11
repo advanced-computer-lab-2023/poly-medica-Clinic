@@ -11,13 +11,11 @@ import {
 	useMediaQuery,
 	Input,
 } from '@mui/material';
-import axiosInstanceAuthSer from 'utils/api/axiosInstanceAuthSer';
-
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import { DatePicker } from '@mui/x-date-pickers';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
 import Swal from 'sweetalert2';
-import { clinicAxios } from 'utils/AxiosConfig';
+import { clinicAxios, AuthenticationAxios } from 'utils/AxiosConfig';
 
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
@@ -101,7 +99,7 @@ const FirebaseRegister = ({ type }) => {
 
 		formData.append('sendData', JSON.stringify(sendData));
 
-		const signupResponse = await axiosInstanceAuthSer.post(
+		const signupResponse = await AuthenticationAxios.post(
 			'/signup/clinic',
 			sendData,
 		);

@@ -5,7 +5,7 @@ import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
 import FamilyMembers from 'pages/family-member/FamilyMembers.js';
 import { DOCTOR_TYPE_ENUM } from 'utils/Constants';
- 
+
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
@@ -26,6 +26,7 @@ const LazyClinicDoctors = Loadable(lazy(() => import('pages/Doctors/Doctors')));
 const LazyAppointments = Loadable(
     lazy(() => import('pages/Appointment/Appointment'))
 );
+const LazyWalletAmount = Loadable(lazy(() => import('pages/Wallet/WalletAmount')));
 const LazyAddAvailableSlots = Loadable(
     lazy(() => import('pages/DoctorAddAvailableSlots/AddAvailableSlots'))
 );
@@ -45,11 +46,12 @@ const UtilsShadow = Loadable(lazy(() => import('pages/utilities/Shadow')));
 // sample page routing
 const SamplePage = Loadable(lazy(() => import('pages/sample-page')));
 
+
 // ==============================|| MAIN ROUTING ||============================== //
 
 const DoctorRoutes = {
     path: '/doctor',
-    element: <MainLayout userType={DOCTOR_TYPE_ENUM}/>,
+    element: <MainLayout userType={DOCTOR_TYPE_ENUM} />,
     children: [
         {
             path: 'doctor',
@@ -102,7 +104,7 @@ const DoctorRoutes = {
                 },
                 {
                     path: 'my-patients',
-                    element: <LazyDoctorListofPatients/>
+                    element: <LazyDoctorListofPatients />
                 },
                 {
                     path: 'packages',
@@ -119,13 +121,17 @@ const DoctorRoutes = {
                 },
 
                 {
-                    path:'add-available-slots',
+                    path: 'add-available-slots',
                     element: <LazyAddAvailableSlots />,
                 },
                 {
 
                     path: 'my-patients',
                     element: <lazyDoctorListofPatients />,
+                },
+                {
+                    path: 'wallet',
+                    element: <LazyWalletAmount />
                 },
                 {
                     path: 'contract',

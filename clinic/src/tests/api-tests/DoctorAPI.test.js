@@ -7,6 +7,7 @@ import {
 	ERROR_STATUS_CODE,
 	SIXTY,
 	THOUSAND,
+	TIME_OUT,
 } from '../../utils/Constants.js';
 
 import DoctorModel from '../../database/models/Doctor.js';
@@ -25,7 +26,7 @@ import {
 import { faker } from '@faker-js/faker';
 import axios from 'axios';
 jest.mock('axios');
-
+jest.setTimeout(TIME_OUT);
 describe('GET /doctor/:id', () => {
 	beforeEach(async () => {
 		await connectDBTest();
@@ -488,4 +489,38 @@ describe('GET /doctors', () => {
 		await disconnectDBTest();
 	});
 });
+
+describe('GET /doctors/:id/wallet', () => {
+	
+	beforeEach(async () => {
+		await connectDBTest();
+	});
+	it('should return 200 OK and retrieve the wallet correctly', async () => {
+		const doctor = new DoctorModel(generateDoctor());
+		await doctor.save();
+		const id = doctor._id.toString();
+		const res = await request(app).get(`/doctors/${id}/wallet`);
+		expect(res.status).toBe(OK_STATUS_CODE);
+		expect(res._body.wallet).toBe(doctor.wallet);
+	});
+
+	it('should return 404 NOT FOUND when the doctor is not found', async () => {
+		const id = faker.database.mongodbObjectId();
+		const res = await request(app).get(`/doctors/${id}/wallet`);
+		expect(res.status).toBe(NOT_FOUND_STATUS_CODE);
+	});
+
+	it('should return 500 ERROR when the id is invalid', async () => {
+		const id = faker.lorem.word();
+		const res = await request(app).get(`/doctors/${id}/wallet`);
+		expect(res.status).toBe(ERROR_STATUS_CODE);
+	}
+	);
+
+
+	afterEach(async () => {
+		await disconnectDBTest();
+	});
+}
+);
 
