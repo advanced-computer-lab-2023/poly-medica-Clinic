@@ -1,5 +1,4 @@
 import { useCallback, useState, useEffect } from 'react';
-import axios from 'axios';
 import {
     Box,
     Button,
@@ -14,6 +13,7 @@ import {
 import Swal from 'sweetalert2';
 import { useUserContext } from 'hooks/useUserContext';
 import format from 'date-fns/format';
+import { clinicAxios, patientAxios } from 'utils/AxiosConfig';
 
 export const PatientAccountProfileDetails = () => {
     const [values, setValues] = useState({
@@ -31,9 +31,9 @@ export const PatientAccountProfileDetails = () => {
     const { user } = useUserContext();
     useEffect(() => {
 
-        const getPatientsURL = `http://localhost:8002/patients/${user.id}`;
+        const getPatientsURL = `/patients/${user.id}`;
         
-        axios
+        patientAxios
             .get(getPatientsURL, { withCredentials: true })
             .then((response) => {
                 const patientData = response.data;
@@ -67,10 +67,10 @@ export const PatientAccountProfileDetails = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         setLoading(true);
-        const getPatientsURL = 'http://localhost:8001/doctors/' + user.id;
+        const getPatientsURL = '/doctors/' + user.id;
         // let user;
 
-        axios
+        clinicAxios
             .patch(getPatientsURL, values, { withCredentials: true })
             .then((response) => {
                 const values = response.data.doctor;

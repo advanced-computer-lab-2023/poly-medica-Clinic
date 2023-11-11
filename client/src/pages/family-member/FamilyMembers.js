@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import MainCard from 'ui-component/cards/MainCard';
 import {
     TableContainer,
@@ -15,6 +14,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import AddFamilyMember from './AddFamilyMember';
 import { useUserContext } from 'hooks/useUserContext';
+import { patientAxios } from '../../utils/AxiosConfig';
 const FamilyMembers = () => {
     const [FamilyMembers, setFamilyMembers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -39,8 +39,8 @@ const FamilyMembers = () => {
     const userId = user.id;
     useEffect(() => {
         const fetch = async () => {
-            axios
-                .get('http://localhost:8002/family-members/' + userId)
+            patientAxios
+                .get('/family-members/' + userId)
                 .then((response) => response.data)
                 .then((data) => {
                     setFamilyMembers(data.familyMembers);

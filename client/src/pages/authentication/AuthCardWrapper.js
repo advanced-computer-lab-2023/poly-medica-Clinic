@@ -3,7 +3,7 @@
 import { Box } from '@mui/material';
 
 // project import
-import MainCard from '../../ui-component/cards/MainCard';
+import MainCard from 'ui-component/cards/MainCard';
 import React from 'react';
 // ==============================|| AUTHENTICATION CARD WRAPPER ||============================== //
 

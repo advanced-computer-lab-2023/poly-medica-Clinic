@@ -15,6 +15,7 @@ import MainCard from 'ui-component/cards/MainCard';
 import AdminRow from './AdminRow';
 import DeleteConfirmationDialog from './DeleteConfirmationDialog';
 import AddAdminDialog from './AddAdminDialog';
+import { authenticationAxios, clinicAxios } from '../utils/AxiosConfig';
 
 const Admins = () => {
 	const [admins, setAdmins] = useState([]);
@@ -28,16 +29,15 @@ const Admins = () => {
 	const { user } = useUserContext();
 
 	useEffect(() => {
-		fetch('http://localhost:8001/admins')
-			.then((response) => response.json())
+		clinicAxios.get('/admins')
 			.then((data) => {
 				setAdmins(
 					data.admins.filter((admin) => admin.userName !== user.userName),
 				);
 				setIsLoading(false);
 			})
-			.catch((error) => {
-				console.error('Error fetching data:', error);
+			.catch(() => {
+				errorMessage('Error fetching admins data');
 				setIsLoading(false);
 			});
 	}, []);
@@ -58,17 +58,14 @@ const Admins = () => {
 			return;
 		}
 
-		fetch(`http://localhost:8001/admins/${adminToDelete}`, {
-			method: 'DELETE',
-		})
-			.then((response) => response.json())
+		clinicAxios.delete(`/admins/${adminToDelete}`)
 			.then(() =>
 				setAdmins((prevAdmins) =>
 					prevAdmins.filter((admin) => admin._id !== adminToDelete),
 				),
 			)
-			.catch((error) => {
-				console.error('Error deleting admin:', error);
+			.catch(() => {
+				errorMessage('Error deleting admin');
 			})
 			.finally(() => {
 				setAdminToDelete(null);
@@ -94,7 +91,7 @@ const Admins = () => {
 		setErrorMessage('');
 	};
 
-	const handleAddAdmin = () => {
+	const handleAddAdmin = async () => {
 		const newAdmin = {
 			userName: newAdminUsername,
 			password: newAdminPassword,
@@ -105,31 +102,24 @@ const Admins = () => {
 		}
 
 		// Make a POST request to add a new admin
-		fetch('http://localhost:8004/admins', {
-			method: 'POST',
+		//TODO: these conditions 
+		const response = await authenticationAxios.post('/admins/clinic', JSON.stringify(newAdmin), {
 			headers: {
 				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(newAdmin),
-		})
-			.then((response) => response.json())
-			.then((data) => {
-				if (data.message === 'that username is already registered') {
-					setErrorMessage(
-						`Username '${newAdminUsername}' already exists. Please choose a different username.`,
-					);
-					return;
-				}
-
+			}
+		});
+		if(response.status == 200){
 				setAdmins((prevAdmins) => [...prevAdmins, newAdmin]);
 				setOpenAddDialog(false);
 				setNewAdminUsername('');
 				setNewAdminPassword('');
 				setErrorMessage('');
-			})
-			.catch((error) => {
-				console.error('Error adding admin:', error);
-			});
+			}
+			else
+				setErrorMessage(
+					response.response.data.message
+				);
+			
 	};
 
 	const isAddButtonDisabled = !newAdminUsername || !newAdminPassword;
