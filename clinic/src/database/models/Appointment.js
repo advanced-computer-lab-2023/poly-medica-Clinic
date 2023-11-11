@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { FAMILIY_EMERGENCY, GENDERS } from '../../utils/Constants.js';
 
 const Appointment = mongoose.Schema({
 	patientId: {
@@ -26,7 +27,30 @@ const Appointment = mongoose.Schema({
 	status: {
 		type: String,
 	},
-	//.....
+	type: {
+		type: String,
+		enum: ['appointment', 'follow-up'],
+		required: true,
+	},
+	patientFamilyMember: { // if exists
+		name: {
+			type: String,
+		},
+		nationalId: {
+			type: String,
+		},
+		age: {
+			type: Number,
+		},
+		gender: {
+			type: String,
+			enum: GENDERS,
+		},
+		relation: {
+			type: String,
+			enum: FAMILIY_EMERGENCY,
+		},
+	}
 });
 
 const AppointmentModel = mongoose.model('Appointment', Appointment);

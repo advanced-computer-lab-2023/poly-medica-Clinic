@@ -6,6 +6,7 @@ import {
     IconStethoscope,
     IconRegistered,
     IconPrescription,
+    IconCalendarTime
 } from '@tabler/icons';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 import MedicationIcon from '@mui/icons-material/Medication';
@@ -24,6 +25,7 @@ const icons = {
     IconPrescription,
     IconRegistered,
     AccountBoxIcon,
+    IconCalendarTime
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
@@ -77,7 +79,7 @@ const pages = {
             id: 'appointments',
             title: 'Appointments',
             type: 'item',
-            icon: icons.TodayIcon,
+            icon: icons.IconCalendarTime,
             url: '/doctor/pages/appointments',
             target: false,
         },
@@ -123,11 +125,26 @@ const pages = {
             target: false,
         },
         {
-            id:Wallet,
+            id: 'Wallet',
             title: 'Wallet',
             type: 'item',
             icon: icons.Wallet,
             url: '/doctor/pages/wallet',
+        },
+        {
+            id: 'add-available-slots',
+            title: 'Add Available Slots',
+            type: 'item',
+            icon: icons.IconStethoscope,
+            url: '/doctor/pages/add-available-slots',
+            target: false,
+        },
+        {
+            id: 'Contract',
+            title: 'Contract',
+            type: 'item',
+            icon: icons.IconKey,
+            url: '/doctor/pages/contract',
             target: false,
         }
     ],

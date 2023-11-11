@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { FAMILIY_EMERGENCY, GENDERS,ZERO } from '../../utils/Constants.js';
+import { FAMILIY_EMERGENCY, GENDERS, FAMILY_RELATIONS, ZERO } from '../../utils/Constants.js';
 import bcrypt from 'bcrypt';
 
 
@@ -38,6 +38,7 @@ const patientSchema = mongoose.Schema({
 	mobileNumber: {
 		type: String,
 		required: true,
+		unique: true,
 	},
 	emergencyContact: {
 		name: {
@@ -56,29 +57,28 @@ const patientSchema = mongoose.Schema({
 	},
 	familyMembers: [
 		{
+			id: {
+				type: mongoose.Schema.Types.ObjectId,
+				// ref: 'Patient',
+				// required: true	
+			},
 			name: {
 				type: String,
-				required: true,
 			},
 			nationalId: {
 				type: String,
-				required: true,
-				unique: true,
 				sparse: true,
 			},
 			age: {
 				type: Number,
-				required: true,
 			},
 			gender: {
 				type: String,
 				enum: GENDERS,
-				required: true,
 			},
 			relation: {
 				type: String,
-				enum: FAMILIY_EMERGENCY,
-				required: true,
+				enum: FAMILY_RELATIONS,
 			},
 		},
 	],
@@ -108,6 +108,30 @@ const patientSchema = mongoose.Schema({
 			message: (props) => `${props.value} is not a valid wallet amount!`,
 		},
 	},
+	deliveryAddresses: [
+		{
+			city: {
+				type: String,
+				required: true,
+			},
+			street: {
+				type: String,
+				required: true,
+			},
+			buildingName: {
+				type: String,
+				required: true,
+			},
+			phoneNumber: {
+				type: String,
+				required: true,
+			},
+			primary: {
+				type: Boolean,
+				default: false,
+			},
+		},
+	],
 
 	//.....
 });

@@ -33,4 +33,21 @@ export const isDateInAvailableSlots = (selectedDate, availableSlots) => {
       }
     }
     return false;
-  };
+};
+
+export const filterAppointmentByChronology = (appointment, selectedValue) => {
+    const today = new Date();
+    const appointmentDate = new Date(appointment.date);
+    selectedValue = selectedValue.toUpperCase();
+    switch (selectedValue) {
+        case 'UPCOMING': {
+            return appointmentDate >= today;
+        }
+        case 'PAST': {
+            return appointmentDate < today;
+        }
+        default: {
+            return true;
+        }
+    }
+};

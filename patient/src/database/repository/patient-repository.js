@@ -1,12 +1,23 @@
 import PatientModel from '../models/Patient.js';
 import PrescriptionModel from '../models/Prescription.js';
-import { FAMILY_MEMBERS_PROJECTION } from '../../utils/Constants.js';
+import {
+	FAMILY_MEMBERS_PROJECTION,
+	PATIENT_ADDRESSES_PROJECTION,
+	ONE,
+	ZERO,
+} from '../../utils/Constants.js';
 
 class PatientRepository {
 	async findAllPatients() {
 		const allPatients = await PatientModel.find();
 		return allPatients;
 	}
+
+	async findPatientById(id) {
+		const patient = await PatientModel.findById(id, ' -password');
+		return patient;
+	}
+
 	async findFamilyMembers(id) {
 		console.log('id = ', id);
 		const familyMembers = await PatientModel.findById(
@@ -17,8 +28,13 @@ class PatientRepository {
 		return familyMembers;
 	}
 
-	async findPatientByUserName(userN) {
-		return await PatientModel.findOne({ userName: userN });
+	async findRegeisteredFamilyMember(attributes) {
+		return await PatientModel.findOne({
+			$or: [
+				{ email: attributes.email },
+				{ mobileNumber: attributes.mobileNumber },
+			],
+		});
 	}
 
 	async addFamilyMember(id, familyMembers) {
@@ -49,14 +65,58 @@ class PatientRepository {
 		return deletedPatient;
 	}
 
-	async signupUser(req){
-		const { name, email, password, userName, dateOfBirth, gender, mobileNumber, emergencyContact } = req.body;
-		const user = await PatientModel.signup(name, email, password, userName, dateOfBirth, gender, mobileNumber, emergencyContact);
+	async signupUser(req) {
+		const {
+			name,
+			email,
+			password,
+			userName,
+			dateOfBirth,
+			gender,
+			mobileNumber,
+			emergencyContact,
+		} = req.body;
+		const user = await PatientModel.signup(
+			name,
+			email,
+			password,
+			userName,
+			dateOfBirth,
+			gender,
+			mobileNumber,
+			emergencyContact
+		);
 		return user;
 	}
 	async getWalletAmount(id) {
 		const user = await PatientModel.findById(id);
 		return user.walletAmount;
+	}
+	async findPatientAddresses(id) {
+		const addresses = await PatientModel.findById(
+			id,
+			PATIENT_ADDRESSES_PROJECTION
+		);
+		if (addresses) {
+			addresses.deliveryAddresses.sort((a, b) => {
+				return a.primary ? -ONE : b.primary ? ONE : ZERO;
+			});
+		}
+		return addresses;
+	}
+
+	async updatePatientAddress(id, address) {
+		const addresses = await PatientModel.findOneAndUpdate(
+			{ _id: id },
+			{ deliveryAddresses: address },
+			{ new: true, runValidators: true }
+		).select(PATIENT_ADDRESSES_PROJECTION);
+		if (addresses) {
+			addresses.deliveryAddresses.sort((a, b) => {
+				return a.primary ? -ONE : b.primary ? ONE : ZERO;
+			});
+		}
+		return addresses;
 	}
 }
 

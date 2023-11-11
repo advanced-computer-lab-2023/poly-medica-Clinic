@@ -1,5 +1,6 @@
 import express from 'express';
 import { patient } from './src/api/PatientAPI.js';
+import { order } from './src/api/OrderAPI.js';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
@@ -23,5 +24,6 @@ app.use(cors({
 app.use('*', checkUser);
 
 patient(app);
+order(app);
 
 export default app;

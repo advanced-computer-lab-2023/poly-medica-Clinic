@@ -23,9 +23,16 @@ const Doctor = mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	
 	availableSlots: {
 		type: Array,
-		default: [],
+		default: [
+			{
+				from: new Date(),
+				until: new Date()
+			},
+		],
+		
 	},
 	walletAmount: {
 		type: Number,
@@ -37,14 +44,24 @@ const Doctor = mongoose.Schema({
 			message: (props) => `${props.value} is not a valid wallet amount!`,
 		},
 	},
+	documentsNames: {
+		type: [String],
+	},
+	status:{
+		type: Boolean,
+		default: false,
+		
+	}
 });
+ 
 
 Doctor.statics.addUser = async function (
 	userData,
 	speciality,
 	hourlyRate,
 	affiliation,
-	educationalBackground
+	educationalBackground,
+	documentsNames,
 ) {
 	const newRecord = new this({
 		userData,
@@ -52,6 +69,7 @@ Doctor.statics.addUser = async function (
 		hourlyRate,
 		affiliation,
 		educationalBackground,
+		documentsNames,
 	});
 	const user = await newRecord.save();
 	return user;
