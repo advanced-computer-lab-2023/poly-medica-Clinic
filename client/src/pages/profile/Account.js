@@ -5,8 +5,8 @@ import PatientAccountProfileDetails from './accountProfileDetails/PatientAccount
 import { useUserContext } from 'hooks/useUserContext';
 import {  DOCTOR_TYPE_ENUM, PATIENT_TYPE_ENUM } from 'utils/Constants';
 import { useState } from 'react';
-import axios from 'axios';
 import Swal from 'sweetalert2';
+import { authenticationAxios } from '../../utils/AxiosConfig';
 
 const Page = () => {
     
@@ -16,7 +16,7 @@ const Page = () => {
 	const [loading, setLoading] = useState(false);
 	const handleChangePassword = async () => {
 		setLoading(true);
-		const response = await axios.patch(`http://localhost:8004/change-password/${user.id}`, { password });
+		const response = await authenticationAxios.patch(`/change-password/${user.id}`, { password });
 		try{
 			if(response.status === 200){
 				Swal.fire({

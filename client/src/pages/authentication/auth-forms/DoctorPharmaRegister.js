@@ -15,7 +15,7 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 import { DatePicker } from '@mui/x-date-pickers';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
 import Swal from 'sweetalert2';
-import { clinicAxios, AuthenticationAxios } from 'utils/AxiosConfig';
+import { clinicAxios, authenticationAxios } from 'utils/AxiosConfig';
 
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
@@ -99,7 +99,7 @@ const FirebaseRegister = ({ type }) => {
 
 		formData.append('sendData', JSON.stringify(sendData));
 
-		const signupResponse = await AuthenticationAxios.post(
+		const signupResponse = await authenticationAxios.post(
 			'/signup/clinic',
 			sendData,
 		);

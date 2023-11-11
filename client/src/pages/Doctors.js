@@ -11,6 +11,7 @@ import {
 import MainCard from 'ui-component/cards/MainCard';
 import DoctorRow from './DoctorRow'; // Import the DoctorRow component
 import DeleteConfirmationDialog from './DeleteConfirmationDialog';
+import { clinicAxios } from '../utils/AxiosConfig';
 
 const Doctors = () => {
 	const [doctors, setDoctors] = useState([]);
@@ -19,11 +20,9 @@ const Doctors = () => {
 	const [doctorToDelete, setDoctorToDelete] = useState(null);
 
 	useEffect(() => {
-		fetch('http://localhost:8001/doctors', {
-			method: 'GET',
-		})
-			.then((response) => response.json())
-			.then((data) => {
+		clinicAxios.get('/doctors')
+			.then((response) => {
+				const data = response.data;
 				setDoctors(data);
 				setIsLoading(false);
 			})
@@ -39,10 +38,7 @@ const Doctors = () => {
 	};
 
 	const handleConfirmDelete = () => {
-		fetch(`http://localhost:8001/doctors/${doctorToDelete}`, {
-			method: 'DELETE',
-		})
-			.then((response) => response.json())
+		clinicAxios.delete(`/doctors/${doctorToDelete}`)
 			.then(() =>
 				setDoctors((prevDoctors) =>
 					prevDoctors.filter((doctor) => doctor._id !== doctorToDelete),

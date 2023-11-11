@@ -8,12 +8,12 @@ import {
 	TextField,
 	Typography,
 } from '@mui/material';
-import { useUserContext } from '../../../hooks/useUserContext';
+import { useUserContext } from 'hooks/useUserContext';
 import { useNavigate } from 'react-router-dom';
 // project imports
-import AnimateButton from '../../../ui-component/extended/AnimateButton';
+import AnimateButton from 'ui-component/extended/AnimateButton';
 import Swal from 'sweetalert2';
-import { AuthenticationAxios } from '../../../utils/AxiosConfig';
+import { authenticationAxios } from 'utils/AxiosConfig';
 
 
 // ============================|| FIREBASE - LOGIN ||============================ //
@@ -29,7 +29,7 @@ const FirebaseLogin = () => {
 		e.preventDefault();
 		setIsSubmitting(true);
 		const postData = { 'userName': userName, 'password': password };
-		const response = await AuthenticationAxios.post('/login/clinic', postData);
+		const response = await authenticationAxios.post('/login/clinic', postData);
 		const data = response.data;		
 		if(response.status === 200){
 			dispatch({ auth: true, payload:data });

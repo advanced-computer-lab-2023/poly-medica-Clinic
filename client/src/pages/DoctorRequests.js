@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import DoctorRequestCard from './DoctorRequestCard';
+import { clinicAxios } from '../utils/AxiosConfig';
 
 const DoctorRequests = () => {
 	const [doctorRequests, setDoctorRequests] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
-		fetch('http://localhost:8001/doctor-requests', {
-			method: 'GET',
-		})
-			.then((response) => response.json())
-			.then((data) => {
+		clinicAxios.get('/doctor-requests')
+			.then((response) => {
+				const data = response.data;
 				setDoctorRequests(data.doctorRequests);
 				setIsLoading(false);
 			})
@@ -22,13 +21,9 @@ const DoctorRequests = () => {
 
 	const handleAccept = (doctorReq) => {
 		// Delete the doctor request from the database
-		fetch(
-			`http://localhost:8001/doctor-requests/${doctorReq._id}?accept=${true}`,
-			{
-				method: 'DELETE',
-			},
+		clinicAxios.delete(
+			`/doctor-requests/${doctorReq._id}?accept=${true}`
 		)
-			.then((response) => response.json())
 			.then(() => {
 				setDoctorRequests((prevDoctorRequests) =>
 					prevDoctorRequests.filter(
@@ -41,12 +36,9 @@ const DoctorRequests = () => {
 			});
 
 		// Add the doctor to the doctor table
-		fetch('http://localhost:8001/doctors', {
-			method: 'POST',
+		clinicAxios.post('/doctors', JSON.stringify(doctorReq), {
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(doctorReq),
 		})
-			.then((response) => response.json())
 			.then(() => {
 				setDoctorRequests((prevDoctorRequests) =>
 					prevDoctorRequests.filter(
@@ -61,11 +53,8 @@ const DoctorRequests = () => {
 
 	const handleReject = (doctorReq) => {
 		console.log('in handle reject doctor request');
-		fetch(
-			`http://localhost:8001/doctor-requests/${doctorReq._id}?accept=${false}`,
-			{
-				method: 'DELETE',
-			},
+		clinicAxios.delete(
+			`/doctor-requests/${doctorReq._id}?accept=${false}`
 		)
 			.then(() => {
 				setDoctorRequests((prevDoctorRequests) =>

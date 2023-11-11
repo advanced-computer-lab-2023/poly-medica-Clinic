@@ -8,7 +8,6 @@ import Routes from 'routes';
 
 // defaultTheme
 import themes from 'themes';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useUserContext } from 'hooks/useUserContext';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -16,6 +15,7 @@ import Swal from 'sweetalert2';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import Loader from 'ui-component/Loader';
+import { authenticationAxios } from './utils/AxiosConfig';
 
 
 
@@ -29,7 +29,7 @@ const App = () => {
 	const location = useLocation();
 	useEffect(() => {
 		setIsLoading(true);
-		axios.get('http://localhost:8004/check-user', {  withCredentials:true }).then(async userCheck => {
+		authenticationAxios.get('/check-user', {  withCredentials:true }).then(async userCheck => {
 			console.log({ ckeckData: userCheck.data });
 			if(!user)
 				{
