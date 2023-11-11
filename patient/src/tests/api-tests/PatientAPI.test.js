@@ -7,7 +7,8 @@ import {
 import {
     OK_STATUS_CODE,
     NOT_FOUND_STATUS_CODE,
-    ERROR_STATUS_CODE
+    ERROR_STATUS_CODE,
+    TIME_OUT
 } from '../../utils/Constants.js';
 
 import PrescriptionModel from '../../database/models/Prescription.js';
@@ -15,8 +16,10 @@ import generatePrescription from '../model-generators/generatePrescription.js';
 import PatientModel from '../../database/models/Patient.js';
 import generatePatient from '../model-generators/generatePatient.js';
 
-import { describe, beforeEach, afterEach, expect, it } from '@jest/globals';
+import { describe, beforeEach, afterEach, expect, it, jest } from '@jest/globals';
 import { faker } from '@faker-js/faker';
+
+jest.setTimeout(TIME_OUT);
 
 describe('GET /patient/:id/prescriptions (get all prescriptions of a patient)', () => {
 

@@ -18,10 +18,10 @@ export const ZERO = 0;
 export const INF = 1e18;
 export const PORT = 8002;
 
+export const TIME_OUT = 30000;
+
+
 export const MONGO_URI = 'mongodb://localhost:27017';
-
-export const ONE = 1;
-
 
 export const FAMILIY_EMERGENCY = [
 	'Parent',

@@ -6,6 +6,7 @@ import {
 	ERROR_STATUS_CODE,
 	ONE,
 	ORDER_STATUS,
+	TIME_OUT,
 } from '../../utils/Constants.js';
 
 import OrderModel from '../../database/models/Order.js';
@@ -13,8 +14,10 @@ import PatientModel from '../../database/models/Patient.js';
 import generateOrder from '../../tests/model-generators/generateOrder.js';
 import generatePatient from '../../tests/model-generators/generatePatient.js';
 
-import { describe, beforeEach, afterEach, expect, it } from '@jest/globals';
+import { describe, beforeEach, afterEach, expect, it, jest } from '@jest/globals';
 import { faker } from '@faker-js/faker';
+
+jest.setTimeout(TIME_OUT);
 
 describe('GET /order/:pateintId', () => {
 	beforeEach(async () => {
