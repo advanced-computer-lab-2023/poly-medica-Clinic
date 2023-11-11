@@ -38,9 +38,7 @@ export const patient = (app) => {
 	app.get('/patients/:id', async (req, res) => {
 		const { id } = req.params;
 		if (!isValidMongoId(id)) {
-			return res
-				.status(ERROR_STATUS_CODE)
-				.json({ message: 'Invalid ID' });
+			return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
 		}
 		try {
 			const patient = await service.getPatientById(id);
@@ -70,24 +68,26 @@ export const patient = (app) => {
 
 	app.delete('/patients/:id', async (req, res) => {
 		try {
-			const id = req.params.id;
+			const { id } = req.params;
 			if (!isValidMongoId(id)) {
 				return res
-					.status(NOT_FOUND_STATUS_CODE)
+					.status(ERROR_STATUS_CODE)
 					.json({ message: 'Invalid ID' });
 			}
 			const deletedPatient = await service.deletePatient(id);
-			if (deletedPatient === null)
-				res.json({
+			console.log(deletedPatient, 'deletedPatient');
+			if (!deletedPatient) {
+				return res.status(NOT_FOUND_STATUS_CODE).json({
 					message: 'patient not found!',
 					status: NOT_FOUND_STATUS_CODE,
 				});
-			else
-				res.json({
-					message: 'patient deleted!',
-					status: OK_STATUS_CODE,
-					deleted_patient: deletedPatient,
-				});
+			}
+
+			res.json({
+				message: 'patient deleted!',
+				status: OK_STATUS_CODE,
+				deleted_patient: deletedPatient,
+			});
 		} catch (err) {
 			res.json({ err: err.message, status: ERROR_STATUS_CODE });
 		}
@@ -182,10 +182,7 @@ export const patient = (app) => {
 				});
 			}
 			try {
-				const data = await service.getPrescription(
-					pateintId,
-					prescriptionId
-				);
+				const data = await service.getPrescription(pateintId, prescriptionId);
 				if (data) res.status(OK_STATUS_CODE).json(data);
 				else
 					res.status(NOT_FOUND_STATUS_CODE).json({
@@ -196,7 +193,7 @@ export const patient = (app) => {
 					message: 'error occurred while fetching prescription',
 				});
 			}
-		}
+		},
 	);
 
 	app.get('/patient/:id/discount', async (req, res) => {

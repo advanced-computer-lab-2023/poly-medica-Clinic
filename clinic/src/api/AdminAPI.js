@@ -52,8 +52,9 @@ export const admin = (app) => {
 	});
 
 	app.delete('/admins/:id', async (req, res) => {
+		console.log('delete admin');
 		try {
-			const id = req.params.id;
+			const { id } = req.params;
 			if (!isValidMongoId(id))
 				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
 			const isMainAdmin = await service.checkMainAdmin(id);

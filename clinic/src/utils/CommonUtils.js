@@ -1,18 +1,30 @@
+import { ONE, ZERO_INDEX } from './Constants.js';
 import path from 'path';
-//import { fileURLToPath } from 'url';
+import { fileURLToPath } from 'url';
 import fs from 'fs';
+const currentFilePath = getFileUrl();
+const __filename = fileURLToPath(currentFilePath);
+const __dirname = path.dirname(__filename);
 
-//const __filename = fileURLToPath(import.meta.url);
-//const __dirname = path.dirname(__filename);
+function getFileUrl() {
+	const stackTraceFrames = String(new Error().stack)
+		.replace(/^Error.*\n/, '')
+		.split('\n');
+	const callerFrame = stackTraceFrames[ZERO_INDEX];
+	let url = callerFrame.match(/\(([^)]+\.js)/);
+	if (url) url = url[ONE];
+	return url.startsWith('file:///')
+		? url.replace(/\\/g, '/')
+		: 'file:///' + url.replace(/\\/g, '/');
+}
 
 export const getImage = (folder, imageName) => {
-	console.log(folder, imageName);
-	// try {
-	// 	const imagePath = path.join(__dirname, 'upload', folder, imageName);
-	// 	return imagePath;
-	// } catch (error) {
-	// 	console.log('error in getImage: ', error.message);
-	// }
+	try {
+		const imagePath = path.join(__dirname, 'upload', folder, imageName);
+		return imagePath;
+	} catch (error) {
+		console.log('error in getImage: ', error.message);
+	}
 };
 
 export const deleteImage = (folder, imageName) => {

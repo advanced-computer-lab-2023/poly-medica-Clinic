@@ -477,7 +477,7 @@ describe('GET /doctors', () => {
 
 	it('should return 200 OK and retrieve all doctors correctly', async () => {
 		const len = faker.number.int({ min: 5, max: 10 });
-		for(let i = 0;i < len;i++){
+		for (let i = 0; i < len; i++) {
 			const doctor = new DoctorModel(generateDoctor());
 			await doctor.save();
 		}
@@ -491,7 +491,7 @@ describe('GET /doctors', () => {
 });
 
 describe('GET /doctors/:id/wallet', () => {
-	
+
 	beforeEach(async () => {
 		await connectDBTest();
 	});
@@ -523,4 +523,43 @@ describe('GET /doctors/:id/wallet', () => {
 	});
 }
 );
+
+describe('DELETE /doctors/:id', () => {
+	const deleteDoctor = async (id) => {
+		const response = await request(app).delete(`/doctors/${id}`);
+		return response;
+	};
+
+	beforeEach(async () => {
+		await connectDBTest();
+	});
+
+	it('should return 200 when deleting a doctor', async () => {
+		const doctor = await DoctorModel(generateDoctor()).save();
+		const response = await deleteDoctor(doctor._id);
+		expect(response.status).toBe(OK_STATUS_CODE);
+		expect(response.body.deletedDoctor.userData.userName).toBe(
+			doctor.userData.userName,
+		);
+	});
+
+	it('should return 404 when doctor not found', async () => {
+		const id = faker.database.mongodbObjectId();
+		const response = await deleteDoctor(id);
+
+		expect(response.status).toBe(NOT_FOUND_STATUS_CODE);
+	});
+
+	it('should return 500 when id is invalid', async () => {
+		const id = faker.lorem.word();
+		const response = await deleteDoctor(id);
+
+		expect(response.status).toBe(ERROR_STATUS_CODE);
+		expect(response.body.message).toBe('Invalid ID');
+	});
+
+	afterEach(async () => {
+		await disconnectDBTest();
+	});
+});
 
