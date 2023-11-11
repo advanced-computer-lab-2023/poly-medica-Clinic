@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Swal from 'sweetalert2';
+// import Swal from 'sweetalert2';
 
 
 // Define the base URLs for each microservice
@@ -12,7 +12,7 @@ const authenticationBaseUrl = 'http://localhost:8004';
 export const clinicAxios = axios.create({
     baseURL: clinicBaseUrl,
     withCredentials: true,
-})
+});
 // .interceptors.response.use(
 //     (response) => {
 //       return response;
@@ -35,7 +35,7 @@ export const clinicAxios = axios.create({
 export const patientAxios = axios.create({
     baseURL: patientBaseUrl,
     withCredentials: true,
-})
+});
 // .interceptors.response.use(
 //     (response) => {
 //       return response;
@@ -56,7 +56,7 @@ export const patientAxios = axios.create({
 export const pharmacyAxios = axios.create({
     baseURL: pharmacyBaseUrl,
     withCredentials: true,
-})
+});
 // .interceptors.response.use(
 //     (response) => {
 //       return response;
