@@ -71,7 +71,7 @@ const HealthPackagesList = ({ packages, handleEditButtonClick, handleDeleteButto
 						<CardActions>
 							<Button fullWidth variant="contained">
 								Buy Now
-						</Button>
+							</Button>
 						</CardActions>
 					</Card>
 				</Grid>

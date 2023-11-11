@@ -6,6 +6,7 @@ import fs from 'fs';
 //const __dirname = path.dirname(__filename);
 
 export const getImage = (folder, imageName) => {
+	console.log(folder, imageName);
 	// try {
 	// 	const imagePath = path.join(__dirname, 'upload', folder, imageName);
 	// 	return imagePath;
