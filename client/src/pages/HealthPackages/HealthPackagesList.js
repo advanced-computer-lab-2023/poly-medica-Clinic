@@ -102,7 +102,7 @@ const HealthPackagesList = ({ packages, handleEditButtonClick, handleDeleteButto
 									</Typography>
 								)}
 								{discount > 0 && (
-									<Typography sx={ { marginLeft: '2%' } } component="h2" variant="h4" color="text.primary">
+									<Typography sx={{ marginLeft: '2%' }} component="h2" variant="h4" color="text.primary">
 										{`$ ${pack.price - (pack.price * (discount / 100))}`}
 									</Typography>
 								)}
@@ -142,10 +142,10 @@ const HealthPackagesList = ({ packages, handleEditButtonClick, handleDeleteButto
 								{(isSubscribedPackage(pack)) ? 'Cancel Subscribtion' : 'Subscribe Now'}
 							</Button>
 						</CardActions>
-					</Card>
-				</Grid>
+					</Card >
+				</Grid >
 			))}
-		</Grid>
+		</Grid >
 
 	);
 

@@ -6,6 +6,7 @@ import Loadable from 'ui-component/Loadable';
 import FamilyMembers from 'pages/family-member/FamilyMembers.js';
 import { DOCTOR_TYPE_ENUM } from 'utils/Constants';
 
+
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 const LazyPrescriptions = Loadable(
@@ -25,6 +26,14 @@ const LazyClinicDoctors = Loadable(lazy(() => import('pages/Doctors/Doctors')));
 const LazyAppointments = Loadable(
     lazy(() => import('pages/Appointment/Appointment'))
 );
+const LazyWalletAmount = Loadable(lazy(() => import('pages/Wallet/WalletAmount')));
+const LazyAddAvailableSlots = Loadable(
+    lazy(() => import('pages/DoctorAddAvailableSlots/AddAvailableSlots'))
+);
+
+const LazyDoctorContract = Loadable(
+    lazy(() => import('pages/DoctorContract'))
+);
 
 const Account = Loadable(lazy(() => import('pages/profile/Account')));
 // utilities routing
@@ -37,11 +46,12 @@ const UtilsShadow = Loadable(lazy(() => import('pages/utilities/Shadow')));
 // sample page routing
 const SamplePage = Loadable(lazy(() => import('pages/sample-page')));
 
+
 // ==============================|| MAIN ROUTING ||============================== //
 
 const DoctorRoutes = {
     path: '/doctor',
-    element: <MainLayout userType={DOCTOR_TYPE_ENUM}/>,
+    element: <MainLayout userType={DOCTOR_TYPE_ENUM} />,
     children: [
         {
             path: 'doctor',
@@ -94,7 +104,7 @@ const DoctorRoutes = {
                 },
                 {
                     path: 'my-patients',
-                    element: <LazyDoctorListofPatients/>
+                    element: <LazyDoctorListofPatients />
                 },
                 {
                     path: 'packages',
@@ -111,8 +121,21 @@ const DoctorRoutes = {
                 },
 
                 {
-                    path: 'My Patients',
+                    path: 'add-available-slots',
+                    element: <LazyAddAvailableSlots />,
+                },
+                {
+
+                    path: 'my-patients',
                     element: <lazyDoctorListofPatients />,
+                },
+                {
+                    path: 'wallet',
+                    element: <LazyWalletAmount />
+                },
+                {
+                    path: 'contract',
+                    element: <LazyDoctorContract />,
                 },
             ],
         },

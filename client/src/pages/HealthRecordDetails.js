@@ -31,7 +31,6 @@ const HealthRecordDetails = ( { isPatientDetailsOpen, handleClose, patient } ) =
 
 	const emergencyContact = formateEmergencyContact(patient.emergencyContact);
 	const healthRecord = formatHealthRecord(patient.healthrecords);
-	console.log({ isPatientDetailsOpen });
 	return (
 		<Dialog 
 		open={isPatientDetailsOpen}
