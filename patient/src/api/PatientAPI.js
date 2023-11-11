@@ -270,4 +270,26 @@ export const patient = (app) => {
 			});
 		}
 	});
+
+	app.get('/patients/:pateintId/wallet', async (req, res) => {
+		const { pateintId } = req.params;
+		if (!isValidMongoId(pateintId)) {
+			return res
+				.status(ERROR_STATUS_CODE)
+				.json({ message: 'Patient ID is invalid' });
+		}
+		try {
+			const id = req.params.pateintId;
+			const user = await service.getPatientById(id);
+			if (user) {
+				const walletAmount = await service.getWalletAmount(id);
+				res.status(OK_STATUS_CODE).json({ walletAmount });
+			} else {
+				res.status(NOT_FOUND_STATUS_CODE).json({ message: 'Not found' });
+			}
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({ err: err.message });
+		}
+	}
+	);
 };

@@ -88,7 +88,10 @@ class PatientRepository {
 		);
 		return user;
 	}
-
+	async getWalletAmount(id) {
+		const user = await PatientModel.findById(id);
+		return user.walletAmount;
+	}
 	async findPatientAddresses(id) {
 		const addresses = await PatientModel.findById(
 			id,

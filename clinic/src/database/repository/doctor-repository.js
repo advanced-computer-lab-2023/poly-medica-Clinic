@@ -137,7 +137,10 @@ class DoctorRepository {
 
 		return doctor;
 	}
-
+	async getWalletAmount(id) {
+		const user = await DoctorModel.findById(id);
+		return user.walletAmount;
+	}
 	getFile(fileName) {
 		return getFile(DOCTOR_FOLDER_NAME, fileName);
 	}

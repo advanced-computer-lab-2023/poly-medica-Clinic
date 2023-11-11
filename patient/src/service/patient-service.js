@@ -10,7 +10,7 @@ class PatientService {
 		return user;
 	}
 
-	async findPatient(patientId){
+	async findPatient(patientId) {
 		const patient = await this.repository.findPatientById(patientId);
 		return patient;
 	}
@@ -69,6 +69,10 @@ class PatientService {
 		return null;
 	}
 
+	async getWalletAmount(id) {
+		const amount = await this.repository.getWalletAmount(id);
+		return amount;
+	}
 	async getAddresses(id) {
 		const addresses = await this.repository.findPatientAddresses(id);
 		return addresses;

@@ -12,6 +12,7 @@ import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettin
 import MedicationIcon from '@mui/icons-material/Medication';
 import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import { Wallet } from '@mui/icons-material';
 // constant
 const icons = {
     IconKey,
@@ -24,7 +25,8 @@ const icons = {
     IconPrescription,
     IconRegistered,
     AccountBoxIcon,
-    IconCalendarTime
+    IconCalendarTime,
+    Wallet
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
@@ -124,12 +126,19 @@ const pages = {
             target: false,
         },
         {
-            id:'add-available-slots',
-            title:'Add Available Slots',
-            type:'item',
-            icon:icons.IconStethoscope,
-            url:'/doctor/pages/add-available-slots',
-            target:false,
+            id: 'Wallet',
+            title: 'Wallet',
+            type: 'item',
+            icon: icons.Wallet,
+            url: '/doctor/pages/wallet',
+        },
+        {
+            id: 'add-available-slots',
+            title: 'Add Available Slots',
+            type: 'item',
+            icon: icons.IconStethoscope,
+            url: '/doctor/pages/add-available-slots',
+            target: false,
         },
         {
             id: 'Contract',

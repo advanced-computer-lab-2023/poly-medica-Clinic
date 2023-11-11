@@ -74,6 +74,7 @@ const generatePatient = () => {
 		password: faker.internet.password(),
 		dateOfBirth: faker.date.birthdate(),
 		gender: generateGender(),
+		walletAmount: faker.number.int({ min: 1, max: 10000 }),
 		mobileNumber: faker.phone.number(),
 		emergencyContact: {
 			name: faker.person.firstName(),

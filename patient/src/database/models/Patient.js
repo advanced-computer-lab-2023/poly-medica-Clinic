@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
-import { FAMILIY_EMERGENCY, GENDERS, FAMILY_RELATIONS } from '../../utils/Constants.js';
+import { FAMILIY_EMERGENCY, GENDERS, FAMILY_RELATIONS, ZERO } from '../../utils/Constants.js';
 import bcrypt from 'bcrypt';
+
 
 const patientSchema = mongoose.Schema({
 	name: {
@@ -97,6 +98,16 @@ const patientSchema = mongoose.Schema({
 			},
 		},
 	],
+	walletAmount: {
+		type: Number,
+		default: 0,
+		validate: {
+			validator: function (v) {
+				return v >= ZERO;
+			},
+			message: (props) => `${props.value} is not a valid wallet amount!`,
+		},
+	},
 	deliveryAddresses: [
 		{
 			city: {

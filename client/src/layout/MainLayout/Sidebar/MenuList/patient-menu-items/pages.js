@@ -124,6 +124,14 @@ const pages = {
             url: '/patient/pages/my-patients',
             target: false,
         },
+        {
+            id: 'Wallet',
+            title: 'Wallet',
+            type: 'item',
+            icon: icons.Wallet,
+            url: '/patient/wallet',
+            target: false,
+        }
     ],
 };
 

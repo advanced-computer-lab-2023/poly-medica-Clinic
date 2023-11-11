@@ -294,4 +294,19 @@ export const doctor = (app) => {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
 	});
+
+	app.get('/doctors/:id/wallet', async (req, res) => {
+		try {
+			const id = req.params.id;
+			if (!isValidMongoId(id))
+				return res
+					.status(ERROR_STATUS_CODE)
+					.json({ message: 'Invalid ID' });
+			const walletAmount = await service.getWalletAmount(id);
+
+			res.status(OK_STATUS_CODE).json({ walletAmount });
+		} catch (error) {
+			res.status(NOT_FOUND_STATUS_CODE).json({ message: error });
+		}
+	});
 };
