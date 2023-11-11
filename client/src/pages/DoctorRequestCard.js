@@ -9,6 +9,7 @@ import {
 	AccordionSummary,
 	AccordionDetails,
 	Button,
+	Grid,
 } from '@mui/material';
 
 const DoctorRequestCard = ({ doctorReq, onAccept, onReject }) => {
@@ -42,6 +43,21 @@ const DoctorRequestCard = ({ doctorReq, onAccept, onReject }) => {
 						<Typography>
 							Educational Background: {doctorReq.educationalBackground}
 						</Typography>
+					</CardContent>
+					<CardContent>
+						<Typography>Documents:</Typography>
+						<Grid item xs={12}>
+							{doctorReq.documentsNames.map((documentName) => (
+								<>
+									<Button
+										color='primary'
+										href={`http://localhost:8001/doctor-requests/files/${documentName}`}
+									>
+										{documentName}
+									</Button>
+								</>
+							))}
+						</Grid>
 					</CardContent>
 					<CardActions>
 						<Button

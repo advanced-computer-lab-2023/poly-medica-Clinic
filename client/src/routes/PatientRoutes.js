@@ -27,6 +27,7 @@ const LazyAppointments = Loadable(
 );
 
 const Account = Loadable(lazy(() => import('pages/profile/Account'))); //TODO: generalize this
+
 // utilities routing
 const UtilsTypography = Loadable(
     lazy(() => import('pages/utilities/Typography'))
@@ -41,7 +42,7 @@ const SamplePage = Loadable(lazy(() => import('pages/sample-page')));
 
 const MainRoutes = {
     path: '/patient',
-    element: <MainLayout userType={PATIENT_TYPE_ENUM}/>,
+    element: <MainLayout userType={PATIENT_TYPE_ENUM} />,
     children: [
         {
             path: 'patient',
@@ -64,7 +65,6 @@ const MainRoutes = {
                     element: <Account />,
                 },
                 {
-
                     path: 'admins',
                     element: <LazyAdmins />,
                 },
@@ -94,7 +94,7 @@ const MainRoutes = {
                 },
                 {
                     path: 'my-patients',
-                    element: <LazyDoctorListofPatients/>
+                    element: <LazyDoctorListofPatients />,
                 },
                 {
                     path: 'packages',

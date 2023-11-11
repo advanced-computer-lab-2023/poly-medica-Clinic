@@ -99,6 +99,7 @@ const pages = {
             url: '/patient/pages/packages',
             target: false,
         },
+
         {
             id: 'clinic',
             title: 'Clinic',
