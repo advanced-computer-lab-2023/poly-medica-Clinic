@@ -1,10 +1,10 @@
 import OrderModel from '../models/Order.js';
-import { ORDER_STATUS, ZERO_INDEX } from '../../utils/Constants.js';
+import { ORDER_STATUS, ZERO_INDEX, ONE } from '../../utils/Constants.js';
 
 class OrderRepository {
 	async findOrders(id) {
 		const orders = await OrderModel.find({ patientId: id }).sort({
-			createdAt: -1,
+			createdAt: -ONE,
 		});
 		return orders;
 	}
@@ -13,7 +13,7 @@ class OrderRepository {
 		const orders = await OrderModel.find({
 			status: ORDER_STATUS[ZERO_INDEX],
 		}).sort({
-			createdAt: -1,
+			createdAt: -ONE,
 		});
 		return orders;
 	}

@@ -10,11 +10,10 @@ import {
 	BAD_REQUEST_CODE_400,
 	PATIENT_ENUM,
 	ZERO_INDEX,
-	INF
+	INF,
 } from '../utils/Constants.js';
 
 import { calcAge } from '../utils/Patient-utils.js';
-
 
 export const patient = (app) => {
 	const service = new PatientService();
@@ -33,7 +32,7 @@ export const patient = (app) => {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}
 	});
-	
+
 	app.get('/patients/:id', async (req, res) => {
 		const { id } = req.params;
 		if (!isValidMongoId(id)) {
@@ -96,14 +95,20 @@ export const patient = (app) => {
 		const { id } = req.params;
 		if (!isValidMongoId(id)) {
 			return res
-				.status(NOT_FOUND_STATUS_CODE)
+				.status(ERROR_STATUS_CODE)
 				.json({ message: 'Invalid ID' });
 		}
 		try {
 			const data = await service.getFamilyMembers(id);
-			res.status(OK_STATUS_CODE).json(data);
+			if (data) {
+				res.status(OK_STATUS_CODE).json(data);
+			} else {
+				res.status(NOT_FOUND_STATUS_CODE).json({
+					message: 'family members not found',
+				});
+			}
 		} catch (err) {
-			res.status(NOT_FOUND_STATUS_CODE).json({
+			res.status(ERROR_STATUS_CODE).json({
 				message: 'family members not found',
 			});
 		}
@@ -112,7 +117,7 @@ export const patient = (app) => {
 	app.patch('/family-members/:id', async (req, res) => {
 		const { id } = req.params;
 		if (!isValidMongoId(id)) {
-			return res.status(NOT_FOUND_STATUS_CODE).json({
+			return res.status(ERROR_STATUS_CODE).json({
 				message: 'Invalid ID',
 			});
 		}
@@ -125,7 +130,7 @@ export const patient = (app) => {
 						message: 'family member is not registered',
 					});
 				}
-				member.patientId = patient._id;
+				member.id = patient._id;
 				member.name = patient.name;
 				member.gender = patient.gender;
 				member.age = calcAge(patient.dateOfBirth);

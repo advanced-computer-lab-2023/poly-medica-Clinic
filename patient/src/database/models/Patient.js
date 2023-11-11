@@ -79,9 +79,6 @@ const patientSchema = mongoose.Schema({
 				type: String,
 				enum: FAMILY_RELATIONS,
 			},
-			patientId: {
-				type: mongoose.Schema.Types.ObjectId,
-			},
 		},
 	],
 	healthrecords: [
