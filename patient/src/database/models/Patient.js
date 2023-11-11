@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { FAMILIY_EMERGENCY, GENDERS, FAMILY_RELATIONS, ZERO } from '../../utils/Constants.js';
+import { FAMILIY_EMERGENCY, GENDERS, HEALTH_PACKAGE_STATUS, FAMILY_RELATIONS, ZERO } from '../../utils/Constants.js';
 import bcrypt from 'bcrypt';
 
 
@@ -80,23 +80,39 @@ const patientSchema = mongoose.Schema({
 				type: String,
 				enum: FAMILY_RELATIONS,
 			},
+			email: {
+				type: String
+			},
+			mobileNumber: {
+				type: String
+			}
 		},
 	],
-	healthrecords: [
+	healthRecords: [
 		{
-			healthIssue: {
+			recordTitle: {
 				type: String,
-				required: true,
 			},
-			healthIssueDate: {
-				type: Date,
-				required: true,
-			},
-			healthIssueDescription: {
+			documentName: {
 				type: String,
-				required: true,
-			},
+			}
 		},
+	],
+	healthPackages: [{
+		packageId: {
+			type: String
+		},
+		subscribtionDate: {
+			type: Date
+		},
+		renewalDate: {
+			type: Date
+		},
+		status: {
+			type: String,
+			enum: HEALTH_PACKAGE_STATUS
+		}
+	}
 	],
 	walletAmount: {
 		type: Number,

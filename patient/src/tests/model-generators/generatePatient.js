@@ -58,9 +58,9 @@ const generatePatient = () => {
 		familyMembers.push(generateFamilyMember());
 	}
 	const healthrecordsLen = faker.number.int({ min: 2, max: 10 });
-	const healthrecords = [];
+	const healthRecords = [];
 	for (let i = 0; i < healthrecordsLen; i++) {
-		healthrecords.push(generateHealthrecord());
+		healthRecords.push(generateHealthrecord());
 	}
 	const deliveryAddressesLen = faker.number.int({ min: 2, max: 10 });
 	const deliveryAddresses = [];
@@ -82,7 +82,7 @@ const generatePatient = () => {
 			relation: generateRelation(),
 		},
 		familyMembers,
-		healthrecords,
+		healthRecords,
 		deliveryAddresses,
 	};
 };
