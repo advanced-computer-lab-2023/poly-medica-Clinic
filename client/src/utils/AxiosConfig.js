@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 const clinicBaseUrl = 'http://localhost:8001';
 const patientBaseUrl = 'http://localhost:8002';
 const pharmacyBaseUrl = 'http://localhost:8003';
+const paymentBaseUrl = 'http://localhost:8005';
 const authenticationBaseUrl = 'http://localhost:8004';
 
 export const clinicAxios = axios.create({
@@ -73,6 +74,10 @@ export const pharmacyAxios = axios.create({
 //     }
   // );
 
+export const paymentAxios = axios.create({
+    baseURL: paymentBaseUrl,
+    withCredentials: true,
+});
 export const authenticationAxios = axios.create({
     baseURL: authenticationBaseUrl,
     withCredentials: true,

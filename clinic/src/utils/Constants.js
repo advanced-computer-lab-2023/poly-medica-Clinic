@@ -10,6 +10,8 @@ export const DOCTOR_ENUM = 'doctor';
 
 export const GENDERS = ['MALE', 'FEMALE'];
 
+export const TIME_OUT = 25000;
+
 export const EMPTY_SIZE = 0;
 export const ONE = 1;
 export const OK_STATUS_CODE = 200;

@@ -41,8 +41,7 @@ import User1 from 'assets/images/users/user-round.svg';
 import { IconLogout, IconSearch, IconSettings, IconUser } from '@tabler/icons';
 import Swal from 'sweetalert2';
 import { useUserContext } from 'hooks/useUserContext';
-import axiosInstanceAuthService from 'utils/api/axiosInstanceAuthSer';
-
+import { AuthenticationAxios } from 'utils/AxiosConfig';
 // ==============================|| PROFILE MENU ||============================== //
 
 const ProfileSection = () => {
@@ -61,7 +60,7 @@ const ProfileSection = () => {
      * */
     const anchorRef = useRef(null);
     const handleLogout = async () => {
-        await axiosInstanceAuthService
+        await AuthenticationAxios
             .get('/remove-cookie')
             .then(() => {
                 dispatch({ auth: false, payload: null });
@@ -348,9 +347,9 @@ const ProfileSection = () => {
                                                         minWidth: '100%',
                                                     },
                                                     '& .MuiListItemButton-root':
-                                                        {
-                                                            mt: 0.5,
-                                                        },
+                                                    {
+                                                        mt: 0.5,
+                                                    },
                                                 }}
                                             >
                                                 <ListItemButton
