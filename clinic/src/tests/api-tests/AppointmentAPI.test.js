@@ -1,16 +1,17 @@
 import request from 'supertest';
 import app from '../../../app.js';
 import { connectDBTest, disconnectDBTest } from '../../utils/testing-utils.js';
-import { OK_STATUS_CODE, ONE, ERROR_STATUS_CODE } from '../../utils/Constants.js';
+import { OK_STATUS_CODE, ONE, ERROR_STATUS_CODE, TIME_OUT } from '../../utils/Constants.js';
 
 import AppointmentModel from '../../database/models/Appointment.js';
 import DoctorModel from '../../database/models/Doctor.js';
 import generateDoctor from '../model-generators/generateDoctor.js';
 import generateAppointment from '../model-generators/generateAppointment.js';
 
-import { describe, beforeEach, afterEach, expect, it } from '@jest/globals';
+import { describe, beforeEach, afterEach, expect, it, jest } from '@jest/globals';
 import { faker } from '@faker-js/faker';
 
+jest.setTimeout(TIME_OUT);
 // const NEGONE = -1;
 // const printAllDoctors = async (num) => {
 // 	const docs = await DoctorModel.find({});

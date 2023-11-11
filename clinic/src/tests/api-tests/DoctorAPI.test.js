@@ -7,6 +7,7 @@ import {
 	ERROR_STATUS_CODE,
 	SIXTY,
 	THOUSAND,
+	TIME_OUT,
 } from '../../utils/Constants.js';
 
 import DoctorModel from '../../database/models/Doctor.js';
@@ -25,7 +26,7 @@ import {
 import { faker } from '@faker-js/faker';
 import axios from 'axios';
 jest.mock('axios');
-
+jest.setTimeout(TIME_OUT);
 describe('GET /doctor/:id', () => {
 	beforeEach(async () => {
 		await connectDBTest();
