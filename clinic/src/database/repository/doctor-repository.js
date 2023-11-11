@@ -3,6 +3,8 @@ import { getFile, deleteFile } from '../../utils/CommonUtils.js';
 import {
 	DOCTOR_FOLDER_NAME,
 	DOCTOR_PROJECTION,
+	SIXTY,
+	THOUSAND,
 } from '../../utils/Constants.js';
 import DoctoerReqModel from '../models/DoctorReq.js';
 import AppointmentModel from '../models/Appointment.js';
@@ -142,6 +144,25 @@ class DoctorRepository {
 
 	deleteFile(fileName) {
 		return deleteFile(DOCTOR_FOLDER_NAME, fileName);
+	}
+
+	async addSlot(id, from) {
+		const dateFrom = new Date(from);
+		const until = new Date(dateFrom.getTime() + SIXTY * SIXTY * THOUSAND);
+
+		const doctor = await DoctorModel.findByIdAndUpdate(
+			id,
+			{
+				$push: {
+					availableSlots: {
+						from: dateFrom,
+						until: until,
+					},
+				},
+			},
+			{ new: true, runValidators: true },
+		);
+		return doctor;
 	}
 }
 

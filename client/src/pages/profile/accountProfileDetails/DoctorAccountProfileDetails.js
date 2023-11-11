@@ -13,27 +13,9 @@ import {
 } from '@mui/material';
 import Swal from 'sweetalert2';
 import { useUserContext } from 'hooks/useUserContext';
+import format from 'date-fns/format';
 
-// const states = [
-// 	{
-// 		value: 'alabama',
-// 		label: 'Alabama'
-// 	},
-// 	{
-// 		value: 'new-york',
-// 		label: 'New York'
-// 	},
-// 	{
-// 		value: 'san-francisco',
-// 		label: 'San Francisco'
-// 	},
-// 	{
-// 		value: 'los-angeles',
-// 		label: 'Los Angeles'
-// 	}
-// ];
-
-export const AccountProfileDetails = () => {
+export const DoctorAccountProfileDetails = () => {
     const [values, setValues] = useState({
         name: '',
         userName: '',
@@ -59,7 +41,7 @@ export const AccountProfileDetails = () => {
                 setValues({
                     name: values.userData.name,
                     userName: values.userData.userName,
-                    dateOfBirth: values.userData.dateOfBirth,
+                    dateOfBirth: format(new Date(values.userData.dateOfBirth), 'yyyy-MM-dd'),
                     speciality: values.speciality,
                     email: values.userData.email,
                     hourlyRate: values.hourlyRate,
@@ -223,3 +205,5 @@ export const AccountProfileDetails = () => {
         </form>
     );
 };
+
+export default DoctorAccountProfileDetails;

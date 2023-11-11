@@ -9,11 +9,21 @@ import {
 	DUPLICATE_KEY_ERROR_CODE,
 	BAD_REQUEST_CODE_400,
 	PATIENT_ENUM,
+	ZERO_INDEX
 } from '../utils/Constants.js';
-import { ZERO_INDEX } from '../../../clinic/src/utils/Constants.js';
 
 export const patient = (app) => {
 	const service = new PatientService();
+
+	app.get('/patients/:patientId', async (req, res) => {
+		try{
+			const patientId = req.params.patientId;
+			const patient = await service.findPatient(patientId);
+			res.send(patient);
+		} catch(err){
+			res.status(BAD_REQUEST_CODE_400).send({ errMessage: 'coudn\'t fetch patient data' });
+		}
+	});
 
 	app.get('/patients', async (req, res) => {
 		try {
@@ -23,6 +33,27 @@ export const patient = (app) => {
 			} else {
 				res.status(NOT_FOUND_STATUS_CODE).json({
 					message: 'No patients found!',
+				});
+			}
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({ err: err.message });
+		}
+	});
+	
+	app.get('/patients/:id', async (req, res) => {
+		const { id } = req.params;
+		if (!isValidMongoId(id)) {
+			return res
+				.status(ERROR_STATUS_CODE)
+				.json({ message: 'Invalid ID' });
+		}
+		try {
+			const patient = await service.getPatientById(id);
+			if (patient) {
+				res.status(OK_STATUS_CODE).json({ patient });
+			} else {
+				res.status(NOT_FOUND_STATUS_CODE).json({
+					message: 'patient not found!',
 				});
 			}
 		} catch (err) {

@@ -7,6 +7,12 @@ class PatientRepository {
 		const allPatients = await PatientModel.find();
 		return allPatients;
 	}
+
+	async findPatientById(id) {
+		const patient = await PatientModel.findById(id);
+		return patient;
+	}
+
 	async findFamilyMembers(id) {
 		console.log('id = ', id);
 		const familyMembers = await PatientModel.findById(
@@ -19,6 +25,10 @@ class PatientRepository {
 
 	async findPatientByUserName(userN) {
 		return await PatientModel.findOne({ userName: userN });
+	}
+
+	async findPatientById(PatientId) {
+		return await PatientModel.findOne({ _id: PatientId }, '-password -healthrecords -familyMembers');
 	}
 
 	async addFamilyMember(id, familyMembers) {

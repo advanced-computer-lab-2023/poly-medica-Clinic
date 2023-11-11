@@ -55,13 +55,18 @@ const patientSchema = mongoose.Schema({
 	},
 	familyMembers: [
 		{
+			id: {
+				type: mongoose.Schema.Types.ObjectId,
+				// ref: 'Patient',
+				// required: true	
+			},
 			name: {
 				type: String,
-				required: true,
+				// required: true,
 			},
 			nationalId: {
 				type: String,
-				required: true,
+				// required: true,
 				unique: true,
 				sparse: true,
 			},
@@ -72,7 +77,7 @@ const patientSchema = mongoose.Schema({
 			gender: {
 				type: String,
 				enum: GENDERS,
-				required: true,
+				// required: true,
 			},
 			relation: {
 				type: String,

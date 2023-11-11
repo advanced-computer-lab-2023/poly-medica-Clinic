@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import UserSchema from './UserSchema.js';
-
+ 
 const Doctor = mongoose.Schema({
 	userData: {
 		type: UserSchema,
@@ -22,14 +22,27 @@ const Doctor = mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	
 	availableSlots: {
 		type: Array,
-		default: [],
+		default: [
+			{
+				from: new Date(),
+				until: new Date()
+			},
+		],
+		
 	},
 	documentsNames: {
 		type: [String],
 	},
+	status:{
+		type: Boolean,
+		default: false,
+		
+	}
 });
+ 
 
 Doctor.statics.addUser = async function (
 	userData,

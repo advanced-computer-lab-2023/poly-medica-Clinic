@@ -74,6 +74,11 @@ class DoctorService {
 	deleteFile(fileName) {
 		return this.repository.deleteFile(fileName);
 	}
+
+	async addSlot(id, from) {
+		const doctor = await this.repository.addSlot(id, from);
+		return doctor;
+	}
 }
 
 export default DoctorService;

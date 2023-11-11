@@ -25,10 +25,12 @@ import {
 } from '../utils/Constants.js';
 import jwt from 'jsonwebtoken';
 import axios from 'axios';
+import ResetPasswordService from '../service/reset-password-service.js';
 
 
 export const user = (app) => {
 	const user = new UserService();
+	const resetPassword = new ResetPasswordService();
 
 	const createToken = (id, userName, type) => {
 		return jwt.sign({ id, userName, type }, process.env.JWT_SECRET, {
@@ -172,7 +174,6 @@ export const user = (app) => {
 
 			res.status(OK_REQUEST_CODE_200).send({ message: 'admin added' });
 		} catch (err) {
-			console.log(err);
 			if (err.response) {
 				// coming from other services
 				if (err.response.data.errCode == DUPLICATE_KEY_ERROR_CODE) {
@@ -190,6 +191,23 @@ export const user = (app) => {
 		}
 	});
 
+	const sendUserToken = (logedinUser, res, reset) =>{
+		const token = createToken(
+			logedinUser.userId,
+			logedinUser.userName,
+			logedinUser.type,
+		);
+		res.cookie('jwt', token, {
+			httpOnly: true,
+			maxAge: ONE_DAY_MAX_AGE_IN_MILLEMIINUTS,
+		});
+		res.send({
+			id: logedinUser.userId,
+			userName: logedinUser.userName,
+			type: (logedinUser.type == PHARMACY_ADMIN_ENUM || logedinUser.type == CLINIC_ADMIN_ENUM) ?ADMIN_FRONT_ENUM:logedinUser.type,
+			reset:reset
+		});
+	}
 	app.post('/login/:request', async (req, res) => {
 		try {
 			const requestFrom =  req.params.request;
@@ -199,27 +217,34 @@ export const user = (app) => {
 			case PHARMACY_REQ: if (logedinUser.type == DOCTOR_ENUM || logedinUser.type == CLINIC_ADMIN_ENUM) throw new Error('invalid user'); break; //TODO: admin in login
 			default: throw new Error('invalid system');
 			}
-			
 			if(logedinUser.type == PHARMACY_ADMIN_ENUM || logedinUser.type == CLINIC_ADMIN_ENUM){
-				logedinUser.type = ADMIN_FRONT_ENUM;
+				logedinUser.type = ADMIN_FRONT_ENUM
 			}
-			
-			const token = createToken(
-				logedinUser.userId,
-				logedinUser.userName,
-				logedinUser.type,
-			);
-			res.cookie('jwt', token, {
-				httpOnly: true,
-				maxAge: ONE_DAY_MAX_AGE_IN_MILLEMIINUTS,
-			});
-			res.send({
-				id: logedinUser.userId,
-				userName: logedinUser.userName,
-				type: (logedinUser.type == PHARMACY_ADMIN_ENUM || logedinUser.type == CLINIC_ADMIN_ENUM) ?ADMIN_FRONT_ENUM:logedinUser.type,
-			});
+			sendUserToken(logedinUser, res, false)
 		} catch (err) {
-			res.status(BAD_REQUEST_CODE_400).send({ message: err.message });
+			if(err.message == 'incorrect Password'){
+				// access reset service
+				const userData = await user.findUserByUserName(req.body.userName);
+				if(userData.email){
+					const resetUser = await resetPassword.getRecordByEmail(userData.email);
+					if(!resetUser || new Date() > new Date(resetUser.resetTokenExpiration)){
+					await resetPassword.removeRecordByEmail(userData.email);
+					res.status(BAD_REQUEST_CODE_400).send({ message: err.message });
+				} else{
+					if(req.body.password == resetUser.OTP){
+						await resetPassword.removeRecordByEmail(userData.email);
+						//TODO: let him 
+						sendUserToken(userData, res, true)
+					}
+					else
+						res.status(BAD_REQUEST_CODE_400).send({ message: err.message });
+				}
+			} else{
+				res.status(BAD_REQUEST_CODE_400).send({ message: err.message });
+			}
+			}
+			else
+				res.status(BAD_REQUEST_CODE_400).send({ message: err.message });
 		}
 	});
 
@@ -242,7 +267,17 @@ export const user = (app) => {
 		}
 	});
 
-
+	app.patch('/change-password/:userId', async (req, res) => {
+		try{
+			const userId = req.params.userId;
+			const { password } = req.body;
+			await user.updatePassword(userId, password);
+			res.status(OK_REQUEST_CODE_200).end();
+		} catch (err){
+			console.log(err);
+			res.status(SERVER_ERROR_REQUEST_CODE_500).send({ message:err.message });
+		}
+	})
 
 	app.get('/remove-cookie', (req, res) => {
 		res.cookie('jwt', '', { expires: new Date(0), path: '/' });
