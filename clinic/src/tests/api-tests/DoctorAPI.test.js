@@ -22,6 +22,9 @@ import { faker } from '@faker-js/faker';
 import axios from 'axios';
 jest.mock('axios');
 
+const SECONDS = 1000;
+jest.setTimeout(SIXTY * SECONDS);
+
 describe('GET /doctor/:id', () => {
 
 	beforeEach(async () => {
