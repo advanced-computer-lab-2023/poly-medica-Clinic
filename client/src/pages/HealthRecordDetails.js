@@ -30,7 +30,7 @@ function formatHealthRecord(healthRecord) {
 const HealthRecordDetails = ( { isPatientDetailsOpen, handleClose, patient } ) => {
 
 	const emergencyContact = formateEmergencyContact(patient.emergencyContact);
-	const healthRecord = formatHealthRecord(patient.healthrecords);
+	const healthRecord = formatHealthRecord(patient.healthRecords);
 	return (
 		<Dialog 
 		open={isPatientDetailsOpen}

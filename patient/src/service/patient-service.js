@@ -69,6 +69,45 @@ class PatientService {
 		return null;
 	}
 
+	async addHealthPackage(patientId, healthPackage) {
+		const updatedPatient = await this.repository.addHealthPackage(patientId, healthPackage);
+		return updatedPatient;
+	}
+
+	async viewHealthPackages(patientId) {
+		const healthPackages = await this.repository.viewHealthPackages(patientId);
+		return healthPackages;
+	}
+
+	async cancelHealthPackage(patientId, healthPackageId) {
+		const updatedPatient = await this.repository.cancelHealthPackage(patientId, healthPackageId);
+		return updatedPatient;
+	}
+
+	async getHealthRecords(patientId) {
+		const healthRecords = await this.repository.getHealthRecords(patientId);
+		return healthRecords;
+	}
+
+	async addHealthRecord(patientId, healthRecord) {
+		const updatedPatient = await this.repository.addHealthRecord(patientId, healthRecord);
+		return updatedPatient;
+	}
+
+	async deleteHealthRecord(patientId, recordId) {
+		const deletedRecord = await this.repository.deleteHealthRecord(patientId, recordId);
+		return deletedRecord;
+	}
+
+	async getOneRecord(patientId, recordId) {
+		const record = await this.repository.getOneRecord(patientId, recordId);
+		return record;
+	}
+
+	getPicture(pictureName) {
+		return this.repository.getPicture(pictureName);
+	}
+
 	async getWalletAmount(id) {
 		const amount = await this.repository.getWalletAmount(id);
 		return amount;
