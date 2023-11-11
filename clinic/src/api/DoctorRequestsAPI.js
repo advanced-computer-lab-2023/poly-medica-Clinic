@@ -9,6 +9,7 @@ import {
 	OK_STATUS_CODE,
 	ERROR_STATUS_CODE,
 	DOCTOR_FOLDER_NAME,
+	NOT_FOUND_STATUS_CODE,
 } from '../utils/Constants.js';
 import { isValidMongoId } from '../utils/Validation.js';
 
@@ -29,7 +30,6 @@ export const doctorRequests = (app) => {
 		upload(DOCTOR_FOLDER_NAME).array('file'),
 		async (req, res) => {
 			try {
-				console.log('req.body', req.body);
 				const { sendData } = req.body;
 				const parsedData = JSON.parse(sendData);
 				parsedData.documentsNames = req.files.map((file) => file.filename);
@@ -76,36 +76,27 @@ export const doctorRequests = (app) => {
 		try {
 			const { id } = req.params;
 			const { accept } = req.query;
-			console.log('accept', accept);
 			if (!isValidMongoId(id))
 				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
 
-			if (accept === 'false') {
-				await service
-					.getDoctorRequestById(id)
-					.then((doctorRequest) => {
-						if (!doctorRequest) {
-							return res
-								.status(ERROR_STATUS_CODE)
-								.json({ message: 'Pharmacist request not found' });
-						}
-						doctorRequest.documentsNames.forEach((fileName) => {
-							service.deleteFile(fileName);
-						});
-					})
-					.catch((err) => {
-						return res.status(ERROR_STATUS_CODE).json({ message: err.message });
-					});
+			const doctorRequest = await service.getDoctorRequestById(id);
+			if (!doctorRequest) {
+				return res
+					.status(NOT_FOUND_STATUS_CODE)
+					.json({ message: 'doctor request not found' });
 			}
 
-			const doctorRequest = await service.deleteDoctorRequest(id);
-			if (doctorRequest) {
-				res.status(OK_STATUS_CODE).json({ message: 'doctor deleted' });
-			} else {
-				res.status(ERROR_STATUS_CODE).json({
-					message: 'doctor not found',
+			if (accept === 'false') {
+				doctorRequest.documentsNames.forEach((fileName) => {
+					service.deleteFile(fileName);
 				});
 			}
+
+			const deletedDoctorRequest = await service.deleteDoctorRequest(id);
+
+			res
+				.status(OK_STATUS_CODE)
+				.json({ message: 'doctor request deleted', deletedDoctorRequest });
 		} catch (error) {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
