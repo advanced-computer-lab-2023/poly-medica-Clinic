@@ -1,5 +1,4 @@
 import { faker } from '@faker-js/faker';
-import { ORDER_STATUS, ZERO_INDEX } from '../../utils/Constants.js';
 
 const generateItem = () => {
 	return {
@@ -9,7 +8,7 @@ const generateItem = () => {
 	};
 };
 
-const generateOrder = (patientId) => {
+const generateOrder = (patientId, orderStatus) => {
 	const details = [];
 	const len = faker.number.int({ min: 5, max: 10 });
 	let total = 0;
@@ -22,7 +21,7 @@ const generateOrder = (patientId) => {
 		patientId: patientId,
 		details,
 		amount: total,
-		status: ORDER_STATUS[ZERO_INDEX],
+		status: orderStatus,
 	};
 };
 

@@ -9,10 +9,9 @@ import {
 export const order = (app) => {
 	const service = new OrderService();
 
-	app.get('/order-pending', async (req, res) => {
+	app.get('/order/pending', async (req, res) => {
 		try {
 			const data = await service.getPendingOrders();
-			console.log(data);
 			res.status(OK_STATUS_CODE).json(data);
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({
@@ -21,15 +20,15 @@ export const order = (app) => {
 		}
 	});
 
-	app.get('/order/:pateintId', async (req, res) => {
-		const { pateintId } = req.params;
-		if (!isValidMongoId(pateintId)) {
+	app.get('/order/:patientId', async (req, res) => {
+		const { patientId } = req.params;
+		if (!isValidMongoId(patientId)) {
 			return res.status(ERROR_STATUS_CODE).json({
 				message: 'Patient ID is invalid',
 			});
 		}
 		try {
-			const data = await service.getOrders(pateintId);
+			const data = await service.getOrders(patientId);
 			res.status(OK_STATUS_CODE).json(data);
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({

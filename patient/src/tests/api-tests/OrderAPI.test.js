@@ -6,6 +6,7 @@ import {
 	ERROR_STATUS_CODE,
 	ONE,
 	ORDER_STATUS,
+	ZERO_INDEX
 } from '../../utils/Constants.js';
 
 import OrderModel from '../../database/models/Order.js';
@@ -16,7 +17,7 @@ import generatePatient from '../../tests/model-generators/generatePatient.js';
 import { describe, beforeEach, afterEach, expect, it } from '@jest/globals';
 import { faker } from '@faker-js/faker';
 
-describe('GET /order/:pateintId', () => {
+describe('GET /order/:patientId', () => {
 	beforeEach(async () => {
 		await connectDBTest();
 	});
@@ -54,7 +55,7 @@ describe('POST /order', () => {
 	it('should return 200 OK and create a new order', async () => {
 		const patient = new PatientModel(generatePatient());
 		await patient.save();
-		const order = new OrderModel(generateOrder(patient._id));
+		const order = new OrderModel(generateOrder(patient._id, ORDER_STATUS[ZERO_INDEX]));
 		await order.save();
 		const newOrder = {
 			patientId: order.patientId,
@@ -92,7 +93,7 @@ describe('PATCH /order', () => {
 		await patient.save();
 		const patient2 = new PatientModel(generatePatient());
 		await patient2.save();
-		const order = new OrderModel(generateOrder(patient._id));
+		const order = new OrderModel(generateOrder(patient._id, ORDER_STATUS[ZERO_INDEX]));
 		await order.save();
 		const updatedOrder = {
 			patientId: patient2._id,
@@ -113,6 +114,33 @@ describe('PATCH /order', () => {
 		};
 		const res = await request(app).patch(`/order/${id}`).send({ order });
 		expect(res.status).toBe(ERROR_STATUS_CODE);
+	});
+
+	afterEach(async () => {
+		await disconnectDBTest();
+	});
+});
+
+describe('GET /order/pending', () => {
+	beforeEach(async () => {
+		await connectDBTest();
+	});
+
+	it('should return 200 OK and retrieve pending orders', async () => {
+		const patient = new PatientModel(generatePatient());
+		await patient.save();
+		const len = faker.number.int({ min: 5, max: 10 });
+		for (let i = 0; i < len; i++) {
+			const order = new OrderModel(generateOrder(patient._id, ORDER_STATUS[ZERO_INDEX]));
+			await order.save();
+		}
+		for (let i = 0; i < len; i++) {
+			const order = new OrderModel(generateOrder(patient._id, ORDER_STATUS[ONE]));
+			await order.save();
+		}
+		const res = await request(app).get('/order/pending');
+		expect(res.status).toBe(OK_STATUS_CODE);
+		expect(res._body.length).toBe(len);
 	});
 
 	afterEach(async () => {
