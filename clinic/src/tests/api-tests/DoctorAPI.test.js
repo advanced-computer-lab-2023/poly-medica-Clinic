@@ -7,6 +7,8 @@ import {
 	ERROR_STATUS_CODE,
 	SIXTY,
 	THOUSAND,
+	ONE,
+	ZERO_INDEX,
 } from '../../utils/Constants.js';
 
 import DoctorModel from '../../database/models/Doctor.js';
@@ -483,8 +485,8 @@ describe('GET /doctors', () => {
 
 		expect(response.status).toBe(OK_STATUS_CODE);
 		console.log(doctor.userName, 'userName');
-		expect(response.body.length).toBe(1);
-		expect(response.body[0].userData.userName).toBe(doctor.userData.userName);
+		expect(response.body.length).toBe(ONE);
+		expect(response.body[ZERO_INDEX].userData.userName).toBe(doctor.userData.userName);
 	});
 
 	afterEach(async () => {

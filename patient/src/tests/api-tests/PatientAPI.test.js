@@ -1,13 +1,10 @@
 import request from 'supertest';
 import app from '../../../app.js';
-import {
-	connectDBTest,
-	disconnectDBTest
-} from '../../utils/testing-utils.js';
+import { connectDBTest, disconnectDBTest } from '../../utils/testing-utils.js';
 import {
 	OK_STATUS_CODE,
 	NOT_FOUND_STATUS_CODE,
-	ERROR_STATUS_CODE
+	ERROR_STATUS_CODE,
 } from '../../utils/Constants.js';
 
 import PrescriptionModel from '../../database/models/Prescription.js';
@@ -15,11 +12,21 @@ import generatePrescription from '../model-generators/generatePrescription.js';
 import PatientModel from '../../database/models/Patient.js';
 import generatePatient from '../model-generators/generatePatient.js';
 
-import { describe, beforeEach, afterEach, expect, it } from '@jest/globals';
+import {
+	describe,
+	beforeEach,
+	afterEach,
+	expect,
+	it,
+	jest,
+} from '@jest/globals';
 import { faker } from '@faker-js/faker';
 
-describe('GET /patient/:id/prescriptions (get all prescriptions of a patient)', () => {
+const SECONDS = 1000;
+const EIGHTY = 80;
+jest.setTimeout(EIGHTY * SECONDS);
 
+describe('GET /patient/:id/prescriptions (get all prescriptions of a patient)', () => {
 	beforeEach(async () => {
 		await connectDBTest();
 	});
@@ -32,7 +39,7 @@ describe('GET /patient/:id/prescriptions (get all prescriptions of a patient)', 
 		for (let i = 0; i < cntPrescriptionsMainPatient; i++) {
 			const doctorId = faker.database.mongodbObjectId();
 			const prescription = new PrescriptionModel(
-				generatePrescription(mainPatientId, doctorId)
+				generatePrescription(mainPatientId, doctorId),
 			);
 			await prescription.save();
 			mainPatientPrescriptions.add(prescription._id.toString());
@@ -41,17 +48,21 @@ describe('GET /patient/:id/prescriptions (get all prescriptions of a patient)', 
 			const patientId = faker.database.mongodbObjectId();
 			const doctorId = faker.database.mongodbObjectId();
 			const prescription = new PrescriptionModel(
-				generatePrescription(patientId, doctorId)
+				generatePrescription(patientId, doctorId),
 			);
 			await prescription.save();
 		}
 		console.log(mainPatientId);
-		const res = await request(app).get(`/patient/${mainPatientId}/prescriptions`);
+		const res = await request(app).get(
+			`/patient/${mainPatientId}/prescriptions`,
+		);
 		expect(res.status).toBe(OK_STATUS_CODE);
 
 		expect(cntPrescriptionsMainPatient).toBe(res._body.length);
 		res._body.forEach((retrievedPrescription) => {
-			expect(mainPatientPrescriptions.has(retrievedPrescription._id)).toBeTruthy();
+			expect(
+				mainPatientPrescriptions.has(retrievedPrescription._id),
+			).toBeTruthy();
 		});
 	});
 
@@ -73,7 +84,6 @@ describe('GET /patient/:id/prescriptions (get all prescriptions of a patient)', 
 });
 
 describe('GET /patients/:id', () => {
-
 	beforeEach(async () => {
 		await connectDBTest();
 	});
@@ -96,6 +106,62 @@ describe('GET /patients/:id', () => {
 	it('should return 500 ERROR when the id is invalid', async () => {
 		const id = faker.lorem.word();
 		const res = await request(app).get(`/patients/${id}`);
+		expect(res.status).toBe(ERROR_STATUS_CODE);
+	});
+
+	afterEach(async () => {
+		await disconnectDBTest();
+	});
+});
+
+describe('GET /patients', () => {
+	const getPatients = async () => {
+		return await request(app).get('/patients');
+	};
+
+	beforeEach(async () => {
+		await connectDBTest();
+	});
+
+	it('should return 200 OK and retrieve all patients correctly', async () => {
+		const cntPatients = faker.number.int({ min: 2, max: 10 });
+		for (let i = 0; i < cntPatients; i++) {
+			const patient = new PatientModel(generatePatient());
+			await patient.save();
+		}
+		const res = await getPatients();
+		expect(res.status).toBe(OK_STATUS_CODE);
+		expect(res._body.patients.length).toBe(cntPatients);
+	});
+});
+
+describe('DELETE /patients/:id', () => {
+	const deletePatient = async (id) => {
+		return await request(app).delete(`/patients/${id}`);
+	};
+
+	beforeEach(async () => {
+		await connectDBTest();
+	});
+
+	it('should return 200 OK and delete the patient correctly', async () => {
+		const patient = new PatientModel(generatePatient());
+		await patient.save();
+		const id = patient._id.toString();
+		const res = await deletePatient(id);
+		expect(res.status).toBe(OK_STATUS_CODE);
+		expect(res._body.deleted_patient._id).toBe(id);
+	});
+
+	it('should return 404 when the patient to delete is not found', async () => {
+		const id = faker.database.mongodbObjectId();
+		const res = await deletePatient(id);
+		expect(res.status).toBe(NOT_FOUND_STATUS_CODE);
+	});
+
+	it('should return 500 ERROR when the id of the patient to delete is invalid', async () => {
+		const id = faker.lorem.word();
+		const res = await deletePatient(id);
 		expect(res.status).toBe(ERROR_STATUS_CODE);
 	});
 

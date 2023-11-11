@@ -6,6 +6,8 @@ import {
 	ERROR_STATUS_CODE,
 	NOT_FOUND_STATUS_CODE,
 	SIXTY,
+	ZERO_INDEX,
+	ONE,
 } from '../../utils/Constants.js';
 
 import AdminModel from '../../database/models/Admin.js';
@@ -42,8 +44,8 @@ describe('GET /admins', () => {
 		const response = await getAdmins();
 
 		expect(response.status).toBe(OK_STATUS_CODE);
-		expect(response.body.admins.length).toBe(1);
-		expect(response.body.admins[0].userName).toBe(admin.userName);
+		expect(response.body.admins.length).toBe(ONE);
+		expect(response.body.admins[ZERO_INDEX].userName).toBe(admin.userName);
 	});
 
 	afterEach(async () => {

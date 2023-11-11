@@ -6,6 +6,8 @@ import {
 	ERROR_STATUS_CODE,
 	NOT_FOUND_STATUS_CODE,
 	SIXTY,
+	ONE,
+	ZERO_INDEX,
 } from '../../utils/Constants.js';
 
 import DoctorReqModel from '../../database/models/DoctorReq.js';
@@ -25,7 +27,6 @@ import { faker } from '@faker-js/faker';
 const SECONDS = 1000;
 jest.setTimeout(SIXTY * SECONDS);
 
-
 describe('GET /doctor-requests', () => {
 	const getDoctorRequests = async () => {
 		const response = await request(app).get('/doctor-requests');
@@ -37,16 +38,12 @@ describe('GET /doctor-requests', () => {
 	});
 
 	it('should return 200 upon getting all requests', async () => {
-		const doctorReq = await DoctorReqModel(
-			generateDoctorReq(),
-		).save();
+		const doctorReq = await DoctorReqModel(generateDoctorReq()).save();
 		const response = await getDoctorRequests();
 
 		expect(response.status).toBe(OK_STATUS_CODE);
-		expect(response.body.doctorRequests.length).toBe(1);
-		expect(response.body.doctorRequests[0].userName).toBe(
-			doctorReq.userName,
-		);
+		expect(response.body.doctorRequests.length).toBe(ONE);
+		expect(response.body.doctorRequests[ZERO_INDEX].userName).toBe(doctorReq.userName);
 	});
 
 	afterEach(async () => {
@@ -93,9 +90,7 @@ describe('DELETE /doctor-requests/:id?accept=x', () => {
 	});
 
 	it('should return 200 upon deleting a doctor request when accepted', async () => {
-		const doctorReq = await DoctorReqModel(
-			generateDoctorReq(),
-		).save();
+		const doctorReq = await DoctorReqModel(generateDoctorReq()).save();
 		const response = await deleteDoctorReq(doctorReq._id, true);
 
 		expect(response.status).toBe(OK_STATUS_CODE);
@@ -103,9 +98,7 @@ describe('DELETE /doctor-requests/:id?accept=x', () => {
 	});
 
 	it('should return 200 upon deleting a doctor request when rejected', async () => {
-		const doctorReq = await DoctorReqModel(
-			generateDoctorReq(),
-		).save();
+		const doctorReq = await DoctorReqModel(generateDoctorReq()).save();
 		const response = await deleteDoctorReq(doctorReq._id, false);
 
 		expect(response.status).toBe(OK_STATUS_CODE);

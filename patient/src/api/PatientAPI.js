@@ -9,19 +9,21 @@ import {
 	DUPLICATE_KEY_ERROR_CODE,
 	BAD_REQUEST_CODE_400,
 	PATIENT_ENUM,
-	ZERO_INDEX
+	ZERO_INDEX,
 } from '../utils/Constants.js';
 
 export const patient = (app) => {
 	const service = new PatientService();
 
 	app.get('/patients/:patientId', async (req, res) => {
-		try{
+		try {
 			const patientId = req.params.patientId;
 			const patient = await service.findPatient(patientId);
 			res.send(patient);
-		} catch(err){
-			res.status(BAD_REQUEST_CODE_400).send({ errMessage: 'coudn\'t fetch patient data' });
+		} catch (err) {
+			res
+				.status(BAD_REQUEST_CODE_400)
+				.send({ errMessage: 'coudn\'t fetch patient data' });
 		}
 	});
 
@@ -39,13 +41,11 @@ export const patient = (app) => {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}
 	});
-	
+
 	app.get('/patients/:id', async (req, res) => {
 		const { id } = req.params;
 		if (!isValidMongoId(id)) {
-			return res
-				.status(ERROR_STATUS_CODE)
-				.json({ message: 'Invalid ID' });
+			return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
 		}
 		try {
 			const patient = await service.getPatientById(id);
@@ -75,24 +75,26 @@ export const patient = (app) => {
 
 	app.delete('/patients/:id', async (req, res) => {
 		try {
-			const id = req.params.id;
+			const { id } = req.params;
 			if (!isValidMongoId(id)) {
 				return res
-					.status(NOT_FOUND_STATUS_CODE)
+					.status(ERROR_STATUS_CODE)
 					.json({ message: 'Invalid ID' });
 			}
 			const deletedPatient = await service.deletePatient(id);
-			if (deletedPatient === null)
-				res.json({
+			console.log(deletedPatient, 'deletedPatient');
+			if (!deletedPatient) {
+				return res.status(NOT_FOUND_STATUS_CODE).json({
 					message: 'patient not found!',
 					status: NOT_FOUND_STATUS_CODE,
 				});
-			else
-				res.json({
-					message: 'patient deleted!',
-					status: OK_STATUS_CODE,
-					deleted_patient: deletedPatient,
-				});
+			}
+
+			res.json({
+				message: 'patient deleted!',
+				status: OK_STATUS_CODE,
+				deleted_patient: deletedPatient,
+			});
 		} catch (err) {
 			res.json({ err: err.message, status: ERROR_STATUS_CODE });
 		}
@@ -101,9 +103,7 @@ export const patient = (app) => {
 	app.get('/family-members/:id', async (req, res) => {
 		const { id } = req.params;
 		if (!isValidMongoId(id)) {
-			return res
-				.status(NOT_FOUND_STATUS_CODE)
-				.json({ message: 'Invalid ID' });
+			return res.status(NOT_FOUND_STATUS_CODE).json({ message: 'Invalid ID' });
 		}
 		try {
 			const data = await service.getFamilyMembers(id);
@@ -123,8 +123,7 @@ export const patient = (app) => {
 			});
 		}
 		try {
-			const { name, userName, nationalId, age, gender, relation } =
-                req.body;
+			const { name, userName, nationalId, age, gender, relation } = req.body;
 			const patient = await service.getPatientByUserName(userName);
 			if (patient) {
 				const data = await service.getFamilyMembers(id);
@@ -180,10 +179,7 @@ export const patient = (app) => {
 				});
 			}
 			try {
-				const data = await service.getPrescription(
-					pateintId,
-					prescriptionId
-				);
+				const data = await service.getPrescription(pateintId, prescriptionId);
 				if (data) res.status(OK_STATUS_CODE).json(data);
 				else
 					res.status(NOT_FOUND_STATUS_CODE).json({
@@ -194,21 +190,29 @@ export const patient = (app) => {
 					message: 'error occurred while fetching prescription',
 				});
 			}
-		}
+		},
 	);
 
 	app.post('/signup', async (req, res) => {
-		try{
+		try {
 			const signedupUser = await service.signupUser(req);
-			req.body = { userId: signedupUser._id ,email: signedupUser.email , password:signedupUser.password, userName:signedupUser.userName, type: PATIENT_ENUM };
+			req.body = {
+				userId: signedupUser._id,
+				email: signedupUser.email,
+				password: signedupUser.password,
+				userName: signedupUser.userName,
+				type: PATIENT_ENUM,
+			};
 			res.send(req.body);
-		} catch(err){
-			if(err.code == DUPLICATE_KEY_ERROR_CODE){
+		} catch (err) {
+			if (err.code == DUPLICATE_KEY_ERROR_CODE) {
 				const duplicateKeyAttrb = Object.keys(err.keyPattern)[ZERO_INDEX];
 				console.log(duplicateKeyAttrb);
-				res.status(BAD_REQUEST_CODE_400).send({ errCode:DUPLICATE_KEY_ERROR_CODE ,errMessage:`that ${duplicateKeyAttrb} is already registered` });
-			}
-			else res.status(BAD_REQUEST_CODE_400).send({ errMessage: err.message });
+				res.status(BAD_REQUEST_CODE_400).send({
+					errCode: DUPLICATE_KEY_ERROR_CODE,
+					errMessage: `that ${duplicateKeyAttrb} is already registered`,
+				});
+			} else res.status(BAD_REQUEST_CODE_400).send({ errMessage: err.message });
 		}
 	});
 };

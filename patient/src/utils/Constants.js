@@ -19,7 +19,6 @@ export const MONGO_URI = 'mongodb://localhost:27017';
 
 export const ONE = 1;
 
-
 export const FAMILIY_EMERGENCY = [
 	'Parent',
 	'Child',
