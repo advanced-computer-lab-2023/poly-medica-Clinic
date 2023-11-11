@@ -21,10 +21,10 @@ const HealthPackageOrder = mongoose.Schema({
 		type: Number,
 		required: true,
 	},
-    status: {
-        type: String,
-        enum: ['DONE', 'FAILED']
-    }
+	status: {
+		type: String,
+		enum: ['DONE', 'FAILED']
+	}
 });
 
 const HealthPackageModel = mongoose.model('HealthPackageOrder', HealthPackageOrder);

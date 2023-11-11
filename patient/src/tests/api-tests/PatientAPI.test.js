@@ -7,7 +7,7 @@ import {
     ERROR_STATUS_CODE,
     TIME_OUT,
     ZERO_INDEX,
-    HEALTH_PACKAGE_STATUS
+    HEALTH_PACKAGE_STATUS, ONE
 } from '../../utils/Constants.js';
 
 import PrescriptionModel from '../../database/models/Prescription.js';
@@ -24,7 +24,7 @@ jest.mock('axios');
 
 describe('GET /patient/:id/health-packages', () => {
 
-    const fetchPackages = async (id) => { return await request(app).get(`/patient/${id}/health-packages`) }
+    const fetchPackages = async (id) => { return await request(app).get(`/patient/${id}/health-packages`); };
 
     beforeEach(async () => {
         await connectDBTest();
@@ -33,7 +33,7 @@ describe('GET /patient/:id/health-packages', () => {
     it('should return 200 OK and retrieve the health packages correctly', async () => {
         const healthPackages = [];
         const numHealthPackages = 5;
-        for (let i = 0; i < numHealthPackages; i++) {
+        for (let i = ZERO_INDEX; i < numHealthPackages; i++) {
             const healthPackage = {
                 packageId: faker.database.mongodbObjectId(),
                 status: faker.helpers.arrayElement(HEALTH_PACKAGE_STATUS)
@@ -42,7 +42,7 @@ describe('GET /patient/:id/health-packages', () => {
         }
 
         const patient = new PatientModel(generatePatient());
-        const selectedHealthPackage = healthPackages[0];
+        const selectedHealthPackage = healthPackages[ZERO_INDEX];
         patient.healthPackages.push(selectedHealthPackage);
         await patient.save();
 
@@ -65,7 +65,7 @@ describe('GET /patient/:id/health-packages', () => {
 
         expect(res.status).toBe(OK_STATUS_CODE);
         console.log(res._body);
-        expect(res._body.healthPackages.length).toBe(1);
+        expect(res._body.healthPackages.length).toBe(ONE);
     });
 
 
@@ -89,7 +89,7 @@ describe('PATCH /patient/:id/health-packages', () => {
         packageId: faker.database.mongodbObjectId(),
         renewalDate: faker.date.anytime(),
         status: faker.helpers.arrayElement[HEALTH_PACKAGE_STATUS]
-    }
+    };
 
     beforeEach(async () => {
         await connectDBTest();
@@ -102,7 +102,7 @@ describe('PATCH /patient/:id/health-packages', () => {
         const res = await addPackage(id, healthPackage);
         expect(res.status).toBe(OK_STATUS_CODE);
         patient = await PatientModel.findById(id);
-        expect(patient.healthPackages.length).toBe(1);
+        expect(patient.healthPackages.length).toBe(ONE);
     });
 
     it('should return 500 ERROR with the invalid id', async () => {
@@ -124,8 +124,8 @@ describe('PATCH /patient/:id/health-packages/:packageId', () => {
     const healthPackage = {
         packageId: faker.database.mongodbObjectId(),
         renewalDate: '12/04/2023',
-        status: HEALTH_PACKAGE_STATUS[1]
-    }
+        status: HEALTH_PACKAGE_STATUS[ONE]
+    };
 
     beforeEach(async () => {
         await connectDBTest();
@@ -139,7 +139,7 @@ describe('PATCH /patient/:id/health-packages/:packageId', () => {
         const res = await removePackage(id, healthPackage.packageId);
         expect(res.status).toBe(OK_STATUS_CODE);
         patient = await PatientModel.findById(id);
-        expect(patient.healthPackages[0].status).toBe(HEALTH_PACKAGE_STATUS[0]);
+        expect(patient.healthPackages[ZERO_INDEX].status).toBe(HEALTH_PACKAGE_STATUS[ZERO_INDEX]);
     });
 
     it('should return 500 ERROR with the invalid id', async () => {
@@ -156,13 +156,7 @@ describe('PATCH /patient/:id/health-packages/:packageId', () => {
 
 describe('GET /patient/:id/medical-history', () => {
 
-    const fetchMedicalHistory = async (id) => { return await request(app).get(`/patient/${id}/medical-history`) }
-
-    const healthRecord = {
-        recordTitle: 'test record',
-        documentName: 'testDocument.pdf',
-        _id: faker.database.mongodbObjectId()
-    }
+    const fetchMedicalHistory = async (id) => { return await request(app).get(`/patient/${id}/medical-history`); };
 
     beforeEach(async () => {
         await connectDBTest();
@@ -170,13 +164,13 @@ describe('GET /patient/:id/medical-history', () => {
 
     it('should return 200 OK and retrieve the medical history correctly', async () => {
         const patient = new PatientModel(generatePatient());
-        patient.healthRecords.push(healthRecord);
         await patient.save();
+        const recordsNumber = patient.healthRecords.length;
         const id = patient._id;
         const res = await fetchMedicalHistory(id);
         expect(res.status).toBe(OK_STATUS_CODE);
         console.log(res._body);
-        expect(res._body.length).toBe(1);
+        expect(res._body.length).toBe(recordsNumber);
     });
 
     it('should return 500 ERROR with the invalid id', async () => {
@@ -193,7 +187,7 @@ describe('GET /patient/:id/medical-history', () => {
 
 describe('PATCH /patient/:id/medical-history', () => {
 
-    const addMedicalHistory = async (id) => { return await request(app).patch(`/patient/${id}/medical-history`).send({ title: 'New Record' }) }
+    const addMedicalHistory = async (id) => { return await request(app).patch(`/patient/${id}/medical-history`).send({ title: 'New Record' }); };
 
     beforeEach(async () => {
         await connectDBTest();
@@ -202,11 +196,12 @@ describe('PATCH /patient/:id/medical-history', () => {
     it('should return 200 OK and Add the medical history correctly', async () => {
         let patient = new PatientModel(generatePatient());
         await patient.save();
+        const oldRecordsNumber = patient.healthRecords.length;
         const id = patient._id;
         const res = await addMedicalHistory(id);
         expect(res.status).toBe(OK_STATUS_CODE);
         patient = await PatientModel.findById(id);
-        expect(patient.healthRecords.length).toBe(1);
+        expect(patient.healthRecords.length).toBe(oldRecordsNumber + ONE);
     });
 
     it('should return 500 ERROR with the invalid id', async () => {
@@ -223,7 +218,7 @@ describe('PATCH /patient/:id/medical-history', () => {
 
 describe('PATCH /patient/:id/medical-history/:recordId', () => {
 
-    const deleteMedicalHistory = async (id, recordId) => { return await request(app).patch(`/patient/${id}/medical-history/${recordId}`) }
+    const deleteMedicalHistory = async (id, recordId) => { return await request(app).patch(`/patient/${id}/medical-history/${recordId}`); };
 
     beforeEach(async () => {
         await connectDBTest();
@@ -233,17 +228,18 @@ describe('PATCH /patient/:id/medical-history/:recordId', () => {
         recordTitle: 'test record',
         documentName: 'testDocument.pdf',
         _id: faker.database.mongodbObjectId()
-    }
+    };
 
     it('should return 200 OK and delete the medical history correctly', async () => {
         let patient = new PatientModel(generatePatient());
         patient.healthRecords.push(healthRecord);
         await patient.save();
+        const oldRecordsNumber = patient.healthRecords.length;
         const id = patient._id;
         const res = await deleteMedicalHistory(id, healthRecord._id);
         expect(res.status).toBe(OK_STATUS_CODE);
         patient = await PatientModel.findById(id);
-        expect(patient.healthRecords.length).toBe(0);
+        expect(patient.healthRecords.length).toBe(oldRecordsNumber - ONE);
     });
 
     it('should return 500 ERROR with the invalid id', async () => {
@@ -271,7 +267,7 @@ describe('GET /patient/:id/prescriptions (get all prescriptions of a patient)', 
             max: 10,
         });
         const cntOtherPrescriptions = faker.number.int({ min: 2, max: 10 });
-        for (let i = 0; i < cntPrescriptionsMainPatient; i++) {
+        for (let i = ZERO_INDEX; i < cntPrescriptionsMainPatient; i++) {
             const doctorId = faker.database.mongodbObjectId();
             const prescription = new PrescriptionModel(
                 generatePrescription(mainPatientId, doctorId)
@@ -279,7 +275,7 @@ describe('GET /patient/:id/prescriptions (get all prescriptions of a patient)', 
             await prescription.save();
             mainPatientPrescriptions.add(prescription._id.toString());
         }
-        for (let i = 0; i < cntOtherPrescriptions; i++) {
+        for (let i = ZERO_INDEX; i < cntOtherPrescriptions; i++) {
             const patientId = faker.database.mongodbObjectId();
             const doctorId = faker.database.mongodbObjectId();
             const prescription = new PrescriptionModel(
