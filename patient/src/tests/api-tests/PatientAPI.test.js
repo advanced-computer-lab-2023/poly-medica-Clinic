@@ -27,11 +27,8 @@ describe('GET /patients/:pateintId/wallet', () => {
     
 	it('should return 200 OK and retrieve the patient wallet correctly', async () => {
 		const patient = new PatientModel(generatePatient());
-		await patient.save();
-		console.log('dsdsd',patient);
-       
-		const id = patient._id.toString();
-		console.log('dsdsd',patient);
+		await patient.save(); 
+		const id = patient._id.toString(); 
 		const res = await request(app).get(`/patients/${id}/wallet`);
 		expect(res.status).toBe(OK_STATUS_CODE);
                 

@@ -183,6 +183,12 @@ export const patient = (app) => {
 	});
 
 	app.get('/patients/:pateintId/wallet', async (req, res) => {
+		const { pateintId } = req.params;
+		if (!isValidMongoId(pateintId)) {
+			return res
+				.status(ERROR_STATUS_CODE)
+				.json({ message: 'Patient ID is invalid' });
+		}
 		try{
 			const id = req.params.pateintId;
 			const walletAmount = await service.getWalletAmount(id);
