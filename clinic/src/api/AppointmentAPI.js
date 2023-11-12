@@ -33,6 +33,7 @@ export const appointment = (app) => {
 			res.status(ERROR_STATUS_CODE).json({
 				message: 'appointment not created due to an error',
 			});
+			console.log(err.message);
 		}
 	});
 };

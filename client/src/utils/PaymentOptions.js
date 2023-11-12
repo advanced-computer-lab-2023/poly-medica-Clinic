@@ -16,7 +16,7 @@ import {
   Radio,
   FormControl
 } from '@mui/material';
-import { OK_STATUS_CODE } from './Constants';
+
 
 export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amountToPay, type }) => {
   const [amountInWallet, setAmountInWallet] = useState(0);
@@ -36,7 +36,7 @@ export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amou
     }).
       catch(error => {
         Swal.fire('error', error, 'error');
-      }) 
+      });
     }, []);
 
   const handlePaymentMethod = () => {
