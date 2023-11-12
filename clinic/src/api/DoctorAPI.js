@@ -51,6 +51,7 @@ export const doctor = (app) => {
 			});
 		}
 	});
+
 	app.get('/doctor/:id', async (req, res) => {
 		try {
 			const id = req.params.id;
@@ -91,9 +92,10 @@ export const doctor = (app) => {
 				type: DOCTOR_ENUM,
 			});
 
-			res
-				.status(CREATED_STATUS_CODE)
-				.json({ message: 'Doctor created!', newDoctor });
+			res.status(CREATED_STATUS_CODE).json({
+				message: 'Doctor created!',
+				newDoctor,
+			});
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}
@@ -104,34 +106,26 @@ export const doctor = (app) => {
 			const { id } = req.params;
 			if (!isValidMongoId(id))
 				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
-			await service
-				.getDoctorById(id)
-				.then((doctor) => {
-					if (!doctor) {
-						return res
-							.status(ERROR_STATUS_CODE)
-							.json({ message: 'doctor not found' });
-					}
-					doctor.documentsNames.forEach((fileName) => {
-						service.deleteFile(fileName);
-					});
-				})
-				.catch((err) => {
-					return res.status(ERROR_STATUS_CODE).json({ message: err.message });
-				});
+
+			const doctor = await service.getDoctorById(id);
+			if (!doctor) {
+				return res
+					.status(NOT_FOUND_STATUS_CODE)
+					.json({ message: 'doctor not found' });
+			}
+
+			doctor.documentsNames.forEach((fileName) => {
+				service.deleteFile(fileName);
+			});
 
 			const deletedDoctor = await service.deleteDoctor(id);
-			if (deletedDoctor) {
-				await axios.delete(`${AUTH_BASE_URL}/users/${id}`);
 
-				res.status(OK_STATUS_CODE).json({
-					message: 'doctor deleted!',
-					deletedDoctor,
-				});
-			} else
-				res.status(NOT_FOUND_STATUS_CODE).json({
-					message: 'doctor not found!',
-				});
+			await axios.delete(`${AUTH_BASE_URL}/users/${id}`);
+
+			res.status(OK_STATUS_CODE).json({
+				message: 'doctor deleted!',
+				deletedDoctor,
+			});
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}
@@ -153,7 +147,7 @@ export const doctor = (app) => {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
 	});
-	
+
 	app.get('/appointments', async (req, res) => {
 		try {
 			const allAppointments = await service.getAllAppointments();
@@ -189,13 +183,10 @@ export const doctor = (app) => {
 	});
 
 	app.get('/doctors/:id/status', async (req, res) => {
-
 		try {
 			const id = req.params.id;
 			if (!isValidMongoId(id))
-				return res
-					.status(ERROR_STATUS_CODE)
-					.json({ message: 'Invalid ID' });
+				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
 			const doctor = await service.getDoctorById(id);
 			if (doctor) {
 				res.status(OK_STATUS_CODE).json({ status: doctor.status });
@@ -207,15 +198,12 @@ export const doctor = (app) => {
 		} catch (error) {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
-
 	});
 	app.post('/doctors/:id/status', async (req, res) => {
 		try {
 			const id = req.params.id;
 			if (!isValidMongoId(id))
-				return res
-					.status(ERROR_STATUS_CODE)
-					.json({ message: 'Invalid ID' });
+				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
 			const doctor = await service.getDoctorById(id);
 			if (doctor) {
 				let status = await service.updateDoctor(id, {
@@ -231,16 +219,13 @@ export const doctor = (app) => {
 		} catch (error) {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
-	}
-	);
+	});
 
 	app.get('/doctors/:id/name', async (req, res) => {
 		try {
 			const id = req.params.id;
 			if (!isValidMongoId(id))
-				return res
-					.status(ERROR_STATUS_CODE)
-					.json({ message: 'Invalid ID' });
+				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
 			const doctor = await service.getDoctorById(id);
 			if (doctor) {
 				res.status(OK_STATUS_CODE).json({ name: doctor.userData.name });
@@ -257,12 +242,10 @@ export const doctor = (app) => {
 	app.post('/doctors/:id/slots', async (req, res) => {
 		try {
 			const id = req.params.id;
-			const from = req.body.from;	// Date
+			const from = req.body.from; // Date
 			console.log('from' + ' ' + from);
 			if (!isValidMongoId(id))
-				return res
-					.status(ERROR_STATUS_CODE)
-					.json({ message: 'Invalid ID' });
+				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
 			const doctor = await service.addSlot(id, from);
 			if (doctor) {
 				res.status(OK_STATUS_CODE).json(doctor.availableSlots);
@@ -274,16 +257,13 @@ export const doctor = (app) => {
 		} catch (error) {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
-	}
-	);
+	});
 
 	app.get('/doctors/:id/slots', async (req, res) => {
 		try {
 			const id = req.params.id;
 			if (!isValidMongoId(id))
-				return res
-					.status(ERROR_STATUS_CODE)
-					.json({ message: 'Invalid ID' });
+				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
 			const doctor = await service.getDoctorById(id);
 			if (doctor) {
 				res.status(OK_STATUS_CODE).json(doctor.availableSlots);
@@ -295,6 +275,20 @@ export const doctor = (app) => {
 		} catch (error) {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
-	}
-	);
+	});
+
+	app.get('/doctors/:id/wallet', async (req, res) => {
+		try {
+			const id = req.params.id;
+			if (!isValidMongoId(id))
+				return res
+					.status(ERROR_STATUS_CODE)
+					.json({ message: 'Invalid ID' });
+			const walletAmount = await service.getWalletAmount(id);
+
+			res.status(OK_STATUS_CODE).json({ walletAmount });
+		} catch (error) {
+			res.status(NOT_FOUND_STATUS_CODE).json({ message: error });
+		}
+	});
 };

@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import UserSchema from './UserSchema.js';
- 
+import { ZERO } from '../../utils/Constants.js';
+
 const Doctor = mongoose.Schema({
 	userData: {
 		type: UserSchema,
@@ -32,6 +33,16 @@ const Doctor = mongoose.Schema({
 			},
 		],
 		
+	},
+	walletAmount: {
+		type: Number,
+		default: 0, 
+		validate: {
+			validator: function (v) {
+				return v >= ZERO;
+			},
+			message: (props) => `${props.value} is not a valid wallet amount!`,
+		},
 	},
 	documentsNames: {
 		type: [String],

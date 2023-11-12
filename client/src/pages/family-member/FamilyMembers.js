@@ -19,7 +19,7 @@ const FamilyMembers = () => {
     const [FamilyMembers, setFamilyMembers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isAddingMember, setIsAddingMember] = useState(false);
-    const [userNameError, setUserNameError] = useState(false);
+    const [error , setError] = useState(false);
     const [newMember, setNewMember] = useState({
         name: '',
         userName: '',
@@ -27,6 +27,8 @@ const FamilyMembers = () => {
         age: '',
         gender: '',
         relation: '',
+        email: '',
+        mobileNumber: ''
     });
 
     const handleFormInputChange = (e) => {
@@ -34,6 +36,7 @@ const FamilyMembers = () => {
             ...member,
             [e.target.name]: e.target.value,
         }));
+        setError(false);
     };
     const { user } = useUserContext();
     const userId = user.id;
@@ -59,8 +62,10 @@ const FamilyMembers = () => {
             age: '',
             gender: '',
             relation: '',
+            email: '',
+            mobileNumber: ''
         });
-        setUserNameError(false);
+        setError(false);
     };
 
     return (
@@ -122,8 +127,8 @@ const FamilyMembers = () => {
                 setIsOpen={setIsAddingMember}
                 newMember={newMember}
                 handleFormInputChange={handleFormInputChange}
-                userNameError={userNameError}
-                setUserNameError={setUserNameError}
+                setError={setError}
+                error={error}
             />
         </MainCard>
     );
