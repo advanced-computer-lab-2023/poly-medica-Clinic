@@ -36,6 +36,7 @@ export const patient = (app) => {
 	});
 
 	app.get('/patients/:id', async (req, res) => {
+		console.log('heeeere!');
 		const { id } = req.params;
 		if (!isValidMongoId(id)) {
 			return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
