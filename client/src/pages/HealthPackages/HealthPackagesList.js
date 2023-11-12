@@ -7,6 +7,7 @@ import { useUserContext } from 'hooks/useUserContext';
 import Swal from 'sweetalert2';
 import { patientAxios } from 'utils/AxiosConfig';
 import { HEALTH_PACKAGE_STATUS } from 'utils/Constants';
+//import { choosePayment } from 'utils/PaymentOptions';
 const HealthPackagesList = ({ packages, handleEditButtonClick, handleDeleteButtonClick, subscribedPackage, setSubscribedPackage, discount }) => {
 	const { user } = useUserContext();
 
@@ -19,12 +20,7 @@ const HealthPackagesList = ({ packages, handleEditButtonClick, handleDeleteButto
 		healthPackage.status = HEALTH_PACKAGE_STATUS[1];
 		const data = {};
 		data.healthPackage = healthPackage;
-		patientAxios.patch(`/patient/${user.id}/health-packages`, data).then((response) => {
-			if (response.status === 200) {
-				Swal.fire({ title: 'Subscribed Successfully', icon: 'success' });
-				setSubscribedPackage(healthPackage);
-			}
-		});
+	//	choosePayment(data, pack.price, PAYMENT_ITEM_TYPES[0]);
 	};
 
 	const handleCancel = () => {
