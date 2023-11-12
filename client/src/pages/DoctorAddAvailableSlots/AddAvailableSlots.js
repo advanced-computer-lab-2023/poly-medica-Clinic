@@ -3,17 +3,18 @@ import { Typography ,Button } from '@mui/material';
  
 import { useUserContext } from 'hooks/useUserContext'; 
 import { clinicAxios } from '../../utils/AxiosConfig';
-import { isIntersect } from '../../utils/DoctorUtils'; 
+import { isIntersect,getTodayDate } from '../../utils/DoctorUtils'; 
 import Swal from 'sweetalert2';
 import TimeSelector from './TimeSelector';
 import DateSelector from './DateSelector';
-import AvailableSlotsTable from './AvailableSlotsTable';
+import AvailableSlotsTable from './AvailableSlotsTable'; 
+
  
 const DoctorAddAvailableSlots = () => {
     const [availableSlots, setAvailableSlots] = useState([]);
     const [selectedDate, setSelectedDate] = useState(null);
     const [selectedTime, setSelectedTime] = useState(null);   
-    const isButtonDisabled = !selectedDate || !selectedTime; 
+    const isButtonDisabled = !selectedDate || !selectedTime||selectedDate<getTodayDate(); 
 
     const { user } = useUserContext(); 
     useEffect(() => {
