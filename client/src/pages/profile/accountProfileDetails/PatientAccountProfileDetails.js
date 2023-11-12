@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
 import { useUserContext } from 'hooks/useUserContext';
 import format from 'date-fns/format';
 import { clinicAxios, patientAxios } from 'utils/AxiosConfig';
+import Loader from 'ui-component/Loader';
 
 export const PatientAccountProfileDetails = () => {
     const [values, setValues] = useState({
@@ -25,9 +26,10 @@ export const PatientAccountProfileDetails = () => {
         gender: '',
         emergencyName: '',
         emergencyMobile: '',
-        emergencyRelation: ''
+        emergencyRelation: '',
+        walletAmount: '',
     });
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const { user } = useUserContext();
     useEffect(() => {
 
@@ -36,9 +38,7 @@ export const PatientAccountProfileDetails = () => {
         patientAxios
             .get(getPatientsURL, { withCredentials: true })
             .then((response) => {
-                const patientData = response.data;
-                console.log('values', patientData);
-
+                const patientData = response.data.patient; 
                 setValues({
                     name: patientData.name,
                     userName: patientData.userName,
@@ -49,13 +49,16 @@ export const PatientAccountProfileDetails = () => {
                     emergencyName: patientData.emergencyContact.name,
                     emergencyMobile: patientData.emergencyContact.mobile,
                     emergencyRelation: patientData.emergencyContact.relation,
-                });
-            })
+                    walletAmount: patientData.walletAmount,
+                }); 
+                setLoading(false);
+            }) 
+             
             
             .catch((err) => {
                 console.log('here', err);
             });
-    }, []);
+    }, [loading]);
 
     const handleChange = useCallback((event) => {
         setValues((prevState) => ({
@@ -65,8 +68,7 @@ export const PatientAccountProfileDetails = () => {
     }, []);
 
     const handleSubmit = (event) => {
-        event.preventDefault();
-        setLoading(true);
+        event.preventDefault(); 
         const getPatientsURL = '/doctors/' + user.id;
         // let user;
 
@@ -88,7 +90,7 @@ export const PatientAccountProfileDetails = () => {
             });
     };
 
-    return (
+    return loading?(<Loader></Loader>):(
         <form autoComplete='off' onSubmit={handleSubmit}>
             <Card>
                 <CardHeader
@@ -166,6 +168,16 @@ export const PatientAccountProfileDetails = () => {
                                     required
                                     disabled
                                     value={values.gender}
+                                />
+                            </Grid>
+                            <Grid xs={12} md={6}>
+                                <TextField
+                                    fullWidth
+                                    label='Wallet Amount'
+                                    name='Wallet Amount'
+                                    onChange={handleChange} 
+                                    disabled
+                                    value={values.walletAmount}
                                 />
                             </Grid>
                                                         
