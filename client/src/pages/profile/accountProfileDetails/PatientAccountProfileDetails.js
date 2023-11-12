@@ -91,7 +91,7 @@ export const PatientAccountProfileDetails = () => {
     };
 
     return loading?(<Loader></Loader>):(
-        <form autoComplete='off' onSubmit={handleSubmit}>
+        <form autoComplete='off' onSubmit={handleSubmit}> 
             <Card>
                 <CardHeader
                     subheader='The information can be edited'
