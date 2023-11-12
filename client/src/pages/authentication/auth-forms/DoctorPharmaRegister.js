@@ -99,11 +99,11 @@ const FirebaseRegister = ({ type }) => {
 
 		formData.append('sendData', JSON.stringify(sendData));
 
-		const signupResponse = await authenticationAxios.post(
-			'/signup/clinic',
-			sendData,
-		);
-		if (signupResponse.status === 200) {
+		try {
+			const signupResponse = await authenticationAxios.post(
+				'/signup/clinic',
+				sendData,
+			);
 			console.log('signupResponse', signupResponse);
 			const doctorRequestResponse = await clinicAxios.post(
 				'/add-doctor-req',
@@ -135,11 +135,11 @@ const FirebaseRegister = ({ type }) => {
 				});
 				setIsSubmitting(false);
 			}
-		} else {
+		} catch(error) {
 			Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
-				text: signupResponse.response.data.message,
+				text: error.response.data.message,
 			});
 			setIsSubmitting(false);
 		}
