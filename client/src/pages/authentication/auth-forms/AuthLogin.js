@@ -29,20 +29,21 @@ const FirebaseLogin = () => {
 		e.preventDefault();
 		setIsSubmitting(true);
 		const postData = { 'userName': userName, 'password': password };
-		const response = await authenticationAxios.post('/login/clinic', postData);
-		const data = response.data;		
-		if(response.status === 200){
+		try{
+			const response = await authenticationAxios.post('/login/clinic', postData);
+			const data = response.data;		
 			dispatch({ auth: true, payload:data });
 			if(data.reset)
 				navigate(`/${data.type}/pages/profile`);
 			else
 					navigate(`/${data.type}`);
 			setIsSubmitting(false);
-		} else{
+		} catch(err){
+			
 			Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
-				text: response.response.data.message,
+				text: err.response.data.message,
 			});
 			setIsSubmitting(false);
 			}
@@ -80,7 +81,7 @@ const FirebaseLogin = () => {
 							/>
 						</FormControl>
 						<Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-							<Typography data-testid="AuthLoginTypographyForgotPassword" Button onClick={ () => { navigate('/login/reset-password'); } } variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
+							<Typography data-testid="AuthLoginTypographyForgotPassword" onClick={ () => { navigate('/login/reset-password'); } } variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
 								Forgot Password?
 							</Typography>
 						</Stack>
