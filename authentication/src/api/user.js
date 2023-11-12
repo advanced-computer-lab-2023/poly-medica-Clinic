@@ -53,7 +53,7 @@ export const user = (app) => {
 				email = req.body.email;
 				userName = req.body.userName;
 				break;
-			case DOCTOR_ENUM:case PHARMACIST_ENUM:
+			case DOCTOR_ENUM: case PHARMACIST_ENUM:
 				email = req.body.userData.email;
 				userName = req.body.userData.userName;
 				break;
@@ -76,24 +76,11 @@ export const user = (app) => {
 			default: throw new Error('invalid system');
 			}
 
-			switch (type) {
-			case PATIENT_ENUM:
+			if (type == PATIENT_ENUM){
 				signupData = await axios.post(PATIENT_SIGNUP_URL, req.body);
-				break;
-			case DOCTOR_ENUM:
-				console.log('u can register as a doctor');
-				res.status(OK_REQUEST_CODE_200).end();
-				break;
-			case PHARMACIST_ENUM:
-				res.status(OK_REQUEST_CODE_200).end();
-				break;
-			default:
-				throw new Error('invalid type of user');
-			}
-
-			if (type != DOCTOR_ENUM && type != PHARMACIST_ENUM) {
 				await user.signupUser(signupData.data);
 			}
+
 			res.status(OK_REQUEST_CODE_200).end();
 		} catch (err) {
 			if (err.response) {
