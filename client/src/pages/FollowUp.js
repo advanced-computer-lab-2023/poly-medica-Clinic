@@ -36,8 +36,10 @@ const FollowUp = ({
             type: 'follow-up',
             availableSlotsIdx
         };
+		const data = {};
+		data.items = appointment;
         await doctorAxios
-                .post('/appointments', appointment)
+                .post('/appointments', data)
                 .then(() => {
                     Swal.fire(
                         'Follow up Schedule!',

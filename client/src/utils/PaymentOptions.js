@@ -2,7 +2,7 @@ import { patientAxios, paymentAxios } from './AxiosConfig';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { successfulPayment } from './PaymentUtils';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useUserContext } from 'hooks/useUserContext';
 import {
   Dialog,
@@ -16,19 +16,32 @@ import {
   Radio,
   FormControl
 } from '@mui/material';
+import { OK_STATUS_CODE } from './Constants';
 
-const choosePayment = ({ isAddDialogOpen, isDialogClose, items, amountToPay, type }) => {
+export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amountToPay, type }) => {
   const [amountInWallet, setAmountInWallet] = useState(0);
   const navigate = useNavigate();
   const { user } = useUserContext();
   const userId = user.id;
+
+  console.log('items  ', items);
+  console.log('price = ', amountToPay);
   const [value, setValue] = useState('credit-card');
 
+  useEffect(
+    () => {
+
+      patientAxios.get(`/patients/${userId}/wallet`).then((response) => {
+        if (response.status === OK_STATUS_CODE) {
+          setAmountInWallet(response.data.walletAmount);
+        } else {
+          Swal.fire({ title: 'error', icon: 'error' });
+        }
+      });
+    }, []);
+
   const handlePaymentMethod = () => {
-    let amountInWallet;
-    patientAxios.get(`/patients/${userId}/wallet` + userId).then((response) => {
-      setAmountInWallet(response.data.amountInWallet);
-    });
+
     if (value === 'credit-card') {
       navigate('/patient/pages/payment', { state: { items, amountToPay, type }, replace: true });
     } else if (value === 'wallet') {
@@ -36,7 +49,7 @@ const choosePayment = ({ isAddDialogOpen, isDialogClose, items, amountToPay, typ
         paymentAxios.post('/payment/wallet', { amountToPayByWallet: amountToPay, userId: userId })
           .then(
             Swal.fire('success', 'Payment Succeeded', 'success').then(() => {
-              const callBackUrl = successfulPayment(items, type);
+              const callBackUrl = successfulPayment(userId, items, type);
               navigate(callBackUrl, { replace: true });
             }
             )
@@ -65,30 +78,34 @@ const choosePayment = ({ isAddDialogOpen, isDialogClose, items, amountToPay, typ
           }
         });
       }
-    } 
+    }
   };
 
   const handleChange = (event) => {
     setValue(event.target.value);
-};
+  };
+
+  const isDialogClose = () => {
+    setIsAddDialogOpen(false);
+  };
 
   return (
-    <Dialog open={isAddDialogOpen} onClose={isDialogClose}>
+    <Dialog open={isAddDialogOpen} sx={{ zIndex: '9999' }}>
       <DialogTitle>Choose your payment option</DialogTitle>
       <DialogContent>
-      <FormControl>
-            <FormLabel>Payment Option</FormLabel>
-            <RadioGroup
-                defaultValue='credit card'
-                name='controlled-radio-buttons-group'
-                value={value}
-                onChange={handleChange}
-                sx={{ my: 1 }}
-            >
-                <FormControlLabel  value='credit-card' control={<Radio />} label='Credit Card' />
+        <FormControl>
+          <FormLabel>Payment Option</FormLabel>
+          <RadioGroup
+            defaultValue='credit card'
+            name='controlled-radio-buttons-group'
+            value={value}
+            onChange={handleChange}
+            sx={{ my: 1 }}
+          >
+            <FormControlLabel value='credit-card' control={<Radio />} label='Credit Card' />
 
-                <FormControlLabel  value='wallet' control={<Radio />} label={`Poly-Wallet $ ${amountInWallet}`} />
-            </RadioGroup>
+            <FormControlLabel value='wallet' control={<Radio />} label={`Poly-Wallet $ ${amountInWallet}`} />
+          </RadioGroup>
         </FormControl>
       </DialogContent>
       <DialogActions>
@@ -105,4 +122,3 @@ const choosePayment = ({ isAddDialogOpen, isDialogClose, items, amountToPay, typ
     </Dialog>
   );
 };
-export default choosePayment;
