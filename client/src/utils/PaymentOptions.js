@@ -2,54 +2,55 @@ import { patientAxios, paymentAxios } from './AxiosConfig';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { successfulPayment } from './PaymentUtils';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useUserContext } from 'hooks/useUserContext';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  FormControl
+} from '@mui/material';
 
-export const choosePayment = (items, amountToPay, type) => {
 
+export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amountToPay, type }) => {
   const [amountInWallet, setAmountInWallet] = useState(0);
   const navigate = useNavigate();
   const { user } = useUserContext();
   const userId = user.id;
 
-  patientAxios.get('/wallet/' + userId).then((response) => {
-    setAmountInWallet(response.data.amountInWallet);
-  });
+  console.log('items  ', items);
+  console.log('price = ', amountToPay);
+  const [value, setValue] = useState('credit-card');
 
-  var paymentOptions = new Promise(function (resolve) {
-    setTimeout(function () {
-      resolve({
-        'credit-card': '<i class="fas fa-credit-card"></i> Using Credit Card',
-        'wallet': `<i class="fas fa-wallet"></i> Using Wallet  ${amountInWallet}`
+  useEffect(
+    () => {
+
+      patientAxios.get(`/patients/${userId}/wallet`).then((response) => {
+          setAmountInWallet(response.data.walletAmount);
+    }).
+      catch(error => {
+        Swal.fire('error', error, 'error');
       });
-    }, 2000);
-  });
-  Swal.fire({
-    title: 'Select Payment Option',
-    input: 'radio',
-    inputOptions: paymentOptions,
-    inputValidator: function (result) {
-      return new Promise(function (resolve, reject) {
-        if (result) {
-          resolve();
-        } else {
-          reject('You need to select payment method!');
-        }
-      });
-    }
-  }).then(function (result) {
-    console.log('result = ', result.value);
-    if (result.value === 'credit-card') {
+    }, []);
+
+  const handlePaymentMethod = () => {
+
+    if (value === 'credit-card') {
       navigate('/patient/pages/payment', { state: { items, amountToPay, type }, replace: true });
-    } else {
+    } else if (value === 'wallet') {
       if (amountInWallet >= amountToPay) {
         paymentAxios.post('/payment/wallet', { amountToPayByWallet: amountToPay, userId: userId })
           .then(
-            Swal.fire('success', 'Payment Succeeded', 'success').then(
-              () => {
-                const callBackUrl = successfulPayment(items, type);
-                navigate(callBackUrl, { replace: true });
-              }
+            Swal.fire('success', 'Payment Succeeded', 'success').then(() => {
+              const callBackUrl = successfulPayment(userId, items, type);
+              navigate(callBackUrl, { replace: true });
+            }
             )
           )
           .catch((error) => {
@@ -72,11 +73,51 @@ export const choosePayment = (items, amountToPay, type) => {
                 console.log('Error in payment with the wallet', error);
               });
             const amountToPayByCard = amountToPay - amountToPayByWallet;
-            navigate('/patient/pages/payment', { state: { amountToPayByCard, items, type }, replace: true });
+            navigate('/patient/pages/payment', { state: { items, amountToPayByCard, type }, replace: true });
           }
         });
       }
     }
-  });
-};
+  };
 
+  const handleChange = (event) => {
+    setValue(event.target.value);
+  };
+
+  const isDialogClose = () => {
+    setIsAddDialogOpen(false);
+  };
+
+  return (
+    <Dialog open={isAddDialogOpen} sx={{ zIndex: '9999' }}>
+      <DialogTitle>Choose your payment option</DialogTitle>
+      <DialogContent>
+        <FormControl>
+          <FormLabel>Payment Option</FormLabel>
+          <RadioGroup
+            defaultValue='credit card'
+            name='controlled-radio-buttons-group'
+            value={value}
+            onChange={handleChange}
+            sx={{ my: 1 }}
+          >
+            <FormControlLabel value='credit-card' control={<Radio />} label='Credit Card' />
+
+            <FormControlLabel value='wallet' control={<Radio />} label={`Poly-Wallet $ ${amountInWallet}`} />
+          </RadioGroup>
+        </FormControl>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={isDialogClose} color="secondary">
+          Cancel
+        </Button>
+        <Button
+          color='primary'
+          onClick={handlePaymentMethod}
+        >
+          Checkout
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};

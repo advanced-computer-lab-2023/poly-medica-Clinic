@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { FAMILIY_EMERGENCY, GENDERS } from '../../utils/Constants.js';
+import { FAMILY_RELATIONS, GENDERS } from '../../utils/Constants.js';
 
 const Appointment = mongoose.Schema({
 	patientId: {
@@ -48,7 +48,7 @@ const Appointment = mongoose.Schema({
 		},
 		relation: {
 			type: String,
-			enum: FAMILIY_EMERGENCY,
+			enum: FAMILY_RELATIONS,
 		},
 	}
 });

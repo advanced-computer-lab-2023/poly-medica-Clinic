@@ -52,6 +52,9 @@ export const FAMILIY_EMERGENCY = [
 	'Cousin',
 	'Other',
 ];
+
+export const FAMILY_RELATIONS = ['HUSBAND', 'WIFE', 'CHILD'];
+
 export const SIXTY=60;
 export const THOUSAND=1000;
 

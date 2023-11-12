@@ -240,9 +240,10 @@ export const patient = (app) => {
 
 	app.patch('/patient/:id/health-packages', async (req, res) => {
 		const { id } = req.params;
-		const { healthPackage } = req.body;
+		const { items } = req.body;
+
 		try {
-			const data = await service.addHealthPackage(id, healthPackage);
+			const data = await service.addHealthPackage(id, items.healthPackage);
 			if (data) res.status(OK_STATUS_CODE).json(data);
 			else res.status(NOT_FOUND_STATUS_CODE).json({ message: 'error occured' });
 		} catch (err) {

@@ -67,7 +67,7 @@ const patientSchema = mongoose.Schema({
 			},
 			nationalId: {
 				type: String,
-				sparse: true,
+				//sparse: true,
 			},
 			age: {
 				type: Number,
