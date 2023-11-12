@@ -14,9 +14,8 @@ import {
 import { getDay, getTime } from '../../utils/DateFormatter.js';
 
 import { calcPrice } from '../../utils/PriceCalculator.js';
-// to be uncommented after merge
-import { choosePayment } from '../../utils/PaymentOptions';
-
+import { ChoosePayment } from 'utils/PaymentOptions.js';
+import { PAYMENT_ITEM_TYPES } from 'utils/Constants.js';
 const DoctorDetailsAppointmentsCard = ({
     selectedDoctor,
     availableSlotsIdx,
@@ -26,11 +25,13 @@ const DoctorDetailsAppointmentsCard = ({
 ) => {
     const { availableSlots } = selectedDoctor;
     const slot = availableSlots[availableSlotsIdx];
-
+    const [isDialogOpen, setDialogOpen] = useState(false);
     const [expanded, setExpanded] = useState(false);
     const [selectedBookingType, setSelectedBookingType] = useState('myself');
     const [allFamilyMembers, setAllFamilyMembers] = useState([]); // for autocomplete
     const [selectedMember, setSelectedMember] = useState(null); // for autocomplete
+    const [appointmentPrice, setAppointmentPrice] = useState(0);
+    const [selectedAppointment, setSelectedAppointment] = useState(null);
 
     useEffect(() => {
         // loggedInPatient.family members are already 
@@ -40,7 +41,7 @@ const DoctorDetailsAppointmentsCard = ({
             familyMembers.push(member.name);
         });
         setAllFamilyMembers(familyMembers);
-    });
+    }, []);
 
 
     const handleExpand = () => {
@@ -76,10 +77,9 @@ const DoctorDetailsAppointmentsCard = ({
             appointment.patientFamilyMember = patientFamilyMember;
         }
         const price = calcPrice(selectedDoctor.hourlyRate, loggedInPatientHealthPackage.doctorDiscount);
-        // to be uncommented after merge
-        console.log('here at handleBookNow');
-        choosePayment(appointment, price, 'appointment');
-
+        setSelectedAppointment(appointment);
+        setAppointmentPrice(price);
+        setDialogOpen(true);
     };
     return (
         <>
@@ -198,6 +198,7 @@ const DoctorDetailsAppointmentsCard = ({
                     </Accordion>
                 </CardContent>
             </Card>
+            <ChoosePayment isAddDialogOpen={isDialogOpen} setIsAddDialogOpen={setDialogOpen} amountToPay={appointmentPrice} type={PAYMENT_ITEM_TYPES[1]} items={selectedAppointment} />
         </>
     );
 };

@@ -26,13 +26,6 @@ const Doctor = mongoose.Schema({
 	
 	availableSlots: {
 		type: Array,
-		default: [
-			{
-				from: new Date(),
-				until: new Date()
-			},
-		],
-		
 	},
 	walletAmount: {
 		type: Number,

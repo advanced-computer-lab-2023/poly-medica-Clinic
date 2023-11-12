@@ -5,11 +5,16 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Stack from '@mui/material/Stack';
 import { useUserContext } from 'hooks/useUserContext';
 import Swal from 'sweetalert2';
+import { useState } from 'react';
 import { patientAxios } from 'utils/AxiosConfig';
-import { HEALTH_PACKAGE_STATUS } from 'utils/Constants';
+import { HEALTH_PACKAGE_STATUS, PAYMENT_ITEM_TYPES } from 'utils/Constants';
+import { ChoosePayment } from 'utils/PaymentOptions';
 const HealthPackagesList = ({ packages, handleEditButtonClick, handleDeleteButtonClick, subscribedPackage, setSubscribedPackage, discount }) => {
-	const { user } = useUserContext();
 
+	const { user } = useUserContext();
+	const [isDialogOpen, setDialogOpen] = useState(false);
+	const [totalPrice, setTotalPrice] = useState(0);
+	const [data, setData] = useState(null);
 	const handleSubscribe = (pack) => {
 		const healthPackage = {};
 		healthPackage.packageId = pack._id;
@@ -17,14 +22,11 @@ const HealthPackagesList = ({ packages, handleEditButtonClick, handleDeleteButto
 		healthPackage.renewalDate = new Date(healthPackage.subscribtionDate);
 		healthPackage.renewalDate.setMonth(healthPackage.renewalDate.getMonth() + 1);
 		healthPackage.status = HEALTH_PACKAGE_STATUS[1];
-		const data = {};
-		data.healthPackage = healthPackage;
-		patientAxios.patch(`/patient/${user.id}/health-packages`, data).then((response) => {
-			if (response.status === 200) {
-				Swal.fire({ title: 'Subscribed Successfully', icon: 'success' });
-				setSubscribedPackage(healthPackage);
-			}
-		});
+		const packageData = {};
+		packageData.healthPackage = healthPackage;
+		setData(packageData);
+		setTotalPrice(pack.price);
+		setDialogOpen(true);
 	};
 
 	const handleCancel = () => {
@@ -55,7 +57,6 @@ const HealthPackagesList = ({ packages, handleEditButtonClick, handleDeleteButto
 	return (
 		<Grid container spacing={5} alignItems="flex-end">
 			{Array.isArray(packages) && packages.map((pack) => (
-				// Platinum card is full width at sm breakpoint
 				<Grid
 					item
 					key={pack.name}
@@ -145,7 +146,9 @@ const HealthPackagesList = ({ packages, handleEditButtonClick, handleDeleteButto
 					</Card >
 				</Grid >
 			))}
+			<ChoosePayment isAddDialogOpen={isDialogOpen} setIsAddDialogOpen={setDialogOpen} items={data} amountToPay={totalPrice} type={PAYMENT_ITEM_TYPES[0]} />
 		</Grid >
+
 
 	);
 

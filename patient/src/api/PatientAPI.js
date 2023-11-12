@@ -200,7 +200,7 @@ export const patient = (app) => {
 	app.get('/patient/:id/discount', async (req, res) => {
 		try {
 			const { id } = req.params;
-			const patient = await service.findPatientById(id);
+			const patient = await service.findPatient(id);
 			const patients = await service.findAllPatients();
 			let maxDiscount = ZERO;
 
@@ -240,9 +240,10 @@ export const patient = (app) => {
 
 	app.patch('/patient/:id/health-packages', async (req, res) => {
 		const { id } = req.params;
-		const { healthPackage } = req.body;
+		const { items } = req.body;
+
 		try {
-			const data = await service.addHealthPackage(id, healthPackage);
+			const data = await service.addHealthPackage(id, items.healthPackage);
 			if (data) res.status(OK_STATUS_CODE).json(data);
 			else res.status(NOT_FOUND_STATUS_CODE).json({ message: 'error occured' });
 		} catch (err) {
@@ -406,6 +407,30 @@ export const patient = (app) => {
 			const user = await service.getPatientById(id);
 			if (user) {
 				const walletAmount = await service.getWalletAmount(id);
+				res.status(OK_STATUS_CODE).json({ walletAmount });
+			} else {
+				res.status(NOT_FOUND_STATUS_CODE).json({ message: 'Not found' });
+			}
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({ err: err.message });
+		}
+	}
+	);
+
+	app.patch('/patients/:pateintId/wallet', async (req, res) => {
+		const { pateintId } = req.params;
+		const { amount } = req.body;
+		console.log(amount);
+		if (!isValidMongoId(pateintId)) {
+			return res
+				.status(ERROR_STATUS_CODE)
+				.json({ message: 'Patient ID is invalid' });
+		}
+		try {
+			const id = req.params.pateintId;
+			const user = await service.getPatientById(id);
+			if (user) {
+				const walletAmount = await service.updateWallet(id, amount);
 				res.status(OK_STATUS_CODE).json({ walletAmount });
 			} else {
 				res.status(NOT_FOUND_STATUS_CODE).json({ message: 'Not found' });

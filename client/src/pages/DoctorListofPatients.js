@@ -72,7 +72,7 @@ const Patients = () => {
             .catch((err) => {
                 console.log(err);
             });
-    });
+    }, []);
 
     return (
         <MainCard title='Patients'>

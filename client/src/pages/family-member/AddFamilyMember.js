@@ -35,7 +35,7 @@ const AddFamilyMember = ({
         newMember.gender = newMember.gender.toUpperCase();
         newMember.relation = newMember.relation.toUpperCase();
         patientAxios
-            .patch('/family-members/' + userId, newMember)
+            .patch('/family-members/' + userId, { member: newMember })
             .then((data) => {
                 setIsOpen(false);
                 setFamilyMembers(data.data.familyMembers);

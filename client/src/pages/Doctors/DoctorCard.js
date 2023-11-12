@@ -4,7 +4,7 @@ import { calcPrice } from '../../utils/PriceCalculator.js';
 
 
 const DoctorCard = ({ doctor, setSelectedDoctor, loggedInPatientHealthPackage }) => {
-    const price = calcPrice(doctor.hourlyRate, loggedInPatientHealthPackage.doctorDiscount);
+    const price = calcPrice(doctor.hourlyRate, loggedInPatientHealthPackage && loggedInPatientHealthPackage.doctorDiscount);
     return (
         <ListItemButton onClick={() => setSelectedDoctor(doctor)}>
             <ListItemAvatar sx={{ paddingRight: '2%' }}>
