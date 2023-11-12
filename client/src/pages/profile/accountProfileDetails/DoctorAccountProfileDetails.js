@@ -25,6 +25,7 @@ export const DoctorAccountProfileDetails = () => {
         hourlyRate: '',
         affiliation: '',
         educationalBackground: '',
+        walletAmount: '',
     });
     const [loading, setLoading] = useState(false);
     const { user } = useUserContext();
@@ -47,6 +48,7 @@ export const DoctorAccountProfileDetails = () => {
                     hourlyRate: values.hourlyRate,
                     affiliation: values.affiliation,
                     educationalBackground: values.educationalBackground,
+                    walletAmount: values.walletAmount,
                 });
             })
             .catch((err) => {
@@ -172,6 +174,16 @@ export const DoctorAccountProfileDetails = () => {
                                     onChange={handleChange}
                                     required
                                     value={values.affiliation}
+                                />
+                            </Grid>
+                            <Grid xs={12} md={6}>
+                                <TextField
+                                    fullWidth
+                                    label='Wallet Amount'
+                                    name='Wallet Amount'
+                                    onChange={handleChange}
+                                    disabled
+                                    value={values.WalletAmount}
                                 />
                             </Grid>
                             <Grid
