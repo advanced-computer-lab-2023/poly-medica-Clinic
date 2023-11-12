@@ -16,6 +16,7 @@ const Doctors = () => {
     const [originalDoctors, setOriginalDoctors] = useState([]);
     const [loggedInPatient, setLoggedInPatient] = useState(null);
     const [loggedInPatientHealthPackage, setLoggedInPatientHealthPackage] = useState(null);
+    const [isLoaded, setIsLoaded] = useState(false);
     const { filterData, updateFilter } = useFilter();
     const { searchQuery } = useSearch();
     const specialities = [];
@@ -113,13 +114,14 @@ const Doctors = () => {
             .get(`/patient/${patientID}/health-packages`)
             .then((response) => {
                 let healthPackage = {
-                    doctorDiscount: '0'
+                    doctorDiscount: 0
                 };
                 const healthPackages = response.data.healthPackages;
                 if (healthPackages.length) {
                     healthPackage = healthPackages[0];
                 }
                 setLoggedInPatientHealthPackage(healthPackage);
+                setIsLoaded(true);
             })
             .catch((error) => {
                 console.log(error);
@@ -127,6 +129,8 @@ const Doctors = () => {
     }, []);
 
     return (
+        isLoaded 
+        &&
         <MainCard title='Doctors'>
             <DoctorList
                 doctors={doctors}

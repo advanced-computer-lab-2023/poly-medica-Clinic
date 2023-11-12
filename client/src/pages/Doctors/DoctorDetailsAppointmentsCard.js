@@ -15,7 +15,7 @@ import { getDay, getTime } from '../../utils/DateFormatter.js';
 
 import { calcPrice } from '../../utils/PriceCalculator.js';
 // to be uncommented after merge
-//import { choosePayment } from '../../utils/PaymentOptions';
+import { choosePayment } from '../../utils/PaymentOptions';
 
 const DoctorDetailsAppointmentsCard = ({
     selectedDoctor,
@@ -75,11 +75,10 @@ const DoctorDetailsAppointmentsCard = ({
             };
             appointment.patientFamilyMember = patientFamilyMember;
         }
-        console.log('appointment', appointment);
         const price = calcPrice(selectedDoctor.hourlyRate, loggedInPatientHealthPackage.doctorDiscount);
-        console.log(price);
         // to be uncommented after merge
-       // choosePayment(appointment, price, 'appointment');
+        console.log('here at handleBookNow');
+        choosePayment(appointment, price, 'appointment');
 
     };
     return (
