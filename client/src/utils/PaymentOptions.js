@@ -67,12 +67,11 @@ export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amou
           confirmButtonText: 'Yes'
         }).then((result) => {
           if (result.isConfirmed) {
-            const amountToPayByWallet = amountToPay - amountInWallet;
-            paymentAxios.post('/payment/wallet', { amountToPayByWallet, userId: userId })
+            paymentAxios.post('/payment/wallet', { amountInWallet, userId: userId })
               .catch((error) => {
                 console.log('Error in payment with the wallet', error);
               });
-            const amountToPayByCard = amountToPay - amountToPayByWallet;
+            const amountToPayByCard = amountToPay - amountInWallet;
             navigate('/patient/pages/payment', { state: { items, amountToPayByCard, type }, replace: true });
           }
         });
