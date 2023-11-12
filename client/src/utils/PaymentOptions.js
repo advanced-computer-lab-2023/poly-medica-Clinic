@@ -12,7 +12,7 @@ export const choosePayment = (items, amountToPay, type) => {
   const { user } = useUserContext();
   const userId = user.id;
 
-  patientAxios.get('/wallet/' + userId).then((response) => {
+  patientAxios.get(`/patients/${userId}/wallet` + userId).then((response) => {
     setAmountInWallet(response.data.amountInWallet);
   });
 
@@ -20,7 +20,7 @@ export const choosePayment = (items, amountToPay, type) => {
     setTimeout(function () {
       resolve({
         'credit-card': '<i class="fas fa-credit-card"></i> Using Credit Card',
-        'wallet': `<i class="fas fa-wallet"></i> Using Wallet  ${amountInWallet}`
+        'wallet': `<i class="fas fa-wallet"></i> Using Poly-wallet $ ${amountInWallet}`
       });
     }, 2000);
   });
