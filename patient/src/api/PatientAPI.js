@@ -199,7 +199,7 @@ export const patient = (app) => {
 	app.get('/patient/:id/discount', async (req, res) => {
 		try {
 			const { id } = req.params;
-			const patient = await service.findPatientById(id);
+			const patient = await service.findPatient(id);
 			const patients = await service.findAllPatients();
 			let maxDiscount = ZERO;
 

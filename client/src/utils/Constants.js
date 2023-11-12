@@ -39,3 +39,5 @@ export const CANCELLED_STATUS = 'cancelled';
 export const DATE_FORAMT = 'MMMM Do YYYY, h:mm a';
 
 export const ZERO_INDEX = 0;
+
+export const PAYMENT_ITEM_TYPES = ['Health-Package', 'appointment'];
