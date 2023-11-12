@@ -29,7 +29,7 @@ export const DoctorAccountProfileDetails = () => {
     const [loading, setLoading] = useState(false);
     const { user } = useUserContext();
     useEffect(() => {
-        const getPatientsURL = 'http://localhost:8001/doctor/' + user.id;
+        const getPatientsURL = '/doctor/' + user.id;
         // let user;
 
         clinicAxios
@@ -64,7 +64,7 @@ export const DoctorAccountProfileDetails = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         setLoading(true);
-        const getPatientsURL = 'http://localhost:8001/doctors/' + user.id;
+        const getPatientsURL = '/doctors/' + user.id;
         // let user;
 
         clinicAxios
