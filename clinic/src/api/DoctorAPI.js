@@ -12,41 +12,10 @@ import {
 	BAD_REQUEST_CODE_400,
 	DOCTOR_ENUM,
 	DUPLICATE_KEY_ERROR_CODE,
-	ZERO_INDEX,
-	EXTRA_INDEX,
 } from '../utils/Constants.js';
 
 export const doctor = (app) => {
 	const service = new DoctorService();
-
-	app.post('/add-doctor-req', async (req, res) => {
-		try {
-			const doctorUser = await service.addReqDoctor(req);
-			req.body = {
-				userId: doctorUser._id,
-				email: doctorUser.userData.email,
-				password: doctorUser.userData.password,
-				userName: doctorUser.userData.userName,
-				type: DOCTOR_ENUM,
-			};
-			res.send(req.body);
-		} catch (err) {
-			if (err.code == DUPLICATE_KEY_ERROR_CODE) {
-				const duplicateKeyAttrb = Object.keys(err.keyPattern)[
-					ZERO_INDEX
-				];
-				const keyAttrb = duplicateKeyAttrb.split('.');
-				res.status(BAD_REQUEST_CODE_400).send({
-					errCode: DUPLICATE_KEY_ERROR_CODE,
-					errMessage: `that ${keyAttrb[keyAttrb.length - EXTRA_INDEX]
-						} is already registered`,
-				});
-			} else
-				res.status(BAD_REQUEST_CODE_400).send({
-					errMessage: err.message,
-				});
-		}
-	});
 
 	app.post('/check-doctor', async (req, res) => {
 		try {
@@ -63,19 +32,17 @@ export const doctor = (app) => {
 	app.get('/doctors/:id/patients', async (req, res) => {
 		const id = req.params.id;
 		if (!isValidMongoId(id))
-			return res
-				.status(ERROR_STATUS_CODE)
-				.json({ message: 'Invalid ID' });
+			return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
 		let patientsWithDoctor = await service.findAllPatients(id);
 		const getPatientsURL = `${PATIENTS_BASE_URL}/patients`;
 		const allPatients = await axios.get(getPatientsURL);
 
 		if (patientsWithDoctor) {
 			patientsWithDoctor = patientsWithDoctor.map((patient) =>
-				patient.toString()
+				patient.toString(),
 			);
-			const finalListOFPatients = allPatients.data.patients.filter(
-				(patient) => patientsWithDoctor.includes(patient._id)
+			const finalListOFPatients = allPatients.data.patients.filter((patient) =>
+				patientsWithDoctor.includes(patient._id),
 			);
 			res.status(OK_STATUS_CODE).json({ finalListOFPatients });
 		} else {
@@ -84,13 +51,12 @@ export const doctor = (app) => {
 			});
 		}
 	});
+
 	app.get('/doctor/:id', async (req, res) => {
 		try {
 			const id = req.params.id;
 			if (!isValidMongoId(id))
-				return res
-					.status(ERROR_STATUS_CODE)
-					.json({ message: 'Invalid ID' });
+				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
 			const doctor = await service.getDoctorById(id);
 			if (doctor) {
 				res.status(OK_STATUS_CODE).send({ doctor });
@@ -126,9 +92,10 @@ export const doctor = (app) => {
 				type: DOCTOR_ENUM,
 			});
 
-			res
-				.status(CREATED_STATUS_CODE)
-				.json({ message: 'Doctor created!', newDoctor });
+			res.status(CREATED_STATUS_CODE).json({
+				message: 'Doctor created!',
+				newDoctor,
+			});
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}
@@ -136,23 +103,29 @@ export const doctor = (app) => {
 
 	app.delete('/doctors/:id', async (req, res) => {
 		try {
-			const id = req.params.id;
+			const { id } = req.params;
 			if (!isValidMongoId(id))
-				return res
-					.status(ERROR_STATUS_CODE)
-					.json({ message: 'Invalid ID' });
-			const deletedDoctor = await service.deleteDoctor(id);
-			if (deletedDoctor) {
-				await axios.delete(`${AUTH_BASE_URL}/users/${id}`);
+				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
 
-				res.status(OK_STATUS_CODE).json({
-					message: 'doctor deleted!',
-					deletedDoctor,
-				});
-			} else
-				res.status(NOT_FOUND_STATUS_CODE).json({
-					message: 'doctor not found!',
-				});
+			const doctor = await service.getDoctorById(id);
+			if (!doctor) {
+				return res
+					.status(NOT_FOUND_STATUS_CODE)
+					.json({ message: 'doctor not found' });
+			}
+
+			doctor.documentsNames.forEach((fileName) => {
+				service.deleteFile(fileName);
+			});
+
+			const deletedDoctor = await service.deleteDoctor(id);
+
+			await axios.delete(`${AUTH_BASE_URL}/users/${id}`);
+
+			res.status(OK_STATUS_CODE).json({
+				message: 'doctor deleted!',
+				deletedDoctor,
+			});
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
 		}
@@ -174,7 +147,7 @@ export const doctor = (app) => {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
 	});
-	
+
 	app.get('/appointments', async (req, res) => {
 		try {
 			const allAppointments = await service.getAllAppointments();
@@ -194,9 +167,7 @@ export const doctor = (app) => {
 		try {
 			const id = req.params.id;
 			if (!isValidMongoId(id))
-				return res
-					.status(ERROR_STATUS_CODE)
-					.json({ message: 'Invalid ID' });
+				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
 			const doctor = await service.getDoctorById(id);
 			if (doctor) {
 				const updatedDoctor = await service.updateDoctor(id, req.body);
@@ -212,13 +183,10 @@ export const doctor = (app) => {
 	});
 
 	app.get('/doctors/:id/status', async (req, res) => {
-
 		try {
 			const id = req.params.id;
 			if (!isValidMongoId(id))
-				return res
-					.status(ERROR_STATUS_CODE)
-					.json({ message: 'Invalid ID' });
+				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
 			const doctor = await service.getDoctorById(id);
 			if (doctor) {
 				res.status(OK_STATUS_CODE).json({ status: doctor.status });
@@ -230,15 +198,12 @@ export const doctor = (app) => {
 		} catch (error) {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
-
 	});
 	app.post('/doctors/:id/status', async (req, res) => {
 		try {
 			const id = req.params.id;
 			if (!isValidMongoId(id))
-				return res
-					.status(ERROR_STATUS_CODE)
-					.json({ message: 'Invalid ID' });
+				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
 			const doctor = await service.getDoctorById(id);
 			if (doctor) {
 				let status = await service.updateDoctor(id, {
@@ -254,16 +219,13 @@ export const doctor = (app) => {
 		} catch (error) {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
-	}
-	);
+	});
 
 	app.get('/doctors/:id/name', async (req, res) => {
 		try {
 			const id = req.params.id;
 			if (!isValidMongoId(id))
-				return res
-					.status(ERROR_STATUS_CODE)
-					.json({ message: 'Invalid ID' });
+				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
 			const doctor = await service.getDoctorById(id);
 			if (doctor) {
 				res.status(OK_STATUS_CODE).json({ name: doctor.userData.name });
@@ -280,12 +242,10 @@ export const doctor = (app) => {
 	app.post('/doctors/:id/slots', async (req, res) => {
 		try {
 			const id = req.params.id;
-			const from = req.body.from;	// Date
+			const from = req.body.from; // Date
 			console.log('from' + ' ' + from);
 			if (!isValidMongoId(id))
-				return res
-					.status(ERROR_STATUS_CODE)
-					.json({ message: 'Invalid ID' });
+				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
 			const doctor = await service.addSlot(id, from);
 			if (doctor) {
 				res.status(OK_STATUS_CODE).json(doctor.availableSlots);
@@ -297,16 +257,13 @@ export const doctor = (app) => {
 		} catch (error) {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
-	}
-	);
+	});
 
 	app.get('/doctors/:id/slots', async (req, res) => {
 		try {
 			const id = req.params.id;
 			if (!isValidMongoId(id))
-				return res
-					.status(ERROR_STATUS_CODE)
-					.json({ message: 'Invalid ID' });
+				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
 			const doctor = await service.getDoctorById(id);
 			if (doctor) {
 				res.status(OK_STATUS_CODE).json(doctor.availableSlots);
@@ -318,6 +275,20 @@ export const doctor = (app) => {
 		} catch (error) {
 			res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
-	}
-	);
+	});
+
+	app.get('/doctors/:id/wallet', async (req, res) => {
+		try {
+			const id = req.params.id;
+			if (!isValidMongoId(id))
+				return res
+					.status(ERROR_STATUS_CODE)
+					.json({ message: 'Invalid ID' });
+			const walletAmount = await service.getWalletAmount(id);
+
+			res.status(OK_STATUS_CODE).json({ walletAmount });
+		} catch (error) {
+			res.status(NOT_FOUND_STATUS_CODE).json({ message: error });
+		}
+	});
 };

@@ -20,7 +20,7 @@ const HealthPackage = mongoose.Schema({
 	discountOfFamily: {
 		type: Number,
 		required: true,
-	},
+	}
 });
 
 const HealthPackageModel = mongoose.model('HealthPackage', HealthPackage);

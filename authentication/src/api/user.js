@@ -19,7 +19,6 @@ import {
 	PATIENT_SIGNUP_URL,
 	PHARMACIST_BASE_URL,
 	PHARMACIST_ENUM,
-	PHARMACIST_SIGNUP_URL,
 	PHARMACY_ADMIN_ENUM,
 	PHARMACY_REQ,
 	SERVER_ERROR_REQUEST_CODE_500,
@@ -82,10 +81,11 @@ export const user = (app) => {
 				signupData = await axios.post(PATIENT_SIGNUP_URL, req.body);
 				break;
 			case DOCTOR_ENUM:
-				signupData = await axios.post(DOCOTOR_SIGNUP_URL, req.body);
+				console.log('u can register as a doctor');
+				res.status(OK_REQUEST_CODE_200).end();
 				break;
 			case PHARMACIST_ENUM:
-				signupData = await axios.post(PHARMACIST_SIGNUP_URL, req.body);
+				res.status(OK_REQUEST_CODE_200).end();
 				break;
 			default:
 				throw new Error('invalid type of user');
@@ -247,7 +247,6 @@ export const user = (app) => {
 				res.status(BAD_REQUEST_CODE_400).send({ message: err.message });
 		}
 	});
-
 
 	app.get('/check-user', async (req, res) => {
 		const token = req.cookies.jwt;

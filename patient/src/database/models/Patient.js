@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
-import { FAMILIY_EMERGENCY, GENDERS } from '../../utils/Constants.js';
+import { FAMILIY_EMERGENCY, GENDERS, HEALTH_PACKAGE_STATUS, FAMILY_RELATIONS, ZERO } from '../../utils/Constants.js';
 import bcrypt from 'bcrypt';
+
 
 const patientSchema = mongoose.Schema({
 	name: {
@@ -37,6 +38,7 @@ const patientSchema = mongoose.Schema({
 	mobileNumber: {
 		type: String,
 		required: true,
+		unique: true,
 	},
 	emergencyContact: {
 		name: {
@@ -62,43 +64,87 @@ const patientSchema = mongoose.Schema({
 			},
 			name: {
 				type: String,
-				// required: true,
 			},
 			nationalId: {
 				type: String,
-				// required: true,
-				unique: true,
 				sparse: true,
 			},
 			age: {
 				type: Number,
-				required: true,
 			},
 			gender: {
 				type: String,
 				enum: GENDERS,
-				// required: true,
 			},
 			relation: {
 				type: String,
-				enum: FAMILIY_EMERGENCY,
-				required: true,
+				enum: FAMILY_RELATIONS,
 			},
+			email: {
+				type: String
+			},
+			mobileNumber: {
+				type: String
+			}
 		},
 	],
-	healthrecords: [
+	healthRecords: [
 		{
-			healthIssue: {
+			recordTitle: {
+				type: String,
+			},
+			documentName: {
+				type: String,
+			}
+		},
+	],
+	healthPackages: [{
+		packageId: {
+			type: String
+		},
+		subscribtionDate: {
+			type: Date
+		},
+		renewalDate: {
+			type: Date
+		},
+		status: {
+			type: String,
+			enum: HEALTH_PACKAGE_STATUS
+		}
+	}
+	],
+	walletAmount: {
+		type: Number,
+		default: 0,
+		validate: {
+			validator: function (v) {
+				return v >= ZERO;
+			},
+			message: (props) => `${props.value} is not a valid wallet amount!`,
+		},
+	},
+	deliveryAddresses: [
+		{
+			city: {
 				type: String,
 				required: true,
 			},
-			healthIssueDate: {
-				type: Date,
-				required: true,
-			},
-			healthIssueDescription: {
+			street: {
 				type: String,
 				required: true,
+			},
+			buildingName: {
+				type: String,
+				required: true,
+			},
+			phoneNumber: {
+				type: String,
+				required: true,
+			},
+			primary: {
+				type: Boolean,
+				default: false,
 			},
 		},
 	],

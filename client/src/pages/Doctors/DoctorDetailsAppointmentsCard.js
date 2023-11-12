@@ -75,10 +75,9 @@ const DoctorDetailsAppointmentsCard = ({
             };
             appointment.patientFamilyMember = patientFamilyMember;
         }
-        console.log('appointment', appointment);
         const price = calcPrice(selectedDoctor.hourlyRate, loggedInPatientHealthPackage.doctorDiscount);
-        console.log(price);
         // to be uncommented after merge
+        console.log('here at handleBookNow');
         choosePayment(appointment, price, 'appointment');
 
     };
