@@ -1,6 +1,6 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { ZERO_INDEX, ONE } from './Constants';
+import { ZERO_INDEX, ONE } from './Constants.js';
 import fs from 'fs';
 const currentFilePath = getFileUrl();
 const __filename = fileURLToPath(currentFilePath);
