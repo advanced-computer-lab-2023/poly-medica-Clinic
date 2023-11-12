@@ -32,12 +32,11 @@ export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amou
     () => {
 
       patientAxios.get(`/patients/${userId}/wallet`).then((response) => {
-        if (response.status === OK_STATUS_CODE) {
           setAmountInWallet(response.data.walletAmount);
-        } else {
-          Swal.fire({ title: 'error', icon: 'error' });
-        }
-      });
+    }).
+      catch(error => {
+        Swal.fire('error', error, 'error');
+      }) 
     }, []);
 
   const handlePaymentMethod = () => {
