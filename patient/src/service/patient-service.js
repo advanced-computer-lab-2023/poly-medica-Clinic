@@ -139,6 +139,11 @@ class PatientService {
 		const orders = await this.repository.updateOrder(order);
 		return orders;
 	}
+
+	async updateWallet(id , amount){
+		const updatedWalletAmount = await this.repository.updateWalletAmount(id, amount);
+		return updatedWalletAmount;
+	}
 }
 
 export default PatientService;
