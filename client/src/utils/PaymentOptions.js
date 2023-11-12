@@ -67,7 +67,7 @@ export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amou
           confirmButtonText: 'Yes'
         }).then((result) => {
           if (result.isConfirmed) {
-            paymentAxios.post('/payment/wallet', { amountInWallet, userId: userId })
+            paymentAxios.post('/payment/wallet', { amountToPayByWallet: amountInWallet, userId: userId })
               .catch((error) => {
                 console.log('Error in payment with the wallet', error);
               });
