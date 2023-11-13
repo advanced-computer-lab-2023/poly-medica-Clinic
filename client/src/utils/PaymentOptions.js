@@ -94,11 +94,7 @@ export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amou
         <FormControl>
           <FormLabel>Payment Option</FormLabel>
           <RadioGroup
-            defaultValue='credit card'
-            name='controlled-radio-buttons-group'
-            value={value}
-            onChange={handleChange}
-            sx={{ my: 1 }}
+            defaultValue='credit card' name='controlled-radio-buttons-group' value={value} onChange={handleChange} sx={{ my: 1 }}
           >
             <FormControlLabel value='credit-card' control={<Radio />} label='Credit Card' />
 

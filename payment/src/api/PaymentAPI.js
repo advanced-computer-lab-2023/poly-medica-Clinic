@@ -35,7 +35,7 @@ export const payment = (app) => {
             const amountToPay = req.body.amountToPayByWallet;
             const userId = req.body.userId;
             const result = await axios.get(`${PATIENTS_BASE_URL}/patients/${userId}/wallet`);
-            let amountInWallet = result.data.walletAmount;
+            let amountInWallet = result
             if(amountToPay <= amountInWallet){
                 amountInWallet = amountInWallet - amountToPay;
                 await axios.patch(`${PATIENTS_BASE_URL}/patients/${userId}/wallet`, {amount : amountInWallet} );
@@ -44,6 +44,7 @@ export const payment = (app) => {
                 res.status(BAD_REQUEST_CODE_400).json("insufficient amount in the wallet");
             }
         }catch(err){
+            console.log(err.message);
             res.status(ERROR_STATUS_CODE).send({err: err.message, status: ERROR_STATUS_CODE});
         }
     });
