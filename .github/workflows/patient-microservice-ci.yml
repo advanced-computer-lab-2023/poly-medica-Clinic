@@ -29,3 +29,9 @@ jobs:
       - name: Run ESLint (Patient Microservice)
         run: npm run lint
         working-directory: patient
+
+      - name: Run Tests (Patient Microservice)
+        run: npm run test
+        working-directory: patient
+env:
+  MONGO_URI_TEST: ${{ secrets.MONGO_URI_TEST }}        
