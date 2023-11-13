@@ -25,7 +25,7 @@ export const appointment = (app) => {
 	});
 	
 	app.post('/appointments', async (req, res) => {
-		const appointment = req.body;
+		const appointment = req.body.items;
 		try {
 			const newAppointment = await service.createAppointment(appointment);
 			res.status(OK_STATUS_CODE).json(newAppointment);
@@ -33,6 +33,7 @@ export const appointment = (app) => {
 			res.status(ERROR_STATUS_CODE).json({
 				message: 'appointment not created due to an error',
 			});
+			console.log(err.message);
 		}
 	});
 };
