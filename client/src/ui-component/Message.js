@@ -4,6 +4,7 @@ import { Snackbar, Alert } from '@mui/material';
 const Message = ({ message, type, time, vertical, horizontal }) => {
 	return (
 		<Snackbar
+			open={open}
 			anchorOrigin={{ vertical, horizontal }}
 			autoHideDuration={time}
 		>
