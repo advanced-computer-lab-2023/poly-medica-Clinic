@@ -23,6 +23,7 @@ const Prescriptions = () => {
 		const getPrescriptions = async () => {
 			try {
 				const patientResponses = await patientAxios.get(`patient/${patientID}/prescriptions`);
+				console.log('patResp', patientResponses);
 				setPrescritpions(patientResponses.data);
 				setOriginalPrescritpions(patientResponses.data);
 				for (let i = 0; i < patientResponses.data.length; i++) {
