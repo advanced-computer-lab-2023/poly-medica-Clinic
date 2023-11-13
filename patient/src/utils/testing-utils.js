@@ -3,21 +3,27 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const connectDBTest = async () => {
-	try{
+	try {
 		const mongoURL = process.env.MONGO_URI_TEST;
 		await mongoose.connect(mongoURL);
 		console.log('Database connected', mongoURL);
 		await mongoose.connection.db.dropDatabase();
-	} catch(err){
+	} catch (err) {
 		console.error('Error connecting to the database:', err.message);
 	}
 };
 
-const disconnectDBTest = async () => {
-	try{
-		await mongoose.connection.db.dropDatabase();
+const disconnectDBTest = async (model) => {
+	try {
+		const collections = mongoose.connection.collections;
+
+		for (const key in collections) {
+			const collection = collections[key];
+			await collection.deleteMany({});
+		}
+		
 		await mongoose.disconnect();
-	} catch(err){
+	} catch (err) {
 		console.error('Error connecting to the database:', err.message);
 	}
 };
