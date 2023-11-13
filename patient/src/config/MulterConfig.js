@@ -4,7 +4,7 @@ import fs from 'fs';
 
 const getStorage = (folder) => {
 	try {
-		const folderPath = `./../patient/src/utils/upload/${folder}`;
+		const folderPath = `../../patient/src/utils/upload/${folder}`;
 		if (!fs.existsSync(folderPath)) {
 			fs.mkdirSync(folderPath, { recursive: true });
 		}

@@ -64,6 +64,14 @@ const pages = {
             icon: icons.IconRegistered,
             url: '/admin/pages/doctor-requests',
         },
+        {
+            id: 'Packages',
+            title: 'Health Packages',
+            type: 'item',
+            icon: icons.SubscriptionsIcon,
+            url: '/admin/pages/packages',
+            target: false,
+        },
     ],
 };
 
