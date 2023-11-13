@@ -38,61 +38,12 @@ const pages = {
     type: 'group',
     children: [
         {
-            id: 'doctors',
-            title: 'Doctors',
-            type: 'item',
-            icon: icons.IconStethoscope,
-            url: '/doctor/pages/doctors',
-            target: false,
-        },
-        {
-            id: 'family-members',
-            title: 'Family Members',
-            type: 'item',
-            icon: icons.FamilyRestroomIcon,
-            url: '/doctor/pages/family-members',
-            target: false,
-        },
-        {
             id: 'appointments',
             title: 'Appointments',
             type: 'item',
             icon: icons.IconCalendarTime,
             url: '/doctor/pages/appointments',
             target: false,
-        },
-
-        {
-            id: 'prescriptions',
-            title: 'Prescriptions',
-            type: 'item',
-            icon: icons.IconPrescription,
-            url: '/doctor/pages/prescriptions',
-            target: false,
-        },
-        {
-            id: 'Packages',
-            title: 'Health Packages',
-            type: 'item',
-            icon: icons.SubscriptionsIcon,
-            url: '/doctor/pages/packages',
-            target: false,
-        },
-        {
-            id: 'clinic',
-            title: 'Clinic',
-            type: 'collapse',
-            icon: icons.MedicationIcon,
-            children: [
-                {
-                    id: 'doctors',
-                    title: 'Doctors',
-                    type: 'item',
-                    icon: icons.IconStethoscope,
-                    url: '/doctor/pages/clinic/doctors',
-                    target: false,
-                },
-            ],
         },
         {
             id: 'ListOfPatients',
@@ -101,13 +52,6 @@ const pages = {
             icon: icons.IconStethoscope,
             url: '/doctor/pages/my-patients',
             target: false,
-        },
-        {
-            id: 'Wallet',
-            title: 'Wallet',
-            type: 'item',
-            icon: icons.Wallet,
-            url: '/doctor/pages/wallet',
         },
         {
             id: 'add-available-slots',
@@ -124,6 +68,13 @@ const pages = {
             icon: icons.IconKey,
             url: '/doctor/pages/contract',
             target: false,
+        },
+        {
+            id: 'Wallet',
+            title: 'Wallet',
+            type: 'item',
+            icon: icons.Wallet,
+            url: '/doctor/pages/wallet',
         }
     ],
 };

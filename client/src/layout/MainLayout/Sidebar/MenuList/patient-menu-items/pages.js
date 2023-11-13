@@ -36,37 +36,6 @@ const pages = {
     type: 'group',
     children: [
         {
-            id: 'admins',
-            title: 'Admins',
-            type: 'item',
-            icon: icons.AdminPanelSettingsOutlinedIcon,
-            url: '/patient/pages/admins',
-            target: false,
-        },
-        {
-            id: 'patients',
-            title: 'Patients',
-            type: 'item',
-            icon: icons.IconEmergencyBed,
-            url: '/patient/pages/patients',
-            target: false,
-        },
-        {
-            id: 'doctors',
-            title: 'Doctors',
-            type: 'item',
-            icon: icons.IconStethoscope,
-            url: '/patient/pages/doctors',
-            target: false,
-        },
-        {
-            id: 'doctor-requests',
-            title: 'Doctor Requests',
-            type: 'item',
-            icon: icons.IconRegistered,
-            url: '/patient/pages/doctor-requests',
-        },
-        {
             id: 'family-members',
             title: 'Family Members',
             type: 'item',
@@ -101,27 +70,11 @@ const pages = {
         },
 
         {
-            id: 'clinic',
-            title: 'Clinic',
-            type: 'collapse',
-            icon: icons.MedicationIcon,
-            children: [
-                {
-                    id: 'doctors',
-                    title: 'Doctors',
-                    type: 'item',
-                    icon: icons.IconStethoscope,
-                    url: '/patient/pages/clinic/doctors',
-                    target: false,
-                },
-            ],
-        },
-        {
-            id: 'ListOfPatients',
-            title: 'My Patients',
+            id: 'doctors',
+            title: 'Doctors',
             type: 'item',
             icon: icons.IconStethoscope,
-            url: '/patient/pages/my-patients',
+            url: '/patient/pages/clinic/doctors',
             target: false,
         },
         {

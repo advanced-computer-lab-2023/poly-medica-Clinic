@@ -3,21 +3,13 @@ import { lazy } from 'react';
 // project imports
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
-import FamilyMembers from 'pages/family-member/FamilyMembers.js';
 import { DOCTOR_TYPE_ENUM } from 'utils/Constants';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
-const LazyPrescriptions = Loadable(
-	lazy(() => import('pages/prescriptions/Prescriptions')),
-);
 const LazyDoctorListofPatients = Loadable(
-	lazy(() => import('pages/DoctorListofPatients')),
+	lazy(() => import('pages/doctorPatients/DoctorListofPatients')),
 );
-const LazyPackages = Loadable(
-	lazy(() => import('pages/HealthPackages/HealthPackage')),
-);
-const LazyClinicDoctors = Loadable(lazy(() => import('pages/Doctors/Doctors')));
 const LazyAppointments = Loadable(
 	lazy(() => import('pages/Appointment/Appointment')),
 );
@@ -68,42 +60,16 @@ const DoctorRoutes = {
 					element: <Account />,
 				},
 				{
-					path: 'family-members',
-					element: <FamilyMembers />,
-				},
-				{
 					path: 'appointments',
 					element: <LazyAppointments />,
-				},
-				{
-					path: 'prescriptions',
-					element: <LazyPrescriptions />,
 				},
 				{
 					path: 'my-patients',
 					element: <LazyDoctorListofPatients />,
 				},
 				{
-					path: 'packages',
-					element: <LazyPackages />,
-				},
-				{
-					path: 'clinic',
-					children: [
-						{
-							path: 'doctors',
-							element: <LazyClinicDoctors />,
-						},
-					],
-				},
-
-				{
 					path: 'add-available-slots',
 					element: <LazyAddAvailableSlots />,
-				},
-				{
-					path: 'my-patients',
-					element: <lazyDoctorListofPatients />,
 				},
 				{
 					path: 'wallet',

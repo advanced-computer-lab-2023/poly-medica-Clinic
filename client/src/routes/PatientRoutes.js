@@ -83,14 +83,9 @@ const MainRoutes = {
 					element: <LazyPayment />,
 				},
 				{
-					path: 'clinic',
-					children: [
-						{
-							path: 'doctors',
-							element: <LazyClinicDoctors />,
-						},
-					],
-				},
+					path: 'doctors',
+					element: <LazyClinicDoctors />,
+				}
 			],
 		},
 		{
