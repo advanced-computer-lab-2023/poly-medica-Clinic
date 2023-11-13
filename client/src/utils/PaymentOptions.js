@@ -72,7 +72,7 @@ export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amou
                 console.log('Error in payment with the wallet', error);
               });
             const amountToPayByCard = amountToPay - amountInWallet;
-            navigate('/patient/pages/payment', { state: { items, amountToPayByCard, type }, replace: true });
+            navigate('/patient/pages/payment', { state: { items, amountToPay : amountToPayByCard, type }, replace: true });
           }
         });
       }
@@ -94,11 +94,7 @@ export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amou
         <FormControl>
           <FormLabel>Payment Option</FormLabel>
           <RadioGroup
-            defaultValue='credit card'
-            name='controlled-radio-buttons-group'
-            value={value}
-            onChange={handleChange}
-            sx={{ my: 1 }}
+            defaultValue='credit card' name='controlled-radio-buttons-group' value={value} onChange={handleChange} sx={{ my: 1 }}
           >
             <FormControlLabel value='credit-card' control={<Radio />} label='Credit Card' />
 
