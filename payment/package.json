@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon start",
-    "test": "jest -i"
+    "test": "jest --runInBand"
   },
   "author": "",
   "license": "ISC",
