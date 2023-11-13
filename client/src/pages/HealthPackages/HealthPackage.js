@@ -9,6 +9,7 @@ import EditHealthPackages from './EditHealthPackage';
 import { useUserContext } from 'hooks/useUserContext';
 import { patientAxios } from 'pages/utilities/AxiosConfig';
 import Loader from 'ui-component/Loader';
+import { PATIENT_TYPE_ENUM } from 'utils/Constants';
 
 const HealthPackages = () => {
 	const [packages, setPackage] = useState([]);
@@ -33,19 +34,24 @@ const HealthPackages = () => {
 				setPackage(response.data.allPackages);
 
 			}).then(() => {
-				patientAxios.get(`/patient/${user.id}/health-packages`).then((response) => {
-					setSubscribedPackage(response.data.healthPackages[0]);
-				}).then(() => {
-					patientAxios.get(`/patient/${user.id}/discount`).then((response) => {
-						setDiscount(response.data.maxDiscount);
-						setLoading(false);
-					}
-					);
-				});
+				if(user.type=== PATIENT_TYPE_ENUM){
+					patientAxios.get(`/patient/${user.id}/health-packages`).then((response) => {
+						setSubscribedPackage(response.data.healthPackages[0]);
+					}).then(() => {
+						patientAxios.get(`/patient/${user.id}/discount`).then((response) => {
+							setDiscount(response.data.maxDiscount);
+							setLoading(false);
+						}
+						);
+					});
+				}
+				else{
+					setLoading(false);
+				}
 			})
 			.catch(error => {
 				console.log(error);
-				setLoading(true);
+				setLoading(false);
 			});
 
 
