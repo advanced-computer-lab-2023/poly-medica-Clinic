@@ -76,11 +76,11 @@ export default function CheckoutForm({ item, type }) {
     <form id='payment-form' onSubmit={handleSubmit}>
 
       <PaymentElement id='payment-element' options={paymentElementOptions} 
-      onChange={(event) => {
-        handleCardNumberChange(event.elementType === 'cardNumber' ? event : null);
-        handleCardExpiryChange(event.elementType === 'cardExpiry' ? event : null);
-        handleCardExpiryChange(event.elementType === 'cardCvc' ? event : null);
-      }}
+      // onChange={(event) => {
+      //   handleCardNumberChange(event.elementType === 'cardNumber' ? event : null);
+      //   handleCardExpiryChange(event.elementType === 'cardExpiry' ? event : null);
+      //   handleCardExpiryChange(event.elementType === 'cardCvc' ? event : null);
+      // }}
       />
       <Button disabled={isLoading || !stripe || !elements} fullWidth variant="contained" onClick={handleSubmit}>
         {'Pay now'}

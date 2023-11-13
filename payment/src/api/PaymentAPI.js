@@ -26,6 +26,7 @@ export const payment = (app) => {
                 clientSecret: paymentIntent.client_secret,
             });
         }catch(err){
+            console.log(err.message);
             res.status(ERROR_STATUS_CODE).send({err: err.message, status: ERROR_STATUS_CODE});
         }
     });
