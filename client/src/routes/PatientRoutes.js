@@ -3,16 +3,12 @@ import { lazy } from 'react';
 // project imports
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
-import FamilyMembers from 'pages/family-member/FamilyMembers.js';
 import { PATIENT_TYPE_ENUM } from 'utils/Constants';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 const LazyPrescriptions = Loadable(
 	lazy(() => import('pages/prescriptions/Prescriptions')),
-);
-const LazyDoctorListofPatients = Loadable(
-	lazy(() => import('pages/DoctorListofPatients')),
 );
 const LazyPackages = Loadable(
 	lazy(() => import('pages/HealthPackages/HealthPackage')),
@@ -26,7 +22,9 @@ const LazyAppointments = Loadable(
 	lazy(() => import('pages/Appointment/Appointment')),
 );
 const LazyPayment = Loadable(lazy(() => import('pages/payment/Payment')));
-const Account = Loadable(lazy(() => import('pages/profile/Account'))); //TODO: generalize this
+const LazyAccount = Loadable(lazy(() => import('pages/profile/Account'))); //TODO: generalize this
+
+const LazyFamilyMembers = Loadable(lazy(() => import('pages/family-member/FamilyMembers.js')));
 
 // utilities routing
 const UtilsTypography = Loadable(
@@ -62,11 +60,11 @@ const MainRoutes = {
 			children: [
 				{
 					path: 'profile',
-					element: <Account />,
+					element: <LazyAccount />,
 				},
 				{
 					path: 'family-members',
-					element: <FamilyMembers />,
+					element: <LazyFamilyMembers />,
 				},
 				{
 					path: 'appointments',
@@ -75,10 +73,6 @@ const MainRoutes = {
 				{
 					path: 'prescriptions',
 					element: <LazyPrescriptions />,
-				},
-				{
-					path: 'my-patients',
-					element: <LazyDoctorListofPatients />,
 				},
 				{
 					path: 'packages',
