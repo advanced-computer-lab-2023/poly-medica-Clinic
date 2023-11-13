@@ -74,7 +74,7 @@ const pages = {
             title: 'Doctors',
             type: 'item',
             icon: icons.IconStethoscope,
-            url: '/patient/pages/clinic/doctors',
+            url: '/patient/pages/doctors',
             target: false,
         },
         {

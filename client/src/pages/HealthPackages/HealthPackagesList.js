@@ -7,7 +7,7 @@ import { useUserContext } from 'hooks/useUserContext';
 import Swal from 'sweetalert2';
 import { useState } from 'react';
 import { patientAxios } from 'utils/AxiosConfig';
-import { HEALTH_PACKAGE_STATUS, PAYMENT_ITEM_TYPES } from 'utils/Constants';
+import { ADMIN_TYPE_ENUM, HEALTH_PACKAGE_STATUS, PATIENT_TYPE_ENUM, PAYMENT_ITEM_TYPES } from 'utils/Constants';
 import { ChoosePayment } from 'utils/PaymentOptions';
 const HealthPackagesList = ({ packages, handleEditButtonClick, handleDeleteButtonClick, subscribedPackage, setSubscribedPackage, discount }) => {
 
@@ -123,25 +123,34 @@ const HealthPackagesList = ({ packages, handleEditButtonClick, handleDeleteButto
 								</Typography>
 							</ul>
 						</CardContent>
-						<Stack direction="row" spacing={2} justifyContent="center" >
-							<Button variant="contained" color='secondary' endIcon={<EditIcon />} onClick={(event) => handleEditButtonClick(pack, event)} >
-								Edit
-							</Button>
-							<Button variant="outlined" color='secondary' startIcon={<DeleteIcon />} onClick={() => handleDeleteButtonClick(pack)}>
-								Delete
-							</Button>
-						</Stack>
+						{
+							user.type === ADMIN_TYPE_ENUM 
+							&&
+							<Stack direction="row" spacing={2} justifyContent="center" >
+								<Button variant="contained" color='secondary' endIcon={<EditIcon />} onClick={(event) => handleEditButtonClick(pack, event)} >
+									Edit
+								</Button>
+								<Button variant="outlined" color='secondary' startIcon={<DeleteIcon />} onClick={() => handleDeleteButtonClick(pack)}>
+									Delete
+								</Button>
+							</Stack>
+						}
+
 						<CardActions>
-							<Button fullWidth variant="contained" color='secondary' sx={{ background: isSubscribedPackage(pack) ? '#C71585' : '' }}
-								onClick={() => {
-									if (isSubscribedPackage(pack)) {
-										handleCancel();
-									} else {
-										handleSubscribe(pack);
-									}
-								}}>
-								{(isSubscribedPackage(pack)) ? 'Cancel Subscribtion' : 'Subscribe Now'}
-							</Button>
+							{
+								user.type === PATIENT_TYPE_ENUM 
+								&&
+								<Button fullWidth variant="contained" color='secondary' sx={{ background: isSubscribedPackage(pack) ? '#C71585' : '' }}
+									onClick={() => {
+										if (isSubscribedPackage(pack)) {
+											handleCancel();
+										} else {
+											handleSubscribe(pack);
+										}
+									}}>
+									{(isSubscribedPackage(pack)) ? 'Cancel Subscribtion' : 'Subscribe Now'}
+								</Button>
+							}
 						</CardActions>
 					</Card >
 				</Grid >

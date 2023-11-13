@@ -53,12 +53,14 @@ export const resetPassword = (app) => {
 		
 			transporter.sendMail(mailOptions, (error, info) => {
 				if (error) {
+					console.log('err1', error);
 					res.status(500).json({ message: 'Failed to send email' });
 				} else {
 					res.json({ message: 'Email sent' });
 				}
 			});
 		} catch(err){
+			console.log(err);
 			res.status(BAD_REQUEST_CODE_400).send({ errMessage: err.message });
 		}
 	});
