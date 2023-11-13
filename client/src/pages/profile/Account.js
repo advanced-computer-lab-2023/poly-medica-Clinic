@@ -8,15 +8,13 @@ import { useState } from 'react';
 import Swal from 'sweetalert2';
 import MedicalHistory from './MedicalHistory';
 import { authenticationAxios } from '../../utils/AxiosConfig';
-
+ 
 const Page = () => {
 
 
 	const { user } = useUserContext();
-	const [password, setPassword] = useState('');
-	const [loading, setLoading] = useState(false);
-	const handleChangePassword = async () => {
-		setLoading(true);
+	const [password, setPassword] = useState(''); 
+	const handleChangePassword = async () => { 
 		const response = await authenticationAxios.patch(`/change-password/${user.id}`, { password });
 		try{
 			if(response.status === 200){
@@ -25,28 +23,25 @@ const Page = () => {
 					title: 'Success!',
 					text: 'password changed successfully',
 				});
-				setPassword('');
-				setLoading(false);
+				setPassword(''); 
 			} else {
 				Swal.fire({
 					icon: 'error',
 					title: 'Oops...',
 					text: response.response.data.message,
-				});
-				setLoading(false);
+				}); 
 			}
 		} catch (err) {
 			Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
 				text: response.response.data.message,
-			});
-			setLoading(false);
+			}); 
 		}
 
 	};
 	return (
-		<>
+		<> 
 			<Box
 				component="main"
 				sx={{
@@ -107,8 +102,7 @@ const Page = () => {
 											<Button
 												variant='contained'
 												type='submit'
-												onClick={handleChangePassword}
-												disabled={loading}
+												onClick={handleChangePassword} 
 											>
 												Save password
 											</Button>
