@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	Dialog,
     DialogTitle,
@@ -22,7 +22,7 @@ const FollowUp = ({
     selectedPatient,
     loggedInDoctor
 }) => {
-	const { availableSlots } = loggedInDoctor;
+	const [availableSlots, setAvailableSlots] = useState(loggedInDoctor.availableSlots);
 	const handleSchedule = async (availableSlotsIdx) => {
 		console.log('availableSlotsIdx', availableSlotsIdx);
 		const slot = availableSlots[availableSlotsIdx];
@@ -32,14 +32,12 @@ const FollowUp = ({
             patientName: selectedPatient.userName,
             doctorName: loggedInDoctor.userData.name,
             date: slot.from,
-            status: 'active',
+            status: 'Incomplete',
             type: 'follow-up',
             availableSlotsIdx
         };
-		const data = {};
-		data.items = appointment;
         await doctorAxios
-                .post('/appointments', data)
+                .post('/appointments', { items: appointment })
                 .then(() => {
                     Swal.fire(
                         'Follow up Schedule!',
@@ -50,6 +48,9 @@ const FollowUp = ({
                 .catch((error) => {
                     console.log(error);
                 });
+		setAvailableSlots( oldAvailableSlots => 
+			oldAvailableSlots.splice(availableSlotsIdx, 1)
+		);
 	};
 	const handleConfirmation = (event) => {
 		Swal.fire({
