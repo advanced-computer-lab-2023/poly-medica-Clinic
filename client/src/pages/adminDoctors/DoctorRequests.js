@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import DoctorRequestCard from './DoctorRequestCard';
-import { clinicAxios } from '../utils/AxiosConfig';
+import { clinicAxios } from '../../utils/AxiosConfig';
 
 const DoctorRequests = () => {
 	const [doctorRequests, setDoctorRequests] = useState([]);
