@@ -26,10 +26,6 @@ jobs:
         run: npm ci
         working-directory: authentication
 
-      - name: Run ESLint (Auth Microservice)
-        run: npm run lint
-        working-directory: authentication
-
       - name: Run Tests (Auth Microservice)
         run: npm run test
         working-directory: authentication

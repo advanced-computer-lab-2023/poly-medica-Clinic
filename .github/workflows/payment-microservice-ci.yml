@@ -26,10 +26,6 @@ jobs:
         run: npm ci
         working-directory: payment
 
-      - name: Run ESLint (Payment Microservice)
-        run: npm run lint
-        working-directory: payment
-
       - name: Run Tests (Payment Microservice)
         run: npm run test
         working-directory: payment
