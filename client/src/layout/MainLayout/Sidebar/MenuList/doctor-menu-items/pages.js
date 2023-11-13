@@ -38,35 +38,12 @@ const pages = {
     type: 'group',
     children: [
         {
-            id: 'admins',
-            title: 'Admins',
-            type: 'item',
-            icon: icons.AdminPanelSettingsOutlinedIcon,
-            url: '/doctor/pages/admins',
-            target: false,
-        },
-        {
-            id: 'patients',
-            title: 'Patients',
-            type: 'item',
-            icon: icons.IconEmergencyBed,
-            url: '/doctor/pages/patients',
-            target: false,
-        },
-        {
             id: 'doctors',
             title: 'Doctors',
             type: 'item',
             icon: icons.IconStethoscope,
             url: '/doctor/pages/doctors',
             target: false,
-        },
-        {
-            id: 'doctor-requests',
-            title: 'Doctor Requests',
-            type: 'item',
-            icon: icons.IconRegistered,
-            url: '/doctor/pages/doctor-requests',
         },
         {
             id: 'family-members',

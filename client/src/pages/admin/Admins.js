@@ -8,39 +8,46 @@ import {
 	TableHead,
 	TableRow,
 	Paper,
-	Button,
+	Fab,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import MainCard from 'ui-component/cards/MainCard';
 import AdminRow from './AdminRow';
-import DeleteConfirmationDialog from './DeleteConfirmationDialog';
+import DeleteConfirmationDialog from '../../ui-component/DeleteConfirmationDialog';
 import AddAdminDialog from './AddAdminDialog';
-import { authenticationAxios, clinicAxios } from '../utils/AxiosConfig';
+import { authenticationAxios, clinicAxios } from '../../utils/AxiosConfig';
+import Message from '../../ui-component/Message';
 
 const Admins = () => {
+	const { user } = useUserContext();
 	const [admins, setAdmins] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [openAddDialog, setOpenAddDialog] = useState(false);
 	const [newAdminUsername, setNewAdminUsername] = useState('');
 	const [newAdminPassword, setNewAdminPassword] = useState('');
 	const [confirmDeleteDialogOpen, setConfirmDeleteDialogOpen] = useState(false);
-	const [adminToDelete, setAdminToDelete] = useState(null);
+	const [adminToDelete, setAdminToDelete] = useState('');
+	const [addAdmin, setAddAdmin] = useState(false);
+	const [removeAdmin, setRemoveAdmin] = useState(false);
+	const [adminIsBeingAdded, setAdminIsBeingAdded] = useState(false);
+	const [adminIsBeingDeleted, setAdminIsBeingDeleted] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
-	const { user } = useUserContext();
 
 	useEffect(() => {
-		clinicAxios.get('/admins')
+		clinicAxios
+			.get('/admins')
+			.then((response) => response.data)
 			.then((data) => {
 				setAdmins(
 					data.admins.filter((admin) => admin.userName !== user.userName),
 				);
 				setIsLoading(false);
 			})
-			.catch(() => {
-				errorMessage('Error fetching admins data');
+			.catch((err) => {
 				setIsLoading(false);
+				console.error('Error getting admins:', err);
 			});
-	}, []);
+	}, [admins.length]);
 
 	const handleRemoveAdmin = (adminId) => {
 		setAdminToDelete(adminId);
@@ -48,36 +55,41 @@ const Admins = () => {
 	};
 
 	const handleConfirmDelete = () => {
-		// Check if the admin being deleted is a main admin
 		const adminToBeDeleted = admins.find(
 			(admin) => admin._id === adminToDelete,
 		);
 		if (adminToBeDeleted && adminToBeDeleted.mainAdmin) {
-			// If it's a main admin, prevent deletion and show a message
 			setConfirmDeleteDialogOpen(false);
 			return;
 		}
 
-		clinicAxios.delete(`/admins/${adminToDelete}`)
-			.then(() =>
+		setAdminIsBeingDeleted(true);
+		clinicAxios
+			.delete(`/admins/${adminToDelete}`)
+			.then(() => {
 				setAdmins((prevAdmins) =>
 					prevAdmins.filter((admin) => admin._id !== adminToDelete),
-				),
-			)
-			.catch(() => {
-				errorMessage('Error deleting admin');
-			})
-			.finally(() => {
-				setAdminToDelete(null);
+				);
+				setAdminIsBeingDeleted(false);
+				setAdminToDelete('');
 				setConfirmDeleteDialogOpen(false);
+				setRemoveAdmin(true);
+				setTimeout(() => {
+					setRemoveAdmin(false);
+				}, 2000);
+			})
+			.catch((error) => {
+				setAdminIsBeingDeleted(false);
+				setErrorMessage('Error in deleting admin.');
+				console.error('Error deleting admin:', error);
 			});
-
-			//TODO: delete from user auth
 	};
 
 	const handleCancelDelete = () => {
-		setAdminToDelete(null);
+		setAdminToDelete('');
 		setConfirmDeleteDialogOpen(false);
+		setErrorMessage('');
+		setAdminIsBeingDeleted(false);
 	};
 
 	const handleOpenAddDialog = () => {
@@ -89,6 +101,7 @@ const Admins = () => {
 		setNewAdminUsername('');
 		setNewAdminPassword('');
 		setErrorMessage('');
+		setAdminIsBeingAdded(false);
 	};
 
 	const handleAddAdmin = async () => {
@@ -102,24 +115,38 @@ const Admins = () => {
 		}
 
 		// Make a POST request to add a new admin
-		//TODO: these conditions 
-		const response = await authenticationAxios.post('/admins/clinic', JSON.stringify(newAdmin), {
-			headers: {
-				'Content-Type': 'application/json',
-			}
-		});
-		if(response.status == 200){
+		//TODO: these conditions
+		setAdminIsBeingAdded(true);
+		authenticationAxios
+			.post('/admins/clinic', JSON.stringify(newAdmin), {
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			})
+			.then((response) => response.data)
+			.then(() => {
 				setAdmins((prevAdmins) => [...prevAdmins, newAdmin]);
+				setAdminIsBeingAdded(false);
 				setOpenAddDialog(false);
 				setNewAdminUsername('');
 				setNewAdminPassword('');
 				setErrorMessage('');
-			}
-			else
-				setErrorMessage(
-					response.response.data.message
-				);
-			
+				setAddAdmin(true);
+				setTimeout(() => {
+					setAddAdmin(false);
+				}, 2000);
+			})
+			.catch((error) => {
+				setAdminIsBeingAdded(false);
+				if (error.response) {
+					if (error.response.status == 400) {
+						setErrorMessage(
+							`Username '${newAdminUsername}' already exists. Please choose a different username.`,
+						);
+						return;
+					}
+				} else console.error('Error adding admin:', error);
+			});
 	};
 
 	const isAddButtonDisabled = !newAdminUsername || !newAdminPassword;
@@ -150,19 +177,39 @@ const Admins = () => {
 							</TableBody>
 						</Table>
 					</TableContainer>
-					<Button
-						variant='contained'
-						color='primary'
+					<Fab
+						color='secondary'
+						aria-label='Add'
 						onClick={handleOpenAddDialog}
-						style={{
+						sx={{
 							position: 'fixed',
-							bottom: '20px',
-							right: '50px',
+							bottom: 16,
+							right: 16,
+							zIndex: 9999,
 						}}
 					>
 						<AddIcon />
-						Add Admin
-					</Button>
+					</Fab>
+
+					{addAdmin && (
+						<Message
+							message={'Admin added successfully!'}
+							type={'success'}
+							time={2000}
+							vertical={'bottom'}
+							horizontal={'left'}
+						/>
+					)}
+
+					{removeAdmin && (
+						<Message
+							message={'Admin removed successfully!'}
+							type={'success'}
+							time={2000}
+							vertical={'bottom'}
+							horizontal={'left'}
+						/>
+					)}
 
 					<AddAdminDialog
 						openAddDialog={openAddDialog}
@@ -173,16 +220,18 @@ const Admins = () => {
 						setNewAdminPassword={setNewAdminPassword}
 						handleAddAdmin={handleAddAdmin}
 						isAddButtonDisabled={isAddButtonDisabled}
+						adminIsBeingAdded={adminIsBeingAdded}
 						errorMessage={errorMessage}
 					/>
 
-					{/* Confirmation Dialog for Delete */}
 					<DeleteConfirmationDialog
 						open={confirmDeleteDialogOpen}
 						onClose={handleCancelDelete}
 						onConfirm={handleConfirmDelete}
 						title='Confirm Delete'
 						content='Are you sure you want to delete this admin?'
+						someoneIsBeingDeleted={adminIsBeingDeleted}
+						errorMessage={errorMessage}
 					/>
 				</div>
 			)}

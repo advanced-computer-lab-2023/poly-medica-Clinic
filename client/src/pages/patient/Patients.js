@@ -10,8 +10,8 @@ import {
 } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
 import PatientRow from './PatientRow';
-import DeleteConfirmationDialog from './DeleteConfirmationDialog';
-import { clinicAxios, patientAxios } from '../utils/AxiosConfig';
+import DeleteConfirmationDialog from '../../ui-component/DeleteConfirmationDialog';
+import { clinicAxios, patientAxios } from '../../utils/AxiosConfig';
 
 const Patients = () => {
 	const [patients, setPatients] = useState([]);
@@ -20,7 +20,8 @@ const Patients = () => {
 	const [patientToDelete, setPatientToDelete] = useState(null);
 
 	useEffect(() => {
-		patientAxios.get('/patients')
+		patientAxios
+			.get('/patients')
 			.then((data) => {
 				setPatients(data.patients);
 				setIsLoading(false);
@@ -37,7 +38,8 @@ const Patients = () => {
 	};
 
 	const handleConfirmDelete = () => {
-		clinicAxios.delete(`/patients/${patientToDelete}`)
+		clinicAxios
+			.delete(`/patients/${patientToDelete}`)
 			.then(() =>
 				setPatients((prevPatients) =>
 					prevPatients.filter((patient) => patient._id !== patientToDelete),
