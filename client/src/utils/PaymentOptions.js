@@ -17,7 +17,7 @@ import {
   FormControl
 } from '@mui/material';
 import { ADMIN_TYPE_ENUM } from './Constants';
-
+import '../assets/css/swalStyle.css';
 
 export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amountToPay, type }) => {
   const [amountInWallet, setAmountInWallet] = useState(0);
@@ -50,6 +50,7 @@ export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amou
         paymentAxios.post('/payment/wallet', { amountToPayByWallet: amountToPay, userId: userId })
           .then(
             Swal.fire('success', 'Payment Succeeded', 'success').then(() => {
+              setIsAddDialogOpen(false);
               const callBackUrl = successfulPayment(userId, items, type);
               navigate(callBackUrl, { replace: true });
             }

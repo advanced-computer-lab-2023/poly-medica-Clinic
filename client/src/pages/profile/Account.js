@@ -1,4 +1,18 @@
-import { Box, Container, Stack, Typography, Unstable_Grid2 as Grid, CardContent, CardHeader, Card, TextField, Button, Divider, CardActions, FormControl, } from '@mui/material';
+import {
+	Box,
+	Container,
+	Stack,
+	Typography,
+	Unstable_Grid2 as Grid,
+	CardContent,
+	CardHeader,
+	Card,
+	TextField,
+	Button,
+	Divider,
+	CardActions,
+	FormControl,
+} from '@mui/material';
 import AccountProfile from './AccountProfile';
 import DcotorAccountProfileDetails from './accountProfileDetails/DoctorAccountProfileDetails';
 import PatientAccountProfileDetails from './accountProfileDetails/PatientAccountProfileDetails';
@@ -11,17 +25,16 @@ import { authenticationAxios } from '../../utils/AxiosConfig';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
 import { useParams } from 'react-router';
 const Page = () => {
-
 	const { patientId } = useParams();
 
 	const { user } = useUserContext();
-	const [password, setPassword] = useState(''); 
+	const [password, setPassword] = useState('');
 	const [strength, setStrength] = useState(0);
 	const [level, setLevel] = useState();
 	const doctorInPatientProfile = patientId && user.type === DOCTOR_TYPE_ENUM;
 
-	const submitPassword = async () => { 
-		if (!level || level.label != 'Strong'){
+	const submitPassword = async () => {
+		if (!level || level.label != 'Strong') {
 			Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
@@ -29,24 +42,26 @@ const Page = () => {
 			});
 			return;
 		}
-		try{
-			await authenticationAxios.patch(`/change-password/${user.id}`, { password });
-			
-				Swal.fire({
-					icon: 'success',
-					title: 'Success!',
-					text: 'password changed successfully',
-				});
-				setPassword('');
-				const temp = strengthIndicator('');
-				setStrength(temp);
-				setLevel(strengthColor(temp));
+		try {
+			await authenticationAxios.patch(`/change-password/${user.id}`, {
+				password,
+			});
+
+			Swal.fire({
+				icon: 'success',
+				title: 'Success!',
+				text: 'password changed successfully',
+			});
+			setPassword('');
+			const temp = strengthIndicator('');
+			setStrength(temp);
+			setLevel(strengthColor(temp));
 		} catch (err) {
 			Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
 				text: err.response.data.message,
-			}); 
+			});
 		}
 	};
 
@@ -59,100 +74,109 @@ const Page = () => {
 	return (
 		<>
 			<Box
-				component="main"
+				component='main'
 				sx={{
 					flexGrow: 1,
-					py: 8
+					py: 8,
 				}}
 			>
-				<Container maxWidth="lg">
+				<Container maxWidth='lg'>
 					<Stack spacing={3}>
-						{!patientId && <div>
-							<Typography variant="h4">
-								Account
-							</Typography>
-						</div>}
+						{!patientId && (
+							<div>
+								<Typography variant='h4'>Account</Typography>
+							</div>
+						)}
 						<div>
-							<Grid
-								container
-								spacing={3}
-							>
-								<Grid
-									xs={12}
-									md={6}
-									lg={4}
-								>
+							<Grid container spacing={3}>
+								<Grid xs={12} md={6} lg={4}>
 									{!patientId && <AccountProfile />}
 								</Grid>
-								<Grid
-									xs={12}
-									md={6}
-									lg={8}
-								>
-									{(user.type == DOCTOR_TYPE_ENUM && !patientId) && <DcotorAccountProfileDetails />}
-									{(user.type == PATIENT_TYPE_ENUM || patientId) && <PatientAccountProfileDetails />}
+								<Grid xs={12} md={6} lg={8}>
+									{user.type == DOCTOR_TYPE_ENUM && !patientId && (
+										<DcotorAccountProfileDetails />
+									)}
+									{(user.type == PATIENT_TYPE_ENUM || patientId) && (
+										<PatientAccountProfileDetails />
+									)}
 
-									{
-										!doctorInPatientProfile &&
-										<Card sx={{ mt: 5 }} >
-											<CardHeader
-												title='Change Password'
-											/>
+									{!doctorInPatientProfile && (
+										<Card sx={{ mt: 5 }}>
+											<CardHeader title='Change Password' />
 											<CardContent sx={{ width: '100%' }}>
-											<Grid container sx={{ width: '100%' }} spacing={1} display={'flow'} flexDirection={'row'}>
-												<Grid width={'50%'}>
-													<TextField
-														fullWidth
-														label='password'
-														name='password'
-														type='password'
-														onChange={handleChangePassword}
-														required
-														value={password}
-													/>
-													{strength !== 0 && (
-					<FormControl fullWidth>
-						<Box sx={{ mb: 2 }}>
-							<Grid container spacing={2} alignItems='center'>
-								<Grid item>
-									<Box
-										style={{ backgroundColor: level?.color }}
-										sx={{ width: 85, height: 8, borderRadius: '7px' }}
-									/>
-								</Grid>
-								<Grid item>
-									<Typography variant='subtitle1' fontSize='0.75rem'>
-										{level?.label}
-									</Typography>
-								</Grid>
-							</Grid>
-						</Box>
-					</FormControl>
-				)}
-
+												<Grid
+													container
+													sx={{ width: '100%' }}
+													spacing={1}
+													display={'flow'}
+													flexDirection={'row'}
+												>
+													<Grid width={'50%'}>
+														<TextField
+															fullWidth
+															label='password'
+															name='password'
+															type='password'
+															onChange={handleChangePassword}
+															required
+															value={password}
+														/>
+														{strength !== 0 && (
+															<FormControl fullWidth>
+																<Box sx={{ mb: 2 }}>
+																	<Grid
+																		container
+																		spacing={2}
+																		alignItems='center'
+																	>
+																		<Grid item>
+																			<Box
+																				style={{
+																					backgroundColor: level?.color,
+																				}}
+																				sx={{
+																					width: 85,
+																					height: 8,
+																					borderRadius: '7px',
+																				}}
+																			/>
+																		</Grid>
+																		<Grid item>
+																			<Typography
+																				variant='subtitle1'
+																				fontSize='0.75rem'
+																			>
+																				{level?.label}
+																			</Typography>
+																		</Grid>
+																	</Grid>
+																</Box>
+															</FormControl>
+														)}
+													</Grid>
 												</Grid>
-											</Grid>
-											
-										</CardContent>
-										<Divider />
-										<CardActions sx={{ justifyContent: 'flex-end' }}>
-											<Button
-												variant='contained'
-												type='submit'
-												onClick={submitPassword} 
-											>
-												Save password
-											</Button>
-										</CardActions>
-									</Card>
-}
+											</CardContent>
+											<Divider />
+											<CardActions sx={{ justifyContent: 'flex-end' }}>
+												<Button
+													variant='contained'
+													type='submit'
+													onClick={submitPassword}
+												>
+													Save password
+												</Button>
+											</CardActions>
+										</Card>
+									)}
 									{/* {user.type == ADMIN_TYPE_ENUM &&<PatientAccountProfileDetails />} */}
 									{/* TODO: admin !! */}
 									{/* here will be the gener */}
 								</Grid>
-								<Grid item xs={12}>
-									<MedicalHistory patientId={patientId} />
-								</Grid>
+								{(user.type == PATIENT_TYPE_ENUM || patientId) && (
+									<Grid item xs={12}>
+										<MedicalHistory patientId={patientId} />
+									</Grid>
+								)}
 							</Grid>
 						</div>
 					</Stack>
@@ -161,6 +185,5 @@ const Page = () => {
 		</>
 	);
 };
-
 
 export default Page;
