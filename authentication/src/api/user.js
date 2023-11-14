@@ -69,13 +69,14 @@ export const user = (app) => {
 			const checkUserName = await user.findUserByUserName(userName);
 			if (checkUserName) {
 				throw new Error(DUB_USERNAME_ERROR_MESSAGE);
-			} // <= here same
+			} 
 			switch(requestFrom){
 			case CLINIC_REQ:await axios.post(DOCOTOR_CHECK_DOC_USERS, { email, userName });break;
 			case PHARMACY_REQ:await axios.post(`${PHARMACIST_BASE_URL}check-pharmacist-req`, { email, userName });break;
 			default: throw new Error('invalid system');
 			}
 
+			// TODO: check if i put the docotor/ pharma request
 			if (type == PATIENT_ENUM){
 				signupData = await axios.post(PATIENT_SIGNUP_URL, req.body);
 				await user.signupUser(signupData.data);
@@ -110,6 +111,27 @@ export const user = (app) => {
 			res
 				.status(SERVER_ERROR_REQUEST_CODE_500)
 				.send({ message: 'coudn\'t delete the user' });
+		}
+	});
+
+	
+	app.patch('/users/:id/email/:email', async (req, res) => {
+		try {
+			const id = req.params.id;
+			const email = req.params.email;
+			const systemUser = await user.findUserByEmail(email);
+			if(systemUser){
+				res.status(BAD_REQUEST_CODE_400).send({errCode: DUPLICATE_KEY_ERROR_CODE, message: "this email is already exist in the system"});
+			} else {
+				const systemUser = await user.updateEmail(id, email);
+				//TODO: check the way of update akw
+				if(systemUser)
+					res.status(OK_REQUEST_CODE_200).end();
+				else
+					res.status(SERVER_ERROR_REQUEST_CODE_500).send({message: "server error"});
+			}
+		} catch (err) {
+			res.status(SERVER_ERROR_REQUEST_CODE_500).send({message: err.message});
 		}
 	});
 
@@ -270,4 +292,5 @@ export const user = (app) => {
 		res.cookie('jwt', '', { expires: new Date(0), path: '/' });
 		res.status(200).end();
 	});
+
 };

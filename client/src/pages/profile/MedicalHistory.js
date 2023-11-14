@@ -22,6 +22,8 @@ const MedicalHistory = ({ patientId }) => {
         patientAxios.get(`/patient/${userId}/medical-history`).then((response) => {
             setDocuments(response.data);
             setLoading(false);
+        }).catch(() => {
+            setLoading(false);
         });
     }, []);
 

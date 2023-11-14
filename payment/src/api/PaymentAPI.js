@@ -14,9 +14,9 @@ export const payment = (app) => {
 
     app.post('/payment/card', async (req, res) => {
         try{
-            const total_amount = req.body.paymentAmount;
+            const total_amount = Number(req.body.paymentAmount);
             const paymentIntent = await stripe.paymentIntents.create({
-                amount: (total_amount * 100),
+                amount: parseInt(total_amount * 100),
                 currency: "usd",
                 automatic_payment_methods: {
                   enabled: true,
@@ -36,9 +36,10 @@ export const payment = (app) => {
             const amountToPay = req.body.amountToPayByWallet;
             const userId = req.body.userId;
             const result = await axios.get(`${PATIENTS_BASE_URL}/patients/${userId}/wallet`);
-            let amountInWallet = result
+            let amountInWallet = result.data.walletAmount;
             if(amountToPay <= amountInWallet){
                 amountInWallet = amountInWallet - amountToPay;
+                
                 await axios.patch(`${PATIENTS_BASE_URL}/patients/${userId}/wallet`, {amount : amountInWallet} );
                 res.status(OK_STATUS_CODE).send("Payment successful");
             }else{
