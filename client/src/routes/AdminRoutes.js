@@ -12,10 +12,14 @@ const LazyPatients = Loadable(lazy(() => import('pages/patient/Patients')));
 const LazyDoctors = Loadable(lazy(() => import('pages/adminDoctors/Doctors')));
 const LazyDoctorRequests = Loadable(lazy(() => import('pages/adminDoctors/DoctorRequests')));
 const Account = Loadable(lazy(() => import('pages/profile/Account')));
+const LazyPackages = Loadable(
+	lazy(() => import('pages/HealthPackages/HealthPackage')),
+);
 // utilities routing
 const UtilsTypography = Loadable(
 	lazy(() => import('pages/utilities/Typography')),
 );
+
 const UtilsColor = Loadable(lazy(() => import('pages/utilities/Color')));
 const UtilsShadow = Loadable(lazy(() => import('pages/utilities/Shadow')));
 
@@ -63,6 +67,10 @@ const AdminRoutes = {
 				{
 					path: 'doctor-requests',
 					element: <LazyDoctorRequests />,
+				},
+				{
+					path: 'packages',
+					element: <LazyPackages />,
 				},
 			],
 		},
