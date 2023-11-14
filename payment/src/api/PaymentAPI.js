@@ -14,9 +14,9 @@ export const payment = (app) => {
 
     app.post('/payment/card', async (req, res) => {
         try{
-            const total_amount = req.body.paymentAmount;
+            const total_amount = Number(req.body.paymentAmount);
             const paymentIntent = await stripe.paymentIntents.create({
-                amount: (total_amount * 100),
+                amount: parseInt(total_amount * 100),
                 currency: "usd",
                 automatic_payment_methods: {
                   enabled: true,
