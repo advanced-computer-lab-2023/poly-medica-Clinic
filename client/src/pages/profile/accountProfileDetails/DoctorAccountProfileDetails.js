@@ -68,11 +68,11 @@ export const DoctorAccountProfileDetails = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault(); 
-        const getPatientsURL = '/doctors/' + user.id;
+        const getDoctorURL = '/doctors/' + user.id;
         // let user;
 
         clinicAxios
-            .patch(getPatientsURL, values, { withCredentials: true })
+            .patch(getDoctorURL, values, { withCredentials: true })
             .then((response) => {
                 const values = response.data.doctor;
                 console.log('values', values);
@@ -84,7 +84,12 @@ export const DoctorAccountProfileDetails = () => {
                 setLoading(false);
             })
             .catch((err) => {
-                console.log('here', err);
+                
+                Swal.fire({
+                    icon: 'error', // Set the icon to a success icon
+                    title: 'error', // Title of the pop-up
+                    text: err.response.data.message, // Message text
+                });
                 setLoading(false);
             });
     };
