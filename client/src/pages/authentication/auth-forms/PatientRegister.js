@@ -81,6 +81,14 @@ const FirebaseRegister = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		if (!level || level.label != 'Strong'){
+			Swal.fire({
+				icon: 'error',
+				title: 'Oops...',
+				text: 'Please enter a Strong password. \n Password must be at least 8 characters and include one number, one letter, one capital letter, and one special character.',
+			});
+			return;
+		}
 		setIsSubmitting(true);
 		const sendData = { type: 'patient' ,name: name, email: email, password: password, userName: userName, dateOfBirth: selectedDate, gender: selectedGender, mobileNumber: mobileNumber, emergencyContact: { name: emergencyFullName, mobile: emergencyMobileNumber, relation: selectedRelation } };
 		

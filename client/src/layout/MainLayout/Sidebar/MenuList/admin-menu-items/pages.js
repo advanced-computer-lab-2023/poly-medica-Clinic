@@ -7,6 +7,7 @@ import {
     IconRegistered,
     IconPrescription,
 } from '@tabler/icons';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 import MedicationIcon from '@mui/icons-material/Medication';
 import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
@@ -68,7 +69,7 @@ const pages = {
             id: 'Packages',
             title: 'Health Packages',
             type: 'item',
-            icon: icons.SubscriptionsIcon,
+            icon: AddBoxIcon,
             url: '/admin/pages/packages',
             target: false,
         },

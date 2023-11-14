@@ -1,19 +1,32 @@
-import React, { useState } from 'react';
+// material-ui
 import {
 	Card,
-	CardHeader,
 	CardContent,
-	CardActions,
-	Typography,
-	Accordion,
-	AccordionSummary,
-	AccordionDetails,
+	CardHeader,
+	ListItem,
+	ListItemText,
 	Button,
-	Grid,
+	Divider,
+	IconButton,
+	Tooltip,
+	Accordion,
+	AccordionDetails,
+	AccordionSummary,
 } from '@mui/material';
+import { useState } from 'react';
+import { useTheme } from '@mui/material/styles';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import CheckIcon from '@mui/icons-material/Check';
+import ClearIcon from '@mui/icons-material/Clear';
+import { formatDate } from 'utils/DateFormat';
 import { CLINIC_BASE_URL } from 'utils/Constants';
 
-const DoctorRequestCard = ({ doctorReq, onAccept, onReject }) => {
+// ==============================|| CUSTOM SUB CARD ||============================== //
+
+const PharmacistsRequestCard = ({ doctorReq, onAccept, onReject }) => {
+	const theme = useTheme();
 	const [expanded, setExpanded] = useState(false);
 
 	const handleExpand = () => {
@@ -21,65 +34,124 @@ const DoctorRequestCard = ({ doctorReq, onAccept, onReject }) => {
 	};
 
 	return (
-		<Card>
-			<CardHeader title={doctorReq.userData.name} />
-			<CardActions>
-				<Button variant='contained' color='primary' onClick={handleExpand}>
-					{expanded ? 'Collapse' : 'Expand'}
-				</Button>
-			</CardActions>
-			<Accordion expanded={expanded}>
-				<AccordionSummary>
-					<Typography>Doctor Details</Typography>
-				</AccordionSummary>
-				<AccordionDetails>
-					<CardContent>
-						<Typography>Email: {doctorReq.userData.email}</Typography>
-						<Typography>
-							Date of Birth: {doctorReq.userData.dateOfBirth}
-						</Typography>
-						<Typography>Speciality: {doctorReq.speciality}</Typography>
-						<Typography>Hourly Rate: {doctorReq.hourlyRate}</Typography>
-						<Typography>Affiliation: {doctorReq.affiliation}</Typography>
-						<Typography>
-							Educational Background: {doctorReq.educationalBackground}
-						</Typography>
+		<Accordion expanded={expanded}>
+			<AccordionSummary>
+				<Card
+					sx={{
+						width: '80%',
+						margin: '20px auto',
+						marginBottom: '0px',
+						border: '1px solid',
+						borderColor: theme.palette.primary.light,
+						':hover': {
+							boxShadow: '0 2px 14px 0 rgb(32 40 45 / 8%)',
+						},
+					}}
+				>
+					<CardHeader
+						sx={{ padding: 3 }}
+						avatar={<AccountCircleIcon />}
+						title={doctorReq.userData.name}
+						action={
+							<IconButton aria-expanded={expanded} onClick={handleExpand}>
+								{expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+							</IconButton>
+						}
+					/>
+					<Divider
+						sx={{
+							opacity: 1,
+							borderColor: theme.palette.primary.light,
+						}}
+					/>
+					<CardContent sx={{ padding: 2 }}>
+						<ListItem>
+							<ListItemText
+								primary='Email'
+								secondary={doctorReq.userData.email}
+								xs={20}
+							/>
+							<ListItemText
+								primary='Hourly Rate'
+								secondary={doctorReq.hourlyRate}
+								xs={6}
+							/>
+							<ListItemText
+								primary='Affiliation'
+								secondary={doctorReq.affiliation}
+								xs={6}
+							/>
+							<Button onClick={() => onAccept(doctorReq)}>
+								<Tooltip title='Accept'>
+									<IconButton color='success'>
+										<CheckIcon />
+									</IconButton>
+								</Tooltip>
+							</Button>
+							<Button onClick={() => onReject(doctorReq)}>
+								<Tooltip title='Reject'>
+									<IconButton color='error'>
+										<ClearIcon />
+									</IconButton>
+								</Tooltip>
+							</Button>
+						</ListItem>
 					</CardContent>
-					<CardContent>
-						<Typography>Documents:</Typography>
-						<Grid item xs={12}>
-							{doctorReq.documentsNames.map((documentName) => (
+				</Card>
+			</AccordionSummary>
+			<AccordionDetails>
+				<CardContent
+					sx={{
+						width: '80%',
+						margin: '20px auto',
+						marginTop: '0px',
+						border: '1px solid',
+						borderColor: theme.palette.primary.light,
+						':hover': {
+							boxShadow: '0 2px 14px 0 rgb(32 40 45 / 8%)',
+						},
+					}}
+				>
+					<ListItem>
+						<ListItemText
+							primary='Speciality'
+							secondary={doctorReq.speciality}
+							xs={20}
+						/>
+						<ListItemText
+							primary='Date of Birth'
+							secondary={formatDate(doctorReq.userData.dateOfBirth)}
+							xs={20}
+						/>
+						<ListItemText
+							primary='Educational Background'
+							secondary={doctorReq.educationalBackground}
+							xs={6}
+						/>
+					</ListItem>
+					<ListItem>
+						<ListItemText
+							primary='Documents'
+							secondary={
 								<>
-									<Button
-										color='primary'
-										href={`${CLINIC_BASE_URL}/doctor-requests/files/${documentName}`}
-									>
-										{documentName}
-									</Button>
+									{doctorReq.documentsNames.map((documentName) => (
+										<Button
+											key={documentName}
+											color='primary'
+											href={`${CLINIC_BASE_URL}/doctor-requests/files/${documentName}`}
+										>
+											{documentName}
+										</Button>
+									))}
 								</>
-							))}
-						</Grid>
-					</CardContent>
-					<CardActions>
-						<Button
-							variant='contained'
-							color='primary'
-							onClick={() => onAccept(doctorReq)}
-						>
-							Accept
-						</Button>
-						<Button
-							variant='contained'
-							color='secondary'
-							onClick={() => onReject(doctorReq)}
-						>
-							Reject
-						</Button>
-					</CardActions>
-				</AccordionDetails>
-			</Accordion>
-		</Card>
+							}
+							xs={20}
+						/>
+					</ListItem>
+				</CardContent>
+			</AccordionDetails>
+		</Accordion>
 	);
 };
 
-export default DoctorRequestCard;
+export default PharmacistsRequestCard;
