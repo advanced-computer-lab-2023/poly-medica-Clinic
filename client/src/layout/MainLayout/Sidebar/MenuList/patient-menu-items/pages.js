@@ -12,6 +12,7 @@ import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettin
 import MedicationIcon from '@mui/icons-material/Medication';
 import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 // constant
 const icons = {
     IconKey,
@@ -24,7 +25,8 @@ const icons = {
     IconPrescription,
     IconRegistered,
     AccountBoxIcon,
-    IconCalendarTime
+    IconCalendarTime,
+    AddBoxIcon
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
@@ -64,7 +66,7 @@ const pages = {
             id: 'Packages',
             title: 'Health Packages',
             type: 'item',
-            icon: icons.SubscriptionsIcon,
+            icon: icons.AddBoxIcon,
             url: '/patient/pages/packages',
             target: false,
         },

@@ -31,6 +31,7 @@ const HealthPackages = () => {
 	useEffect(() => {
 		clinicAxios.get('/packages')
 			.then((response) => {
+				console.log(response.data.allPackages);
 				setPackage(response.data.allPackages);
 
 			}).then(() => {
