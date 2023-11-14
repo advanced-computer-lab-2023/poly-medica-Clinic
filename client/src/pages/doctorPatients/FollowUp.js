@@ -44,14 +44,17 @@ const FollowUp = ({
 					'Follow up Schedule!',
 					'Your Follow up has been scheduled successfully!',
 					'success',
-				);
+				)
+				.then(() => {
+					setAvailableSlots(oldAvailableSlots =>
+						oldAvailableSlots.splice(availableSlotsIdx, 1),
+					);
+				});
 			})
 			.catch((error) => {
 				console.log(error);
 			});
-		setAvailableSlots((oldAvailableSlots) =>
-			oldAvailableSlots.splice(availableSlotsIdx, 1),
-		);
+		
 	};
 	const handleConfirmation = (event) => {
 		Swal.fire({

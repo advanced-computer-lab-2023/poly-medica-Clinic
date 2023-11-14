@@ -69,10 +69,21 @@ const Patients = () => {
 		const filteredPatients = originalPatients.filter(
 			(patient) =>
 				patient.name.includes(searchQuery) &&
-				(!filterData[0].selectedValue ||
-					filterData[0].selectedValue === 'Finished' ||
-					(filterData[0].selectedValue === 'Upcoming' &&
-						isUpcomingAppointment(patient._id))),
+				(
+					!filterData[0].selectedValue
+					||
+					(
+						filterData[0].selectedValue === 'Finished'
+						&&
+						!isUpcomingAppointment(patient._id)
+					)
+					||
+					(
+						filterData[0].selectedValue === 'Upcoming'
+						&&
+						isUpcomingAppointment(patient._id)
+					)
+				),
 		);
 		setPatients(filteredPatients);
 	}, [originalPatients, searchQuery, filterData]);

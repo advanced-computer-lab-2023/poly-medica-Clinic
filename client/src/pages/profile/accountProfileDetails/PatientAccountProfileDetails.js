@@ -12,7 +12,8 @@ import { useUserContext } from 'hooks/useUserContext';
 import format from 'date-fns/format';
 import { patientAxios } from 'utils/AxiosConfig';
 import Loader from 'ui-component/Loader';
-
+import { PATIENT_TYPE_ENUM } from 'utils/Constants';
+import { useParams } from 'react-router';
 export const PatientAccountProfileDetails = () => {
     const [values, setValues] = useState({
         name: '',
@@ -28,14 +29,17 @@ export const PatientAccountProfileDetails = () => {
     });
     const [loading, setLoading] = useState(true);
     const { user } = useUserContext();
+    const isPatient = user.type === PATIENT_TYPE_ENUM;
+    const { patientId } = useParams();
+    const userId = isPatient ? user.id : patientId;
     useEffect(() => {
 
-        const getPatientsURL = `/patients/${user.id}`;
-        
+        const getPatientsURL = `/patients/${userId}`;
+
         patientAxios
             .get(getPatientsURL)
             .then((response) => {
-                const patientData = response.data.patient; 
+                const patientData = response.data.patient;
                 setValues({
                     name: patientData.name,
                     userName: patientData.userName,
@@ -47,11 +51,11 @@ export const PatientAccountProfileDetails = () => {
                     emergencyMobile: patientData.emergencyContact.mobile,
                     emergencyRelation: patientData.emergencyContact.relation,
                     walletAmount: patientData.walletAmount,
-                }); 
+                });
                 setLoading(false);
-            }) 
-             
-            
+            })
+
+
             .catch((err) => {
                 console.log('here', err);
             });
@@ -64,8 +68,8 @@ export const PatientAccountProfileDetails = () => {
         }));
     }, []);
 
-    return loading?(<Loader></Loader>):(
-        <form autoComplete='off'> 
+    return loading ? (<Loader></Loader>) : (
+        <form autoComplete='off' onSubmit={handleSubmit}>
             <Card>
                 <CardHeader
                     subheader='The information can be edited'
@@ -144,24 +148,24 @@ export const PatientAccountProfileDetails = () => {
                                     value={values.gender}
                                 />
                             </Grid>
-                            <Grid xs={12} md={6}>
+                            {isPatient && <Grid xs={12} md={6}>
                                 <TextField
                                     fullWidth
                                     label='Wallet Amount'
                                     name='Wallet Amount'
-                                    onChange={handleChange} 
+                                    onChange={handleChange}
                                     disabled
                                     value={values.walletAmount}
                                 />
-                            </Grid>
-                                                        
+                            </Grid>}
+
                         </Grid>
-                        <Divider sx={{ mt:5 }}/>
+                        <Divider sx={{ mt: 5 }} />
                         <CardHeader
-                    title='Emergency contact'
-                />
-                <Grid container spacing={3}>
-                <Grid xs={12} md={6}>
+                            title='Emergency contact'
+                        />
+                        <Grid container spacing={3}>
+                            <Grid xs={12} md={6}>
                                 <TextField
                                     fullWidth
                                     label='name'
@@ -199,16 +203,6 @@ export const PatientAccountProfileDetails = () => {
                         </Grid>
                     </Box>
                 </CardContent>
-                {/* <Divider/>
-                <CardActions sx={{ justifyContent: 'flex-end' }}>
-                <Button
-                        variant='contained'
-                        type='submit'
-                        disabled={loading}
-                    >
-                        Save details
-                    </Button>
-                </CardActions> */}
             </Card>
         </form>
     );

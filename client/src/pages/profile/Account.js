@@ -9,14 +9,16 @@ import Swal from 'sweetalert2';
 import MedicalHistory from './MedicalHistory';
 import { authenticationAxios } from '../../utils/AxiosConfig';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
- 
+import { useParams } from 'react-router';
 const Page = () => {
 
+	const { patientId } = useParams();
 
 	const { user } = useUserContext();
 	const [password, setPassword] = useState(''); 
 	const [strength, setStrength] = useState(0);
 	const [level, setLevel] = useState();
+	const doctorInPatientProfile = patientId && user.type === DOCTOR_TYPE_ENUM;
 
 	const submitPassword = async () => { 
 		if (!level || level.label != 'Strong'){
@@ -29,6 +31,7 @@ const Page = () => {
 		}
 		try{
 			await authenticationAxios.patch(`/change-password/${user.id}`, { password });
+			
 				Swal.fire({
 					icon: 'success',
 					title: 'Success!',
@@ -54,7 +57,7 @@ const Page = () => {
 		setLevel(strengthColor(temp));
 	};
 	return (
-		<> 
+		<>
 			<Box
 				component="main"
 				sx={{
@@ -64,11 +67,11 @@ const Page = () => {
 			>
 				<Container maxWidth="lg">
 					<Stack spacing={3}>
-						<div>
+						{!patientId && <div>
 							<Typography variant="h4">
 								Account
 							</Typography>
-						</div>
+						</div>}
 						<div>
 							<Grid
 								container
@@ -79,22 +82,23 @@ const Page = () => {
 									md={6}
 									lg={4}
 								>
-									<AccountProfile />
+									{!patientId && <AccountProfile />}
 								</Grid>
 								<Grid
 									xs={12}
 									md={6}
 									lg={8}
 								>
-									{user.type == DOCTOR_TYPE_ENUM && <DcotorAccountProfileDetails />}
-									{user.type == PATIENT_TYPE_ENUM && <PatientAccountProfileDetails />}
+									{(user.type == DOCTOR_TYPE_ENUM && !patientId) && <DcotorAccountProfileDetails />}
+									{(user.type == PATIENT_TYPE_ENUM || patientId) && <PatientAccountProfileDetails />}
 
-									<Card sx={{ mt: 5 }} >
-										<CardHeader
-											title='Change Password'
-										/>
-										<CardContent sx={{ width: '100%' }}>
-
+									{
+										!doctorInPatientProfile &&
+										<Card sx={{ mt: 5 }} >
+											<CardHeader
+												title='Change Password'
+											/>
+											<CardContent sx={{ width: '100%' }}>
 											<Grid container sx={{ width: '100%' }} spacing={1} display={'flow'} flexDirection={'row'}>
 												<Grid width={'50%'}>
 													<TextField
@@ -141,12 +145,13 @@ const Page = () => {
 											</Button>
 										</CardActions>
 									</Card>
+}
 									{/* {user.type == ADMIN_TYPE_ENUM &&<PatientAccountProfileDetails />} */}
 									{/* TODO: admin !! */}
 									{/* here will be the gener */}
 								</Grid>
 								<Grid item xs={12}>
-									<MedicalHistory />
+									<MedicalHistory patientId={patientId} />
 								</Grid>
 							</Grid>
 						</div>

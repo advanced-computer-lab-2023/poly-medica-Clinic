@@ -16,6 +16,7 @@ import {
   Radio,
   FormControl
 } from '@mui/material';
+import { ADMIN_TYPE_ENUM } from './Constants';
 
 
 export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amountToPay, type }) => {
@@ -30,13 +31,14 @@ export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amou
 
   useEffect(
     () => {
-
-      patientAxios.get(`/patients/${userId}/wallet`).then((response) => {
-          setAmountInWallet(response.data.walletAmount);
-    }).
-      catch(error => {
-        Swal.fire('error', error, 'error');
-      });
+      if(user.type !== ADMIN_TYPE_ENUM){
+        patientAxios.get(`/patients/${userId}/wallet`).then((response) => {
+            setAmountInWallet(response.data.walletAmount);
+        }).
+        catch(error => {
+          Swal.fire('error', error, 'error');
+        });
+      }
     }, []);
 
   const handlePaymentMethod = () => {

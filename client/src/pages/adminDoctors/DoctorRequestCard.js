@@ -11,6 +11,7 @@ import {
 	Button,
 	Grid,
 } from '@mui/material';
+import { CLINIC_BASE_URL } from 'utils/Constants';
 
 const DoctorRequestCard = ({ doctorReq, onAccept, onReject }) => {
 	const [expanded, setExpanded] = useState(false);
@@ -51,7 +52,7 @@ const DoctorRequestCard = ({ doctorReq, onAccept, onReject }) => {
 								<>
 									<Button
 										color='primary'
-										href={`http://localhost:8001/doctor-requests/files/${documentName}`}
+										href={`${CLINIC_BASE_URL}/doctor-requests/files/${documentName}`}
 									>
 										{documentName}
 									</Button>
