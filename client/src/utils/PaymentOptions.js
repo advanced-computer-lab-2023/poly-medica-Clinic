@@ -17,7 +17,7 @@ import {
   FormControl
 } from '@mui/material';
 import { ADMIN_TYPE_ENUM } from './Constants';
-
+import '../assets/css/swalStyle.css';
 
 export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amountToPay, type }) => {
   const [amountInWallet, setAmountInWallet] = useState(0);
