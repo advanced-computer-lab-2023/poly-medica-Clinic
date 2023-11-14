@@ -1,19 +1,16 @@
 import { useCallback, useState, useEffect } from 'react';
 import {
     Box,
-    Button,
     Card,
-    CardActions,
     CardContent,
     CardHeader,
     Divider,
     TextField,
     Unstable_Grid2 as Grid,
 } from '@mui/material';
-import Swal from 'sweetalert2';
 import { useUserContext } from 'hooks/useUserContext';
 import format from 'date-fns/format';
-import { clinicAxios, patientAxios } from 'utils/AxiosConfig';
+import { patientAxios } from 'utils/AxiosConfig';
 import Loader from 'ui-component/Loader';
 
 export const PatientAccountProfileDetails = () => {
@@ -36,7 +33,7 @@ export const PatientAccountProfileDetails = () => {
         const getPatientsURL = `/patients/${user.id}`;
         
         patientAxios
-            .get(getPatientsURL, { withCredentials: true })
+            .get(getPatientsURL)
             .then((response) => {
                 const patientData = response.data.patient; 
                 setValues({
@@ -67,31 +64,8 @@ export const PatientAccountProfileDetails = () => {
         }));
     }, []);
 
-    const handleSubmit = (event) => {
-        event.preventDefault(); 
-        const getPatientsURL = '/doctors/' + user.id;
-        // let user;
-
-        clinicAxios
-            .patch(getPatientsURL, values, { withCredentials: true })
-            .then((response) => {
-                const values = response.data.doctor;
-                console.log('values', values);
-                Swal.fire({
-                    icon: 'success', // Set the icon to a success icon
-                    title: 'Success', // Title of the pop-up
-                    text: 'Data updated successfully', // Message text
-                });
-                setLoading(false);
-            })
-            .catch((err) => {
-                console.log('here', err);
-                setLoading(false);
-            });
-    };
-
     return loading?(<Loader></Loader>):(
-        <form autoComplete='off' onSubmit={handleSubmit}> 
+        <form autoComplete='off'> 
             <Card>
                 <CardHeader
                     subheader='The information can be edited'
@@ -225,7 +199,7 @@ export const PatientAccountProfileDetails = () => {
                         </Grid>
                     </Box>
                 </CardContent>
-                <Divider/>
+                {/* <Divider/>
                 <CardActions sx={{ justifyContent: 'flex-end' }}>
                 <Button
                         variant='contained'
@@ -234,7 +208,7 @@ export const PatientAccountProfileDetails = () => {
                     >
                         Save details
                     </Button>
-                </CardActions>
+                </CardActions> */}
             </Card>
         </form>
     );
