@@ -25,7 +25,7 @@ import { CLINIC_BASE_URL } from 'utils/Constants';
 
 // ==============================|| CUSTOM SUB CARD ||============================== //
 
-const PharmacistsRequestCard = ({ doctorReq, onAccept, onReject }) => {
+const DoctorRequestCard = ({ doctorReq, onAccept, onReject }) => {
 	const theme = useTheme();
 	const [expanded, setExpanded] = useState(false);
 
@@ -154,4 +154,4 @@ const PharmacistsRequestCard = ({ doctorReq, onAccept, onReject }) => {
 	);
 };
 
-export default PharmacistsRequestCard;
+export default DoctorRequestCard;
