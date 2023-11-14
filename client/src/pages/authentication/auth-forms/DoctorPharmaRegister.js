@@ -74,6 +74,13 @@ const FirebaseRegister = ({ type }) => {
 				text: 'Please upload documents for verification',
 			});
 			return;
+		} else if (!level || level.label != 'Strong'){
+			Swal.fire({
+				icon: 'error',
+				title: 'Oops...',
+				text: 'Please enter a Strong password. \n Password must be at least 8 characters and include one number, one letter, one capital letter, and one special character.',
+			});
+			return;
 		}
 		setIsSubmitting(true);
 		const sendData = {
