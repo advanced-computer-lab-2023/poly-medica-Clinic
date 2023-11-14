@@ -69,13 +69,6 @@ const pages = {
             url: '/doctor/pages/contract',
             target: false,
         },
-        {
-            id: 'Wallet',
-            title: 'Wallet',
-            type: 'item',
-            icon: icons.Wallet,
-            url: '/doctor/pages/wallet',
-        }
     ],
 };
 
