@@ -174,7 +174,7 @@ export const doctor = (app) => {
 			if (doctor) {
 				const checkSameEmail = req.body.email != doctor.userData.email;
 				if(checkSameEmail){
-						await axios.patch(`${AUTH_BASE_URL}/users/${id}/email/${req.body.email}`);
+					await axios.patch(`${AUTH_BASE_URL}/users/${id}/email/${req.body.email}`);
 				}
 				const updatedDoctor = await service.updateDoctor(id, req.body);
 				res.status(OK_STATUS_CODE).json({ updatedDoctor });
