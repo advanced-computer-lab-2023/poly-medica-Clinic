@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 
-const Prescription = mongoose.Schema( {
+const Prescription = mongoose.Schema({
 	patientId: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Patient',
@@ -26,10 +26,18 @@ const Prescription = mongoose.Schema( {
 	description: {
 		type: String,
 		required: true
+	},
+	medicines: [
+		{
+			type: mongoose.Schema.Types.ObjectId
+		}
+	],
+	price:
+	{
+		type: Number
 	}
-	//.....
-} );
+});
 
-const PrescriptionModel = mongoose.model( 'Prescription', Prescription );
+const PrescriptionModel = mongoose.model('Prescription', Prescription);
 
 export default PrescriptionModel;

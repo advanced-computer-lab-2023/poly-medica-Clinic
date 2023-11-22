@@ -22,8 +22,8 @@ export const HealthPackageSubscription = ({ memberId, openPackages, setOpenPacka
             if (memberId) {
                 try {
                     patientAxios.get(`/patient/${memberId}/health-packages`).then((response) => {
-						setHealthPackage(response.data.healthPackages[0]);
-					});
+                        setHealthPackage(response.data.healthPackages[0]);
+                    });
                 } catch (error) {
                     console.log('error = ', error.response.data.message);
                 }
@@ -50,7 +50,10 @@ export const HealthPackageSubscription = ({ memberId, openPackages, setOpenPacka
                                         <TableCell>Subscribed Package:</TableCell>
                                         <TableCell>{healthPackage.name}</TableCell>
                                     </TableRow>
-                                    {/* Add more rows for other health package details */}
+                                    <TableRow>
+                                        <TableCell>Status:</TableCell>
+                                        <TableCell>{healthPackage.status}</TableCell>
+                                    </TableRow>
                                 </TableBody>
                             </Table>
                         </TableContainer>
