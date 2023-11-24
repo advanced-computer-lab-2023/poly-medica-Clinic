@@ -6,8 +6,8 @@ class UserService {
 
 	}
 
-	async signupUser(req) {
-		const user = await this.repository.signupUser(req);
+	async signupUser(data) {
+		const user = await this.repository.signupUser(data);
 		return user;
 	}
 

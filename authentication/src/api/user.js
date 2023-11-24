@@ -163,14 +163,23 @@ export const user = (app) => {
 		try {
 			const requestFrom = req.params.request; // clinic, pharmacy
 			const userName = req.body.userName;
+			const email = req.body.email;
+
+			const checkEmail = await user.findUserByEmail(email);
+			if (checkEmail) {
+				throw new Error(DUB_EMAIL_ERROR_MESSAGE);
+			}
 
 			const checkUserName = await user.findUserByUserName(userName);
 			if (checkUserName) {
 				throw new Error(DUB_USERNAME_ERROR_MESSAGE);
 			}
 
-			await axios.post(DOCOTOR_CHECK_DOC_USERS, { userName });
-			await axios.post(`${PHARMACIST_BASE_URL}check-pharmacist-req`, { userName });
+			switch (requestFrom) {
+				case CLINIC_REQ: await axios.post(DOCOTOR_CHECK_DOC_USERS, { email, userName }); break;
+				case PHARMACY_REQ: await axios.post(`${PHARMACIST_BASE_URL}check-pharmacist-req`, { email, userName }); break;
+				default: throw new Error('invalid system');
+			}
 
 			let signupData = null;
 			switch (requestFrom) {

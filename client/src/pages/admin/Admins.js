@@ -25,6 +25,7 @@ const Admins = () => {
 	const [openAddDialog, setOpenAddDialog] = useState(false);
 	const [newAdminUsername, setNewAdminUsername] = useState('');
 	const [newAdminPassword, setNewAdminPassword] = useState('');
+	const [newAdminEmail, setNewAdminEmail] = useState('');
 	const [confirmDeleteDialogOpen, setConfirmDeleteDialogOpen] = useState(false);
 	const [adminToDelete, setAdminToDelete] = useState('');
 	const [addAdmin, setAddAdmin] = useState(false);
@@ -32,6 +33,9 @@ const Admins = () => {
 	const [adminIsBeingAdded, setAdminIsBeingAdded] = useState(false);
 	const [adminIsBeingDeleted, setAdminIsBeingDeleted] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
+
+	const [strength, setStrength] = useState(0);
+	const [level, setLevel] = useState();
 
 	useEffect(() => {
 		clinicAxios
@@ -101,6 +105,9 @@ const Admins = () => {
 		setNewAdminUsername('');
 		setNewAdminPassword('');
 		setErrorMessage('');
+		setStrength(0);
+		setLevel(null);
+		setNewAdminEmail('');
 		setAdminIsBeingAdded(false);
 	};
 
@@ -108,9 +115,10 @@ const Admins = () => {
 		const newAdmin = {
 			userName: newAdminUsername,
 			password: newAdminPassword,
+			email: newAdminEmail
 		};
 
-		if (!newAdminUsername || !newAdminPassword) {
+		if (!newAdminUsername || !newAdminPassword || !newAdminEmail) {
 			return;
 		}
 
@@ -132,6 +140,9 @@ const Admins = () => {
 				setNewAdminPassword('');
 				setErrorMessage('');
 				setAddAdmin(true);
+				setStrength(0);
+				setLevel(null);
+				setNewAdminEmail('');
 				setTimeout(() => {
 					setAddAdmin(false);
 				}, 2000);
@@ -141,7 +152,7 @@ const Admins = () => {
 				if (error.response) {
 					if (error.response.status == 400) {
 						setErrorMessage(
-							`Username '${newAdminUsername}' already exists. Please choose a different username.`,
+							error.response.data.message,
 						);
 						return;
 					}
@@ -149,7 +160,7 @@ const Admins = () => {
 			});
 	};
 
-	const isAddButtonDisabled = !newAdminUsername || !newAdminPassword;
+	const isAddButtonDisabled = !newAdminUsername || !newAdminPassword || !newAdminEmail || !level || level.label != 'Strong';
 
 	return (
 		<MainCard title='Admins'>
@@ -216,11 +227,17 @@ const Admins = () => {
 						handleCloseAddDialog={handleCloseAddDialog}
 						newAdminUsername={newAdminUsername}
 						newAdminPassword={newAdminPassword}
+						newAdminEmail={newAdminEmail}
 						setNewAdminUsername={setNewAdminUsername}
 						setNewAdminPassword={setNewAdminPassword}
+						setNewAdminEmail={setNewAdminEmail}
 						handleAddAdmin={handleAddAdmin}
 						isAddButtonDisabled={isAddButtonDisabled}
 						adminIsBeingAdded={adminIsBeingAdded}
+						level={level}
+						setLevel={setLevel}
+						strength={strength}
+						setStrength={setStrength}
 						errorMessage={errorMessage}
 					/>
 
