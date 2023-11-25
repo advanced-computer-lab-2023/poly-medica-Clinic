@@ -1,20 +1,19 @@
 import { useCallback, useState, useEffect } from 'react';
 import {
     Box,
-    Button,
     Card,
-    CardActions,
     CardContent,
     CardHeader,
     Divider,
     TextField,
     Unstable_Grid2 as Grid,
 } from '@mui/material';
-import Swal from 'sweetalert2';
 import { useUserContext } from 'hooks/useUserContext';
 import format from 'date-fns/format';
-import { clinicAxios, patientAxios } from 'utils/AxiosConfig';
-
+import { patientAxios } from 'utils/AxiosConfig';
+import Loader from 'ui-component/Loader';
+import { PATIENT_TYPE_ENUM } from 'utils/Constants';
+import { useParams } from 'react-router';
 export const PatientAccountProfileDetails = () => {
     const [values, setValues] = useState({
         name: '',
@@ -25,20 +24,22 @@ export const PatientAccountProfileDetails = () => {
         gender: '',
         emergencyName: '',
         emergencyMobile: '',
-        emergencyRelation: ''
+        emergencyRelation: '',
+        walletAmount: '',
     });
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const { user } = useUserContext();
+    const isPatient = user.type === PATIENT_TYPE_ENUM;
+    const { patientId } = useParams();
+    const userId = isPatient ? user.id : patientId;
     useEffect(() => {
 
-        const getPatientsURL = `/patients/${user.id}`;
-        
-        patientAxios
-            .get(getPatientsURL, { withCredentials: true })
-            .then((response) => {
-                const patientData = response.data;
-                console.log('values', patientData);
+        const getPatientsURL = `/patients/${userId}`;
 
+        patientAxios
+            .get(getPatientsURL)
+            .then((response) => {
+                const patientData = response.data.patient;
                 setValues({
                     name: patientData.name,
                     userName: patientData.userName,
@@ -49,13 +50,16 @@ export const PatientAccountProfileDetails = () => {
                     emergencyName: patientData.emergencyContact.name,
                     emergencyMobile: patientData.emergencyContact.mobile,
                     emergencyRelation: patientData.emergencyContact.relation,
+                    walletAmount: patientData.walletAmount,
                 });
+                setLoading(false);
             })
-            
+
+
             .catch((err) => {
                 console.log('here', err);
             });
-    }, []);
+    }, [loading]);
 
     const handleChange = useCallback((event) => {
         setValues((prevState) => ({
@@ -64,32 +68,8 @@ export const PatientAccountProfileDetails = () => {
         }));
     }, []);
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        setLoading(true);
-        const getPatientsURL = '/doctors/' + user.id;
-        // let user;
-
-        clinicAxios
-            .patch(getPatientsURL, values, { withCredentials: true })
-            .then((response) => {
-                const values = response.data.doctor;
-                console.log('values', values);
-                Swal.fire({
-                    icon: 'success', // Set the icon to a success icon
-                    title: 'Success', // Title of the pop-up
-                    text: 'Data updated successfully', // Message text
-                });
-                setLoading(false);
-            })
-            .catch((err) => {
-                console.log('here', err);
-                setLoading(false);
-            });
-    };
-
-    return (
-        <form autoComplete='off' onSubmit={handleSubmit}>
+    return loading ? (<Loader></Loader>) : (
+        <form autoComplete='off'>
             <Card>
                 <CardHeader
                     subheader='The information can be edited'
@@ -168,14 +148,24 @@ export const PatientAccountProfileDetails = () => {
                                     value={values.gender}
                                 />
                             </Grid>
-                                                        
+                            {isPatient && <Grid xs={12} md={6}>
+                                <TextField
+                                    fullWidth
+                                    label='Wallet Amount'
+                                    name='Wallet Amount'
+                                    onChange={handleChange}
+                                    disabled
+                                    value={values.walletAmount}
+                                />
+                            </Grid>}
+
                         </Grid>
-                        <Divider sx={{ mt:5 }}/>
+                        <Divider sx={{ mt: 5 }} />
                         <CardHeader
-                    title='Emergency contact'
-                />
-                <Grid container spacing={3}>
-                <Grid xs={12} md={6}>
+                            title='Emergency contact'
+                        />
+                        <Grid container spacing={3}>
+                            <Grid xs={12} md={6}>
                                 <TextField
                                     fullWidth
                                     label='name'
@@ -213,16 +203,6 @@ export const PatientAccountProfileDetails = () => {
                         </Grid>
                     </Box>
                 </CardContent>
-                <Divider/>
-                <CardActions sx={{ justifyContent: 'flex-end' }}>
-                <Button
-                        variant='contained'
-                        type='submit'
-                        disabled={loading}
-                    >
-                        Save details
-                    </Button>
-                </CardActions>
             </Card>
         </form>
     );

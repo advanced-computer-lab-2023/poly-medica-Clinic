@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTheme } from '@mui/material/styles';
 import {
 	Box,
 	Button,
@@ -19,6 +20,7 @@ import { authenticationAxios } from 'utils/AxiosConfig';
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const FirebaseLogin = () => {
+	const theme = useTheme();
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [password, setPassword] = useState('');
 	const [userName, setUserName] = useState('');
@@ -38,9 +40,8 @@ const FirebaseLogin = () => {
 			else
 					navigate(`/${data.type}`);
 			setIsSubmitting(false);
-		} catch(err){
-			
-			Swal.fire({
+		} catch(err){		
+		Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
 				text: err.response.data.message,
@@ -78,6 +79,7 @@ const FirebaseLogin = () => {
 							required
 							onChange={e => setPassword(e.target.value)}
 							title='AuthLoginTextFieldPassword'
+							sx={{ ...theme.typography.customInput }}
 							/>
 						</FormControl>
 						<Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>

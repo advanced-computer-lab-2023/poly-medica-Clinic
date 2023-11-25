@@ -9,6 +9,8 @@ import { Button } from '@mui/material';
 import Swal from 'sweetalert2';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useUserContext } from 'hooks/useUserContext';
+//import Card from 'react-credit-cards'
+
 
 export default function CheckoutForm({ item, type }) {
   const stripe = useStripe();
@@ -73,7 +75,13 @@ export default function CheckoutForm({ item, type }) {
   return (
     <form id='payment-form' onSubmit={handleSubmit}>
 
-      <PaymentElement id='payment-element' options={paymentElementOptions} />
+      <PaymentElement id='payment-element' options={paymentElementOptions} 
+      // onChange={() => {
+      //   handleCardNumberChange(event.elementType === 'cardNumber' ? event : null);
+      //   handleCardExpiryChange(event.elementType === 'cardExpiry' ? event : null);
+      //   handleCardExpiryChange(event.elementType === 'cardCvc' ? event : null);
+      // }}
+      />
       <Button disabled={isLoading || !stripe || !elements} fullWidth variant="contained" onClick={handleSubmit}>
         {'Pay now'}
       </Button>

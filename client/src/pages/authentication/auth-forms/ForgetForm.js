@@ -23,8 +23,8 @@ const ForgetForm = () => {
 		e.preventDefault();
 		setIsSubmitting(true);
 		const postData = { 'email': email };
-		const response = await authenticationAxios.post('/reset-password', postData);		
-		if(response.status === 200){
+		try{
+			await authenticationAxios.post('/reset-password', postData);		
 			Swal.fire({
                 icon: 'success',
                 title: 'Success!',
@@ -32,12 +32,12 @@ const ForgetForm = () => {
               });
               setEmail('');
 			setIsSubmitting(false);
-		} else{
-            console.log(response.response, response.response.data);
+		} catch(error){
+            
 			Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
-				text: response.response.data.errMessage,
+				text: error.response.data.errMessage,
 			});
 			setIsSubmitting(false);
 			}

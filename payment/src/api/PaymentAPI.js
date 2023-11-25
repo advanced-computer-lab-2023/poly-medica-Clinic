@@ -14,9 +14,9 @@ export const payment = (app) => {
 
     app.post('/payment/card', async (req, res) => {
         try{
-            const total_amount = req.body.paymentAmount;
+            const total_amount = Number(req.body.paymentAmount);
             const paymentIntent = await stripe.paymentIntents.create({
-                amount: (total_amount * 100),
+                amount: parseInt(total_amount * 100),
                 currency: "usd",
                 automatic_payment_methods: {
                   enabled: true,
@@ -26,6 +26,7 @@ export const payment = (app) => {
                 clientSecret: paymentIntent.client_secret,
             });
         }catch(err){
+            console.log(err.message);
             res.status(ERROR_STATUS_CODE).send({err: err.message, status: ERROR_STATUS_CODE});
         }
     });
@@ -38,12 +39,14 @@ export const payment = (app) => {
             let amountInWallet = result.data.walletAmount;
             if(amountToPay <= amountInWallet){
                 amountInWallet = amountInWallet - amountToPay;
+                
                 await axios.patch(`${PATIENTS_BASE_URL}/patients/${userId}/wallet`, {amount : amountInWallet} );
                 res.status(OK_STATUS_CODE).send("Payment successful");
             }else{
                 res.status(BAD_REQUEST_CODE_400).json("insufficient amount in the wallet");
             }
         }catch(err){
+            console.log(err.message);
             res.status(ERROR_STATUS_CODE).send({err: err.message, status: ERROR_STATUS_CODE});
         }
     });

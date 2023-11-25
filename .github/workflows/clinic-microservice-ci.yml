@@ -29,3 +29,10 @@ jobs:
       - name: Run ESLint (Clinic Microservice)
         run: npm run lint
         working-directory: clinic
+
+      - name: Run Tests (Clinic Microservice)
+        run: npm run test
+        working-directory: clinic
+env:
+  MONGO_URI_TEST: ${{ secrets.MONGO_URI_TEST }}
+
