@@ -6,6 +6,7 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import { checkUser } from './src/middleware/authMiddleware.js';
 import cors from 'cors';
+import { prescription } from './src/api/PrescriptionAPI.js';
 
 const app = express();
 
@@ -25,5 +26,6 @@ app.use('*', checkUser);
 
 patient(app);
 order(app);
+prescription(app);
 
 export default app;
