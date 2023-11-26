@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { 
+import {
 	ListItem,
 	ListItemAvatar,
 	ListItemText,
 	Typography
-	} from '@mui/material';
+} from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import dayjs from 'dayjs';
@@ -19,7 +19,7 @@ const PrescriptionItem = ({ prescription, handleClicking }) => {
 	const [doctor, setDoctor] = useState({});
 	const [Loading, setLoading] = useState(true);
 	useEffect(() => {
-		try{
+		try {
 			const getDoctor = () => {
 				clinicAxios.get(`doctor/${prescription.doctorId}`)
 					.then((responseClinic) => {
@@ -33,21 +33,21 @@ const PrescriptionItem = ({ prescription, handleClicking }) => {
 			};
 			getDoctor();
 		}
-		catch(err){
+		catch (err) {
 			console.log(err);
 		}
 	}, [prescription]);
-	if(Loading){
+	if (Loading) {
 		return (
 			<>
 				<Typography variant="h5">Loading...</Typography>
 			</>
 		);
 	}
-	else{
+	else {
 		return (
 			<>
-				<ListItem button onClick={ () => handleClicking(prescription, doctor) }>
+				<ListItem button onClick={() => handleClicking(prescription, doctor)}>
 					<ListItemAvatar sx={{ paddingRight: '2%' }}>
 						<img width="80" height="80" />
 					</ListItemAvatar>
@@ -56,16 +56,16 @@ const PrescriptionItem = ({ prescription, handleClicking }) => {
 					<ListItemText primary={`Dr. ${doctor.userData.name}`} secondary={
 						<div style={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
 							{
-								prescription.filled?
+								prescription.filled ?
 									<CheckIcon >
 										Filled
 									</CheckIcon>
-								:
+									:
 									<CloseIcon>
 										Not Filled
 									</CloseIcon>
 							}
-							{prescription.filled? 'Filled' : 'Not Filled'}
+							{prescription.filled ? 'Filled' : 'Not Filled'}
 						</div>
 					} sx={{
 						width: '60%',
