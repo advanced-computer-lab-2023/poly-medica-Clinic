@@ -1,4 +1,4 @@
-import { Stack, Unstable_Grid2 as Grid, List, ListItemButton, ListItemText, ListItemSecondaryAction, IconButton, Card, CardContent, CardHeader, ListItemAvatar, CardActions, Divider, Button, Dialog, DialogTitle, DialogContent, TextField, DialogActions, Typography } from '@mui/material';
+import { Stack, Unstable_Grid2 as Grid, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, Card, CardContent, CardHeader, ListItemAvatar, CardActions, Divider, Button, Dialog, DialogTitle, DialogContent, TextField, DialogActions, Typography } from '@mui/material';
 import { useState, useEffect } from 'react';
 import Delete from '@mui/icons-material/Delete';
 import { patientAxios } from 'utils/AxiosConfig';
@@ -6,34 +6,38 @@ import { useUserContext } from 'hooks/useUserContext';
 import Loader from 'ui-component/Loader';
 import { Attachment } from '@mui/icons-material';
 import Swal from 'sweetalert2';
-import { OK_STATUS_CODE, PATIENT_BASE_URL } from 'utils/Constants';
+import { downloadDocument } from 'utils/CommonUtils';
+import { OK_STATUS_CODE } from 'utils/Constants';
 
-const MedicalHistory = ({ patientId }) => {
+const MedicalHistory = () => {
     const [documents, setDocuments] = useState();
     const [loading, setLoading] = useState(true);
     const { user } = useUserContext();
-    const userId = patientId ? patientId : user.id;
     const [title, setTitle] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
     const [uploadedFileName, setUploadedFileName] = useState('');
     const [openDialog, setOpenDialog] = useState(false);
 
     useEffect(() => {
-        patientAxios.get(`/patient/${userId}/medical-history`).then((response) => {
+        patientAxios.get(`/patient/${user.id}/medical-history`).then((response) => {
             setDocuments(response.data);
-            setLoading(false);
-        }).catch(() => {
             setLoading(false);
         });
     }, []);
 
-    const createDocumentLink = (document) => {
-        return `${PATIENT_BASE_URL}/patient/${userId}/medical-history/${document._id}`;
+    const handleDocumentClick = async (document) => {
+        try {
+            const response = await patientAxios.get(`/patient/${user.id}/medical-history/${document._id}`);
+            const data = response.data;
+            downloadDocument(data);
+        } catch (err) {
+            console.log('Error downloading docs ', err.message);
+        }
     };
 
     const handleDeleteDocument = (document) => {
         try {
-            patientAxios.patch(`/patient/${userId}/medical-history/${document._id}`).then((response) => {
+            patientAxios.patch(`/patient/${user.id}/medical-history/${document._id}`).then((response) => {
                 if (response.status === OK_STATUS_CODE) {
                     Swal.fire({ title: 'Deleted Successfully', icon: 'success' });
                     setDocuments(documents.filter((doc) => doc._id !== document._id));
@@ -48,7 +52,7 @@ const MedicalHistory = ({ patientId }) => {
         const formData = new FormData();
         formData.append('title', title);
         formData.append('image', selectedFile);
-        patientAxios.patch(`/patient/${userId}/medical-history`, formData, {
+        patientAxios.patch(`/patient/${user.id}/medical-history`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -89,27 +93,26 @@ const MedicalHistory = ({ patientId }) => {
                                     <List>
                                         {documents &&
                                             documents.map((document) => (
-                                                <ListItemButton
+                                                <ListItem
                                                     key={document._id}
+                                                    button
+                                                    onClick={() => handleDocumentClick(document)}
                                                     sx={{ marginTop: '2%' }}
-                                                    href={createDocumentLink(document)}
                                                 >
                                                     <ListItemAvatar>
                                                         <Attachment color="primary" />
                                                     </ListItemAvatar>
                                                     <ListItemText primary={document.recordTitle} />
                                                     <ListItemSecondaryAction>
-                                                        {!patientId &&
-                                                            <IconButton
-                                                                edge="end"
-                                                                aria-label="delete"
-                                                                onClick={() => handleDeleteDocument(document)}
-                                                            >
-                                                                <Delete color="primary" />
-                                                            </IconButton>
-                                                        }
+                                                        <IconButton
+                                                            edge="end"
+                                                            aria-label="delete"
+                                                            onClick={() => handleDeleteDocument(document)}
+                                                        >
+                                                            <Delete color="primary" />
+                                                        </IconButton>
                                                     </ListItemSecondaryAction>
-                                                </ListItemButton>
+                                                </ListItem>
                                             ))}
                                     </List>
                                 </Grid>

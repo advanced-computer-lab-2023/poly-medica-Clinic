@@ -1,14 +1,19 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
-//import { ZERO_INDEX, ONE } from './Constants.js';
+import { ZERO_INDEX, ONE } from './Constants.js';
 import fs from 'fs';
 const currentFilePath = getFileUrl();
 const __filename = fileURLToPath(currentFilePath);
 const __dirname = path.dirname(__filename);
 
 function getFileUrl() {
-	//retun meta data of the current file
-	return import.meta.url;
+	const stackTraceFrames = String(new Error().stack)
+		.replace(/^Error.*\n/, '')
+		.split('\n');
+	const callerFrame = stackTraceFrames[ZERO_INDEX];
+	let url = callerFrame.match(/\(([^)]+\.js)/);
+	if (url) url = url[ONE];
+	return url.startsWith('file:///') ? url.replace(/\\/g, '/') : 'file:///' + url.replace(/\\/g, '/');
 }
 
 export const getImage = (folder, imageName) => {

@@ -8,7 +8,6 @@ import {
 	DialogActions,
 	TextField,
 	Button,
-	CircularProgress,
 } from '@mui/material';
 
 const AddAdminDialog = ({
@@ -21,7 +20,6 @@ const AddAdminDialog = ({
 	handleAddAdmin,
 	isAddButtonDisabled,
 	errorMessage,
-	adminIsBeingAdded,
 }) => {
 	return (
 		<Dialog open={openAddDialog} onClose={handleCloseAddDialog}>
@@ -53,21 +51,14 @@ const AddAdminDialog = ({
 				<Button onClick={handleCloseAddDialog} color='primary'>
 					Cancel
 				</Button>
-				{!adminIsBeingAdded && (
-					<Button
-						onClick={() => handleAddAdmin()}
-						color='primary'
-						variant='contained'
-						disabled={isAddButtonDisabled}
-					>
-						Add
-					</Button>
-				)}
-				{adminIsBeingAdded && (
-					<Button color='primary' disabled>
-						<CircularProgress color='inherit' size={25} />
-					</Button>
-				)}
+				<Button
+					onClick={handleAddAdmin}
+					color='primary'
+					variant='contained'
+					disabled={isAddButtonDisabled}
+				>
+					Add
+				</Button>
 			</DialogActions>
 		</Dialog>
 	);

@@ -74,13 +74,6 @@ const FirebaseRegister = ({ type }) => {
 				text: 'Please upload documents for verification',
 			});
 			return;
-		} else if (!level || level.label != 'Strong'){
-			Swal.fire({
-				icon: 'error',
-				title: 'Oops...',
-				text: 'Please enter a Strong password. \n Password must be at least 8 characters and include one number, one letter, one capital letter, and one special character.',
-			});
-			return;
 		}
 		setIsSubmitting(true);
 		const sendData = {
@@ -106,17 +99,17 @@ const FirebaseRegister = ({ type }) => {
 
 		formData.append('sendData', JSON.stringify(sendData));
 
-		try {
-			await authenticationAxios.post(
-				'/signup/clinic',
-				sendData,
+		const signupResponse = await authenticationAxios.post(
+			'/signup/clinic',
+			sendData,
+		);
+		if (signupResponse.status === 200) {
+			console.log('signupResponse', signupResponse);
+			const doctorRequestResponse = await clinicAxios.post(
+				'/add-doctor-req',
+				formData,
 			);
-
-			try {
-				await clinicAxios.post(
-					'/add-doctor-req',
-					formData,
-				);
+			if (doctorRequestResponse.status === 200) {
 				Swal.fire({
 					icon: 'success',
 					title: 'Sign-up Success!',
@@ -134,19 +127,19 @@ const FirebaseRegister = ({ type }) => {
 				setSpeciality('');
 				setAffiliation('');
 				setUploadedFiles([]);
-			} catch(error) {
+			} else {
 				Swal.fire({
 					icon: 'error',
 					title: 'Oops...',
-					text: error.response.data.message,
+					text: doctorRequestResponse.response.data.message,
 				});
 				setIsSubmitting(false);
 			}
-		} catch(error) {
+		} else {
 			Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
-				text: error.response.data.message,
+				text: signupResponse.response.data.message,
 			});
 			setIsSubmitting(false);
 		}
