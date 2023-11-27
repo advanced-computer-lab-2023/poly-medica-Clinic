@@ -5,7 +5,7 @@ import { ONE } from '../../utils/Constants.js';
 class AppointmentRepository {
 	async findAppointmentsByUserId(id) {
 		const appointments = await AppointmentModel.find({});
-		console.log(appointments);
+		// console.log(appointments);
 		return appointments.filter(
 			(appointment) =>
 				appointment.patientId.toString() === id.toString() ||
@@ -25,6 +25,12 @@ class AppointmentRepository {
 		const availableSlots = doctor.availableSlots;
 		availableSlots.splice(availableSlotsIdx, ONE);
 		await DoctorModel.findByIdAndUpdate(doctorId, { availableSlots });
+	}
+
+	async updateAppointment(appointmentId, newDate){
+		const appointment = await AppointmentModel.findById(appointmentId);
+		appointment.date = newDate;
+		return await appointment.save();
 	}
 }
 

@@ -36,4 +36,24 @@ export const appointment = (app) => {
 			console.log(err.message);
 		}
 	});
+
+	app.patch('/appointments/:appointmentId', async (req, res) => { // update the date
+		const { appointmentId } = req.params;
+		if (!isValidMongoId(appointmentId)) {
+			return res.status(ERROR_STATUS_CODE).json({
+				message: 'invalid id',
+			});
+		}
+		const { newDate } = req.body;
+		try{
+			const updatedAppointment = await service.updateAppointment(appointmentId, newDate);
+			res.status(OK_STATUS_CODE).json(updatedAppointment);
+		}
+		catch (err) {
+			res.status(ERROR_STATUS_CODE).json({
+				message: 'appointment not updated due to an error',
+			});
+			console.log(err.message);
+		}
+	});
 };

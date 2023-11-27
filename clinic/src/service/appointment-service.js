@@ -39,6 +39,10 @@ class AppointmentService {
 		}
 		return await this.repository.createAppointment(appointmentModelData);
 	}
+
+	async updateAppointment(appointmentId, newDate){
+		return await this.repository.updateAppointment(appointmentId, newDate);
+	}
 }
 
 export default AppointmentService;
