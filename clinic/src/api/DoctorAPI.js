@@ -186,7 +186,7 @@ export const doctor = (app) => {
 		} catch (error) {
 			// console.log(error);
 			if(error.response){
-				res.status(BAD_REQUEST_CODE_400).send({message: error.response.data.message});
+				res.status(BAD_REQUEST_CODE_400).send({ message: error.response.data.message });
 			}
 			else res.status(ERROR_STATUS_CODE).json({ message: error });
 		}

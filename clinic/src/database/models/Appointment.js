@@ -50,7 +50,11 @@ const Appointment = mongoose.Schema({
 			type: String,
 			enum: FAMILY_RELATIONS,
 		},
-	}
+	},
+	isValid: {
+		type: Boolean,
+		default: true,
+	},
 });
 
 const AppointmentModel = mongoose.model('Appointment', Appointment);

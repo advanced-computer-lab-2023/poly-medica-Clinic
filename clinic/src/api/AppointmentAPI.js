@@ -36,4 +36,41 @@ export const appointment = (app) => {
 			console.log(err.message);
 		}
 	});
+
+	//pathch isVaild value
+	app.patch('/appointments/:id', async (req, res) => {
+		const { id } = req.params;
+		if (!isValidMongoId(id)) {
+			return res.status(ERROR_STATUS_CODE).json({
+				message: 'invalid id',
+			});
+		}
+		try {
+			const appointment = await service.updateAppointment(id, req.body);
+			res.status(OK_STATUS_CODE).json(appointment);
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({
+				message: 'appointment not updated due to an error',
+			});
+			console.log(err.message);
+		}
+	});
+
+	app.delete('/appointments/:id', async (req, res) => {
+		const { id } = req.params;
+		if (!isValidMongoId(id)) {
+			return res.status(ERROR_STATUS_CODE).json({
+				message: 'invalid id',
+			});
+		}
+		try {
+			const appointment = await service.deleteAppointment(id);
+			res.status(OK_STATUS_CODE).json(appointment);
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({
+				message: 'appointment not deleted due to an error',
+			});
+			console.log(err.message);
+		}
+	});
 };
