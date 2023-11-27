@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { clinicAxios } from 'pages/utilities/AxiosConfig';
 import MainCard from 'ui-component/cards/MainCard';
 import AppointmentList from './AppointmentList.js';
-import AppointmentDetails from './AppointmentDetails/AppointmentDetails.js';
+import AppointmentOptions from './AppointmentOptions/AppointmentOptions.js';
 import { useUserContext } from 'hooks/useUserContext.js';
 import { useFilter } from 'contexts/FilterContext.js';
 import {
@@ -82,7 +82,7 @@ const Appointment = () => {
 				appointments={appointments}
 				setSelectedAppointment={setSelectedAppointment}
 				/>}
-			<AppointmentDetails
+			<AppointmentOptions
 				selectedAppointment={selectedAppointment}
 				handleDialogClose={handleDialogClose}
 				user={user}
