@@ -1,5 +1,5 @@
 import PrescriptionService from '../service/prescription-service.js';
-
+import { isValidMongoId } from '../utils/Validation.js';
 import { OK_STATUS_CODE, ERROR_STATUS_CODE } from '../utils/Constants.js';
 
 export const prescription = (app) => {
@@ -21,7 +21,13 @@ export const prescription = (app) => {
 	app.patch('/prescriptions/:prescriptionId', async (req, res) => {
 		try {
 			const { prescriptionId } = req.params;
+			if (!isValidMongoId(prescriptionId)) {
+				return res.status(ERROR_STATUS_CODE).json({
+					message: 'Prescription ID is invalid',
+				});
+			}
 			const { prescription } = req.body;
+			console.log('Updating prescription ==== ', prescription);
 			const data = await service.updatePrescription(
 				prescriptionId,
 				prescription,
