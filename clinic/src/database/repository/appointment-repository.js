@@ -1,6 +1,6 @@
 import AppointmentModel from '../models/Appointment.js';
 import DoctorModel from '../models/Doctor.js';
-import { ONE, SIXTY, THOUSAND } from '../../utils/Constants.js';
+import { ONE } from '../../utils/Constants.js';
 
 class AppointmentRepository {
 	
@@ -28,15 +28,6 @@ class AppointmentRepository {
 		await DoctorModel.findByIdAndUpdate(doctorId, { availableSlots });
 	}
 
-	async addAvailableSlots(doctorId, newAvailableSlot) { 
-		const doctor = await DoctorModel.findById(doctorId);
-		const doctorAvailableSlots = doctor.availableSlots;
-		doctorAvailableSlots.push(newAvailableSlot);
-		await DoctorModel.findByIdAndUpdate(doctorId, { availableSlots: doctorAvailableSlots });
-
-
-	}
-
 	async updateAppointment(id, appointment) {
 		
 		const updatedAppointment = await AppointmentModel.findByIdAndUpdate(
@@ -47,18 +38,14 @@ class AppointmentRepository {
 		return updatedAppointment;
 	}
 	async deleteAppointment(id) {
-		
+		//add the available slot back to the doctor's availableSlots array
+		//then remove the appointment
+	
 		const appointment = await AppointmentModel.findByIdAndDelete(id);
-		const from = appointment.date;
 		const doctorId = appointment.doctorId;
-		const until = new Date(from.getTime() + THOUSAND * SIXTY * SIXTY ); 
-		const availableSlot = {
-			from,
-			until,
-		};
-		await this.addAvailableSlots(doctorId, availableSlot);
+		const availableSlotsIdx = appointment.availableSlotIdx;
+		await this.updateAvailableSlots(doctorId, availableSlotsIdx);
 		return appointment;
-		
 	}
 }
 

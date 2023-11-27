@@ -16,7 +16,6 @@ export const appointment = (app) => {
 		}
 		try {
 			const appointments = await service.getAppointmentsByUserId(id);
-			console.log(appointments);
 			res.status(OK_STATUS_CODE).json(appointments);
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({
@@ -40,7 +39,7 @@ export const appointment = (app) => {
 
 	//pathch isVaild value
 	app.patch('/appointments/:id', async (req, res) => {
-		const { id } = req.params; 
+		const { id } = req.params;
 		if (!isValidMongoId(id)) {
 			return res.status(ERROR_STATUS_CODE).json({
 				message: 'invalid id',
