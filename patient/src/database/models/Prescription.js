@@ -30,7 +30,7 @@ const Prescription = mongoose.Schema({
 	medicines: [
 		{
 			medicineId: mongoose.Schema.Types.ObjectId,
-			dosage: Number,
+			amount: Number,
 		}
 	],
 	price:

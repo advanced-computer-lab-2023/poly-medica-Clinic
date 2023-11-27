@@ -11,7 +11,7 @@ const generatePrescription = (patientId, doctorId) => {
 		medicines: [
 			{
 				medicineId: faker.database.mongodbObjectId(),
-				dosage: faker.number.int({ min: 1, max: 10 }),
+				amount: faker.number.int({ min: 1, max: 10 }),
 			},
 		],
 		price: faker.number.float({ min: 1, max: 1000 }),
