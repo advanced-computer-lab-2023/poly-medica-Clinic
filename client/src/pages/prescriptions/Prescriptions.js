@@ -7,6 +7,9 @@ import { useUserContext } from 'hooks/useUserContext';
 import { useFilter } from 'contexts/FilterContext';
 import { DATE_FILTER_ARRAY } from 'utils/Constants';
 import { filterAppointmentsByDate } from 'utils/AppointmentUtils';
+import { pharmacyAxios } from 'pages/utilities/AxiosConfig';
+import { formatMedicines } from 'utils/PrescriptionUtils';
+import Loader from 'ui-component/Loader';
 
 const Prescriptions = () => {
 
@@ -18,6 +21,9 @@ const Prescriptions = () => {
 	const [originalPrescriptions, setOriginalPrescritpions] = useState([]);
 	const [selectedPrescription, setSelectedPrescription] = useState(null);
 	const [prescriptionDoctor, setPrescriptionDoctor] = useState(null);
+	const [medicines, setMedicines] = useState([]);
+	const [loadingPrescription, setLoadingPrescription] = useState(true);
+	const [loadingMedicine, setLoadingMedicine] = useState(true);
 	const doctors = [];
 	useEffect(() => {
 		const getPrescriptions = async () => {
@@ -42,13 +48,32 @@ const Prescriptions = () => {
 					values: ['true', 'false']
 				}
 				]);
+				setLoadingPrescription(false);
+				console.log('prescription now false');
 			} catch (err) {
+				setLoadingPrescription(false);
 				console.log(err);
 			}
 		};
 		getPrescriptions();
 
 	}, []);
+
+	useEffect(() => {
+		try {
+			pharmacyAxios.get('/medicines').then((response) => {
+				const responseMedicines = response.data.medicines;
+				setMedicines(
+					formatMedicines(responseMedicines, selectedPrescription)
+				);
+				setLoadingMedicine(false);
+
+			});
+		} catch (err) {
+			console.log(err.message);
+			setLoadingMedicine(false);
+		}
+	}, [selectedPrescription]);
 
 	useEffect(() => {
 		const filteredPrescriptions = originalPrescriptions.filter((prescription) =>
@@ -68,7 +93,7 @@ const Prescriptions = () => {
 		setPrescriptionDoctor(doctor);
 	};
 
-	return (
+	return loadingMedicine || loadingPrescription ? (<Loader />) : (
 		<>
 			<MainCard title="Prescriptions">
 				<PrescriptionsList
@@ -80,6 +105,7 @@ const Prescriptions = () => {
 					selectedPrescription={selectedPrescription}
 					prescriptionDoctor={prescriptionDoctor}
 					handleDialogClose={handleDialogClose}
+					medicines={medicines}
 				/>
 			</MainCard>
 		</>

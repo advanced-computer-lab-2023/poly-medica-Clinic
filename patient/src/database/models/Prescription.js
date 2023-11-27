@@ -29,8 +29,12 @@ const Prescription = mongoose.Schema({
 	},
 	medicines: [
 		{
-			medicineId: mongoose.Schema.Types.ObjectId,
-			amount: Number,
+			medicineId: {
+				type: mongoose.Schema.Types.ObjectId,
+			},
+			amount: {
+				type: Number
+			}
 		}
 	],
 	price:
