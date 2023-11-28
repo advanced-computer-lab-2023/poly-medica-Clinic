@@ -1,3 +1,6 @@
+import { patientAxios } from './AxiosConfig';
+import { OK_STATUS_CODE } from './Constants';
+
 export const formatMedicines = (medicines, prescription) => {
 
     const formattedMedicines = medicines.length > 0 && medicines
@@ -18,4 +21,14 @@ export const formatMedicines = (medicines, prescription) => {
         });
 
     return formattedMedicines || [];
+};
+
+
+export const updatePrescription = (selectedPrescription, setSelectedPrescription) => {
+    patientAxios.patch(`/prescriptions/${selectedPrescription._id}`, { prescription: selectedPrescription })
+        .then(response => {
+            if (response.status === OK_STATUS_CODE) {
+                setSelectedPrescription(response.data);
+            }
+        });
 };

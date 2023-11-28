@@ -4,10 +4,10 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea, Grid, IconButton } from '@mui/material';
-import { OK_STATUS_CODE, PHARMACY_BASE_URL } from '../../utils/Constants';
-import { Add } from '@mui/icons-material';
+import { PHARMACY_BASE_URL } from '../../utils/Constants';
+import { Add, Close } from '@mui/icons-material';
 import { IconMinus } from '@tabler/icons';
-import { patientAxios } from 'utils/AxiosConfig';
+import { updatePrescription } from 'utils/PrescriptionUtils';
 export default function MedicineCard({ medicine, selectedPrescription, setSelectedPrescription }) {
 
     const handleMedicineAmount = (value) => {
@@ -18,18 +18,24 @@ export default function MedicineCard({ medicine, selectedPrescription, setSelect
         );
         if (medicineIndex !== -1) {
             selectedPrescription.medicines[medicineIndex].amount = medicine.amount;
-            patientAxios.patch(`/prescriptions/${selectedPrescription._id}`, { prescription: selectedPrescription })
-                .then(response => {
-                    if (response.status === OK_STATUS_CODE) {
-                        setSelectedPrescription(response.data);
-                    }
-                });
+            updatePrescription(selectedPrescription, setSelectedPrescription);
         }
+    };
+
+    const handleMedicineDelete = () => {
+        const updatedMedicines = selectedPrescription.medicines.filter(
+            (prescriptionMedicine) => prescriptionMedicine.medicineId.toString() !== medicine._id.toString()
+        );
+        selectedPrescription.medicines = updatedMedicines;
+        updatePrescription(selectedPrescription, setSelectedPrescription);
     };
 
     return (
         <Card sx={{ maxWidth: 250, margin: '2%', padding: '2%' }}>
             <CardActionArea>
+                <IconButton onClick={() => handleMedicineDelete()} >
+                    <Close />
+                </IconButton>
                 <CardMedia
                     component="img"
                     height="140"
@@ -42,7 +48,7 @@ export default function MedicineCard({ medicine, selectedPrescription, setSelect
                         {medicine.name}
                     </Typography>
                     <Grid container alignItems="center" maxHeight={50}>
-                        <Grid item xs={6}>
+                        <Grid item xs={3}>
                             <Typography variant='h2' color="text.secondary">
                                 {medicine.amount}
                             </Typography>
@@ -55,10 +61,8 @@ export default function MedicineCard({ medicine, selectedPrescription, setSelect
                                 <IconMinus />
                             </IconButton>
                         </Grid>
+
                     </Grid>
-
-
-
                 </CardContent>
             </CardActionArea>
         </Card >

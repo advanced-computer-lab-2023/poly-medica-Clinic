@@ -8,9 +8,6 @@ import {
 	Typography,
 	Grid,
 	IconButton,
-	Autocomplete,
-	Avatar,
-	TextField
 } from '@mui/material';
 import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -18,8 +15,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import MedicineCard from './MedicineCard';
 import { Add } from '@mui/icons-material';
 import { formatMedicines } from '../../utils/PrescriptionUtils';
-import { OK_STATUS_CODE, PHARMACY_BASE_URL } from 'utils/Constants';
+import { OK_STATUS_CODE } from 'utils/Constants';
 import { patientAxios } from 'utils/AxiosConfig';
+import { AddMedicine } from './AddMedicine';
 const PrescriptionDetails = ({ selectedPrescription, setSelectedPrescription, prescriptionDoctor, handleDialogClose, medicines }) => {
 	const [addMode, setAddMode] = useState(false);
 	const [selectedMedicine, setSelectedMedicine] = useState(null);
@@ -69,53 +67,28 @@ const PrescriptionDetails = ({ selectedPrescription, setSelectedPrescription, pr
 							{
 								formattedMedicines.length > 0 && (
 									<Grid container spacing={2} alignItems={'center'}>
-										{formattedMedicines.map((medicine, index) => (
-											<Grid item xs={4} key={index}>
-												<MedicineCard medicine={medicine} selectedPrescription={selectedPrescription} setSelectedPrescription={setSelectedMedicine} />
-											</Grid>
-										))}
-										{addMode ? (
-											<Grid item xs={4}>
-												<Grid container spacing={2} sx={{ padding: '2%' }}>
-													<Grid item xs={12}>
-														<Autocomplete
-															value={selectedMedicine}
-															onChange={(event, newValue) => setSelectedMedicine(newValue)}
-															options={medicines}
-															getOptionLabel={(option) => option.name}
-															renderOption={(props, option) => (
-																<li {...props}>
-																	<Avatar
-																		alt={option.name}
-																		src={`${PHARMACY_BASE_URL}/medicines/${option._id}/pictures`}
-																	/>
-																	{option.name}
-																</li>
-															)}
-															renderInput={(params) => (
-																<TextField {...params} label="Choose a medicine" />
-															)}
-														/>
-													</Grid>
-													<Grid item xs={6}>
-														<Button onClick={handleSaveClick} color="primary">
-															Save
-														</Button>
-													</Grid>
-													<Grid item xs={6}>
-														<Button onClick={handleCancelClick} color="primary">
-															Cancel
-														</Button>
-													</Grid>
+										{
+											formattedMedicines.map((medicine, index) => (
+												<Grid item xs={4} key={index}>
+													<MedicineCard medicine={medicine} selectedPrescription={selectedPrescription} setSelectedPrescription={setSelectedMedicine} />
 												</Grid>
-											</Grid>
-										) : (
-											<Grid item xs={4}>
-												<IconButton onClick={handleAddClick} title='Add medicine' color='primary' sx={{ height: '100%', width: '100%' }}>
-													<Add />
-												</IconButton>
-											</Grid>
-										)
+											))}
+										{
+											addMode ? (
+												<AddMedicine
+													medicines={medicines}
+													selectedMedicine={selectedMedicine}
+													setSelectedMedicine={setSelectedMedicine}
+													handleSaveClick={handleSaveClick}
+													handleCancelClick={handleCancelClick}
+												/>
+											) : (
+												<Grid item xs={4}>
+													<IconButton onClick={handleAddClick} title='Add medicine' color='primary' sx={{ height: '100%', width: '100%' }}>
+														<Add />
+													</IconButton>
+												</Grid>
+											)
 										}
 									</Grid>
 								)
