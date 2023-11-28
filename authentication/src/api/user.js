@@ -6,6 +6,7 @@ import {
 	BAD_REQUEST_CODE_400,
 	CLINIC_ADMIN_ENUM,
 	CLINIC_REQ,
+	COMMUNICATION_USER_POST_URL,
 	DOCOTOR_CHECK_DOC_USERS,
 	DOCOTOR_SIGNUP_URL,
 	DOCTOR_ENUM,
@@ -79,17 +80,14 @@ export const user = (app) => {
 			// TODO: check if i put the docotor/ pharma request
 			if (type == PATIENT_ENUM) {
 				signupData = await axios.post(PATIENT_SIGNUP_URL, req.body);
+				const userId = signupData.data.userId;
+				await axios.post(`${COMMUNICATION_USER_POST_URL}/${userId}`);
 				await user.signupUser(signupData.data);
 			}
 
 			res.status(OK_REQUEST_CODE_200).end();
 		} catch (err) {
 			if (err.response) {
-				if (err.response.data.errCode == DUPLICATE_KEY_ERROR_CODE) {
-					res
-						.status(BAD_REQUEST_CODE_400)
-						.send({ message: err.response.data.errMessage });
-				} else
 					res
 						.status(BAD_REQUEST_CODE_400)
 						.send({ message: err.response.data.errMessage });
@@ -137,6 +135,8 @@ export const user = (app) => {
 
 	app.post('/doctors', async (req, res) => {
 		try {
+			const userId = req.body.userId;
+			await axios.post(`${COMMUNICATION_USER_POST_URL}/${userId}`);
 			await user.signupUser(req.body);
 			res.status(OK_REQUEST_CODE_200).end();
 		} catch (err) {
@@ -149,6 +149,8 @@ export const user = (app) => {
 
 	app.post('/pharmacists', async (req, res) => {
 		try {
+			const userId = req.body.userId;
+			await axios.post(`${COMMUNICATION_USER_POST_URL}/${userId}`);
 			await user.signupUser(req.body);
 			res.status(OK_REQUEST_CODE_200).end();
 		} catch (err) {
@@ -179,6 +181,8 @@ export const user = (app) => {
 				default: throw new Error('invalid system');
 			}
 
+			const userId = signupData.data.userId;
+			await axios.post(`${COMMUNICATION_USER_POST_URL}/${userId}`);
 			await user.signupUser(signupData.data);
 
 			res.status(OK_REQUEST_CODE_200).send({ message: 'admin added' });

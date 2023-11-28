@@ -4,6 +4,7 @@ export const PHARMACY_BASE_URL = 'http://localhost:8003';
 const APPOINTMENT_STATUS = ['COMPLETE', 'INCOMPLETE', 'CANCELLED', 'RESCHEDULED'];
 const APPOINTMENT_CHRONOLGY = ['UPCOMING', 'PAST'];
 export const DATE_FILTER_ARRAY = ['Last week', 'Last month', 'Last year'];
+export const APPOINTMENT_NOTIFICATION_TYPE_ENUM = 'appointment';
 
 export const APPOINTMENT_FILTER_ARRAY = [
     {
