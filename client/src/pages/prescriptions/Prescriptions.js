@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import PrescriptionsList from './PrescriptionsList';
 import EditPrescription from './EditPrescription';
+import AddPrescription from './AddPrescription';
 import MainCard from '../../ui-component/cards/MainCard';
 import { patientAxios } from '../../utils/AxiosConfig';
 import PrescriptionDetails from './PrescriptionDetails';
@@ -16,6 +17,8 @@ import { filterAppointmentsByDate } from 'utils/AppointmentUtils';
 import { pharmacyAxios } from 'pages/utilities/AxiosConfig';
 import { formatMedicines } from 'utils/PrescriptionUtils';
 import Loader from 'ui-component/Loader';
+import { Fab } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 
 const Prescriptions = () => {
 	const { user } = useUserContext();
@@ -35,6 +38,9 @@ const Prescriptions = () => {
 		useState(null);
 	const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 	const [editErrorMessage, setEditErrorMessage] = useState('');
+	const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+	const [description, setDescription] = useState('');
+
 	useEffect(() => {
 		const getPrescriptions = async () => {
 			try {
@@ -75,7 +81,7 @@ const Prescriptions = () => {
 			}
 		};
 		getPrescriptions();
-	}, [prescriptions.length, patientID, singlePatientPrescriptions]);
+	}, [prescriptions.length]);
 
 	useEffect(() => {
 		try {
@@ -150,6 +156,40 @@ const Prescriptions = () => {
 			});
 	};
 
+	const handleAddButtonClick = (event) => {
+		event.stopPropagation();
+		setIsAddDialogOpen(true);
+	};
+
+	const handleCancelAdd = () => {
+		setIsAddDialogOpen(false);
+		setDescription('');
+	};
+
+	const handleConfirmAdd = (e) => {
+		const prescription = {
+			patientId: patientID,
+			doctorId: user.id,
+			doctorName: user.name,
+			date: new Date(),
+			filled: false,
+			description,
+			medicines: [],
+			price: 0,
+		};
+		e.preventDefault();
+		patientAxios
+			.post('/prescriptions', { prescription })
+			.then(() => {
+				setPrescriptions((prev) => [...prev, prescription]);
+				setIsAddDialogOpen(false);
+				setDescription('');
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+
 	return loadingMedicine || loadingPrescription ? (
 		<Loader />
 	) : (
@@ -175,6 +215,29 @@ const Prescriptions = () => {
 				setSelectedEditPrescription={setSelectedEditPrescription}
 				editErrorMessage={editErrorMessage}
 				setEditErrorMessage={setEditErrorMessage}
+			/>
+
+			{user.type === DOCTOR_TYPE_ENUM && (
+				<Fab
+					color='secondary'
+					aria-label='Add'
+					onClick={handleAddButtonClick}
+					sx={{
+						position: 'fixed',
+						bottom: 16,
+						right: 16,
+						zIndex: 9999,
+					}}
+				>
+					<AddIcon />
+				</Fab>
+			)}
+
+			<AddPrescription
+				isAddDialogOpen={isAddDialogOpen}
+				handleConfirmAdd={handleConfirmAdd}
+				handleCancelAdd={handleCancelAdd}
+				setDescription={setDescription}
 			/>
 		</MainCard>
 	);
