@@ -31,7 +31,7 @@ export default function MedicineCard({ medicine, selectedPrescription, setSelect
     };
 
     return (
-        <Card sx={{ maxWidth: 250, margin: '2%', padding: '2%' }}>
+        <Card sx={{ maxWidth: 250, margin: '2%', padding: '4%', border:'2px solid black', background: '#F5F5F5' }}>
             <CardActionArea>
                 <IconButton onClick={() => handleMedicineDelete()} >
                     <Close />
