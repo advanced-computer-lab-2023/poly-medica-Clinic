@@ -15,7 +15,6 @@ import {
 } from 'utils/Constants';
 import { filterAppointmentsByDate } from 'utils/AppointmentUtils';
 import { pharmacyAxios } from 'pages/utilities/AxiosConfig';
-import { formatMedicines } from 'utils/PrescriptionUtils';
 import Loader from 'ui-component/Loader';
 import { Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
@@ -87,7 +86,7 @@ const Prescriptions = () => {
 		try {
 			pharmacyAxios.get('/medicines').then((response) => {
 				const responseMedicines = response.data.medicines;
-				setMedicines(formatMedicines(responseMedicines, selectedPrescription));
+				setMedicines(responseMedicines);
 				setLoadingMedicine(false);
 			});
 		} catch (err) {
@@ -202,6 +201,7 @@ const Prescriptions = () => {
 
 			<PrescriptionDetails
 				selectedPrescription={selectedPrescription}
+				setSelectedPrescription={setSelectedPrescription}
 				prescriptionDoctor={prescriptionDoctor}
 				handleDialogClose={handleDialogClose}
 				medicines={medicines}

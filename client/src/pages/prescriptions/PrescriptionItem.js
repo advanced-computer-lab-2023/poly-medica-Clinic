@@ -13,7 +13,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-
+import prescrptionImage from '../utilities/prescription.png';
 import { clinicAxios } from '../../utils/AxiosConfig';
 import { useUserContext } from 'hooks/useUserContext';
 
@@ -48,59 +48,59 @@ const PrescriptionItem = ({
 		return <Typography variant='h5'>Loading...</Typography>;
 	} else {
 		return (
-			<ListItem button onClick={() => handleClicking(prescription, doctor)}>
-				<ListItemAvatar sx={{ paddingRight: '2%' }}>
-					<img width='80' height='80' />
-				</ListItemAvatar>
-
-				{console.log(doctor.specialty)}
-				<ListItemText
-					primary={`Dr. ${doctor.userData.name}`}
-					secondary={
-						<div
-							style={{
-								overflow: 'hidden',
-								whiteSpace: 'nowrap',
-								textOverflow: 'ellipsis',
-							}}
-						>
-							{prescription.filled ? (
-								<CheckIcon>Filled</CheckIcon>
-							) : (
-								<CloseIcon>Not Filled</CloseIcon>
-							)}
-							{prescription.filled ? 'Filled' : 'Not Filled'}
-						</div>
-					}
-					sx={{
-						width: '60%',
-						lineHeight: '1.5em',
-						maxHeight: '3em',
-					}}
-				/>
-
-				<LocalizationProvider dateAdapter={AdapterDayjs}>
+			<>
+				<ListItem button onClick={() => handleClicking(prescription, doctor)}>
+					<ListItemAvatar sx={{ paddingRight: '2%' }}>
+						<img src={prescrptionImage} width='80' height='80' />
+					</ListItemAvatar>
 					<ListItemText
-						secondary={dayjs(prescription.date).format('LL')}
+						primary={`Dr. ${doctor.userData.name}`}
+						secondary={
+							<div
+								style={{
+									overflow: 'hidden',
+									whiteSpace: 'nowrap',
+									textOverflow: 'ellipsis',
+								}}
+							>
+								{prescription.filled ? (
+									<CheckIcon>Filled</CheckIcon>
+								) : (
+									<CloseIcon>Not Filled</CloseIcon>
+								)}
+								{prescription.filled ? 'Filled' : 'Not Filled'}
+							</div>
+						}
 						sx={{
 							width: '60%',
 							lineHeight: '1.5em',
 							maxHeight: '3em',
 						}}
 					/>
-					{/* <Typography variant="h5" sx={{ paddingLeft: '2%', align:'center' }}> {dayjs(prescription.date).format('LL')} </Typography> */}
-				</LocalizationProvider>
 
-				{user.type === 'doctor' && (
-					<IconButton
-						edge='end'
-						aria-label='edit'
-						onClick={(event) => handleEditButtonClick(prescription, event)}
-					>
-						<EditIcon />
-					</IconButton>
-				)}
-			</ListItem>
+					<LocalizationProvider dateAdapter={AdapterDayjs}>
+						<ListItemText
+							secondary={dayjs(prescription.date).format('LL')}
+							sx={{
+								width: '60%',
+								lineHeight: '1.5em',
+								maxHeight: '3em',
+							}}
+						/>
+						{/* <Typography variant="h5" sx={{ paddingLeft: '2%', align:'center' }}> {dayjs(prescription.date).format('LL')} </Typography> */}
+					</LocalizationProvider>
+
+					{user.type === 'doctor' && (
+						<IconButton
+							edge='end'
+							aria-label='edit'
+							onClick={(event) => handleEditButtonClick(prescription, event)}
+						>
+							<EditIcon />
+						</IconButton>
+					)}
+				</ListItem>
+			</>
 		);
 	}
 };
