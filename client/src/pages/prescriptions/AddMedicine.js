@@ -13,7 +13,7 @@ export const AddMedicine = ({ medicines, setSelectedMedicine, selectedMedicine, 
         <Grid container spacing={2} sx={{ padding: '2%' }}>
             <Grid item xs={12}>
                 <Autocomplete
-                    value={selectedMedicine ? selectedMedicine : medicines[0]}
+                    value={selectedMedicine}
                     onChange={(event, newValue) => setSelectedMedicine(newValue)}
                     options={medicines}
                     getOptionLabel={(option) => option.name}

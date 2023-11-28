@@ -10,7 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-
+import prescrptionImage from '../utilities/prescription.png';
 import { clinicAxios } from '../../utils/AxiosConfig';
 
 
@@ -49,7 +49,7 @@ const PrescriptionItem = ({ prescription, handleClicking }) => {
 			<>
 				<ListItem button onClick={() => handleClicking(prescription, doctor)}>
 					<ListItemAvatar sx={{ paddingRight: '2%' }}>
-						<img width="80" height="80" />
+						<img src={prescrptionImage} width="80" height="80" />
 					</ListItemAvatar>
 					<ListItemText primary={`Dr. ${doctor.userData.name}`} secondary={
 						<div style={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
