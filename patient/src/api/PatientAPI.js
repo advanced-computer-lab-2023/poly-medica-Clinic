@@ -198,16 +198,6 @@ export const patient = (app) => {
 		},
 	);
 
-	app.patch('/patient/:patientId/prescription/:prescriptionId', async (req, res) => {
-		const { patientId, prescriptionId } = req.params;
-		try {
-			
-		} catch (err) {
-			res.status(ERROR_STATUS_CODE).json({ message: err.message });
-		}
-	}
-	);
-
 	app.get('/patient/:id/discount', async (req, res) => {
 		try {
 			const { id } = req.params;

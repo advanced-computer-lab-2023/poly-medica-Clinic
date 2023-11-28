@@ -51,8 +51,6 @@ const PrescriptionItem = ({ prescription, handleClicking }) => {
 					<ListItemAvatar sx={{ paddingRight: '2%' }}>
 						<img width="80" height="80" />
 					</ListItemAvatar>
-
-					{console.log(doctor.specialty)}
 					<ListItemText primary={`Dr. ${doctor.userData.name}`} secondary={
 						<div style={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
 							{

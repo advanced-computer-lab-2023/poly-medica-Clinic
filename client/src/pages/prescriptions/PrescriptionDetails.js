@@ -1,4 +1,5 @@
 
+import { useState } from 'react';
 import {
 	Dialog,
 	DialogContent,
@@ -7,20 +8,47 @@ import {
 	Typography,
 	Grid,
 	IconButton,
+	Autocomplete,
+	Avatar,
+	TextField
 } from '@mui/material';
 import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import MedicineCard from './MedicineCard';
 import { Add } from '@mui/icons-material';
+import { formatMedicines } from '../../utils/PrescriptionUtils';
+import { OK_STATUS_CODE, PHARMACY_BASE_URL } from 'utils/Constants';
+import { patientAxios } from 'utils/AxiosConfig';
+const PrescriptionDetails = ({ selectedPrescription, setSelectedPrescription, prescriptionDoctor, handleDialogClose, medicines }) => {
+	const [addMode, setAddMode] = useState(false);
+	const [selectedMedicine, setSelectedMedicine] = useState(null);
+	const formattedMedicines = formatMedicines(medicines, selectedPrescription);
 
-const PrescriptionDetails = ({ selectedPrescription, prescriptionDoctor, handleDialogClose, medicines }) => {
+	const handleAddClick = () => {
+		setAddMode(true);
+	};
+
+	const handleSaveClick = () => {
+		if (selectedMedicine) {
+			selectedPrescription.medicines.push({ amount: 1, medicineId: selectedMedicine._id });
+			patientAxios.patch(`/prescriptions/${selectedPrescription._id}`, { prescription: selectedPrescription }).then((response) => {
+				if (response.status === OK_STATUS_CODE) {
+					setSelectedPrescription(response.data);
+					setAddMode(false);
+				}
+			});
+		}
+	};
+
+	const handleCancelClick = () => {
+		setAddMode(false);
+	};
 	return (
 
 		<Dialog open={selectedPrescription} onClose={handleDialogClose} PaperProps={{ sx: { minWidth: window.outerWidth > 800 ? 500 : 300 } }}  >
 			{selectedPrescription && prescriptionDoctor && (
 				<>
-					{/* <DialogTitle align='center' variant='h4'>{`Dr. ${prescriptionDoctor.userData.name}`}</DialogTitle> */}
 					<DialogContent>
 						<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
 							<Typography variant="h4">{`Dr. ${prescriptionDoctor.userData.name}`}</Typography>
@@ -36,26 +64,65 @@ const PrescriptionDetails = ({ selectedPrescription, prescriptionDoctor, handleD
 						<Typography variant="body1">
 							{selectedPrescription.filled ? 'Yes' : 'No'}
 						</Typography>
-						<Typography variant="subtitle1">Medicines:</Typography>
-						{
-							medicines.length > 0 && (
-								<Grid container spacing={2}>
-									{medicines.map((medicine, index) => (
-										<Grid item xs={3} key={index}>
-											<MedicineCard medicine={medicine} />
-										</Grid>
-									))}
-									<Grid item xs={3}>
-										<IconButton title='Add medicine' color='primary' sx={{ height: '100%', width: '100%' }}>
-											<Add />
-										</IconButton>
+						<Typography sx={{ marginBottom: '5%' }} variant="subtitle1">Medicines:</Typography>
+						<Grid container spacing={2}>
+							{
+								formattedMedicines.length > 0 && (
+									<Grid container spacing={2} alignItems={'center'}>
+										{formattedMedicines.map((medicine, index) => (
+											<Grid item xs={4} key={index}>
+												<MedicineCard medicine={medicine} selectedPrescription={selectedPrescription} setSelectedPrescription={setSelectedMedicine} />
+											</Grid>
+										))}
+										{addMode ? (
+											<Grid item xs={4}>
+												<Grid container spacing={2} sx={{ padding: '2%' }}>
+													<Grid item xs={12}>
+														<Autocomplete
+															value={selectedMedicine}
+															onChange={(event, newValue) => setSelectedMedicine(newValue)}
+															options={medicines}
+															getOptionLabel={(option) => option.name}
+															renderOption={(props, option) => (
+																<li {...props}>
+																	<Avatar
+																		alt={option.name}
+																		src={`${PHARMACY_BASE_URL}/medicines/${option._id}/pictures`}
+																	/>
+																	{option.name}
+																</li>
+															)}
+															renderInput={(params) => (
+																<TextField {...params} label="Choose a medicine" />
+															)}
+														/>
+													</Grid>
+													<Grid item xs={6}>
+														<Button onClick={handleSaveClick} color="primary">
+															Save
+														</Button>
+													</Grid>
+													<Grid item xs={6}>
+														<Button onClick={handleCancelClick} color="primary">
+															Cancel
+														</Button>
+													</Grid>
+												</Grid>
+											</Grid>
+										) : (
+											<Grid item xs={4}>
+												<IconButton onClick={handleAddClick} title='Add medicine' color='primary' sx={{ height: '100%', width: '100%' }}>
+													<Add />
+												</IconButton>
+											</Grid>
+										)
+										}
 									</Grid>
-								</Grid>
-							)
-						}
+								)
+							}
+						</Grid>
 
-
-						<Typography variant="subtitle1">Description:</Typography>
+						< Typography sx={{ marginTop: '5%' }} variant="subtitle1">Description:</Typography>
 						<Typography variant="body1">{selectedPrescription.description}</Typography>
 					</DialogContent>
 					<DialogActions>
@@ -64,8 +131,9 @@ const PrescriptionDetails = ({ selectedPrescription, prescriptionDoctor, handleD
 						</Button>
 					</DialogActions>
 				</>
-			)}
-		</Dialog>
+			)
+			}
+		</Dialog >
 	);
 };
 

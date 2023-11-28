@@ -13,13 +13,12 @@ import {
 } from 'utils/Constants';
 import { filterAppointmentsByDate } from 'utils/AppointmentUtils';
 import { pharmacyAxios } from 'pages/utilities/AxiosConfig';
-import { formatMedicines } from 'utils/PrescriptionUtils';
 import Loader from 'ui-component/Loader';
 
 const Prescriptions = () => {
 	const { user } = useUserContext();
 	const patientID =
-		user.userType === PATIENT_TYPE_ENUM ? user.id : useParams().patientId;
+		user.type === PATIENT_TYPE_ENUM ? user.id : useParams().patientId;
 	const { filterData, updateFilter } = useFilter();
 	const [prescriptions, setPrescritpions] = useState([]);
 	const [originalPrescriptions, setOriginalPrescritpions] = useState([]);
@@ -76,7 +75,7 @@ const Prescriptions = () => {
 		try {
 			pharmacyAxios.get('/medicines').then((response) => {
 				const responseMedicines = response.data.medicines;
-				setMedicines(formatMedicines(responseMedicines, selectedPrescription));
+				setMedicines(responseMedicines);
 				setLoadingMedicine(false);
 			});
 		} catch (err) {
@@ -95,7 +94,7 @@ const Prescriptions = () => {
 					)) &&
 				(!filterData[1].selectedValue ||
 					prescription.doctorName.toString() ===
-						filterData[1].selectedValue.toString()) &&
+					filterData[1].selectedValue.toString()) &&
 				(!filterData[2].selectedValue ||
 					prescription.filled.toString() === filterData[2].selectedValue),
 		);
@@ -123,6 +122,7 @@ const Prescriptions = () => {
 
 				<PrescriptionDetails
 					selectedPrescription={selectedPrescription}
+					setSelectedPrescription={setSelectedPrescription}
 					prescriptionDoctor={prescriptionDoctor}
 					handleDialogClose={handleDialogClose}
 					medicines={medicines}
