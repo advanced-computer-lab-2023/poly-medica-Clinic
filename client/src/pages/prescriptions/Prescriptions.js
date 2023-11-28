@@ -167,6 +167,7 @@ const Prescriptions = () => {
 	};
 
 	const handleConfirmAdd = (e) => {
+		e.preventDefault();
 		const prescription = {
 			patientId: patientID,
 			doctorId: user.id,
@@ -177,7 +178,6 @@ const Prescriptions = () => {
 			medicines: [],
 			price: 0,
 		};
-		e.preventDefault();
 		patientAxios
 			.post('/prescriptions', { prescription })
 			.then(() => {
