@@ -27,7 +27,6 @@ export const prescription = (app) => {
 				});
 			}
 			const { prescription } = req.body;
-			console.log('Updating prescription ==== ', prescription);
 			const data = await service.updatePrescription(
 				prescriptionId,
 				prescription,

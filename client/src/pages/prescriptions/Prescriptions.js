@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import PrescriptionsList from './PrescriptionsList';
+import EditPrescription from './EditPrescription';
 import MainCard from '../../ui-component/cards/MainCard';
 import { patientAxios } from '../../utils/AxiosConfig';
 import PrescriptionDetails from './PrescriptionDetails';
@@ -19,9 +20,9 @@ import Loader from 'ui-component/Loader';
 const Prescriptions = () => {
 	const { user } = useUserContext();
 	const patientID =
-		user.userType === PATIENT_TYPE_ENUM ? user.id : useParams().patientId;
+		user.type === PATIENT_TYPE_ENUM ? user.id : useParams().patientId;
 	const { filterData, updateFilter } = useFilter();
-	const [prescriptions, setPrescritpions] = useState([]);
+	const [prescriptions, setPrescriptions] = useState([]);
 	const [originalPrescriptions, setOriginalPrescritpions] = useState([]);
 	const [selectedPrescription, setSelectedPrescription] = useState(null);
 	const [prescriptionDoctor, setPrescriptionDoctor] = useState(null);
@@ -30,6 +31,10 @@ const Prescriptions = () => {
 	const [loadingMedicine, setLoadingMedicine] = useState(true);
 	const doctors = [];
 	const singlePatientPrescriptions = user.type === DOCTOR_TYPE_ENUM;
+	const [selectedEditPrescription, setSelectedEditPrescription] =
+		useState(null);
+	const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+	const [editErrorMessage, setEditErrorMessage] = useState('');
 	useEffect(() => {
 		const getPrescriptions = async () => {
 			try {
@@ -42,7 +47,7 @@ const Prescriptions = () => {
 					);
 					patientResponses.data = filteredPrescriptions;
 				}
-				setPrescritpions(patientResponses.data);
+				setPrescriptions(patientResponses.data);
 				setOriginalPrescritpions(patientResponses.data);
 				for (let i = 0; i < patientResponses.data.length; i++) {
 					const patientResponse = patientResponses.data[i];
@@ -70,7 +75,7 @@ const Prescriptions = () => {
 			}
 		};
 		getPrescriptions();
-	}, []);
+	}, [prescriptions.length, patientID, singlePatientPrescriptions]);
 
 	useEffect(() => {
 		try {
@@ -99,7 +104,7 @@ const Prescriptions = () => {
 				(!filterData[2].selectedValue ||
 					prescription.filled.toString() === filterData[2].selectedValue),
 		);
-		setPrescritpions(filteredPrescriptions);
+		setPrescriptions(filteredPrescriptions);
 	}, [filterData, originalPrescriptions]);
 
 	const handleDialogClose = () => {
@@ -111,24 +116,67 @@ const Prescriptions = () => {
 		setPrescriptionDoctor(doctor);
 	};
 
+	const handleEditButtonClick = (prescription, event) => {
+		event.stopPropagation();
+		setSelectedEditPrescription(prescription);
+		setIsEditDialogOpen(true);
+	};
+
+	const handleSaveEdit = (e) => {
+		e.preventDefault();
+		patientAxios
+			.patch('/prescriptions/' + selectedEditPrescription._id, {
+				prescription: selectedEditPrescription,
+			})
+			.then((response) => {
+				const updatedPrescription = response.data;
+				const updatedPrescriptions = prescriptions.map((prescription) => {
+					if (prescription._id === updatedPrescription._id) {
+						return updatedPrescription;
+					}
+					return prescription;
+				});
+				setIsEditDialogOpen(false);
+				setTimeout(() => {
+					setPrescriptions(updatedPrescriptions);
+					setOriginalPrescritpions(updatedPrescriptions);
+					setSelectedEditPrescription(null);
+					setEditErrorMessage('');
+				}, 1000);
+			})
+			.catch((err) => {
+				console.log(err);
+				setEditErrorMessage('Error updating prescription');
+			});
+	};
+
 	return loadingMedicine || loadingPrescription ? (
 		<Loader />
 	) : (
-		<>
-			<MainCard title='Prescriptions'>
-				<PrescriptionsList
-					prescriptions={prescriptions}
-					handleSelectingPrescription={handleSelectingPrescription}
-				/>
+		<MainCard title='Prescriptions'>
+			<PrescriptionsList
+				prescriptions={prescriptions}
+				handleSelectingPrescription={handleSelectingPrescription}
+				handleEditButtonClick={handleEditButtonClick}
+			/>
 
-				<PrescriptionDetails
-					selectedPrescription={selectedPrescription}
-					prescriptionDoctor={prescriptionDoctor}
-					handleDialogClose={handleDialogClose}
-					medicines={medicines}
-				/>
-			</MainCard>
-		</>
+			<PrescriptionDetails
+				selectedPrescription={selectedPrescription}
+				prescriptionDoctor={prescriptionDoctor}
+				handleDialogClose={handleDialogClose}
+				medicines={medicines}
+			/>
+
+			<EditPrescription
+				isEditDialogOpen={isEditDialogOpen}
+				setIsEditDialogOpen={setIsEditDialogOpen}
+				selectedEditPrescription={selectedEditPrescription}
+				handleSaveEdit={handleSaveEdit}
+				setSelectedEditPrescription={setSelectedEditPrescription}
+				editErrorMessage={editErrorMessage}
+				setEditErrorMessage={setEditErrorMessage}
+			/>
+		</MainCard>
 	);
 };
 
