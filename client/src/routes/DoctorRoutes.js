@@ -4,6 +4,7 @@ import { lazy } from 'react';
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
 import { DOCTOR_TYPE_ENUM } from 'utils/Constants';
+import Prescriptions from 'pages/prescriptions/Prescriptions';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
@@ -62,7 +63,11 @@ const DoctorRoutes = {
 				},
 				{
 					path: 'profile/:patientId',
-					element: <Account />
+					element: <Account />,
+				},
+				{
+					path: 'patients/:patientId/prescriptions',
+					element: <Prescriptions />,
 				},
 				{
 					path: 'appointments',
