@@ -42,7 +42,7 @@ const AppointmentOptions = ({ selectedAppointment, handleDialogClose, user }) =>
                     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                         <TabList value={tabValue} onChange={handleTabChange}>
                             <Tab label="Appointment Details" value='1'/>
-                            <Tab label="Rescheule" value='2'/>
+                            <Tab label="Reschedule" value='2'/>
                             <Tab label="Follow Up" value='3'/>
                         </TabList>
                     </Box>

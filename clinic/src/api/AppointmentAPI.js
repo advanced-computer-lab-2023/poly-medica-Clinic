@@ -37,16 +37,18 @@ export const appointment = (app) => {
 		}
 	});
 
-	app.patch('/appointments/:appointmentId', async (req, res) => { // update the date
+	app.patch('/appointments/reschedule/:appointmentId', async (req, res) => { 
 		const { appointmentId } = req.params;
 		if (!isValidMongoId(appointmentId)) {
 			return res.status(ERROR_STATUS_CODE).json({
 				message: 'invalid id',
 			});
 		}
-		const { newDate } = req.body;
+		const { doctorId, availableSlotsIdx } = req.body;
+		// assumption:
+		// the endpoint is called with doctorId = appointments[appointmentId].doctorId
 		try{
-			const updatedAppointment = await service.updateAppointment(appointmentId, newDate);
+			const updatedAppointment = await service.rescheduleAppointment(appointmentId, doctorId, availableSlotsIdx);
 			res.status(OK_STATUS_CODE).json(updatedAppointment);
 		}
 		catch (err) {

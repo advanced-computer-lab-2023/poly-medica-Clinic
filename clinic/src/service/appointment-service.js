@@ -1,8 +1,10 @@
 import AppointmentRepository from '../database/repository/appointment-repository.js';
+import DoctorRepository from '../database/repository/doctor-repository.js';
 
 class AppointmentService {
 	constructor() {
 		this.repository = new AppointmentRepository();
+		this.doctorRepository = new DoctorRepository();
 	}
 
 	async getAppointmentsByUserId(id) {
@@ -23,7 +25,7 @@ class AppointmentService {
 		} = appointment;
 
 		// deletes the available slot from the doctor's availableSlots array
-		await this.repository.updateAvailableSlots(doctorId, availableSlotsIdx);
+		await this.doctorRepository.deleteSlot(doctorId, availableSlotsIdx);
 		
 		const appointmentModelData = {
 			patientId,
@@ -40,8 +42,22 @@ class AppointmentService {
 		return await this.repository.createAppointment(appointmentModelData);
 	}
 
-	async updateAppointment(appointmentId, newDate){
-		return await this.repository.updateAppointment(appointmentId, newDate);
+	async rescheduleAppointment(appointmentId, doctorId, availableSlotsIdx){
+		
+		const appointment = await this.repository.findAppointmentById(appointmentId);
+
+		// add oldSlot to doctor available slots
+		const dateFrom = appointment.date;
+		const appointmentDoctor = await this.doctorRepository.addSlot(doctorId, dateFrom);
+
+		// update the date of the appointment
+		const newDate = new Date(appointmentDoctor.availableSlots[availableSlotsIdx].from);
+		const updatedAppointment = await this.repository.updateAppointmentDate(appointmentId, newDate);
+
+		// delete the newSlot from the doctor's availableSlots array
+		await this.doctorRepository.deleteSlot(doctorId, availableSlotsIdx);
+		
+		return updatedAppointment;
 	}
 }
 
