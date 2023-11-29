@@ -305,11 +305,12 @@ export const doctor = (app) => {
 	app.patch('/doctors/:doctorId/wallet', async (req, res) => {
 		try {
 			const { doctorId } = req.params;
-			if (!isValidMongoId(doctorId))
+			if (!isValidMongoId(doctorId)){
 				return res
 					.status(ERROR_STATUS_CODE)
 					.json({ message: 'Invalid ID' });
-			const pricePaidToDoctor = parseInt(req.body.pricePaidToDoctor);
+			}
+			const pricePaidToDoctor = parseFloat(req.body.pricePaidToDoctor);
 			const doctor = await service.getDoctorById(doctorId);
 			if(doctor){
 				const newWalletAmount = doctor.walletAmount + pricePaidToDoctor;

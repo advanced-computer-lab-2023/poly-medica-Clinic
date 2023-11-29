@@ -37,8 +37,8 @@ class AppointmentService {
 			date,
 			status,
 			type,
-			pricePaidByPatient: parseInt(pricePaidByPatient),
-			pricePaidToDoctor: parseInt(pricePaidToDoctor)
+			pricePaidByPatient: parseFloat(pricePaidByPatient),
+			pricePaidToDoctor: parseFloat(pricePaidToDoctor)
 		};
 		if(patientFamilyMember){
 			appointmentModelData.patientFamilyMember = patientFamilyMember;

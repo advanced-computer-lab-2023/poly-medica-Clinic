@@ -5,6 +5,7 @@ import {
 	ERROR_STATUS_CODE,
     BAD_REQUEST_CODE_400
 } from '../../utils/Constants.js';
+import { faker } from '@faker-js/faker';
 import axios from 'axios';
 
 const mockPaymentsIntentsCreate = jest.fn();
@@ -47,6 +48,7 @@ describe('POST /payment/card', () => {
         });
     });
 });
+
 jest.mock('axios');
 describe('POST /payment/wallet', () => {
     const mockWalletAmount = 100;
@@ -86,7 +88,34 @@ describe('POST /payment/wallet', () => {
         status: ERROR_STATUS_CODE,
       });
     });
-  });
+});
+
+jest.mock('axios');
+describe('POST /payment-salary/doctor/:doctorId/wallet', () => {
+    const paySalary = async (doctorId, pricePaidToDoctor) => {
+        return await request(app).post(`/payment-salary/doctor/${doctorId}/wallet`).send({ pricePaidToDoctor })
+    };
+    const generatePricePaidToDoctor = () => {
+		return parseFloat(faker.finance.amount({ min: 100, max: 1000, dec: 2 }));
+	};
+    it('should return 200 Ok', async () => {
+        const doctorId = faker.database.mongodbObjectId();
+        const pricePaidToDoctor = generatePricePaidToDoctor();
+        axios.patch.mockResolvedValue({data:{updatedDoctor:{}}});
+        const res = await paySalary(doctorId.toString(), pricePaidToDoctor);
+        expect(res.status).toBe(OK_STATUS_CODE);
+    });
+
+    it('should return 400 when id is invalid', async () => {
+		const id = faker.lorem.word();
+		const pricePaidToDoctor = generatePricePaidToDoctor();
+		const res = await paySalary(id, pricePaidToDoctor);
+		expect(res.status).toBe(ERROR_STATUS_CODE);
+	});
+
+
+   
+});
 
 
 

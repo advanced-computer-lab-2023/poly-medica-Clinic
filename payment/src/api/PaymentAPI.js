@@ -62,10 +62,11 @@ export const payment = (app) => {
                     message: 'invalid id',
                 });
             }
-            const pricePaidToDoctor = parseInt(req.body.pricePaidToDoctor);
+            const pricePaidToDoctor = parseFloat(req.body.pricePaidToDoctor);
             const axiosRes = await axios.patch(`${CLINIC_BASE_URL}/doctors/${doctorId}/wallet`, {
                 pricePaidToDoctor
             });
+            console.log('axiosRes = ', axiosRes);
             res.status(OK_STATUS_CODE).json({ updatedDoctor: axiosRes.data.updatedDoctor });
         }
         catch(err){
