@@ -5,9 +5,11 @@ import {
 	ListItemText,
 	Typography,
 	IconButton,
+	Tooltip,
 } from '@mui/material';
 
 import { Edit as EditIcon } from '@mui/icons-material';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import dayjs from 'dayjs';
@@ -16,6 +18,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import prescrptionImage from '../utilities/prescription.png';
 import { clinicAxios } from '../../utils/AxiosConfig';
 import { useUserContext } from 'hooks/useUserContext';
+import { PATIENT_BASE_URL } from 'utils/Constants';
 
 const PrescriptionItem = ({
 	prescription,
@@ -98,6 +101,21 @@ const PrescriptionItem = ({
 						>
 							<EditIcon />
 						</IconButton>
+					)}
+
+					{user.type === 'patient' && (
+						<Tooltip title='download'>
+							<a
+								href={`${PATIENT_BASE_URL}/prescriptions/${prescription._id}/download`}
+								target='_blank'
+								rel='noreferrer'
+								download={`${prescription._id}.pdf`}
+							>
+								<IconButton edge='end' aria-label='download'>
+									<FileDownloadIcon />
+								</IconButton>
+							</a>
+						</Tooltip>
 					)}
 				</ListItem>
 			</>

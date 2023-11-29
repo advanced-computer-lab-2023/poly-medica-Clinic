@@ -117,6 +117,8 @@ const Prescriptions = () => {
 	};
 
 	const handleSelectingPrescription = (prescription, doctor) => {
+		console.log('prescription 000 === ', prescription);
+		console.log('doctor 0000 === ', doctor);
 		setSelectedPrescription(prescription);
 		setPrescriptionDoctor(doctor);
 	};
@@ -170,7 +172,7 @@ const Prescriptions = () => {
 		const prescription = {
 			patientId: patientID,
 			doctorId: user.id,
-			doctorName: user.name,
+			doctorName: user.userName,
 			date: new Date(),
 			filled: false,
 			description,
