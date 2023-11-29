@@ -33,7 +33,7 @@ const Appointment = () => {
 		setAppointments(paginatedAppointments);
 	};
 
-	useEffect(() => {
+	const onMount = () => {
 		clinicAxios
 			.get('/appointments/' + userId)
 			.then((response) => {
@@ -48,8 +48,16 @@ const Appointment = () => {
 			.catch((error) => {
 				console.log(error);
 			});
+	};
+	useEffect(() => {
+		onMount();
 	}, []);
 
+	// to handle updating an appointment (reshedule/delete)
+	useEffect(() => {
+		onMount();
+	}, [selectedAppointment]);
+	
 	useEffect(() => {
 		const resultAppointments = originalAppointments.filter((appointment) =>
 			(
@@ -84,6 +92,7 @@ const Appointment = () => {
 				/>}
 			<AppointmentOptions
 				selectedAppointment={selectedAppointment}
+				setSelectedAppointment={setSelectedAppointment}
 				handleDialogClose={handleDialogClose}
 				user={user}
 			/>

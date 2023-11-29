@@ -16,7 +16,12 @@ import AppointmentReschedule from './AppointmentReschedule';
 import FollowUp from './FollowUp';
 
 
-const AppointmentOptions = ({ selectedAppointment, handleDialogClose, user }) => {
+const AppointmentOptions = ({ 
+    selectedAppointment, 
+    setSelectedAppointment, 
+    handleDialogClose, 
+    user 
+}) => {
     const [tabValue, setTabValue] = useState('1');
     const handleTabChange = (event, newTabValue) => {
         setTabValue(newTabValue);
@@ -58,6 +63,8 @@ const AppointmentOptions = ({ selectedAppointment, handleDialogClose, user }) =>
                     <TabPanel value='2'>
                         <AppointmentReschedule
                             selectedAppointment={selectedAppointment}
+                            setSelectedAppointment={setSelectedAppointment}
+                            setTabValue={setTabValue}
                         />
                     </TabPanel>
                     <TabPanel value='3'>

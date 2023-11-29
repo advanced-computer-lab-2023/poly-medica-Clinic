@@ -5,7 +5,11 @@ import AvailableSlotsList from './AvailableSlotsList.js';
 import Swal from 'sweetalert2';
 import '../../../assets/css/swalStyle.css';
 
-const AppointmentReschedule = ({ selectedAppointment }) => {
+const AppointmentReschedule = ({ 
+    selectedAppointment,
+    setSelectedAppointment,
+    setTabValue 
+}) => {
     console.log('selectedAppointment', selectedAppointment);
     const [doctorAvailableSlots, setDoctorAvailableSlots] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -22,6 +26,26 @@ const AppointmentReschedule = ({ selectedAppointment }) => {
     }
     , []);
     const handleReschedule = async (availableSlotsIdx) => {
+        clinicAxios
+            .patch(`/appointments/reschedule/${selectedAppointment._id}`, {
+                doctorId: selectedAppointment.doctorId,
+                availableSlotsIdx
+            })
+            .then((response) => {
+				Swal.fire(
+					'Appointment Rescheduled!',
+					'Your Appointment has been rescheduled successfully!',
+					'success',
+				)
+				.then(() => {
+					setTabValue('1');
+                    const updatedAppointment = response.data;
+                    setSelectedAppointment(updatedAppointment);
+				});
+			})
+			.catch((error) => {
+				console.log(error);
+			});
         console.log('availableSlotsIdx', availableSlotsIdx);
     };
     const handleConfirmation = (event) => {
