@@ -98,3 +98,62 @@ describe('GET /appointments/:id', () => {
 		await disconnectDBTest();
 	});
 });
+
+describe('PATCH /appointments/reschedule/:appointmentId', () => {
+	beforeEach(async () => {
+		await connectDBTest();
+	});
+
+	it('should return 200 OK and the updated appointment', async () => {
+		let doctor = new DoctorModel(generateDoctor());
+		await doctor.save();
+
+		let availableSlots = doctor.availableSlots;
+		const availableSlotsIdx = faker.number.int({
+			min: 0,
+			max: availableSlots.length - ONE,
+		});
+
+		const appointment = new AppointmentModel(generateAppointment(faker.database.mongodbObjectId(), doctor._id));
+		await appointment.save();
+		
+		const oldAppointmentDate = appointment.date; 
+		const newAppointmentDate = doctor.availableSlots[availableSlotsIdx].from;
+
+		const res = await request(app)
+			.patch(`/appointments/reschedule/${appointment._id}`)
+			.send({
+				doctorId: doctor._id,
+				availableSlotsIdx
+			});
+		expect(res.status).toBe(OK_STATUS_CODE);
+
+		// verify new appointment date
+		const updatedAppointment = res._body;
+		expect(new Date(updatedAppointment.date)).toEqual(newAppointmentDate);
+
+		// verify that newSlot is removed
+		doctor = await DoctorModel.findById(doctor._id);
+		availableSlots = doctor.availableSlots;
+		for(let i=0 ; i<availableSlots.length ; i++){
+			const currentDate = availableSlots[i].from;
+			expect(currentDate).not.toEqual(newAppointmentDate);
+		}
+
+		// verify that oldSlot is added back
+		expect(availableSlots[availableSlots.length-ONE].from).toEqual(oldAppointmentDate);
+
+	});
+
+	it('should return 500 when id is invalid', async () => {
+		const id = faker.lorem.word();
+		const res = await request(app)
+			.patch(`/appointments/reschedule/${id}`);
+
+		expect(res.status).toBe(ERROR_STATUS_CODE);
+	});
+
+	afterEach(async () => {
+		await disconnectDBTest();
+	});
+});
