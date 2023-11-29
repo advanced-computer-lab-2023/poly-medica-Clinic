@@ -176,6 +176,12 @@ class DoctorRepository {
 		availableSlots.splice(availableSlotsIdx, ONE);
 		return await DoctorModel.findByIdAndUpdate(doctorId, { availableSlots });
 	}
+
+	async updateWallet(doctorId, newWalletAmount){
+		const doctor = await DoctorModel.findById(doctorId);
+		doctor.walletAmount = newWalletAmount;
+		return await doctor.save();
+	}
 }
 
 export default DoctorRepository;

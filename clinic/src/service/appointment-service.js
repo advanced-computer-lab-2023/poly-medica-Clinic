@@ -20,6 +20,7 @@ class AppointmentService {
 			date,
 			status,
 			type,
+			appointmentPrice,
 			availableSlotsIdx,
 			patientFamilyMember
 		} = appointment;
@@ -35,6 +36,7 @@ class AppointmentService {
 			date,
 			status,
 			type,
+			appointmentPrice: parseInt(appointmentPrice)
 		};
 		if(patientFamilyMember){
 			appointmentModelData.patientFamilyMember = patientFamilyMember;

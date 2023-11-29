@@ -301,4 +301,26 @@ export const doctor = (app) => {
 			res.status(NOT_FOUND_STATUS_CODE).json({ message: error });
 		}
 	});
+
+	app.patch('/doctors/:doctorId/wallet', async (req, res) => {
+		try {
+			const { doctorId } = req.params;
+			if (!isValidMongoId(doctorId))
+				return res
+					.status(ERROR_STATUS_CODE)
+					.json({ message: 'Invalid ID' });
+			const { doctorSalary } = req.body;
+			const doctor = await service.getDoctorById(doctorId);
+			if(doctor){
+				const newWalletAmount = doctor.walletAmount + parseInt(doctorSalary);
+				const updatedDoctor = await service.updateWallet(doctorId, newWalletAmount);
+				res.status(OK_STATUS_CODE).json({ updatedDoctor });
+			}
+			else{
+				res.status(NOT_FOUND_STATUS_CODE).json({ message: 'Not found' });
+			}
+		} catch (error) {
+			res.status(NOT_FOUND_STATUS_CODE).json({ message: error });
+		}
+	});
 };

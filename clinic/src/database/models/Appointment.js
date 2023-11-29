@@ -32,6 +32,9 @@ const Appointment = mongoose.Schema({
 		enum: ['appointment', 'follow-up'],
 		required: true,
 	},
+	appointmentPrice: { // only in case type is appointment
+		type: Number
+	},
 	patientFamilyMember: { // if exists
 		name: {
 			type: String,

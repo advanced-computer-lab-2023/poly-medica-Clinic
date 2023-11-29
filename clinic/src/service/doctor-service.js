@@ -82,6 +82,11 @@ class DoctorService {
 		const doctor = await this.repository.addSlot(id, from);
 		return doctor;
 	}
+
+	async updateWallet(doctorId, newWalletAmount){
+		const doctor = await this.repository.updateWallet(doctorId, newWalletAmount);
+		return doctor;
+	}
 }
 
 export default DoctorService;

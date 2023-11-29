@@ -17,6 +17,7 @@ export const successfulPayment = (userId, items, type) => {
       .catch((error) => {
         console.log('Error in placing the order', error);
       });
+      // paymentAxios
     return '/patient/pages/appointments';
   }
 };

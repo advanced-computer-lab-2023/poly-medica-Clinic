@@ -4,10 +4,14 @@ import axios from 'axios';
 import {
 	OK_STATUS_CODE,
 	ERROR_STATUS_CODE,
+    CLINIC_BASE_URL,
     PATIENTS_BASE_URL,
     BAD_REQUEST_CODE_400,
     SECRET_KEY
 } from '../utils/Constants.js';
+import { isValidMongoId } from '../utils/Validation.js';
+import { calcDoctorSalary } from '../utils/PriceCalculator.js'
+
 const stripe = new Stripe(SECRET_KEY);
 
 export const payment = (app) => {
@@ -46,6 +50,28 @@ export const payment = (app) => {
                 res.status(BAD_REQUEST_CODE_400).json("insufficient amount in the wallet");
             }
         }catch(err){
+            console.log(err.message);
+            res.status(ERROR_STATUS_CODE).send({err: err.message, status: ERROR_STATUS_CODE});
+        }
+    });
+
+    app.post('/payment-salary/doctor/:doctorId/wallet', async(req, res) => {
+        try{
+            const { doctorId } = req.params;
+            if (!isValidMongoId(doctorId)) {
+                return res.status(ERROR_STATUS_CODE).json({
+                    message: 'invalid id',
+                });
+            }
+            const { appointmentPrice } = req.body;
+            const doctorSalary = calcDoctorSalary(parseInt(appointmentPrice));
+            console.log(typeof doctorSalary);
+            const axiosRes = await axios.patch(`${CLINIC_BASE_URL}/doctors/${doctorId}/wallet`, {
+                doctorSalary
+            });
+            res.status(OK_STATUS_CODE).json({ updatedDoctor: axiosRes.data.updatedDoctor });
+        }
+        catch(err){
             console.log(err.message);
             res.status(ERROR_STATUS_CODE).send({err: err.message, status: ERROR_STATUS_CODE});
         }
