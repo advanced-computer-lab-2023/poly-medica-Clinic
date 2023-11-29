@@ -1,7 +1,7 @@
 import { patientAxios, paymentAxios } from './AxiosConfig';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
-import { successfulPayment } from './PaymentUtils';
+import { successfulPayment, payDoctor } from './PaymentUtils';
 import { React, useState, useEffect } from 'react';
 import { useUserContext } from 'hooks/useUserContext';
 import {
@@ -57,10 +57,12 @@ export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amou
           .then(
             Swal.fire('success', 'Payment Succeeded', 'success')
               .then(() => {
-                // paymentAxios
-                setIsAddDialogOpen(false);
-                const callBackUrl = successfulPayment(userId, items, type);
-                navigate(callBackUrl, { replace: true });
+                // payment to doctor
+                payDoctor(items).then(() => {
+                  setIsAddDialogOpen(false);
+                  const callBackUrl = successfulPayment(userId, items, type);
+                  navigate(callBackUrl, { replace: true });
+                });
               }
             )
           )

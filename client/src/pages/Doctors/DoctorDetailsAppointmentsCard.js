@@ -65,7 +65,8 @@ const DoctorDetailsAppointmentsCard = ({
             status: 'Incomplete',
             type: 'appointment',
             availableSlotsIdx,
-            appointmentPrice: price
+            pricePaidByPatient: price,
+            pricePaidToDoctor: selectedDoctor.hourlyRate
         };
         if (selectedBookingType == 'family') {
             const familyMember = loggedInPatient.familyMembers[selectedMember.index];

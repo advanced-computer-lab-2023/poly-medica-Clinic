@@ -10,7 +10,6 @@ import {
     SECRET_KEY
 } from '../utils/Constants.js';
 import { isValidMongoId } from '../utils/Validation.js';
-import { calcDoctorSalary } from '../utils/PriceCalculator.js'
 
 const stripe = new Stripe(SECRET_KEY);
 
@@ -63,11 +62,9 @@ export const payment = (app) => {
                     message: 'invalid id',
                 });
             }
-            const { appointmentPrice } = req.body;
-            const doctorSalary = calcDoctorSalary(parseInt(appointmentPrice));
-            console.log(typeof doctorSalary);
+            const pricePaidToDoctor = parseInt(req.body.pricePaidToDoctor);
             const axiosRes = await axios.patch(`${CLINIC_BASE_URL}/doctors/${doctorId}/wallet`, {
-                doctorSalary
+                pricePaidToDoctor
             });
             res.status(OK_STATUS_CODE).json({ updatedDoctor: axiosRes.data.updatedDoctor });
         }

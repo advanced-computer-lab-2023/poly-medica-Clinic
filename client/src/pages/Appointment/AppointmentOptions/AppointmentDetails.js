@@ -75,6 +75,28 @@ const AppointmentDetails = ({ selectedAppointment, user }) => {
                     <Typography variant='body1'>
                         {selectedAppointment.type}
                     </Typography>
+                    <section name='price'> {/* only for semantic purpose*/}
+                        {
+                            user.type=='patient'
+                            &&
+                            <>
+                                <Typography variant='subtitle1'>Price Paid:</Typography>
+                                <Typography variant='body1'>
+                                    {`$ ${selectedAppointment.pricePaidByPatient}`}
+                                </Typography>
+                            </>
+                        }
+                        {
+                            user.type=='doctor'
+                            &&
+                            <>
+                                <Typography variant='subtitle1'>Price Received:</Typography>
+                                <Typography variant='body1'>
+                                    {`$ ${selectedAppointment.pricePaidToDoctor}`}
+                                </Typography>
+                            </>
+                        }
+                    </section>
                     {  
                         patientFamilyMember
                         &&

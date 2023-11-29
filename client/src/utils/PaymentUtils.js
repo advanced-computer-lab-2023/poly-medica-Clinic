@@ -1,4 +1,4 @@
-import { clinicAxios, patientAxios } from './AxiosConfig';
+import { clinicAxios, patientAxios, paymentAxios } from './AxiosConfig';
 import Swal from 'sweetalert2';
 import { PAYMENT_ITEM_TYPES } from './Constants';
 
@@ -14,10 +14,15 @@ export const successfulPayment = (userId, items, type) => {
     return '/patient/pages/packages';
   } else if (type === PAYMENT_ITEM_TYPES[1]) {
     clinicAxios.post('/appointments', { items })
+      .then(() => {
+        // payment to doctor
+        payDoctor(items).catch((err) => {
+          console.log('err = ', err);
+        });
+      })
       .catch((error) => {
         console.log('Error in placing the order', error);
       });
-      // paymentAxios
     return '/patient/pages/appointments';
   }
 };
@@ -59,4 +64,11 @@ export const paymentElementOptions = {
     radios: true,
     spacedAccordionItems: true
   }
+};
+
+export const payDoctor = (items) => {
+  const { doctorId, pricePaidToDoctor } = items;
+  return paymentAxios.post(`/payment-salary/doctor/${doctorId}/wallet`, { 
+    pricePaidToDoctor
+  });
 };

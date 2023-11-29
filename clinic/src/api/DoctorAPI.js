@@ -309,10 +309,10 @@ export const doctor = (app) => {
 				return res
 					.status(ERROR_STATUS_CODE)
 					.json({ message: 'Invalid ID' });
-			const { doctorSalary } = req.body;
+			const pricePaidToDoctor = parseInt(req.body.pricePaidToDoctor);
 			const doctor = await service.getDoctorById(doctorId);
 			if(doctor){
-				const newWalletAmount = doctor.walletAmount + parseInt(doctorSalary);
+				const newWalletAmount = doctor.walletAmount + pricePaidToDoctor;
 				const updatedDoctor = await service.updateWallet(doctorId, newWalletAmount);
 				res.status(OK_STATUS_CODE).json({ updatedDoctor });
 			}
