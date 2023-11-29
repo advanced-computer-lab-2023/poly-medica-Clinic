@@ -5,7 +5,7 @@ class ChatService {
         this.repository = new ChatRepository();
     }
 
-    async addChat(chat){
+    async addChat(chat) {
         const newChat = await this.repository.createChat(chat);
         return newChat;
     }
@@ -15,6 +15,10 @@ class ChatService {
         return chats;
     }
 
+    async updateChat(chat) {
+        const updatedChat = await this.repository.updateChat(chat);
+        return updatedChat;
+    }
 }
 
 export default ChatService;

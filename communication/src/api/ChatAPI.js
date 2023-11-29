@@ -35,4 +35,17 @@ export const chat = (app) => {
             });
         }
     });
+
+    app.patch('/chat', async (req, res) => {
+        try {
+            const { chat } = req.body;
+            const data = await service.updateChat(chat);
+            res.status(OK_STATUS_CODE).json(data);
+        } catch (err) {
+            res.status(ERROR_STATUS_CODE).json({
+                message: 'error occurred while updating the chat',
+                error: err.message,
+            });
+        }
+    });
 };

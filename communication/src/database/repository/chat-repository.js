@@ -1,15 +1,31 @@
 import ChatModel from '../models/Chat.js';
+import { ONE } from '../../utils/Constants.js';
 class ChatRepository {
     async createChat(chat) {
         const newChat = await ChatModel.create(chat);
         return newChat;
     }
 
-    async findChats(id) {
+    async findChats(userId) {
         const chats = await ChatModel.find({
-            users: { $elemMatch: { $eq: id } },
-        }).populate("lastMessage");
+            users: {
+                $elemMatch: {
+                    id: { $eq: userId },
+                },
+            },
+        })
+            .populate('lastMessage')
+            .sort({ updatedAt: -ONE });
         return chats;
+    }
+
+    async updateChat(chat) {
+        const updatedChat = await ChatModel.findOneAndUpdate(
+            { _id: chat._id },
+            chat,
+            { new: true, runValidators: true }
+        ).populate('lastMessage');
+        return updatedChat;
     }
 }
 

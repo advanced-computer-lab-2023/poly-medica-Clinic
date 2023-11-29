@@ -7,7 +7,15 @@ const chatSchema = mongoose.Schema(
         },
         users: [
             {
-                type: mongoose.Schema.Types.ObjectId,
+                id: {
+                    type: mongoose.Schema.Types.ObjectId,
+                },
+                userType: {
+                    type: String,
+                },
+                name: {
+                    type: String,
+                },
             },
         ],
         lastMessage: {
