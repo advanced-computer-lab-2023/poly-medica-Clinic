@@ -36,4 +36,22 @@ export const appointment = (app) => {
 			console.log(err.message);
 		}
 	});
+
+	app.patch('/appointments/complete/:appointmentId', async (req, res) => {
+		const { appointmentId } = req.params;
+		if (!isValidMongoId(appointmentId)) {
+			return res.status(ERROR_STATUS_CODE).json({
+				message: 'invalid id',
+			});
+		}
+		try {
+			const updatedAppointment = await service.completeAppointment(appointmentId);
+			res.status(OK_STATUS_CODE).json(updatedAppointment);
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({
+				message: 'appointment not completed due to an error',
+			});
+			console.log(err.message);
+		}
+	});
 };
