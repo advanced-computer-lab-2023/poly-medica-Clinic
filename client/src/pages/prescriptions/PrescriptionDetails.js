@@ -64,8 +64,6 @@ const PrescriptionDetails = ({ selectedPrescription, setSelectedPrescription, pr
 						</Typography>
 						<Typography sx={{ marginBottom: '5%' }} variant="subtitle1">Medicines:</Typography>
 						<Grid container spacing={2}>
-							{
-								formattedMedicines.length > 0 && (
 									<Grid container spacing={2} alignItems={'center'}>
 										{
 											formattedMedicines.map((medicine, index) => (
@@ -91,8 +89,7 @@ const PrescriptionDetails = ({ selectedPrescription, setSelectedPrescription, pr
 											)
 										}
 									</Grid>
-								)
-							}
+								
 						</Grid>
 
 						< Typography sx={{ marginTop: '5%' }} variant="subtitle1">Description:</Typography>
