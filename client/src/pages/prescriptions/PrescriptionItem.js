@@ -51,74 +51,71 @@ const PrescriptionItem = ({
 		return <Typography variant='h5'>Loading...</Typography>;
 	} else {
 		return (
-			<>
-				<ListItem button onClick={() => handleClicking(prescription, doctor)}>
-					<ListItemAvatar sx={{ paddingRight: '2%' }}>
-						<img src={prescrptionImage} width='80' height='80' />
-					</ListItemAvatar>
+			<ListItem button onClick={() => handleClicking(prescription, doctor)}>
+				<ListItemAvatar sx={{ paddingRight: '2%' }}>
+					<img src={prescrptionImage} width='80' height='80' />
+				</ListItemAvatar>
+				<ListItemText
+					primary={`Dr. ${doctor.userData.name}`}
+					secondary={
+						<div
+							style={{
+								overflow: 'hidden',
+								whiteSpace: 'nowrap',
+								textOverflow: 'ellipsis',
+							}}
+						>
+							{prescription.filled ? (
+								<CheckIcon>Filled</CheckIcon>
+							) : (
+								<CloseIcon>Not Filled</CloseIcon>
+							)}
+							{prescription.filled ? 'Filled' : 'Not Filled'}
+						</div>
+					}
+					sx={{
+						width: '60%',
+						lineHeight: '1.5em',
+						maxHeight: '3em',
+					}}
+				/>
+
+				<LocalizationProvider dateAdapter={AdapterDayjs}>
 					<ListItemText
-						primary={`Dr. ${doctor.userData.name}`}
-						secondary={
-							<div
-								style={{
-									overflow: 'hidden',
-									whiteSpace: 'nowrap',
-									textOverflow: 'ellipsis',
-								}}
-							>
-								{prescription.filled ? (
-									<CheckIcon>Filled</CheckIcon>
-								) : (
-									<CloseIcon>Not Filled</CloseIcon>
-								)}
-								{prescription.filled ? 'Filled' : 'Not Filled'}
-							</div>
-						}
+						secondary={dayjs(prescription.date).format('LL')}
 						sx={{
 							width: '60%',
 							lineHeight: '1.5em',
 							maxHeight: '3em',
 						}}
 					/>
+					{/* <Typography variant="h5" sx={{ paddingLeft: '2%', align:'center' }}> {dayjs(prescription.date).format('LL')} </Typography> */}
+				</LocalizationProvider>
 
-					<LocalizationProvider dateAdapter={AdapterDayjs}>
-						<ListItemText
-							secondary={dayjs(prescription.date).format('LL')}
-							sx={{
-								width: '60%',
-								lineHeight: '1.5em',
-								maxHeight: '3em',
-							}}
-						/>
-						{/* <Typography variant="h5" sx={{ paddingLeft: '2%', align:'center' }}> {dayjs(prescription.date).format('LL')} </Typography> */}
-					</LocalizationProvider>
+				{user.type === 'doctor' && (
+					<IconButton
+						edge='end'
+						aria-label='edit'
+						onClick={(event) => handleEditButtonClick(prescription, event)}
+						sx={{ marginRight: '2%' }}
+					>
+						<EditIcon />
+					</IconButton>
+				)}
 
-					{user.type === 'doctor' && (
-						<IconButton
-							edge='end'
-							aria-label='edit'
-							onClick={(event) => handleEditButtonClick(prescription, event)}
-						>
-							<EditIcon />
+				<Tooltip title='download'>
+					<a
+						href={`${PATIENT_BASE_URL}/prescriptions/${prescription._id}/download`}
+						target='_blank'
+						rel='noreferrer'
+						download={`${prescription._id}.pdf`}
+					>
+						<IconButton edge='end' aria-label='download'>
+							<FileDownloadIcon />
 						</IconButton>
-					)}
-
-					{user.type === 'patient' && (
-						<Tooltip title='download'>
-							<a
-								href={`${PATIENT_BASE_URL}/prescriptions/${prescription._id}/download`}
-								target='_blank'
-								rel='noreferrer'
-								download={`${prescription._id}.pdf`}
-							>
-								<IconButton edge='end' aria-label='download'>
-									<FileDownloadIcon />
-								</IconButton>
-							</a>
-						</Tooltip>
-					)}
-				</ListItem>
-			</>
+					</a>
+				</Tooltip>
+			</ListItem>
 		);
 	}
 };
