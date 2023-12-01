@@ -18,6 +18,10 @@ class NotificationService {
         await this.repository.postNotificationUser(userId);
     }
 
+    async deleteNotificationUser(userId){
+        await this.repository.deleteNotificationUser(userId);
+    }
+
     async patchNotificationState(userId, notificationId){
         await this.repository.patchNotificationState(userId, notificationId);
     }

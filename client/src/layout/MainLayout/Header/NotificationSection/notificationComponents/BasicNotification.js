@@ -11,10 +11,11 @@ import {
 	ListItemText,
 	Typography
 } from '@mui/material';
+import { useNavigate } from 'react-router';
+import { useUserContext } from 'hooks/useUserContext';
 
 // assets
 import { IconCalendarTime } from '@tabler/icons';
-import User1 from 'assets/images/users/user-round.svg';
 import { APPOINTMENT_NOTIFICATION_TYPE_ENUM } from 'utils/Constants';
 
 const ListItemWrapper = styled('div')(({ theme }) => ({
@@ -33,15 +34,16 @@ const chipSX = {
 	padding: '0 6px'
 };
 
-const BasicNotification = ({ header, body, date, notificationType, chipLabel, chipType }) => {
+const BasicNotification = ({ header, body, date, notificationType, senderName, senderImage, chipLabel, chipType }) => {
     const theme = useTheme();
+	const navigate = useNavigate();
+	const { user } = useUserContext();
 
 	const chipStyles = {
 		error:{
 			...chipSX,
 			color: theme.palette.orange.dark,
 			backgroundColor: theme.palette.orange.light,
-			marginRight: '5px'
 		},
 		success: {
 			...chipSX,
@@ -57,19 +59,20 @@ const BasicNotification = ({ header, body, date, notificationType, chipLabel, ch
 	};
     return ( 
         <ListItemWrapper>
-				
+
+				{notificationType === APPOINTMENT_NOTIFICATION_TYPE_ENUM &&
 				<Grid container display={'flex'} flexDirection={'row'}>
 							<Grid item xs={12}>
 							<ListItemAvatar>
-								<Avatar alt="John Doe" src={User1} />
+								<Avatar alt={senderName} src={senderImage} />
 							</ListItemAvatar>
 							</Grid>
 							<Grid container justifyContent="center" item xs={12} sx={{ marginTop: -3 }}>
 								<Typography variant="caption" display="block" gutterBottom>
-                                    { 'John Doe' }
+                                    { senderName }
 								</Typography>
 							</Grid>
-				</Grid>
+				</Grid> }
 				{/* <ListItemText justifyContent="flex-end" primary="John Doe" /> */}
 				<ListItem alignItems="center" sx={{ marginBottom: 1, marginTop: 1 }}>
 					<ListItemText primary={header} sx={{ marginLeft: 1 }} />
@@ -90,11 +93,11 @@ const BasicNotification = ({ header, body, date, notificationType, chipLabel, ch
 					
 						{/* Buttons */}
 					{notificationType === APPOINTMENT_NOTIFICATION_TYPE_ENUM &&
-					<Grid item xs={12}>
+					<Grid item xs={12} sx={{ marginBottom: 2 }}>
 					<Grid item xs={12}>
 						<Grid container>
 							<Grid item>
-								<Button variant="contained" disableElevation endIcon={<IconCalendarTime stroke={1.5} size="1.3rem" />}>
+								<Button variant="contained" onClick={ () => navigate(`/${user.type}/pages/appointments`) } disableElevation endIcon={<IconCalendarTime stroke={1.5} size="1.3rem" />}>
 									Appointments
 								</Button>
 							</Grid>
@@ -106,11 +109,20 @@ const BasicNotification = ({ header, body, date, notificationType, chipLabel, ch
 					
 					
 					{/* labels */}	
-					<Grid item container sx={{ marginLeft: 5 }}>
+					<Grid item xs={12} sx={{ paddingLeft: '20%' }}>
+					<Grid item xs={12}>
+						<Grid container>
+							<Grid item>
 							<Grid item>
 								<Chip label={chipLabel} sx={chipStyles[chipType]} />
 							</Grid>
+							</Grid>
 						</Grid>
+					</Grid>
+					</Grid>
+					{/* <Grid item container alignItems={ 'center' }>
+							
+						</Grid> */}
 
 					{/* images => pharmacy when midcine out of stack*/}
 					{/* <Grid item xs={12}>

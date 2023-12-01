@@ -103,7 +103,11 @@ export const user = (app) => {
 	app.delete('/users/:id', async (req, res) => {
 		try {
 			const userId = req.params.id;
-			await user.deleteUser(userId);
+			const user = await user.deleteUser(userId);
+			await axios.delete(`${COMMUNICATION_USER_POST_URL}/${userId}`);
+			if(user.type == PHARMACIST_ENUM)
+				await axios.delete(`${PHARMACIST_BASE_URL}archive/${userId}`);
+			
 			res.status(OK_REQUEST_CODE_200).end();
 		} catch (err) {
 			res
@@ -151,6 +155,7 @@ export const user = (app) => {
 		try {
 			const userId = req.body.userId;
 			await axios.post(`${COMMUNICATION_USER_POST_URL}/${userId}`);
+			await axios.post(`${PHARMACIST_BASE_URL}archive/${userId}`);
 			await user.signupUser(req.body);
 			res.status(OK_REQUEST_CODE_200).end();
 		} catch (err) {

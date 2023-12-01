@@ -4,6 +4,7 @@ import Notification from "../models/Notification.js";
 class NotificationRepository {
     async getAllNotification(userId){
         const userNotifications = await Notification.findOne({userId}, "notifications").lean();
+        console.log(userNotifications);
         return userNotifications.notifications;
     }
 
@@ -17,6 +18,10 @@ class NotificationRepository {
     async postNotificationUser(id){
         const notificationUser = new Notification({userId: id});
         await notificationUser.save();
+    }
+
+    async deleteNotificationUser(id){
+        await Notification.deleteOne( {userId: id} );
     }
 
     async patchNotificationState(userId, notificationId){

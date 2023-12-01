@@ -1,5 +1,5 @@
 import { useTheme } from '@mui/material/styles';
-import { List } from '@mui/material';
+import { Divider, List } from '@mui/material';
 import BasicNotification from './notificationComponents/BasicNotification';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 
@@ -35,7 +35,10 @@ const NotificationList = ({ notifications }) => {
 			{ 
 				notifications.map( (notification, idx) => {
 					return (
-					<BasicNotification key={`notification_${idx}_${notification.createdAt}`} header={notification.notificationHead} body={notification.notificationBody} date={formatDistanceToNow(new Date(notification.createdAt))} chipLabel={notification.notificationState?'seen':'unseen'} chipType={notification.notificationState?'success':'error'} notificationType={notification.notificationType}/>
+					<>
+					<BasicNotification key={`notification_${idx}_${notification.createdAt}`} header={notification.notificationHead} body={notification.notificationBody} date={formatDistanceToNow(new Date(notification.createdAt))} chipLabel={notification.notificationState?'seen':'unseen'} chipType={notification.notificationState?'success':'error'} notificationType={notification.notificationType} senderImage={notification.senderImage} senderName={notification.senderName}/>
+					<Divider/>
+					</>
 				);} )
 			}
 		</List>

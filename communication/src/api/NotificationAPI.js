@@ -22,6 +22,7 @@ export const notification = (app) => {
             const notifications = await service.getAllNotification(userId);
             res.send(notifications);
         } catch (error){
+            console.log(error);
             res.status(ERROR_STATUS_CODE).send({ errMessage: SERVER_ERROR_MESSAGE});
         }
     });
@@ -73,6 +74,16 @@ export const notification = (app) => {
             }
         }
     })
+
+    app.delete('/user/:id', async (req, res) => {
+        try{
+            const userId = req.params.id;
+            await service.deleteNotificationUser(userId);
+            res.status(OK_STATUS_CODE).end();
+        } catch(error){
+                res.status(ERROR_STATUS_CODE).send({ errMessage: SERVER_ERROR_MESSAGE});
+        }
+    });
 
     app.patch('/notification/:userId/:notificationId', async (req, res) =>{
         try{

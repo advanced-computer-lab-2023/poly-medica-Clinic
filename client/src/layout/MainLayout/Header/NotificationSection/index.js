@@ -66,6 +66,11 @@ const NotificationSection = () => {
 	const { user } = useUserContext(); 
 	const [notifications, setNotifications] = useState([]);
 	const [numberOfUnseenNotification, setNumberOfUnseenNotification] = useState(0);
+	const [dataChange, setDataChange] = useState(false);
+
+	const handledataChange = () => {
+		setDataChange(!dataChange);
+	};
 	/**
    * anchorRef is used on different componets and specifying one type leads to other components throwing an error
    * */
@@ -105,7 +110,7 @@ const NotificationSection = () => {
 			});
 		}
 		prevOpen.current = open;
-	}, [open]);
+	}, [open, dataChange]);
 
 	
 	
@@ -194,6 +199,7 @@ const NotificationSection = () => {
 														
 														communicationAxios.patch(`/notifications/${user.id}`).then( () => {
 															setNumberOfUnseenNotification(0);
+															handledataChange();
 														}).catch( error => {
 															console.log(error);
 															Swal.fire({
