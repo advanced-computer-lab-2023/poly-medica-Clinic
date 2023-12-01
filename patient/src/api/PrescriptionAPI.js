@@ -70,4 +70,21 @@ export const prescription = (app) => {
 			});
 		}
 	});
+
+	app.get('/prescriptions/:prescriptionId/medicines', async (req, res) => {
+		try {
+			const { prescriptionId } = req.params;
+			if (!isValidMongoId(prescriptionId)) {
+				return res.status(ERROR_STATUS_CODE).json({
+					message: 'Prescription ID is invalid',
+				});
+			}
+			const medicines = await service.getMedicinesByPrescriptionId(
+				prescriptionId,
+			);
+			res.status(OK_STATUS_CODE).json(medicines);
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({ error: err });
+		}
+	});
 };

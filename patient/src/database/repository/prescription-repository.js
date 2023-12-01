@@ -22,6 +22,12 @@ class PrescriptionRepository {
 		return prescription;
 	}
 
+	async getMedicinesByPrescriptionId(prescriptionId) {
+		const prescription = await this.getPrescriptionById(prescriptionId);
+		const medicines = prescription.medicines;
+		return medicines;
+	}
+
 	getFile(fileName) {
 		return getFile(PRESCRIPTION_FOLDER_NAME, fileName);
 	}
