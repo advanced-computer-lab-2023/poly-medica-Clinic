@@ -19,9 +19,10 @@ class AppointmentRepository {
 		return await newAppointment.save();
 	}
 	
-	async updateAppointmentDate(appointmentId, newDate){
+	async updateAppointmentDateAndStatus(appointmentId, newDate){
 		const appointment = await AppointmentModel.findById(appointmentId);
 		appointment.date = newDate;
+		appointment.status = 'Rescheduled';
 		return await appointment.save();
 	}
 }

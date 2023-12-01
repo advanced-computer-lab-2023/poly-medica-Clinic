@@ -56,7 +56,7 @@ class AppointmentService {
 
 		// update the date of the appointment
 		const newDate = new Date(appointmentDoctor.availableSlots[availableSlotsIdx].from);
-		const updatedAppointment = await this.repository.updateAppointmentDate(appointmentId, newDate);
+		const updatedAppointment = await this.repository.updateAppointmentDateAndStatus(appointmentId, newDate);
 
 		// delete the newSlot from the doctor's availableSlots array
 		await this.doctorRepository.deleteSlot(doctorId, availableSlotsIdx);
