@@ -13,6 +13,7 @@ export default function MedicineCard({ medicine, selectedPrescription, setSelect
     const handleMedicineAmount = (value) => {
         medicine.amount += value;
         if (medicine.amount < 1) medicine.amount = 1;
+        if (medicine.amount > medicine.quantity) medicine.amount = medicine.quantity;
         const medicineIndex = selectedPrescription.medicines.findIndex(
             (prescriptionMedicine) => prescriptionMedicine.medicineId.toString() === medicine._id.toString()
         );
@@ -31,7 +32,7 @@ export default function MedicineCard({ medicine, selectedPrescription, setSelect
     };
 
     return (
-        <Card sx={{ maxWidth: 250, margin: '2%', padding: '4%', border:'2px solid black', background: '#F5F5F5' }}>
+        <Card sx={{ maxWidth: 250, margin: '2%', padding: '4%', border: '2px solid black', background: '#F5F5F5' }}>
             <CardActionArea>
                 <IconButton onClick={() => handleMedicineDelete()} >
                     <Close />
