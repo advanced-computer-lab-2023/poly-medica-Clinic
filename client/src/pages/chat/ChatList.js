@@ -11,22 +11,52 @@ import { useUserContext } from 'hooks/useUserContext';
 import { communicationAxios } from 'pages/utilities/AxiosConfig';
 import ChatCard from './ChatCard';
 import { useChat } from 'contexts/ChatContext';
+import { DOCTOR_TYPE_ENUM, PATIENT_TYPE_ENUM, PHARMACIST_TYPE_ENUM, PHARMACY_MONGO_ID } from 'utils/Constants';
+import { isEqual } from 'lodash';
+import { chatExist } from 'utils/ChatUtils';
 
 const ChatList = () => {
     const { user } = useUserContext();
-    const userId = user.id;
+    const userId = user.id,
+        userType = user.type;
     const { socket, setSelectedChat, chats, setChats } = useChat();
 
     useEffect(() => {
-        communicationAxios
-            .get(`/chat/${userId}`)
-            .then((response) => {
-                setChats(response.data);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    }, []);
+        const fetchData = async () => {
+            communicationAxios
+                .get(`/chat/${userId}`)
+                .then((response) => {
+                    if (
+                        userType === PATIENT_TYPE_ENUM &&
+                        !chatExist(response.data, userId, PHARMACY_MONGO_ID) &&
+                        !chatExist(response.data, PHARMACY_MONGO_ID, userId)
+                    ) {
+                        const res = communicationAxios.post('/chat', {
+                            chat: {
+                                chatName: 'Pharmacy',
+                                users: [
+                                    {
+                                        id: PHARMACY_MONGO_ID,
+                                        userType: PHARMACIST_TYPE_ENUM,
+                                    },
+                                    { id: userId, userType: PATIENT_TYPE_ENUM },
+                                ],
+                            },
+                        });
+                        setChats([res.data, ...response.data]);
+                    } else {
+                        if (!isEqual(response.data, chats)) {
+                            setChats(response.data);
+                        }
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        };
+
+        fetchData();
+    }, [chats]);
 
     const handleSelectChat = (chat) => {
         setSelectedChat((prevChat) => {
@@ -71,18 +101,24 @@ const ChatList = () => {
                 {chats &&
                     chats.map((chat, index) => {
                         return (
-                            <ListItemButton
-                                sx={{
-                                    backgroundColor: '#fafafa',
-                                    padding: '2px auto',
-                                    marginLeft: 2,
-                                    marginRight: 2,
-                                    marginTop: 1,
-                                }}
-                                key={index}
-                                onClick={() => handleSelectChat(chat)}>
-                                <ChatCard chat={chat} />
-                            </ListItemButton>
+                            (userType !== DOCTOR_TYPE_ENUM ||
+                                chat.lastMessage ||
+                                (chat.users &&
+                                    chat.users[1]?.userType ===
+                                        PHARMACIST_TYPE_ENUM)) && (
+                                <ListItemButton
+                                    sx={{
+                                        backgroundColor: '#fafafa',
+                                        padding: '2px auto',
+                                        marginLeft: 2,
+                                        marginRight: 2,
+                                        marginTop: 1,
+                                    }}
+                                    key={index}
+                                    onClick={() => handleSelectChat(chat)}>
+                                    {chat && <ChatCard chat={chat} />}
+                                </ListItemButton>
+                            )
                         );
                     })}
             </List>

@@ -13,9 +13,6 @@ const chatSchema = mongoose.Schema(
                 userType: {
                     type: String,
                 },
-                name: {
-                    type: String,
-                },
             },
         ],
         lastMessage: {

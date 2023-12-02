@@ -19,6 +19,8 @@ export const getUserName = async (user) => {
     } else if (user.userType === 'Doctor') {
         const name = await getDoctorName(user.id);
         return name;
+    } else {
+        return 'Pharmacy';
     }
 };
 
@@ -38,4 +40,15 @@ const getDoctorName = async (id) => {
     } catch (err) {
         console.log(err);
     }
+};
+
+export const chatExist = (chats, user1ID, user2ID) => {
+    for (let i = 0; i < chats.length; i++) {
+        if (
+            chats[i].users[0].id === user1ID &&
+            chats[i].users[1].id === user2ID
+        )
+            return true;
+    }
+    return false;
 };

@@ -2,6 +2,9 @@ export const CLINIC_BASE_URL = 'http://localhost:8001';
 export const PATIENT_BASE_URL = 'http://localhost:8002';
 export const PHARMACY_BASE_URL = 'http://localhost:8003';
 export const COMMUNICATION_BASE_URL = 'http://localhost:8006';
+
+export const PHARMACY_MONGO_ID = '5fc7a921328d333b8ce85141';
+
 const APPOINTMENT_STATUS = [
     'COMPLETE',
     'INCOMPLETE',
@@ -31,6 +34,8 @@ export const PATIENT_TYPE_ENUM = 'patient';
 export const DOCTOR_TYPE_ENUM = 'doctor';
 
 export const ADMIN_TYPE_ENUM = 'admin';
+
+export const PHARMACIST_TYPE_ENUM = 'pharmacist';
 
 export const HEALTH_PACKAGE_STATUS = [
     'CANCELLED',

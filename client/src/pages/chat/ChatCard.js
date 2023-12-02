@@ -5,14 +5,22 @@ import { useState, useEffect } from 'react';
 
 const ChatCard = ({ chat }) => {
     const { user } = useUserContext();
-    const userId = user.id;
     const [name, setName] = useState('');
 
     useEffect(() => {
-        getUserName(getReceiver(userId, chat.users)).then((res) => {
-            setName(res);
-        });
-    }, []);
+        const fetchUserName = async () => {
+            try {
+                const userName = await getUserName(
+                    getReceiver(user, chat.users)
+                );
+                setName(userName);
+            } catch (error) {
+                console.error('Error fetching username:', error);
+            }
+        };
+
+        fetchUserName();
+    }, [user, chat.users]);
     return (
         <CardHeader
             sx={{
