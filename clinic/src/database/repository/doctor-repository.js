@@ -177,9 +177,9 @@ class DoctorRepository {
 		return await DoctorModel.findByIdAndUpdate(doctorId, { availableSlots });
 	}
 
-	async updateWallet(doctorId, newWalletAmount){
+	async updateWallet(doctorId, walletChange){
 		const doctor = await DoctorModel.findById(doctorId);
-		doctor.walletAmount = newWalletAmount;
+		doctor.walletAmount += walletChange;
 		return await doctor.save();
 	}
 }

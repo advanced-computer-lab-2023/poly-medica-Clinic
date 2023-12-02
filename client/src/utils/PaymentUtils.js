@@ -68,6 +68,7 @@ export const paymentElementOptions = {
 
 export const payDoctor = (items) => {
   const { doctorId, pricePaidToDoctor } = items;
+  console.log('pricePaidToDoctor = ', pricePaidToDoctor);
   return paymentAxios.post(`/payment-salary/doctor/${doctorId}/wallet`, { 
     pricePaidToDoctor
   });

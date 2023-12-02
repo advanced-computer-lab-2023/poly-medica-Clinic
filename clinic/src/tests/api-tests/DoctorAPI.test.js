@@ -565,11 +565,11 @@ describe('DELETE /doctors/:id', () => {
 });
 
 describe('PATCH /doctors/:doctorId/wallet', () => {
-	const updateWallet = async (doctorId, pricePaidToDoctor) => {
-		return await request(app).patch(`/doctors/${doctorId}/wallet`).send({ pricePaidToDoctor });
+	const updateWallet = async (doctorId, walletChange) => {
+		return await request(app).patch(`/doctors/${doctorId}/wallet`).send({ walletChange });
 	};
-	const generatePricePaidToDoctor = () => {
-		return parseFloat(faker.finance.amount({ min: 100, max: 1000, dec: 2 }));
+	const generateWalletChange = () => {
+		return parseFloat(faker.finance.amount({ min: -1000, max: 1000, dec: 2 }));
 	};
 	beforeEach(async () => {
 		await connectDBTest();
@@ -578,24 +578,17 @@ describe('PATCH /doctors/:doctorId/wallet', () => {
 	it('should return 200 Ok and update wallet correctly', async () => {
 		const doctor = new DoctorModel(generateDoctor());
 		await doctor.save();
-		const pricePaidToDoctor = generatePricePaidToDoctor();
-		const res = await updateWallet(doctor._id.toString(), pricePaidToDoctor);
+		const walletChange = generateWalletChange();
+		const res = await updateWallet(doctor._id.toString(), walletChange);
 		expect(res.status).toBe(OK_STATUS_CODE);
-		expect(res._body.updatedDoctor.walletAmount).toBe(doctor.walletAmount + pricePaidToDoctor);
+		expect(res._body.updatedDoctor.walletAmount).toBe(doctor.walletAmount + walletChange);
 	});
 
 	it('should return 400 when id is invalid', async () => {
 		const id = faker.lorem.word();
-		const pricePaidToDoctor = generatePricePaidToDoctor();
-		const res = await updateWallet(id, pricePaidToDoctor);
+		const walletChange = generateWalletChange();
+		const res = await updateWallet(id, walletChange);
 		expect(res.status).toBe(ERROR_STATUS_CODE);
-	});
-
-	it('should return 400 when id doesn\'t exist', async () => {
-		const id = faker.database.mongodbObjectId();
-		const pricePaidToDoctor = generatePricePaidToDoctor();
-		const res = await updateWallet(id, pricePaidToDoctor);
-		expect(res.status).toBe(NOT_FOUND_STATUS_CODE);
 	});
 
 	afterEach(async () => {

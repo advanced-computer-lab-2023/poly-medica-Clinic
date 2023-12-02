@@ -192,12 +192,11 @@ class PatientRepository {
 		return addresses;
 	}
 
-	async updateWalletAmount(id, amount) {
-		const updatedAmount = await PatientModel.findOneAndUpdate(
-			{ _id: id },
-			{ walletAmount : amount }
-		);
-		return updatedAmount.walletAmount;
+	async updateWalletAmount(id, walletChange) {
+		const patient = await PatientModel.findById(id);
+		patient.walletAmount += walletChange;
+		await patient.save();
+		return patient.walletAmount;
 	}
 }
 

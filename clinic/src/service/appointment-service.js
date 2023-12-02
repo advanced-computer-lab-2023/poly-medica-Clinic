@@ -56,12 +56,25 @@ class AppointmentService {
 
 		// update the date of the appointment
 		const newDate = new Date(appointmentDoctor.availableSlots[availableSlotsIdx].from);
-		const updatedAppointment = await this.repository.updateAppointmentDateAndStatus(appointmentId, newDate);
+		await this.repository.updateAppointmentDate(appointmentId, newDate);
+		const updatedAppointment = await this.repository.updateAppointmentStatus(appointmentId, 'Rescheduled');
 
 		// delete the newSlot from the doctor's availableSlots array
 		await this.doctorRepository.deleteSlot(doctorId, availableSlotsIdx);
 		
 		return updatedAppointment;
+	}
+
+	async cancelAppointment(appointmentId, doctorId, appointmentDate){
+
+		// add oldSlot to doctor available slots
+		await this.doctorRepository.addSlot(doctorId, appointmentDate);
+		
+		// update appointment status
+		const updatedAppointment = await this.repository.updateAppointmentStatus(appointmentId, 'Cancelled');
+		return updatedAppointment;
+
+		
 	}
 }
 

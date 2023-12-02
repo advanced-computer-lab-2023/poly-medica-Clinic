@@ -55,22 +55,21 @@ describe('POST /payment/wallet', () => {
     const mockUserId = 123;
 
     it('should process payment in the wallet successfully', async () => {
-        axios.get.mockResolvedValue(mockWalletAmount);
+        axios.get.mockResolvedValue({data: {walletAmount: mockWalletAmount}});
         axios.patch.mockResolvedValue({});
         const response = await request(app)
-        .post('/payment/wallet')
-        .send({ userId: mockUserId, amountToPayByWallet: 50 });
-        console.log(response.text);
+            .post('/payment/wallet')
+            .send({ userId: mockUserId, amountToPayByWallet: 50 });
         expect(response.status).toBe(OK_STATUS_CODE);
         expect(response.text).toBe('Payment successful');
     });
   
     it('should handle insufficient funds', async () => {
-        axios.get.mockReturnValue(mockWalletAmount);   
+        axios.get.mockReturnValue({data: {walletAmount: mockWalletAmount}});   
         axios.patch.mockResolvedValue({});
         const response = await request(app)
-        .post('/payment/wallet')
-        .send({  userId: mockUserId, amountToPayByWallet: 150 });
+            .post('/payment/wallet')
+            .send({  userId: mockUserId, amountToPayByWallet: 150 });
         expect(response.status).toBe(BAD_REQUEST_CODE_400);
         expect(response.body).toBe('insufficient amount in the wallet');
     });
@@ -80,8 +79,8 @@ describe('POST /payment/wallet', () => {
         axios.get.mockRejectedValue(new Error('Mocked error'));
         axios.patch.mockResolvedValue({});
         const response = await request(app)
-        .post('/payment/wallet')
-        .send({ amountToPayByWallet: 50 });
+            .post('/payment/wallet')
+            .send({ amountToPayByWallet: 50 });
         expect(response.status).toBe(ERROR_STATUS_CODE);
         expect(response.body).toEqual({
         err: 'Mocked error',

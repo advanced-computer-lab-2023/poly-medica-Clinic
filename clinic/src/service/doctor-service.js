@@ -83,8 +83,8 @@ class DoctorService {
 		return doctor;
 	}
 
-	async updateWallet(doctorId, newWalletAmount){
-		const doctor = await this.repository.updateWallet(doctorId, newWalletAmount);
+	async updateWallet(doctorId, walletChange){
+		const doctor = await this.repository.updateWallet(doctorId, walletChange);
 		return doctor;
 	}
 }

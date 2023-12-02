@@ -310,16 +310,11 @@ export const doctor = (app) => {
 					.status(ERROR_STATUS_CODE)
 					.json({ message: 'Invalid ID' });
 			}
-			const pricePaidToDoctor = parseFloat(req.body.pricePaidToDoctor);
-			const doctor = await service.getDoctorById(doctorId);
-			if(doctor){
-				const newWalletAmount = doctor.walletAmount + pricePaidToDoctor;
-				const updatedDoctor = await service.updateWallet(doctorId, newWalletAmount);
-				res.status(OK_STATUS_CODE).json({ updatedDoctor });
-			}
-			else{
-				res.status(NOT_FOUND_STATUS_CODE).json({ message: 'Not found' });
-			}
+			// walletChange is +ve if paid to doctor, -ve if deducted from doctor
+			const walletChange = parseFloat(req.body.walletChange);
+			console.log('walletChange = ', walletChange);
+			const updatedDoctor = await service.updateWallet(doctorId, walletChange);
+			res.status(OK_STATUS_CODE).json({ updatedDoctor });
 		} catch (error) {
 			res.status(NOT_FOUND_STATUS_CODE).json({ message: error });
 		}
