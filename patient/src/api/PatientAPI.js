@@ -126,6 +126,7 @@ export const patient = (app) => {
 		}
 		try {
 			const { member } = req.body;
+			console.log('member = ', member);
 			if (member.email || member.mobileNumber) {
 				const patient = await service.getPatient(member);
 				if (!patient) {

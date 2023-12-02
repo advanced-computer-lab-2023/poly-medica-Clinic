@@ -40,6 +40,7 @@ export const order = (app) => {
 	app.post('/order', async (req, res) => {
 		try {
 			const { order } = req.body;
+			console.log(order);
 			const data = await service.addOrder(order);
 			res.status(OK_STATUS_CODE).json(data);
 		} catch (err) {
@@ -69,3 +70,4 @@ export const order = (app) => {
 		}
 	});
 };
+

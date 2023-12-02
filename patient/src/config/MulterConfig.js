@@ -4,19 +4,22 @@ import fs from 'fs';
 
 const getStorage = (folder) => {
 	try {
-		const folderPath = `./../patient/src/utils/upload/${folder}`;
+		const folderPath = `./src/utils/upload/${folder}`;
 		if (!fs.existsSync(folderPath)) {
 			fs.mkdirSync(folderPath, { recursive: true });
 		}
 		return multer.diskStorage({
-			
 			destination: (req, file, cb) => {
 				cb(null, folderPath);
 			},
 			filename: function (req, file, cb) {
-				cb(null, path.parse(file.originalname).name + Date.now() + path.extname(file.originalname));
-
-			}
+				cb(
+					null,
+					path.parse(file.originalname).name +
+						Date.now() +
+						path.extname(file.originalname),
+				);
+			},
 		});
 	} catch (error) {
 		console.log(error);
