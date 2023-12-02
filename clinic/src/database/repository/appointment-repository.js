@@ -26,6 +26,12 @@ class AppointmentRepository {
 		availableSlots.splice(availableSlotsIdx, ONE);
 		await DoctorModel.findByIdAndUpdate(doctorId, { availableSlots });
 	}
+
+	async completeAppointment(appointmentId) {
+		const appointment = await AppointmentModel.findById(appointmentId);
+		appointment.status = 'Complete';
+		return await appointment.save();
+	}
 }
 
 export default AppointmentRepository;

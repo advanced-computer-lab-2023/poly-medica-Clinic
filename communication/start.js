@@ -9,12 +9,12 @@ const mongoURL = process.env.MONGO_URI;
 console.log(mongoURL);
 
 const connect = async () => {
-    try {
-        await mongoose.connect(mongoURL);
-        console.log('Database connected', mongoURL);
-    } catch (err) {
-        console.error('Error connecting to the database:', err.message);
-    }
+	try {
+		await mongoose.connect(mongoURL);
+		console.log('Database connected', mongoURL);
+	} catch (err) {
+		console.error('Error connecting to the database:', err.message);
+	}
 };
 
 await connect();
@@ -22,5 +22,5 @@ await connect();
 const port = process.env.PORT || PORT;
 
 server.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+	console.log(`Server is running on port ${port}`);
 });

@@ -14,15 +14,15 @@ app.use(bodyParser.json());
 
 app.use(express.json());
 app.use(
-    cors({
-        origin: [
-            'http://localhost:3000',
-            'http://localhost:3001',
-            'http://localhost:3002',
-            'http://localhost:3005',
-        ],
-        credentials: true,
-    })
+	cors({
+		origin: [
+			'http://localhost:3000',
+			'http://localhost:3001',
+			'http://localhost:3002',
+			'http://localhost:3005',
+		],
+		credentials: true,
+	})
 );
 
 chat(app);
@@ -37,26 +37,26 @@ const io = new Server(server, {
 });
 
 io.on('connection', (socket) => {
-    console.log('Connected to socket.io');
+	console.log('Connected to socket.io');
 
-    socket.on('setup', (userId) => {
-        socket.join(userId);
-    });
+	socket.on('setup', (userId) => {
+		socket.join(userId);
+	});
 
-    socket.on('join_room', (room) => {
-        socket.join(room);
-    });
+	socket.on('join_room', (room) => {
+		socket.join(room);
+	});
 
-    socket.on('leave_room', (room) => {
-        socket.leave(room);
-    });
+	socket.on('leave_room', (room) => {
+		socket.leave(room);
+	});
 
-    socket.on('send_message', (data) => {
-        data.selectedChat.users.map((user) => {
-            if (user.id !== data.userId)
-                socket.to(user.id).emit('receive_message', data);
-        });
-    });
+	socket.on('send_message', (data) => {
+		data.selectedChat.users.map((user) => {
+			if (user.id !== data.userId)
+				socket.to(user.id).emit('receive_message', data);
+		});
+	});
 });
 
 export default server;
