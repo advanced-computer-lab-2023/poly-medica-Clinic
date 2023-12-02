@@ -16,6 +16,9 @@ export const ERROR_STATUS_CODE = 500;
 export const EMPTY_SIZE = 0;
 export const ONE = 1;
 export const ZERO = 0;
+export const FOURTEEN = 14;
+export const HALF = 0.5;
+export const TWELVE = 12;
 export const INF = 1e18;
 export const PORT = 8002;
 
@@ -59,3 +62,4 @@ export const ORDER_STATUS = [
 ];
 export const PATIENT_ADDRESSES_PROJECTION = 'deliveryAddresses';
 
+export const PRESCRIPTION_FOLDER_NAME = 'prescriptions';
