@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Dialog,
     DialogTitle,
@@ -23,6 +23,7 @@ const AppointmentOptions = ({
     user 
 }) => {
     const [tabValue, setTabValue] = useState('1');
+    const [cannotReschedule, setCannotReschedule] = useState(false);
     const handleTabChange = (event, newTabValue) => {
         setTabValue(newTabValue);
     };
@@ -30,6 +31,15 @@ const AppointmentOptions = ({
         setTabValue('1');
         handleDialogClose();
     };
+    useEffect(() => {
+        console.log('selectedAppointment == ', selectedAppointment);
+        if(selectedAppointment){
+            setCannotReschedule(
+                selectedAppointment.status.toUpperCase() == 'COMPLETE'
+                || selectedAppointment.status.toUpperCase() == 'CANCELLED'
+            );
+        }
+    }, [selectedAppointment]);
 
     return (
         <Dialog
@@ -47,7 +57,7 @@ const AppointmentOptions = ({
                     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                         <TabList value={tabValue} onChange={handleTabChange}>
                             <Tab label="Appointment Details" value='1'/>
-                            <Tab label="Reschedule" value='2'/>
+                            <Tab label="Reschedule" value='2' disabled={cannotReschedule}/>
                             <Tab label="Follow Up" value='3'/>
                         </TabList>
                     </Box>
@@ -57,6 +67,7 @@ const AppointmentOptions = ({
                     <TabPanel value='1'>
                         <AppointmentDetails 
                             selectedAppointment={selectedAppointment}
+                            setSelectedAppointment={setSelectedAppointment}
                             user={user}
                         />
                     </TabPanel>

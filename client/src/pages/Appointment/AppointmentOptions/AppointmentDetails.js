@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import {
     Typography,
     Button
@@ -5,22 +6,55 @@ import {
 import Swal from 'sweetalert2';
 import '../../../assets/css/swalStyle.css';
 import { getDay, getTime } from '../../../utils/DateFormatter.js';
+import { patientCanRefund } from '../../../utils/AppointmentUtils.js';
+import { clinicAxios } from 'pages/utilities/AxiosConfig';
 
-const AppointmentDetails = ({ selectedAppointment, user }) => {
-    const handleCancel = async () => {
-        console.log('appointment cancelled');
+const AppointmentDetails = ({ selectedAppointment, setSelectedAppointment, user }) => {
+    const [cannotCompleteOrCancel, setCannotCompleteOrCancel] = useState(false);
+    const handleCancel = async (refund) => {
+        console.log('appointment cancelled, ', refund);
+        const requestData = {
+            doctorId: selectedAppointment.doctorId,
+            appointmentDate: selectedAppointment.date,
+            refund,
+        };
+        if(refund){
+            requestData.patientId = selectedAppointment.patientId;
+            requestData.pricePaidByPatient = selectedAppointment.pricePaidByPatient;
+            requestData.pricePaidToDoctor = selectedAppointment.pricePaidToDoctor;
+        }
+        clinicAxios
+            .patch(`/appointments/cancel/${selectedAppointment._id}`, requestData)
+            .then((response) => {
+                Swal.fire(
+                    'Appointment Cancelled!',
+                    'Your Appointment has been cancelled successfully!',
+                    'success',
+                )
+                .then(() => {
+                    console.log('response.data = ', response.data);
+                    const updatedAppointment = response.data;
+                    setSelectedAppointment(updatedAppointment);
+                });
+            });
     };
-    const handleConfirmation = () => {
+    const handleComplete = async () => {
+        // TODO: implement this function after merge with communication-service
+        console.log('appointment completed');
+    };
+    const handleCancelConfirmation = () => {
+        const refund = (user.type == 'doctor') || patientCanRefund(selectedAppointment.date);
         let swalText = '';
         if(user.type == 'patient'){
-            swalText += 'The appointment reservation is non-refundable. '; 
+            swalText += (refund? 
+                'The appointment reservation is refundable. ' :
+                'The appointment reservation is non-refundable. There are only 24 hours left for the appointment. '); 
         }
         else{ // user.type = 'doctor'
             swalText += 'The patient will be refunded the appointment reservation. ';
         }
-        swalText += 'Are you sure you want to cancel this appointment?';
         Swal.fire({
-			title: 'Confirm Cancellation',
+			title: 'Do you Confirm Cancellation ?',
 			text: swalText,
 			icon: 'question',
 			confirmButtonText: 'Yes',
@@ -28,10 +62,34 @@ const AppointmentDetails = ({ selectedAppointment, user }) => {
 			cancelButtonText: 'No',
 		}).then(async (result) => {
 			if (result['isConfirmed']) {
-				await handleCancel();
+				await handleCancel(refund);
+			}
+		});
+
+    };
+    const handleCompleteConfirmation = () => {
+        Swal.fire({
+			title: 'Confirm Completion',
+			text: 'Are you sure you want to complete this appointment?',
+			icon: 'question',
+			confirmButtonText: 'Yes',
+			showCancelButton: 'true',
+			cancelButtonText: 'No',
+		}).then(async (result) => {
+			if (result['isConfirmed']) {
+				await handleComplete();
 			}
 		});
     };
+    useEffect(() => {
+        console.log('selectedAppointment == ', selectedAppointment);
+        if(selectedAppointment){
+            setCannotCompleteOrCancel(
+                selectedAppointment.status.toUpperCase() == 'COMPLETE'
+                || selectedAppointment.status.toUpperCase() == 'CANCELLED'
+            );
+        }
+    }, [selectedAppointment]);
     let patientFamilyMember, familyMemberText;
     if(selectedAppointment){
         patientFamilyMember = selectedAppointment.patientFamilyMember;
@@ -107,15 +165,29 @@ const AppointmentDetails = ({ selectedAppointment, user }) => {
                             </Typography>
                         </>
                     }
-                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
                         <Button
                             variant='contained'
                             color='error'
-                            sx = {{ marginTop: '3em', width: '25em' }}
-                            onClick={handleConfirmation}
+                            sx = {{ marginTop: '3em', width: '15em' }}
+                            onClick={handleCancelConfirmation}
+                            disabled={cannotCompleteOrCancel}
                         >
                             Cancel Appointment
                         </Button>
+                        {
+                            user.type=='doctor'
+                            &&
+                            <Button
+                                variant='contained'
+                                color='success'
+                                sx = {{ marginTop: '3em', width: '15em' }}
+                                onClick={handleCompleteConfirmation}
+                                disabled={cannotCompleteOrCancel}
+                            >
+                                Complete Appointment
+                            </Button>
+                        }
                     </div>
                 </>
             )}
