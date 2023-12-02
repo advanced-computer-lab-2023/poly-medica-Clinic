@@ -1,13 +1,19 @@
 import request from 'supertest';
 import app from '../../../app.js';
 import { connectDBTest, disconnectDBTest } from '../../utils/testing-utils.js';
-import { OK_STATUS_CODE, ONE, ERROR_STATUS_CODE, TIME_OUT } from '../../utils/Constants.js';
+import { 
+	OK_STATUS_CODE,
+	ONE, ERROR_STATUS_CODE,
+	TIME_OUT,
+	PATIENTS_BASE_URL
+} from '../../utils/Constants.js';
 
 import AppointmentModel from '../../database/models/Appointment.js';
 import DoctorModel from '../../database/models/Doctor.js';
 import generateDoctor from '../model-generators/generateDoctor.js';
 import generateAppointment from '../model-generators/generateAppointment.js';
 
+import axios from 'axios';
 import { describe, beforeEach, afterEach, expect, it, jest } from '@jest/globals';
 import { faker } from '@faker-js/faker';
 
@@ -149,6 +155,91 @@ describe('PATCH /appointments/reschedule/:appointmentId', () => {
 		const id = faker.lorem.word();
 		const res = await request(app)
 			.patch(`/appointments/reschedule/${id}`);
+
+		expect(res.status).toBe(ERROR_STATUS_CODE);
+	});
+
+	afterEach(async () => {
+		await disconnectDBTest();
+	});
+});
+
+jest.mock('axios');
+describe('PATCH /appointments/cancel/:appointmentId', () => {
+	beforeEach(async () => {
+		await connectDBTest();
+	});
+
+	it('should return 200 OK and cancel appointment without refund', async () => {
+		const doctor = new DoctorModel(generateDoctor());
+		await doctor.save();
+
+		const appointment = new AppointmentModel(generateAppointment(faker.database.mongodbObjectId(), doctor._id));
+		await appointment.save();
+
+		const res = await request(app)
+			.patch(`/appointments/cancel/${appointment._id}`)
+			.send({
+				doctorId: doctor._id,
+				appointmentDate: appointment.date,
+				refund: false
+			});
+		expect(res.status).toBe(OK_STATUS_CODE);
+
+		// verify that appointment is cancelled
+		const updatedAppointment = res._body;
+		expect(updatedAppointment.status).toEqual('Cancelled');
+
+		// verify that availableSlot is added back
+		const updatedDoctor = await DoctorModel.findById(doctor._id);
+		const availableSlots = updatedDoctor.availableSlots;
+		expect(availableSlots[availableSlots.length-ONE].from).toEqual(appointment.date);
+	});
+
+	it('should return 200 OK and cancel appointment with refund', async () => {
+		const doctor = new DoctorModel(generateDoctor());
+		await doctor.save();
+
+		const appointment = new AppointmentModel(generateAppointment(faker.database.mongodbObjectId(), doctor._id));
+		await appointment.save();
+
+		axios.patch.mockResolvedValue({});
+		const res = await request(app)
+			.patch(`/appointments/cancel/${appointment._id}`)
+			.send({
+				doctorId: doctor._id,
+				appointmentDate: appointment.date,
+				refund: true,
+				patientId: appointment.patientId,
+				pricePaidByPatient: appointment.pricePaidByPatient,
+				pricePaidToDoctor: appointment.pricePaidToDoctor
+			});
+		expect(res.status).toBe(OK_STATUS_CODE);
+
+		// verify that appointment is cancelled
+		const updatedAppointment = res._body;
+		expect(updatedAppointment.status).toEqual('Cancelled');
+
+		// verify that availableSlot is added back
+		const updatedDoctor = await DoctorModel.findById(doctor._id);
+		const availableSlots = updatedDoctor.availableSlots;
+		expect(availableSlots[availableSlots.length-ONE].from).toEqual(appointment.date);
+
+		// verify that money is deducted from doctor's wallet
+		const oldWallet = doctor.walletAmount;
+		const updatedWallet = updatedDoctor.walletAmount;
+		expect(updatedWallet).toEqual(oldWallet-appointment.pricePaidToDoctor);
+
+		// verify that money is added to patient's wallet
+		expect(axios.patch).toHaveBeenCalledWith(`${PATIENTS_BASE_URL}/patients/${appointment.patientId}/wallet`, {
+			walletChange: appointment.pricePaidByPatient
+		});
+	});
+
+	it('should return 500 when id is invalid', async () => {
+		const id = faker.lorem.word();
+		const res = await request(app)
+			.patch(`/appointments/cancel/${id}`);
 
 		expect(res.status).toBe(ERROR_STATUS_CODE);
 	});
