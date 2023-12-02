@@ -17,6 +17,24 @@ class PrescriptionService {
 		);
 		return updatedPrescription;
 	}
+
+	async getPrescriptionById(prescriptionId) {
+		const prescription = await this.repository.getPrescriptionById(
+			prescriptionId,
+		);
+		return prescription;
+	}
+
+	async getMedicinesByPrescriptionId(prescriptionId) {
+		const medicines = await this.repository.getMedicinesByPrescriptionId(
+			prescriptionId,
+		);
+		return medicines;
+	}
+
+	getFile(fileName) {
+		return this.repository.getFile(fileName);
+	}
 }
 
 export default PrescriptionService;
