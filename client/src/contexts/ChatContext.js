@@ -1,7 +1,11 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import { communicationAxios } from '../pages/utilities/AxiosConfig.js';
-import { COMMUNICATION_BASE_URL } from '../utils/Constants.js';
+import {
+    COMMUNICATION_BASE_URL,
+    PHARMACIST_TYPE_ENUM,
+    PHARMACY_MONGO_ID,
+} from '../utils/Constants.js';
 import { useUserContext } from 'hooks/useUserContext.js';
 const ChatContext = createContext();
 
@@ -12,7 +16,8 @@ export const ChatContextProvider = ({ children }) => {
     const [chats, setChats] = useState([]);
 
     const { user } = useUserContext();
-    const userId = user.id;
+    const userId = user.id,
+        userType = user.type;
 
     const updateChat = (updatedChat, messageId) => {
         updatedChat.lastMessage = messageId;
@@ -20,10 +25,11 @@ export const ChatContextProvider = ({ children }) => {
             .patch('/chat', { chat: updatedChat })
             .then((response) => {
                 setChats((prevChats) => {
-                    return prevChats.map((ch) => {
+                    const newChats = prevChats.map((ch) => {
                         if (ch._id === updatedChat._id) return response.data;
                         return ch;
                     });
+                    return newChats;
                 });
             })
             .catch((err) => {
@@ -33,12 +39,22 @@ export const ChatContextProvider = ({ children }) => {
 
     useEffect(() => {
         socket = io.connect(COMMUNICATION_BASE_URL);
-        socket.emit('setup', userId);
+        socket.emit(
+            'setup',
+            userType === PHARMACIST_TYPE_ENUM ? PHARMACY_MONGO_ID : userId
+        );
     }, []);
 
     return (
         <ChatContext.Provider
-            value={{ socket, selectedChat, setSelectedChat, updateChat, chats, setChats }}>
+            value={{
+                socket,
+                selectedChat,
+                setSelectedChat,
+                updateChat,
+                chats,
+                setChats,
+            }}>
             {children}
         </ChatContext.Provider>
     );

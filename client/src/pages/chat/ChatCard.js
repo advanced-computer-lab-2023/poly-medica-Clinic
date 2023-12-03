@@ -4,6 +4,7 @@ import { useUserContext } from 'hooks/useUserContext';
 import { useState, useEffect } from 'react';
 
 const ChatCard = ({ chat }) => {
+    console.log(chat);
     const { user } = useUserContext();
     const [name, setName] = useState('');
 
@@ -13,6 +14,7 @@ const ChatCard = ({ chat }) => {
                 const userName = await getUserName(
                     getReceiver(user, chat.users)
                 );
+                console.log(getReceiver(user, chat.users));
                 setName(userName);
             } catch (error) {
                 console.error('Error fetching username:', error);

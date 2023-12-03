@@ -1,22 +1,23 @@
 import { patientAxios, doctorAxios } from '../pages/utilities/AxiosConfig.js';
+import { DOCTOR_TYPE_ENUM, PATIENT_TYPE_ENUM } from './Constants.js';
 
 export const isSender = (id, message) => {
     return id === message.sender;
 };
 
 export const getReceiverId = (userId, users) => {
-    return users[0].id === userId ? users[1].id : users[0].id;
+    if (users[0].id) return users[0].id === userId ? users[1].id : users[0].id;
 };
 
-export const getReceiver = (userId, users) => {
-    return users[0].id === userId ? users[1] : users[0];
+export const getReceiver = (user, users) => {
+    return users[0].userType === user.type ? users[1] : users[0];
 };
 
 export const getUserName = async (user) => {
-    if (user.userType === 'Patient') {
+    if (user.userType === PATIENT_TYPE_ENUM) {
         const name = await getPatientName(user.id);
         return name;
-    } else if (user.userType === 'Doctor') {
+    } else if (user.userType === DOCTOR_TYPE_ENUM) {
         const name = await getDoctorName(user.id);
         return name;
     } else {

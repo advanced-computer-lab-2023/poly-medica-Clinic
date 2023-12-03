@@ -15,7 +15,7 @@ class ChatRepository {
 			},
 		})
 			.populate('lastMessage')
-			.sort({ updatedAt: -ONE });
+			.sort({ updatedAt: -ONE, lastMessage: ONE });
 		return chats;
 	}
 
