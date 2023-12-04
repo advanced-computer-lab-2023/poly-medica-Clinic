@@ -23,7 +23,7 @@ export const resetPassword = (app) => {
 		
 		try {
 			const userRecord = await user.findUserByEmail(email);
-			if(!userRecord ){
+			if(!userRecord){
 				throw new Error('invalid user in the system');
 			}
 
