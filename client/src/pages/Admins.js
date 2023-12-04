@@ -34,14 +34,15 @@ const Admins = () => {
 
 	useEffect(() => {
 		clinicAxios.get('/admins')
-			.then((data) => {
+			.then((response) => {
+				console.log(response);
 				setAdmins(
-					data.admins.filter((admin) => admin.userName !== user.userName),
+					response.data.admins.filter((admin) => admin.userName !== user.userName),
 				);
 				setIsLoading(false);
 			})
 			.catch(() => {
-				errorMessage('Error fetching admins data');
+				setErrorMessage('Error fetching admins data');
 				setIsLoading(false);
 			});
 	}, []);
@@ -96,7 +97,6 @@ const Admins = () => {
 		setStrength(0);
 		setLevel(null);
 		setNewAdminEmail('');
-		setAdminIsBeingAdded(false);
 	};
 
 	const handleAddAdmin = async () => {
@@ -112,26 +112,22 @@ const Admins = () => {
 
 		// Make a POST request to add a new admin
 		//TODO: these conditions 
-		const response = await authenticationAxios.post('/admins/clinic', JSON.stringify(newAdmin), {
-			headers: {
-				'Content-Type': 'application/json',
-			}
-		});
+	
 		try{
+			await authenticationAxios.post('/admins/clinic', JSON.stringify(newAdmin), {
+				headers: {
+					'Content-Type': 'application/json',
+				}
+			});
 				setAdmins((prevAdmins) => [...prevAdmins, newAdmin]);
 				setOpenAddDialog(false);
 				setNewAdminUsername('');
 				setNewAdminPassword('');
 				setErrorMessage('');
-				setAddAdmin(true);
 				setStrength(0);
 				setLevel(null);
 				setNewAdminEmail('');
-				setTimeout(() => {
-					setAddAdmin(false);
-				}, 2000);
 			} catch(error){
-				setAdminIsBeingAdded(false);
 				if (error.response) {
 					if (error.response.status == 400) {
 						setErrorMessage(
@@ -196,7 +192,6 @@ const Admins = () => {
 						setNewAdminEmail={setNewAdminEmail}
 						handleAddAdmin={handleAddAdmin}
 						isAddButtonDisabled={isAddButtonDisabled}
-						adminIsBeingAdded={adminIsBeingAdded}
 						level={level}
 						setLevel={setLevel}
 						strength={strength}
