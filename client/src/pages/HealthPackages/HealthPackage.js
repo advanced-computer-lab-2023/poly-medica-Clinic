@@ -9,7 +9,6 @@ import EditHealthPackages from './EditHealthPackage';
 import { useUserContext } from 'hooks/useUserContext';
 import { patientAxios } from 'pages/utilities/AxiosConfig';
 import Loader from 'ui-component/Loader';
-import { ADMIN_TYPE_ENUM, PATIENT_TYPE_ENUM } from 'utils/Constants';
 
 const HealthPackages = () => {
 	const [packages, setPackage] = useState([]);
@@ -31,28 +30,22 @@ const HealthPackages = () => {
 	useEffect(() => {
 		clinicAxios.get('/packages')
 			.then((response) => {
-				console.log(response.data.allPackages);
 				setPackage(response.data.allPackages);
 
 			}).then(() => {
-				if(user.type=== PATIENT_TYPE_ENUM){
-					patientAxios.get(`/patient/${user.id}/health-packages`).then((response) => {
-						setSubscribedPackage(response.data.healthPackages[0]);
-					}).then(() => {
-						patientAxios.get(`/patient/${user.id}/discount`).then((response) => {
-							setDiscount(response.data.maxDiscount);
-							setLoading(false);
-						}
-						);
-					});
-				}
-				else{
-					setLoading(false);
-				}
+				patientAxios.get(`/patient/${user.id}/health-packages`).then((response) => {
+					setSubscribedPackage(response.data.healthPackages[0]);
+				}).then(() => {
+					patientAxios.get(`/patient/${user.id}/discount`).then((response) => {
+						setDiscount(response.data.maxDiscount);
+						setLoading(false);
+					}
+					);
+				});
 			})
 			.catch(error => {
 				console.log(error);
-				setLoading(false);
+				setLoading(true);
 			});
 
 
@@ -147,23 +140,19 @@ const HealthPackages = () => {
 		return (
 			<MainCard title="Packages">
 				<HealthPackagesList packages={packages} handleEditButtonClick={handleEditButtonClick} handleDeleteButtonClick={handleDeleteButtonClick} subscribedPackage={subscribedPackage} setSubscribedPackage={setSubscribedPackage} discount = {discount} />
-				{
-					user.type === ADMIN_TYPE_ENUM
-					&&
-					<Fab
-						color="secondary"
-						aria-label="Add"
-						onClick={handleAddDialogOpen}
-						sx={{
-							position: 'fixed',
-							bottom: 16,
-							right: 16,
-							zIndex: 9999,
-						}}
-					>
-						<Add />
-					</Fab>
-				}
+				<Fab
+					color="secondary"
+					aria-label="Add"
+					onClick={handleAddDialogOpen}
+					sx={{
+						position: 'fixed',
+						bottom: 16,
+						right: 16,
+						zIndex: 9999,
+					}}
+				>
+					<Add />
+				</Fab>
 				<AddHealthPackages isAddDialogOpen={isAddDialogOpen} handleAddDialogClose={handleAddDialogClose}
 					handleFormInputChange={handleFormInputChange} handleAddPackage={handleAddPackages} newPackage={newPackage} />
 				<EditHealthPackages isEditDialogOpen={isEditDialogOpen} setIsEditDialogOpen={setIsEditDialogOpen}

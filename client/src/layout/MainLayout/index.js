@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, Outlet, useLocation } from 'react-router-dom';
+import { useNavigate, Outlet } from 'react-router-dom';
 import { DOCTOR_TYPE_ENUM } from 'utils/Constants';
  
 
@@ -66,7 +66,6 @@ const MainLayout = ({ userType }) => {
 	const leftDrawerOpened = useSelector((state) => state.customization.opened);
 	const { user } = useUserContext(); 
 	const id=user.id;
-	const location = useLocation();
 	useEffect(() => {
 		clinicAxios.get('/doctors/'+id+'/status').then((res) => {
 			const status=res.data.status;
@@ -81,7 +80,8 @@ const MainLayout = ({ userType }) => {
 		});
 
 		
-	},[location.pathname]);
+		
+	},[]);
 	const dispatch = useDispatch();
 	const handleLeftDrawerToggle = () => {
 		dispatch({ type: SET_MENU, opened: !leftDrawerOpened });

@@ -168,14 +168,8 @@ export const doctor = (app) => {
 			const id = req.params.id;
 			if (!isValidMongoId(id))
 				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
-
 			const doctor = await service.getDoctorById(id);
-			
 			if (doctor) {
-				const checkSameEmail = req.body.email != doctor.userData.email;
-				if(checkSameEmail){
-					await axios.patch(`${AUTH_BASE_URL}/users/${id}/email/${req.body.email}`);
-				}
 				const updatedDoctor = await service.updateDoctor(id, req.body);
 				res.status(OK_STATUS_CODE).json({ updatedDoctor });
 			} else {
@@ -186,7 +180,7 @@ export const doctor = (app) => {
 		} catch (error) {
 			// console.log(error);
 			if(error.response){
-				res.status(BAD_REQUEST_CODE_400).send({message: error.response.data.message});
+				res.status(BAD_REQUEST_CODE_400).send({ message: error.response.data.message });
 			}
 			else res.status(ERROR_STATUS_CODE).json({ message: error });
 		}

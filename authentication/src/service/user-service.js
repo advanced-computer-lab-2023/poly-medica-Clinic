@@ -35,12 +35,6 @@ class UserService {
 		const user  = await this.repository.updatePassword(userId, password);
 		return user;
 	}
-
-	async updateEmail(id, email){
-		let user = await this.repository.updateEmail(id, email);
-		return user;
-	}
-
 }
 
 export default UserService;

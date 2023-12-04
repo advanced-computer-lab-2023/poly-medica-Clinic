@@ -14,7 +14,6 @@ import Swal from 'sweetalert2';
 import { useUserContext } from 'hooks/useUserContext';
 import format from 'date-fns/format';
 import { clinicAxios } from '../../../utils/AxiosConfig';
-import Loader from 'ui-component/Loader';
 
 export const DoctorAccountProfileDetails = () => {
     const [values, setValues] = useState({
@@ -26,9 +25,8 @@ export const DoctorAccountProfileDetails = () => {
         hourlyRate: '',
         affiliation: '',
         educationalBackground: '',
-        walletAmount: '',
     });
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const { user } = useUserContext();
     useEffect(() => {
         const getPatientsURL = '/doctor/' + user.id;
@@ -49,15 +47,12 @@ export const DoctorAccountProfileDetails = () => {
                     hourlyRate: values.hourlyRate,
                     affiliation: values.affiliation,
                     educationalBackground: values.educationalBackground,
-                    walletAmount: values.walletAmount,
                 });
-                setLoading(false);
             })
             .catch((err) => {
                 console.log('here', err);
-                setLoading(false);
             });
-    }, [loading]);
+    }, []);
 
     const handleChange = useCallback((event) => {
         setValues((prevState) => ({
@@ -67,12 +62,13 @@ export const DoctorAccountProfileDetails = () => {
     }, []);
 
     const handleSubmit = (event) => {
-        event.preventDefault(); 
-        const getDoctorURL = '/doctors/' + user.id;
+        event.preventDefault();
+        setLoading(true);
+        const getPatientsURL = '/doctors/' + user.id;
         // let user;
 
         clinicAxios
-            .patch(getDoctorURL, values, { withCredentials: true })
+            .patch(getPatientsURL, values, { withCredentials: true })
             .then((response) => {
                 const values = response.data.doctor;
                 console.log('values', values);
@@ -84,20 +80,13 @@ export const DoctorAccountProfileDetails = () => {
                 setLoading(false);
             })
             .catch((err) => {
-                
-                Swal.fire({
-                    icon: 'error', // Set the icon to a success icon
-                    title: 'error', // Title of the pop-up
-                    text: err.response.data.message, // Message text
-                });
+                console.log('here', err);
                 setLoading(false);
             });
     };
-    
 
-    return (loading)?(<Loader></Loader>):(
+    return (
         <form autoComplete='off' onSubmit={handleSubmit}>
-            {  console.log(loading) }  
             <Card>
                 <CardHeader
                     subheader='The information can be edited'
@@ -187,7 +176,7 @@ export const DoctorAccountProfileDetails = () => {
                             </Grid>
                             <Grid
                                 xs={12}
-                                 md={6}
+                                // md={6}
                             >
                                 <TextField
                                     fullWidth
@@ -197,20 +186,6 @@ export const DoctorAccountProfileDetails = () => {
                                     disabled
                                     required
                                     value={values.educationalBackground}
-                                />
-                            </Grid>
-                            <Grid
-                                xs={12}
-                                // md={6}
-                            >
-                                <TextField
-                                    fullWidth
-                                    label='Wallet Amount'
-                                    name='Wallet Amount'
-                                    onChange={handleChange}
-                                    disabled
-                                    required
-                                    value={values.walletAmount}
                                 />
                             </Grid>
                         </Grid>
