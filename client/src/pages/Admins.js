@@ -159,7 +159,7 @@ const Admins = () => {
 								{Array.isArray(admins) &&
 									admins.map((admin) => (
 										<AdminRow
-											key={admin._id}
+											key={`admin_${admin._id}`}
 											admin={admin}
 											handleRemoveAdmin={handleRemoveAdmin}
 										/>
