@@ -1,5 +1,6 @@
+import mongoose from "mongoose";
 import NotificationService from "../service/notification-service.js";
-import { BAD_REQUEST_CODE, DUPLICATE_KEY_ERROR_CODE, ERROR_STATUS_CODE, OK_STATUS_CODE, SERVER_ERROR_MESSAGE } from "../utils/Constants.js";
+import { BAD_REQUEST_CODE, DUPLICATE_KEY_ERROR_CODE, ERROR_STATUS_CODE, OK_STATUS_CODE, SERVER_ERROR_MESSAGE, ZERO_INDEX } from "../utils/Constants.js";
 
 
 export const notification = (app) => {
@@ -22,7 +23,6 @@ export const notification = (app) => {
             const notifications = await service.getAllNotification(userId);
             res.send(notifications);
         } catch (error){
-            console.log(error);
             res.status(ERROR_STATUS_CODE).send({ errMessage: SERVER_ERROR_MESSAGE});
         }
     });

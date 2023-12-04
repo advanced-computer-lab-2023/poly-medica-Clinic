@@ -11,6 +11,7 @@ import { authenticationAxios } from 'utils/AxiosConfig';
 // project imports
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router';
 
 
 // ============================|| FIREBASE - LOGIN ||============================ //
@@ -18,6 +19,7 @@ import Swal from 'sweetalert2';
 const ForgetForm = () => {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [email, setEmail] = useState('');
+	const navigate = useNavigate();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -32,6 +34,7 @@ const ForgetForm = () => {
               });
               setEmail('');
 			setIsSubmitting(false);
+			navigate('/login/login3');
 		} catch(error){
             
 			Swal.fire({

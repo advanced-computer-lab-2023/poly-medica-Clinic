@@ -30,7 +30,7 @@ import ResetPasswordService from '../service/reset-password-service.js';
 
 
 export const user = (app) => {
-	const user = new UserService();
+	const service = new UserService();
 	const resetPassword = new ResetPasswordService();
 
 	const createToken = (id, userName, type) => {
@@ -62,12 +62,12 @@ export const user = (app) => {
 					throw new Error('invalid type of user');
 			}
 
-			const checkEmail = await user.findUserByEmail(email);
+			const checkEmail = await service.findUserByEmail(email);
 			if (checkEmail) {
 				throw new Error(DUB_EMAIL_ERROR_MESSAGE);
 			}
 
-			const checkUserName = await user.findUserByUserName(userName);
+			const checkUserName = await service.findUserByUserName(userName);
 			if (checkUserName) {
 				throw new Error(DUB_USERNAME_ERROR_MESSAGE);
 			}
@@ -82,7 +82,7 @@ export const user = (app) => {
 				signupData = await axios.post(PATIENT_SIGNUP_URL, req.body);
 				const userId = signupData.data.userId;
 				await axios.post(`${COMMUNICATION_USER_POST_URL}/${userId}`);
-				await user.signupUser(signupData.data);
+				await service.signupUser(signupData.data);
 			}
 
 			res.status(OK_REQUEST_CODE_200).end();
@@ -103,13 +103,14 @@ export const user = (app) => {
 	app.delete('/users/:id', async (req, res) => {
 		try {
 			const userId = req.params.id;
-			const user = await user.deleteUser(userId);
+			const user = await service.deleteUser(userId);
 			await axios.delete(`${COMMUNICATION_USER_POST_URL}/${userId}`);
 			if(user.type == PHARMACIST_ENUM)
 				await axios.delete(`${PHARMACIST_BASE_URL}archive/${userId}`);
 			
 			res.status(OK_REQUEST_CODE_200).end();
 		} catch (err) {
+			console.log(err);
 			res
 				.status(SERVER_ERROR_REQUEST_CODE_500)
 				.send({ message: 'coudn\'t delete the user' });
@@ -121,11 +122,11 @@ export const user = (app) => {
 		try {
 			const id = req.params.id;
 			const email = req.params.email;
-			const systemUser = await user.findUserByEmail(email);
+			const systemUser = await service.findUserByEmail(email);
 			if (systemUser) {
 				res.status(BAD_REQUEST_CODE_400).send({ errCode: DUPLICATE_KEY_ERROR_CODE, message: "this email is already exist in the system" });
 			} else {
-				const systemUser = await user.updateEmail(id, email);
+				const systemUser = await service.updateEmail(id, email);
 				//TODO: check the way of update akw
 				if (systemUser)
 					res.status(OK_REQUEST_CODE_200).end();
@@ -141,7 +142,7 @@ export const user = (app) => {
 		try {
 			const userId = req.body.userId;
 			await axios.post(`${COMMUNICATION_USER_POST_URL}/${userId}`);
-			await user.signupUser(req.body);
+			await service.signupUser(req.body);
 			res.status(OK_REQUEST_CODE_200).end();
 		} catch (err) {
 			console.log(err.message);
@@ -156,7 +157,7 @@ export const user = (app) => {
 			const userId = req.body.userId;
 			await axios.post(`${COMMUNICATION_USER_POST_URL}/${userId}`);
 			await axios.post(`${PHARMACIST_BASE_URL}archive/${userId}`);
-			await user.signupUser(req.body);
+			await service.signupUser(req.body);
 			res.status(OK_REQUEST_CODE_200).end();
 		} catch (err) {
 			console.log(err.message);
@@ -171,7 +172,7 @@ export const user = (app) => {
 			const requestFrom = req.params.request; // clinic, pharmacy
 			const userName = req.body.userName;
 
-			const checkUserName = await user.findUserByUserName(userName);
+			const checkUserName = await service.findUserByUserName(userName);
 			if (checkUserName) {
 				throw new Error(DUB_USERNAME_ERROR_MESSAGE);
 			}
@@ -188,7 +189,7 @@ export const user = (app) => {
 
 			const userId = signupData.data.userId;
 			await axios.post(`${COMMUNICATION_USER_POST_URL}/${userId}`);
-			await user.signupUser(signupData.data);
+			await service.signupUser(signupData.data);
 
 			res.status(OK_REQUEST_CODE_200).send({ message: 'admin added' });
 		} catch (err) {
@@ -229,7 +230,7 @@ export const user = (app) => {
 	app.post('/login/:request', async (req, res) => {
 		try {
 			const requestFrom = req.params.request;
-			const logedinUser = await user.loginUser(req);
+			const logedinUser = await service.loginUser(req);
 			switch (requestFrom) {
 				case CLINIC_REQ: if (logedinUser.type == PHARMACIST_ENUM || logedinUser.type == PHARMACY_ADMIN_ENUM) throw new Error('invalid user'); break; //TODO: admin in login
 				case PHARMACY_REQ: if (logedinUser.type == DOCTOR_ENUM || logedinUser.type == CLINIC_ADMIN_ENUM) throw new Error('invalid user'); break; //TODO: admin in login
@@ -242,7 +243,7 @@ export const user = (app) => {
 		} catch (err) {
 			if (err.message == 'incorrect Password') {
 				// access reset service
-				const userData = await user.findUserByUserName(req.body.userName);
+				const userData = await service.findUserByUserName(req.body.userName);
 				if (userData.email) {
 					const resetUser = await resetPassword.getRecordByEmail(userData.email);
 					if (!resetUser || new Date() > new Date(resetUser.resetTokenExpiration)) {
@@ -294,7 +295,7 @@ export const user = (app) => {
 		try {
 			const userId = req.params.userId;
 			const { password } = req.body;
-			await user.updatePassword(userId, password);
+			await service.updatePassword(userId, password);
 			res.status(OK_REQUEST_CODE_200).end();
 		} catch (err) {
 			console.log(err);

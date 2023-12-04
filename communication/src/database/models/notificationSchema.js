@@ -1,20 +1,20 @@
 import mongoose from 'mongoose';
-import { NORMAL_NOTIFICATION_TYPE_ENUM, NOTIFICATION_TYPE_ENUM } from '../../utils/Constants.js';
+import { NORMAL_NOTIFICATION_TYPE_ENUM, NOTIFICATION_BODY_REQUIRE_MESSAGE, NOTIFICATION_HEAD_REQUIRE_MESSAGE, NOTIFICATION_INVALID_TYPE_MESSAGE, NOTIFICATION_SENDER_NAME_REQUIRE_MESSAGE, NOTIFICATION_TYPE_ENUM, NOTIFICATION_TYPE_REQUIRE_MESSAGE } from '../../utils/Constants.js';
 
 const notificationSchema = mongoose.Schema({
         notificationHead: {
             type:String,
-            required: [true, "notification type is required"]
+            required: [true, NOTIFICATION_HEAD_REQUIRE_MESSAGE]
         },
         notificationBody:{
             type:String,
-            required: [true, "notification type is required"]
+            required: [true, NOTIFICATION_BODY_REQUIRE_MESSAGE]
         },
         senderName:{
             type:String,
             required: [function (){
                 return this.notificationType !== NORMAL_NOTIFICATION_TYPE_ENUM
-            }, "sender name is required"]
+            }, NOTIFICATION_SENDER_NAME_REQUIRE_MESSAGE]
         },
         senderImage:{
             type:String
@@ -22,7 +22,7 @@ const notificationSchema = mongoose.Schema({
         notificationType:{
             type:String,
             enum:NOTIFICATION_TYPE_ENUM,
-            required: [true, "notification type is required"]
+            required: [true, NOTIFICATION_TYPE_REQUIRE_MESSAGE]
         },
         notificationState: {// seen & unseen
             type:Boolean,

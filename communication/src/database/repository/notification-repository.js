@@ -1,10 +1,9 @@
-import { DATABASE_UPDATE_ERROR_MESSAGE } from "../../utils/Constants.js";
+import { DATABASE_UPDATE_ERROR_MESSAGE, DUB_USER_ID, DUPLICATE_KEY_ERROR_CODE } from "../../utils/Constants.js";
 import Notification from "../models/Notification.js";
 
 class NotificationRepository {
     async getAllNotification(userId){
         const userNotifications = await Notification.findOne({userId}, "notifications").lean();
-        console.log(userNotifications);
         return userNotifications.notifications;
     }
 

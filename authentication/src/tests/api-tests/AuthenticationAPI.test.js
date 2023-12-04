@@ -67,7 +67,7 @@ describe('DELETE /users/:id', () => {
         await user.save();
         let dataBaseRecord = await User.find();
         expect(dataBaseRecord.length).toBe(1);
-        const res = await request(app).delete(`/users/${userId.toString()}`);
+        const res = await request(app).delete(`/users/${userId}`);
         dataBaseRecord = await User.find();
         expect(dataBaseRecord.length).toBe(0);
     });
