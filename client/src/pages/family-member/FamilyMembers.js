@@ -9,19 +9,17 @@ import {
     TableCell,
     Button,
     Paper,
-    IconButton,
 } from '@mui/material';
-import { AddCircleOutline, Subscriptions } from '@mui/icons-material';
+import PeopleIcon from '@mui/icons-material/People';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import AddFamilyMember from './AddFamilyMember';
 import { useUserContext } from 'hooks/useUserContext';
 import { patientAxios } from '../../utils/AxiosConfig';
-import { HealthPackageSubscription } from './HealthPackageSubscription';
 const FamilyMembers = () => {
     const [FamilyMembers, setFamilyMembers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [openPackages, setOpenPackages] = useState(false);
     const [isAddingMember, setIsAddingMember] = useState(false);
-    const [error, setError] = useState(false);
+    const [error , setError] = useState(false);
     const [newMember, setNewMember] = useState({
         name: '',
         nationalId: '',
@@ -29,10 +27,8 @@ const FamilyMembers = () => {
         gender: '',
         relation: '',
         email: '',
-        mobileNumber: '',
-        id: ''
+        mobileNumber: ''
     });
-    const [memberId, setMemberId] = useState(null);
 
     const handleFormInputChange = (e) => {
         setNewMember((member) => ({
@@ -65,16 +61,9 @@ const FamilyMembers = () => {
             gender: '',
             relation: '',
             email: '',
-            mobileNumber: '',
-            id:''
+            mobileNumber: ''
         });
         setError(false);
-    };
-
-    const handlePackageClick = (id) => {
-        console.log('current Id = ', id);
-        setMemberId(id);
-        setOpenPackages(true);
     };
 
     return (
@@ -84,7 +73,7 @@ const FamilyMembers = () => {
                 <Button
                     variant='contained'
                     color='secondary'
-                    startIcon={<AddCircleOutline />}
+                    startIcon={<AddCircleOutlineIcon></AddCircleOutlineIcon>}
                     onClick={handleClick}
                 >
                     Add Family Member
@@ -117,10 +106,7 @@ const FamilyMembers = () => {
                                     }}
                                 >
                                     <TableCell>
-                                        <IconButton onClick={() => handlePackageClick(member.id)}>
-                                            <Subscriptions color='secondary' />
-                                        </IconButton>
-
+                                        <PeopleIcon></PeopleIcon>
                                     </TableCell>
                                     <TableCell>{member.name}</TableCell>
                                     <TableCell>{member.nationalId}</TableCell>
@@ -142,7 +128,6 @@ const FamilyMembers = () => {
                 setError={setError}
                 error={error}
             />
-            <HealthPackageSubscription memberId={memberId} openPackages={openPackages} setOpenPackages={setOpenPackages} />
         </MainCard>
     );
 };

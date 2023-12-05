@@ -76,13 +76,6 @@ const FirebaseRegister = ({ type }) => {
 				text: 'Please upload documents for verification',
 			});
 			return;
-		} else if (!level || level.label != 'Strong'){
-			Swal.fire({
-				icon: 'error',
-				title: 'Oops...',
-				text: 'Please enter a Strong password. \n Password must be at least 8 characters and include one number, one letter, one capital letter, and one special character.',
-			});
-			return;
 		}
 		setIsSubmitting(true);
 		const sendData = {
@@ -108,16 +101,11 @@ const FirebaseRegister = ({ type }) => {
 
 		formData.append('sendData', JSON.stringify(sendData));
 
-		try {
-			await authenticationAxios.post(
-				'/signup/clinic',
-				sendData,
-			);
-
+		
 			try {
-				await clinicAxios.post(
-					'/add-doctor-req',
-					formData,
+				await authenticationAxios.post(
+					'/signup/clinic',
+					sendData,
 				);
 				Swal.fire({
 					icon: 'success',
@@ -141,17 +129,9 @@ const FirebaseRegister = ({ type }) => {
 				Swal.fire({
 					icon: 'error',
 					title: 'Oops...',
-					text: error.response.data.message,
+					text: doctorRequestResponse.response.data.message,
 				});
 				setIsSubmitting(false);
-			}
-		} catch(error) {
-			Swal.fire({
-				icon: 'error',
-				title: 'Oops...',
-				text: error.response.data.message,
-			});
-			setIsSubmitting(false);
 		}
 	};
 
@@ -368,6 +348,6 @@ const FirebaseRegister = ({ type }) => {
 			</form>
 		</>
 	);
-};
+}
 
 export default FirebaseRegister;

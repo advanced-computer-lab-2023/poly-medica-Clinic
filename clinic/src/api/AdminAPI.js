@@ -24,6 +24,7 @@ export const admin = (app) => {
 				userId: adminUser._id,
 				password: adminUser.password,
 				userName: adminUser.userName,
+				email: adminUser.email,
 				type: ADMIN_ENUM,
 			};
 			res.send(req.body);
