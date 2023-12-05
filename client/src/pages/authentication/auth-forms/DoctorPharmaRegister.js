@@ -15,7 +15,7 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 import { DatePicker } from '@mui/x-date-pickers';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
 import Swal from 'sweetalert2';
-import { clinicAxios, authenticationAxios } from 'utils/AxiosConfig';
+import { authenticationAxios } from 'utils/AxiosConfig';
 import { useNavigate } from 'react-router';
 
 // ===========================|| FIREBASE - REGISTER ||=========================== //
@@ -129,7 +129,7 @@ const FirebaseRegister = ({ type }) => {
 				Swal.fire({
 					icon: 'error',
 					title: 'Oops...',
-					text: doctorRequestResponse.response.data.message,
+					text: error.response.data.message,
 				});
 				setIsSubmitting(false);
 		}
@@ -348,6 +348,6 @@ const FirebaseRegister = ({ type }) => {
 			</form>
 		</>
 	);
-}
+};
 
 export default FirebaseRegister;

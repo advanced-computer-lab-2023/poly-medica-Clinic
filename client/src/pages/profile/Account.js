@@ -17,9 +17,8 @@ const Page = () => {
 	const [loading, setLoading] = useState(false);
 	const handleChangePassword = async () => {
 		setLoading(true);
-		const response = await authenticationAxios.patch(`/change-password/${user.id}`, { password });
 		try{
-			if(response.status === 200){
+			await authenticationAxios.patch(`/change-password/${user.id}`, { password });
 				Swal.fire({
 					icon: 'success',
 					title: 'Success!',
@@ -27,19 +26,12 @@ const Page = () => {
 				});
 				setPassword('');
 				setLoading(false);
-			} else {
-				Swal.fire({
-					icon: 'error',
-					title: 'Oops...',
-					text: response.response.data.message,
-				});
-				setLoading(false);
-			}
+			
 		} catch (err) {
 			Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
-				text: response.response.data.message,
+				text: err.response.data.message,
 			});
 			setLoading(false);
 		}

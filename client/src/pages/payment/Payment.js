@@ -27,7 +27,10 @@ export default function App() {
   useEffect(() => {
     // Create PaymentIntent as soon as the page loads
     paymentAxios.post('/payment/card', { paymentAmount })
-      .then((data) => setClientSecret(data.data.clientSecret));
+      .then((data) => setClientSecret(data.data.clientSecret))
+      .catch(err => {
+        console.log(err);
+      });
   }, []);
 
 

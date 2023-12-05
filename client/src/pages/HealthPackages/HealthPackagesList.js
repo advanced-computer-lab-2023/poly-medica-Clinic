@@ -38,12 +38,12 @@ const HealthPackagesList = ({ packages, handleEditButtonClick, handleDeleteButto
 			confirmButtonText: 'Yes, cancel it!'
 		}).then((result) => {
 			if (result.isConfirmed) {
-				patientAxios.patch(`patient/${user.id}/health-packages/${subscribedPackage.packageId}`).then((response => {
-					if (response.status === 200) {
+				patientAxios.patch(`patient/${user.id}/health-packages/${subscribedPackage.packageId}`).then((() => {
 						Swal.fire({ title: 'Cancelled successfully', icon: 'success' });
 						setSubscribedPackage(null);
-					}
-				}));
+				})).catch(err => {
+					console.log(err);
+				});
 			}
 		});
 	};
