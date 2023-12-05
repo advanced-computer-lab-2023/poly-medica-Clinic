@@ -95,7 +95,7 @@ export const user = (app) => {
 			if (type == PATIENT_ENUM) {
 				const userId = signupData.data.userId;
 				await axios.post(`${COMMUNICATION_USER_POST_URL}/${userId}`);
-				await user.signupUser(signupData.data);
+				await service.signupUser(signupData.data);
 			}
 			res.status(OK_REQUEST_CODE_200).end();
 		} catch (err) {
@@ -182,14 +182,14 @@ export const user = (app) => {
 			const userName = req.body.userName;
 			const email = req.body.email;
 
-			const checkEmail = await user.findUserByEmail(email);
-			if (checkEmail) {
-				throw new Error(DUB_EMAIL_ERROR_MESSAGE);
-			}
-
 			const checkUserName = await service.findUserByUserName(userName);
 			if (checkUserName) {
 				throw new Error(DUB_USERNAME_ERROR_MESSAGE);
+			}
+
+			const checkEmail = await service.findUserByEmail(email);
+			if (checkEmail) {
+				throw new Error(DUB_EMAIL_ERROR_MESSAGE);
 			}
 
 			switch (requestFrom) {
@@ -248,7 +248,7 @@ export const user = (app) => {
 	app.post('/login/:request', async (req, res) => {
 		try {
 			const requestFrom =  req.params.request;
-			const logedinUser = await user.loginUser(req);
+			const logedinUser = await service.loginUser(req);
 			switch(requestFrom){
 			case CLINIC_REQ: if (logedinUser.type == PHARMACIST_ENUM || logedinUser.type == PHARMACY_ADMIN_ENUM) throw new Error('invalid user'); break; //TODO: admin in login
 			case PHARMACY_REQ: if (logedinUser.type == DOCTOR_ENUM || logedinUser.type == CLINIC_ADMIN_ENUM) throw new Error('invalid user'); break; //TODO: admin in login
@@ -260,7 +260,7 @@ export const user = (app) => {
 			sendUserToken(logedinUser, res, false)
 		} catch (err) {
 			if(err.message == 'incorrect Password'){
-				const userData = await user.findUserByUserName(req.body.userName);
+				const userData = await service.findUserByUserName(req.body.userName);
 				if(userData.email){
 					const resetUser = await resetPassword.getRecordByEmail(userData.email);
 					if(!resetUser || new Date() > new Date(resetUser.resetTokenExpiration)){
