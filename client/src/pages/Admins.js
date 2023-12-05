@@ -23,21 +23,26 @@ const Admins = () => {
 	const [openAddDialog, setOpenAddDialog] = useState(false);
 	const [newAdminUsername, setNewAdminUsername] = useState('');
 	const [newAdminPassword, setNewAdminPassword] = useState('');
+	const [newAdminEmail, setNewAdminEmail] = useState('');
 	const [confirmDeleteDialogOpen, setConfirmDeleteDialogOpen] = useState(false);
 	const [adminToDelete, setAdminToDelete] = useState(null);
 	const [errorMessage, setErrorMessage] = useState('');
 	const { user } = useUserContext();
 
+	const [strength, setStrength] = useState(0);
+	const [level, setLevel] = useState();
+
 	useEffect(() => {
 		clinicAxios.get('/admins')
-			.then((data) => {
+			.then((response) => {
+				console.log(response);
 				setAdmins(
-					data.admins.filter((admin) => admin.userName !== user.userName),
+					response.data.admins.filter((admin) => admin.userName !== user.userName),
 				);
 				setIsLoading(false);
 			})
 			.catch(() => {
-				errorMessage('Error fetching admins data');
+				setErrorMessage('Error fetching admins data');
 				setIsLoading(false);
 			});
 	}, []);
@@ -89,40 +94,52 @@ const Admins = () => {
 		setNewAdminUsername('');
 		setNewAdminPassword('');
 		setErrorMessage('');
+		setStrength(0);
+		setLevel(null);
+		setNewAdminEmail('');
 	};
 
 	const handleAddAdmin = async () => {
 		const newAdmin = {
 			userName: newAdminUsername,
 			password: newAdminPassword,
+			email: newAdminEmail
 		};
 
-		if (!newAdminUsername || !newAdminPassword) {
+		if (!newAdminUsername || !newAdminPassword || !newAdminEmail) {
 			return;
 		}
 
 		// Make a POST request to add a new admin
 		//TODO: these conditions 
-		const response = await authenticationAxios.post('/admins/clinic', JSON.stringify(newAdmin), {
-			headers: {
-				'Content-Type': 'application/json',
-			}
-		});
-		if(response.status == 200){
+	
+		try{
+			await authenticationAxios.post('/admins/clinic', JSON.stringify(newAdmin), {
+				headers: {
+					'Content-Type': 'application/json',
+				}
+			});
 				setAdmins((prevAdmins) => [...prevAdmins, newAdmin]);
 				setOpenAddDialog(false);
 				setNewAdminUsername('');
 				setNewAdminPassword('');
 				setErrorMessage('');
+				setStrength(0);
+				setLevel(null);
+				setNewAdminEmail('');
+			} catch(error){
+				if (error.response) {
+					if (error.response.status == 400) {
+						setErrorMessage(
+							error.response.data.message,
+						);
+						return;
+					}
+				} else console.error('Error adding admin:', error);
 			}
-			else
-				setErrorMessage(
-					response.response.data.message
-				);
-			
 	};
 
-	const isAddButtonDisabled = !newAdminUsername || !newAdminPassword;
+	const isAddButtonDisabled = !newAdminUsername || !newAdminPassword || !newAdminEmail || !level || level.label != 'Strong';
 
 	return (
 		<MainCard title='Admins'>
@@ -142,7 +159,7 @@ const Admins = () => {
 								{Array.isArray(admins) &&
 									admins.map((admin) => (
 										<AdminRow
-											key={admin._id}
+											key={`admin_${admin._id}`}
 											admin={admin}
 											handleRemoveAdmin={handleRemoveAdmin}
 										/>
@@ -169,10 +186,16 @@ const Admins = () => {
 						handleCloseAddDialog={handleCloseAddDialog}
 						newAdminUsername={newAdminUsername}
 						newAdminPassword={newAdminPassword}
+						newAdminEmail={newAdminEmail}
 						setNewAdminUsername={setNewAdminUsername}
 						setNewAdminPassword={setNewAdminPassword}
+						setNewAdminEmail={setNewAdminEmail}
 						handleAddAdmin={handleAddAdmin}
 						isAddButtonDisabled={isAddButtonDisabled}
+						level={level}
+						setLevel={setLevel}
+						strength={strength}
+						setStrength={setStrength}
 						errorMessage={errorMessage}
 					/>
 
