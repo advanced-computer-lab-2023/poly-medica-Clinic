@@ -29,7 +29,7 @@ const PrescriptionItem = ({
 	const [doctor, setDoctor] = useState({});
 	const [Loading, setLoading] = useState(true);
 	useEffect(() => {
-		try {
+		try { 
 			const getDoctor = () => {
 				clinicAxios
 					.get(`doctor/${prescription.doctorId}`)

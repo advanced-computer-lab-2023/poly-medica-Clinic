@@ -8,6 +8,7 @@ import {
 	Grid,
 	IconButton,
 } from '@mui/material';
+import { useUserContext } from 'hooks/useUserContext';
 import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -24,6 +25,7 @@ const PrescriptionDetails = ({
 	handleDialogClose,
 	medicines,
 }) => {
+	const { user } = useUserContext();
 	const [addMode, setAddMode] = useState(false);
 	const [selectedMedicine, setSelectedMedicine] = useState(null);
 	const formattedMedicines = formatMedicines(medicines, selectedPrescription);
@@ -95,28 +97,33 @@ const PrescriptionDetails = ({
 											medicine={medicine}
 											selectedPrescription={selectedPrescription}
 											setSelectedPrescription={setSelectedMedicine}
+											userType={user.type}
 										/>
 									</Grid>
 								))}
-								{addMode ? (
-									<AddMedicine
-										medicines={medicines}
-										selectedMedicine={selectedMedicine}
-										setSelectedMedicine={setSelectedMedicine}
-										handleSaveClick={handleSaveClick}
-										handleCancelClick={handleCancelClick}
-									/>
-								) : (
-									<Grid item xs={4}>
-										<IconButton
-											onClick={handleAddClick}
-											title='Add medicine'
-											color='primary'
-											sx={{ height: '100%', width: '100%' }}
-										>
-											<Add />
-										</IconButton>
-									</Grid>
+								{user.type === 'doctor' && (
+									<>
+										{addMode ? (
+											<AddMedicine
+												medicines={medicines}
+												selectedMedicine={selectedMedicine}
+												setSelectedMedicine={setSelectedMedicine}
+												handleSaveClick={handleSaveClick}
+												handleCancelClick={handleCancelClick}
+											/>
+										) : (
+											<Grid item xs={4}>
+												<IconButton
+													onClick={handleAddClick}
+													title='Add medicine'
+													color='primary'
+													sx={{ height: '100%', width: '100%' }}
+												>
+													<Add />
+												</IconButton>
+											</Grid>
+										)}
+									</>
 								)}
 							</Grid>
 						</Grid>

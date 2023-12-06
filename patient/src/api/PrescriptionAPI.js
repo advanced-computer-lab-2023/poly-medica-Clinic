@@ -28,6 +28,7 @@ export const prescription = (app) => {
 				});
 			}
 			const { prescription } = req.body;
+			console.log('prescription in patch == ', prescription);
 			const data = await service.updatePrescription(
 				prescriptionId,
 				prescription,

@@ -1,31 +1,30 @@
 import mongoose from 'mongoose';
 
-
 const Prescription = mongoose.Schema({
 	patientId: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Patient',
-		required: true
+		required: true,
 	},
 	doctorId: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Doctor',
-		required: true
+		required: true,
 	},
 	doctorName: {
-		type: String
+		type: String,
 	},
 	date: {
 		type: Date,
-		required: true
+		required: true,
 	},
 	filled: {
 		type: Boolean,
-		required: true
+		required: true,
 	},
 	description: {
 		type: String,
-		required: true
+		required: true,
 	},
 	medicines: [
 		{
@@ -33,14 +32,18 @@ const Prescription = mongoose.Schema({
 				type: mongoose.Schema.Types.ObjectId,
 			},
 			amount: {
-				type: Number
-			}
-		}
+				type: Number,
+			},
+		},
 	],
-	price:
-	{
-		type: Number
-	}
+	price: {
+		type: Number,
+	},
+
+	purchased: {
+		type: Boolean,
+		default: false,
+	},
 });
 
 const PrescriptionModel = mongoose.model('Prescription', Prescription);
