@@ -3,11 +3,16 @@ import {
     Typography,
     Button
 } from '@mui/material';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import HelpCenterIcon from '@mui/icons-material/HelpCenter';
+import StyleIcon from '@mui/icons-material/Style';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import Swal from 'sweetalert2';
 import '../../../assets/css/swalStyle.css';
 import { getDay, getTime } from '../../../utils/DateFormatter.js';
 import { patientCanRefund } from '../../../utils/AppointmentUtils.js';
 import { clinicAxios } from 'pages/utilities/AxiosConfig';
+import AppointmentStatus from '../AppointmentStatus';
 
 const AppointmentDetails = ({ selectedAppointment, setSelectedAppointment, user }) => {
     const [cannotCompleteOrCancel, setCannotCompleteOrCancel] = useState(false);
@@ -121,40 +126,43 @@ const AppointmentDetails = ({ selectedAppointment, setSelectedAppointment, user 
                             </>
                         }
                     </div>
-                    <Typography variant='subtitle1'>Date:</Typography>
-                    <Typography variant='body1'>
-                        {`${getDay(selectedAppointment.date)} at ${getTime(selectedAppointment.date)}`}
-                    </Typography>
-                    <Typography variant='subtitle1'>Status:</Typography>
-                    <Typography variant='body1'>
-                        {selectedAppointment.status}
-                    </Typography>
-                    <Typography variant='subtitle1'>Type:</Typography>
-                    <Typography variant='body1'>
-                        {selectedAppointment.type}
-                    </Typography>
-                    <section name='price'> {/* only for semantic purpose*/}
-                        {
-                            user.type=='patient'
-                            &&
-                            <>
-                                <Typography variant='subtitle1'>Price Paid:</Typography>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.7em' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
+                            <CalendarTodayIcon style={{ marginRight: '0.4em' }}/>
+                            <Typography variant='body1'>
+                                {`${getDay(selectedAppointment.date)} at ${getTime(selectedAppointment.date)}`}
+                            </Typography>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
+                            <HelpCenterIcon style={{ marginRight: '0.4em' }}/>
+                            <AppointmentStatus appointmentStatus={selectedAppointment.status} />
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
+                            <StyleIcon style={{ marginRight: '0.4em' }}/>
+                            <Typography variant='body1'>
+                                {selectedAppointment.type}
+                            </Typography>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
+                            <AttachMoneyIcon style={{ marginRight: '0.4em' }}/>
+                            {
+                                user.type=='patient'
+                                &&
                                 <Typography variant='body1'>
-                                    {`$ ${selectedAppointment.pricePaidByPatient}`}
-                                </Typography>
-                            </>
-                        }
-                        {
-                            user.type=='doctor'
-                            &&
-                            <>
-                                <Typography variant='subtitle1'>Price Received:</Typography>
+                                    {`Paid $${selectedAppointment.pricePaidByPatient}`}
+                                </Typography>                            }
+                            {
+                                user.type=='doctor'
+                                &&
                                 <Typography variant='body1'>
-                                    {`$ ${selectedAppointment.pricePaidToDoctor}`}
+                                    {`Received $${selectedAppointment.pricePaidToDoctor}`}
                                 </Typography>
-                            </>
-                        }
-                    </section>
+                            }
+                        </div>
+
+                    </div>
+                    
                     {  
                         patientFamilyMember
                         &&
@@ -165,6 +173,7 @@ const AppointmentDetails = ({ selectedAppointment, setSelectedAppointment, user 
                             </Typography>
                         </>
                     }
+
                     <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
                         <Button
                             variant='contained'

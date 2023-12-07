@@ -1,6 +1,7 @@
 import { ListItemButton, ListItemText, ListItemAvatar } from '@mui/material';
 import TodayIcon from '@mui/icons-material/Today';
 import { getDay, getTime } from '../../utils/DateFormatter.js';
+import AppointmentStatus from './AppointmentStatus.js';
 
 const AppointmentCard = ({ appointment, setSelectedAppointment }) => {
     return (
@@ -17,10 +18,7 @@ const AppointmentCard = ({ appointment, setSelectedAppointment }) => {
                     maxHeight: '3em',
                 }}
             />
-            <ListItemText
-                sx={{ paddingLeft: '2%' }}
-                primary={appointment.status}
-            />
+            <AppointmentStatus appointmentStatus={appointment.status} />
         </ListItemButton>
     );
 };
