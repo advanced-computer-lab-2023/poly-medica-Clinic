@@ -32,6 +32,8 @@ import { IconBell } from '@tabler/icons';
 import { useUserContext } from 'hooks/useUserContext';
 import Swal from 'sweetalert2';
 import { communicationAxios } from 'utils/AxiosConfig';
+import { COMMUNICATION_BASE_URL } from 'utils/Constants';
+import { io } from 'socket.io-client';
 
 
 // ==============================|| NOTIFICATION ||============================== //
@@ -45,13 +47,13 @@ const NotificationSection = () => {
 	const [notifications, setNotifications] = useState([]);
 	const [numberOfUnseenNotification, setNumberOfUnseenNotification] = useState(0);
 	const [dataChange, setDataChange] = useState(false);
-
+	const socket = io.connect(COMMUNICATION_BASE_URL);
+	
 	const handledataChange = () => {
+		console.log('in data change');
 		setDataChange(!dataChange);
 	};
-	/**
-   * anchorRef is used on different componets and specifying one type leads to other components throwing an error
-   * */
+	
 	const anchorRef = useRef(null);
 
 	const handleToggle = () => {
@@ -89,6 +91,37 @@ const NotificationSection = () => {
 		}
 		prevOpen.current = open;
 	}, [open, dataChange]);
+
+	useEffect(() => {
+		console.log('heree');
+			communicationAxios.get(`/notifications/${user.id}`).then( response => {
+				setNotifications( () => [ ...response.data ]);
+				let counter = 0;
+				response.data.map( notification => {
+					if(!notification.notificationState)
+						counter++;
+				});
+				setNumberOfUnseenNotification(counter);
+			}).catch( error => {
+				console.log(error);
+				Swal.fire({
+					icon: 'error',
+					title: 'Oops...',
+					text: error.response.data.errMessage,
+				});
+			});
+	}, [dataChange]);
+
+
+
+    useEffect(() => {
+			socket.emit(
+				'setup',
+				user.id
+			);
+			socket.on('new notification', handledataChange);
+			
+    }, [socket]);
 
 	return (
 		<>

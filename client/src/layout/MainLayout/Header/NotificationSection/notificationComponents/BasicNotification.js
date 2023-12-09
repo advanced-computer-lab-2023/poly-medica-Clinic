@@ -18,6 +18,7 @@ import { useUserContext } from 'hooks/useUserContext';
 import { IconCalendarTime } from '@tabler/icons';
 import { APPOINTMENT_NOTIFICATION_TYPE_ENUM } from 'utils/Constants';
 
+
 const ListItemWrapper = styled('div')(({ theme }) => ({
 	cursor: 'pointer',
 	padding: 16,
@@ -34,7 +35,7 @@ const chipSX = {
 	padding: '0 6px'
 };
 
-const BasicNotification = ({ header, body, date, notificationType, senderName, senderImage, chipLabel, chipType }) => {
+const BasicNotification = ({ header, body, date, notificationType, senderName, senderImage, chipLabel, chipType, key }) => {
     const theme = useTheme();
 	const navigate = useNavigate();
 	const { user } = useUserContext();
@@ -58,7 +59,7 @@ const BasicNotification = ({ header, body, date, notificationType, senderName, s
 		}
 	};
     return ( 
-        <ListItemWrapper>
+        <ListItemWrapper key={key}>
 
 				{notificationType === APPOINTMENT_NOTIFICATION_TYPE_ENUM &&
 				<Grid container display={'flex'} flexDirection={'row'}>

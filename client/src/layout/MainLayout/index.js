@@ -71,8 +71,9 @@ const MainLayout = ({ userType }) => {
 	const navigate = useNavigate();
 	const leftDrawerOpened = useSelector((state) => state.customization.opened);
 	const { user } = useUserContext(); 
+    // const { socket } = useChat();
+
 	const id=user.id;
-	
     const location = useLocation();
     useEffect(() => {
         if (user && user.type === DOCTOR_TYPE_ENUM){
@@ -97,7 +98,7 @@ const MainLayout = ({ userType }) => {
     };
 
     return (
-        <ChatContextProvider>
+        <ChatContextProvider>    
             <FilterProvider>
                 <SearchProvider>
                     <Box sx={{ display: 'flex' }}>
