@@ -5,10 +5,9 @@ import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import {
 	Avatar,
+	Badge,
 	Box,
-	Button,
 	ButtonBase,
-	CardActions,
 	Chip,
 	ClickAwayListener,
 	Divider,
@@ -16,7 +15,6 @@ import {
 	Paper,
 	Popper,
 	Stack,
-	TextField,
 	Typography,
 	useMediaQuery
 } from '@mui/material';
@@ -35,25 +33,6 @@ import { useUserContext } from 'hooks/useUserContext';
 import Swal from 'sweetalert2';
 import { communicationAxios } from 'utils/AxiosConfig';
 
-// notification status options //TODO: filter tags
-const status = [
-	{
-		value: 'all',
-		label: 'All Notification'
-	},
-	{
-		value: 'new',
-		label: 'New'
-	},
-	{
-		value: 'unread',
-		label: 'Unread'
-	},
-	{
-		value: 'other',
-		label: 'Other'
-	}
-];
 
 // ==============================|| NOTIFICATION ||============================== //
 
@@ -62,7 +41,6 @@ const NotificationSection = () => {
 	const matchesXs = useMediaQuery(theme.breakpoints.down('md'));
 
 	const [open, setOpen] = useState(false);
-	const [value, setValue] = useState('');
 	const { user } = useUserContext(); 
 	const [notifications, setNotifications] = useState([]);
 	const [numberOfUnseenNotification, setNumberOfUnseenNotification] = useState(0);
@@ -112,14 +90,6 @@ const NotificationSection = () => {
 		prevOpen.current = open;
 	}, [open, dataChange]);
 
-	
-	
-
-	const handleChange = (event) => {
-		//TODO: this help in filter
-		if (event?.target.value) setValue(event?.target.value);
-	};
-
 	return (
 		<>
 			<Box
@@ -132,6 +102,7 @@ const NotificationSection = () => {
 				}}
 			>
 				<ButtonBase sx={{ borderRadius: '12px' }}>
+				<Badge badgeContent={numberOfUnseenNotification} color="error">
 					<Avatar
 						variant="rounded"
 						sx={{
@@ -153,6 +124,7 @@ const NotificationSection = () => {
 					>
 						<IconBell stroke={1.5} size="1.3rem" />
 					</Avatar>
+					</Badge>
 				</ButtonBase>
 			</Box>
 			<Popper
@@ -216,41 +188,12 @@ const NotificationSection = () => {
 										</Grid>
 										<Grid item xs={12}>
 											<PerfectScrollbar style={{ height: '100%', maxHeight: 'calc(100vh - 205px)', overflowX: 'hidden' }}>
-												<Grid container direction="column" spacing={2}>
-													<Grid item xs={12}>
-														<Box sx={{ px: 2, pt: 0.25 }}>
-															<TextField
-																id="outlined-select-currency-native"
-																select
-																fullWidth
-																value={value}
-																onChange={handleChange}
-																SelectProps={{
-																	native: true
-																}}
-															>
-																{status.map((option) => (
-																	<option key={option.value} value={option.value}>
-																		{option.label}
-																	</option>
-																))}
-															</TextField>
-														</Box>
-													</Grid>
-													<Grid item xs={12} p={0}>
-														<Divider sx={{ my: 0 }} />
-													</Grid>
-												</Grid>
 												<NotificationList notifications={notifications} />
 											</PerfectScrollbar>
 										</Grid>
 									</Grid>
 									<Divider />
-									<CardActions sx={{ p: 1.25, justifyContent: 'center' }}>
-										<Button size="small" disableElevation>
-                      View All
-										</Button>
-									</CardActions>
+									
 								</MainCard>
 							</ClickAwayListener>
 						</Paper>

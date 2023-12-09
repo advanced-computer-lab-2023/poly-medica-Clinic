@@ -283,6 +283,16 @@ export const user = (app) => {
 		}
 	});
 
+	app.get('/user/:id/email', async (req, res) => {
+		try{
+			const id = req.params.id;
+			const email = await service.getuserEmail(id);
+			res.send(email);
+		} catch (err){
+			res.status(SERVER_ERROR_REQUEST_CODE_500).send({ message:err.message });
+		}
+	})
+
 	app.get('/check-user', async (req, res) => {
 		const token = req.cookies.jwt;
 		if (token) {

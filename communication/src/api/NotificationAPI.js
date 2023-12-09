@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import NotificationService from "../service/notification-service.js";
-import { BAD_REQUEST_CODE, DUPLICATE_KEY_ERROR_CODE, ERROR_STATUS_CODE, OK_STATUS_CODE, SERVER_ERROR_MESSAGE, ZERO_INDEX } from "../utils/Constants.js";
+import { AUTH_BASE_URL, BAD_REQUEST_CODE, DUPLICATE_KEY_ERROR_CODE, ERROR_STATUS_CODE, OK_STATUS_CODE, SERVER_ERROR_MESSAGE, ZERO_INDEX } from "../utils/Constants.js";
 
 
 export const notification = (app) => {
@@ -40,6 +40,34 @@ export const notification = (app) => {
             const type = req.params.type;
             const notification = req.body;
             await service.postNotification(userId, notification, type);
+            const email = await axios.get(`${AUTH_BASE_URL}/user/${userId}/email`);
+            const transporter = nodemailer.createTransport({
+				service: 'Gmail', 
+				host: 'setup.gmail.com',
+				port: 587,
+				secure: false,
+				auth: {
+					user: process.env.RESETEMAIL,
+					pass: process.env.RESETPASSWORD,
+				},
+			});
+
+			const mailOptions = {
+				from: {
+					name:'acl lab',
+					address:`${process.env.RESETEMAIL}` },
+				to: [email],
+				subject: 'Password Reset',
+				text: `you can login using the following OTP ${OTP}, \n it is valid for one time for 24 hr`,
+			};
+		
+			transporter.sendMail(mailOptions, (error, info) => {
+				if (error) {
+					res.status(500).json({ message: 'Failed to send email' });
+				} else {
+					res.json({ message: 'Email sent' });
+				}
+			});
             res.status(OK_STATUS_CODE).end();
         } catch(error){
             if(error.errors){

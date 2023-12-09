@@ -50,6 +50,11 @@ class UserRepository {
 		user.password = password;
 		await user.save();
 	}
+
+	async getUserEmail(userId){
+		const user = await User.findOne({ userId: userId }, "email").lean();
+		return user.email;
+	}
 }
 
 export default UserRepository;
