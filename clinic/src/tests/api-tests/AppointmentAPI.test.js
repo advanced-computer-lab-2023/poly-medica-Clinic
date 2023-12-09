@@ -98,3 +98,31 @@ describe('GET /appointments/:id', () => {
 		await disconnectDBTest();
 	});
 });
+
+describe('PATCH /appointments/complete/:appointmentId', () => {
+	beforeEach(async () => {
+		await connectDBTest();
+	});
+
+	it('should return 200 OK and the updated appointment', async () => {
+		const patientId = faker.database.mongodbObjectId();
+		const doctorId = faker.database.mongodbObjectId();
+		const appointment = new AppointmentModel(generateAppointment(patientId, doctorId));
+		await appointment.save();
+
+		const res = await request(app)
+			.patch(`/appointments/complete/${appointment._id}`);
+		expect(res.status).toBe(OK_STATUS_CODE);
+		expect(res._body.status).toEqual('Complete');
+	});
+
+	it('should return 500 ERROR when the id is invalid', async () => {
+		const id = faker.lorem.word();
+		const res = await request(app).patch(`/appointments/complete/${id}`);
+		expect(res.status).toBe(ERROR_STATUS_CODE);
+	});
+
+	afterEach(async () => {
+		await disconnectDBTest();
+	});
+});

@@ -6,12 +6,15 @@ import {
     IconStethoscope,
     IconRegistered,
     IconPrescription,
-    IconCalendarTime
+    IconCalendarTime,
 } from '@tabler/icons';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 import MedicationIcon from '@mui/icons-material/Medication';
 import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import ChatIcon from '@mui/icons-material/Chat';
+
 // constant
 const icons = {
     IconKey,
@@ -24,7 +27,9 @@ const icons = {
     IconPrescription,
     IconRegistered,
     AccountBoxIcon,
-    IconCalendarTime
+    IconCalendarTime,
+    AddBoxIcon,
+    ChatIcon,
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
@@ -35,37 +40,6 @@ const pages = {
     caption: 'Pages Caption',
     type: 'group',
     children: [
-        {
-            id: 'admins',
-            title: 'Admins',
-            type: 'item',
-            icon: icons.AdminPanelSettingsOutlinedIcon,
-            url: '/patient/pages/admins',
-            target: false,
-        },
-        {
-            id: 'patients',
-            title: 'Patients',
-            type: 'item',
-            icon: icons.IconEmergencyBed,
-            url: '/patient/pages/patients',
-            target: false,
-        },
-        {
-            id: 'doctors',
-            title: 'Doctors',
-            type: 'item',
-            icon: icons.IconStethoscope,
-            url: '/patient/pages/doctors',
-            target: false,
-        },
-        {
-            id: 'doctor-requests',
-            title: 'Doctor Requests',
-            type: 'item',
-            icon: icons.IconRegistered,
-            url: '/patient/pages/doctor-requests',
-        },
         {
             id: 'family-members',
             title: 'Family Members',
@@ -95,33 +69,17 @@ const pages = {
             id: 'Packages',
             title: 'Health Packages',
             type: 'item',
-            icon: icons.SubscriptionsIcon,
+            icon: icons.AddBoxIcon,
             url: '/patient/pages/packages',
             target: false,
         },
 
         {
-            id: 'clinic',
-            title: 'Clinic',
-            type: 'collapse',
-            icon: icons.MedicationIcon,
-            children: [
-                {
-                    id: 'doctors',
-                    title: 'Doctors',
-                    type: 'item',
-                    icon: icons.IconStethoscope,
-                    url: '/patient/pages/clinic/doctors',
-                    target: false,
-                },
-            ],
-        },
-        {
-            id: 'ListOfPatients',
-            title: 'My Patients',
+            id: 'doctors',
+            title: 'Doctors',
             type: 'item',
             icon: icons.IconStethoscope,
-            url: '/patient/pages/my-patients',
+            url: '/patient/pages/doctors',
             target: false,
         },
         {
@@ -131,7 +89,15 @@ const pages = {
             icon: icons.Wallet,
             url: '/patient/wallet',
             target: false,
-        }
+        },
+        {
+            id: 'chat',
+            title: 'Chat',
+            type: 'item',
+            icon: icons.ChatIcon,
+            url: '/patient/pages/chat',
+            target: false,
+        },
     ],
 };
 

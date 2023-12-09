@@ -6,6 +6,7 @@ const connectDBTest = async () => {
 	try {
 		const mongoURL = process.env.MONGO_URI_TEST;
 		await mongoose.connect(mongoURL);
+		console.log('Database connected', mongoURL);
 		await mongoose.connection.db.dropDatabase();
 	} catch (err) {
 		console.error('Error connecting to the database:', err.message);
@@ -19,7 +20,7 @@ const disconnectDBTest = async () => {
 		for (const key in collections) {
 			const collection = collections[key];
 			await collection.deleteMany({});
-		} 
+		}
 		await mongoose.disconnect();
 	} catch (err) {
 		console.error('Error connecting to the database:', err.message);

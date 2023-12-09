@@ -28,24 +28,10 @@ class AppointmentRepository {
 		await DoctorModel.findByIdAndUpdate(doctorId, { availableSlots });
 	}
 
-	async updateAppointment(id, appointment) {
-		
-		const updatedAppointment = await AppointmentModel.findByIdAndUpdate(
-			id,
-			appointment,
-			{ new: true }
-		);
-		return updatedAppointment;
-	}
-	async deleteAppointment(id) {
-		//add the available slot back to the doctor's availableSlots array
-		//then remove the appointment
-	
-		const appointment = await AppointmentModel.findByIdAndDelete(id);
-		const doctorId = appointment.doctorId;
-		const availableSlotsIdx = appointment.availableSlotIdx;
-		await this.updateAvailableSlots(doctorId, availableSlotsIdx);
-		return appointment;
+	async completeAppointment(appointmentId) {
+		const appointment = await AppointmentModel.findById(appointmentId);
+		appointment.status = 'Complete';
+		return await appointment.save();
 	}
 }
 
