@@ -1,4 +1,3 @@
-import { ONE, ZERO_INDEX } from './Constants.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
@@ -10,9 +9,9 @@ function getFileUrl() {
 	const stackTraceFrames = String(new Error().stack)
 		.replace(/^Error.*\n/, '')
 		.split('\n');
-	const callerFrame = stackTraceFrames[ZERO_INDEX];
+	const callerFrame = stackTraceFrames[0];
 	let url = callerFrame.match(/\(([^)]+\.js)/);
-	if (url) url = url[ONE];
+	if (url) url = url[1];
 	return url.startsWith('file:///')
 		? url.replace(/\\/g, '/')
 		: 'file:///' + url.replace(/\\/g, '/');

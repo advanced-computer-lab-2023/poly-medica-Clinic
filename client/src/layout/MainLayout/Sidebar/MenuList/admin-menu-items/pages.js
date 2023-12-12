@@ -7,7 +7,6 @@ import {
     IconRegistered,
     IconPrescription,
 } from '@tabler/icons';
-import AddBoxIcon from '@mui/icons-material/AddBox';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 import MedicationIcon from '@mui/icons-material/Medication';
 import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
@@ -66,11 +65,60 @@ const pages = {
             url: '/admin/pages/doctor-requests',
         },
         {
+            id: 'family-members',
+            title: 'Family Members',
+            type: 'item',
+            icon: icons.FamilyRestroomIcon,
+            url: '/admin/pages/family-members',
+            target: false,
+        },
+        {
+            id: 'appointments',
+            title: 'Appointments',
+            type: 'item',
+            icon: icons.TodayIcon,
+            url: '/admin/pages/appointments',
+            target: false,
+        },
+
+        {
+            id: 'prescriptions',
+            title: 'Prescriptions',
+            type: 'item',
+            icon: icons.IconPrescription,
+            url: '/admin/pages/prescriptions',
+            target: false,
+        },
+        {
             id: 'Packages',
             title: 'Health Packages',
             type: 'item',
-            icon: AddBoxIcon,
+            icon: icons.SubscriptionsIcon,
             url: '/admin/pages/packages',
+            target: false,
+        },
+        {
+            id: 'clinic',
+            title: 'Clinic',
+            type: 'collapse',
+            icon: icons.MedicationIcon,
+            children: [
+                {
+                    id: 'doctors',
+                    title: 'Doctors',
+                    type: 'item',
+                    icon: icons.IconStethoscope,
+                    url: '/admin/pages/clinic/doctors',
+                    target: false,
+                },
+            ],
+        },
+        {
+            id: 'ListOfPatients',
+            title: 'My Patients',
+            type: 'item',
+            icon: icons.IconStethoscope,
+            url: '/admin/pages/my-patients',
             target: false,
         },
     ],

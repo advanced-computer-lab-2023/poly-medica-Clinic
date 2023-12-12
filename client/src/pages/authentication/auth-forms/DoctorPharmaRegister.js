@@ -15,7 +15,8 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 import { DatePicker } from '@mui/x-date-pickers';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
 import Swal from 'sweetalert2';
-import { clinicAxios, authenticationAxios } from 'utils/AxiosConfig';
+import { authenticationAxios } from 'utils/AxiosConfig';
+import { useNavigate } from 'react-router';
 
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
@@ -33,6 +34,7 @@ const FirebaseRegister = ({ type }) => {
 	const [speciality, setSpeciality] = useState('');
 	const [affiliation, setAffiliation] = useState('');
 	const [uploadedFiles, setUploadedFiles] = useState([]);
+	const navigate = useNavigate();
 
 	const handleUploadedFiles = (files) => {
 		const uploaded = [...uploadedFiles];
@@ -74,13 +76,6 @@ const FirebaseRegister = ({ type }) => {
 				text: 'Please upload documents for verification',
 			});
 			return;
-		} else if (!level || level.label != 'Strong'){
-			Swal.fire({
-				icon: 'error',
-				title: 'Oops...',
-				text: 'Please enter a Strong password. \n Password must be at least 8 characters and include one number, one letter, one capital letter, and one special character.',
-			});
-			return;
 		}
 		setIsSubmitting(true);
 		const sendData = {
@@ -106,16 +101,11 @@ const FirebaseRegister = ({ type }) => {
 
 		formData.append('sendData', JSON.stringify(sendData));
 
-		try {
-			await authenticationAxios.post(
-				'/signup/clinic',
-				sendData,
-			);
-
+		
 			try {
-				await clinicAxios.post(
-					'/add-doctor-req',
-					formData,
+				await authenticationAxios.post(
+					'/signup/clinic',
+					sendData,
 				);
 				Swal.fire({
 					icon: 'success',
@@ -134,6 +124,7 @@ const FirebaseRegister = ({ type }) => {
 				setSpeciality('');
 				setAffiliation('');
 				setUploadedFiles([]);
+				navigate('/login/login3');
 			} catch(error) {
 				Swal.fire({
 					icon: 'error',
@@ -141,14 +132,6 @@ const FirebaseRegister = ({ type }) => {
 					text: error.response.data.message,
 				});
 				setIsSubmitting(false);
-			}
-		} catch(error) {
-			Swal.fire({
-				icon: 'error',
-				title: 'Oops...',
-				text: error.response.data.message,
-			});
-			setIsSubmitting(false);
 		}
 	};
 

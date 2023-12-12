@@ -19,7 +19,8 @@ class AppointmentService {
 			status,
 			type,
 			availableSlotsIdx,
-			patientFamilyMember
+			patientFamilyMember,
+			isValid,
 		} = appointment;
 
 		// deletes the available slot from the doctor's availableSlots array
@@ -33,11 +34,16 @@ class AppointmentService {
 			date,
 			status,
 			type,
+			isValid,
 		};
 		if(patientFamilyMember){
 			appointmentModelData.patientFamilyMember = patientFamilyMember;
 		}
 		return await this.repository.createAppointment(appointmentModelData);
+	}
+
+	async completeAppointment(appointmentId) {
+		return await this.repository.completeAppointment(appointmentId);
 	}
 }
 

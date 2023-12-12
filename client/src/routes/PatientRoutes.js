@@ -26,6 +26,8 @@ const LazyAccount = Loadable(lazy(() => import('pages/profile/Account'))); //TOD
 
 const LazyFamilyMembers = Loadable(lazy(() => import('pages/family-member/FamilyMembers.js')));
 
+const LazyChat = Loadable(lazy(() => import('pages/chat/Chat')));
+
 // utilities routing
 const UtilsTypography = Loadable(
 	lazy(() => import('pages/utilities/Typography')),
@@ -85,6 +87,10 @@ const MainRoutes = {
 				{
 					path: 'doctors',
 					element: <LazyClinicDoctors />,
+				},
+				{
+					path: 'chat',
+					element: <LazyChat />,
 				}
 			],
 		},
