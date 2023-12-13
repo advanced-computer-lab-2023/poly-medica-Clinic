@@ -25,7 +25,7 @@ const LazyDoctorContract = Loadable(lazy(() => import('pages/DoctorContract')));
 const LazyChat = Loadable(lazy(() => import('pages/chat/Chat')));
 
 const Account = Loadable(lazy(() => import('pages/profile/Account')));
-
+const LazyVideoChat = Loadable(lazy(() => import('pages/chat/VideoChat.js')));
 // utilities routing
 const UtilsTypography = Loadable(
     lazy(() => import('pages/utilities/Typography'))
@@ -89,6 +89,10 @@ const DoctorRoutes = {
 				{
 					path: 'chat',
 					element: <LazyChat />,
+				},
+                {
+					path: 'video-chat/:idToCall',
+					element: <LazyVideoChat/>
 				}
             ],
         },

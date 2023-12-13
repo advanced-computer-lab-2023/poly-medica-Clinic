@@ -26,7 +26,7 @@ import { FilterProvider } from 'contexts/FilterContext';
 import { useUserContext } from 'hooks/useUserContext';
 import { useEffect } from 'react';
 import { clinicAxios } from 'utils/AxiosConfig';
-
+import { ContextProvider } from 'contexts/VideoChatContext';
 // styles
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
     ({ theme, open }) => ({
@@ -37,13 +37,13 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
             'margin',
             open
                 ? {
-                      easing: theme.transitions.easing.easeOut,
-                      duration: theme.transitions.duration.enteringScreen,
-                  }
+                    easing: theme.transitions.easing.easeOut,
+                    duration: theme.transitions.duration.enteringScreen,
+                }
                 : {
-                      easing: theme.transitions.easing.sharp,
-                      duration: theme.transitions.duration.leavingScreen,
-                  }
+                    easing: theme.transitions.easing.sharp,
+                    duration: theme.transitions.duration.leavingScreen,
+                }
         ),
         [theme.breakpoints.up('md')]: {
             marginLeft: open ? 0 : -(drawerWidth - 20),
@@ -95,55 +95,57 @@ const MainLayout = ({ userType }) => {
 
     return (
         <ChatContextProvider>
-            <FilterProvider>
-                <SearchProvider>
-                    <Box sx={{ display: 'flex' }}>
-                        <CssBaseline />
-                        {/* header */}
-                        <AppBar
-                            enableColorOnDark
-                            position='fixed'
-                            color='inherit'
-                            elevation={0}
-                            sx={{
-                                bgcolor: theme.palette.background.default,
-                                transition: leftDrawerOpened
-                                    ? theme.transitions.create('width')
-                                    : 'none',
-                            }}>
-                            <Toolbar>
-                                <Header
-                                    handleLeftDrawerToggle={
-                                        handleLeftDrawerToggle
+            <ContextProvider>
+                <FilterProvider>
+                    <SearchProvider>
+                        <Box sx={{ display: 'flex' }}>
+                            <CssBaseline />
+                            {/* header */}
+                            <AppBar
+                                enableColorOnDark
+                                position='fixed'
+                                color='inherit'
+                                elevation={0}
+                                sx={{
+                                    bgcolor: theme.palette.background.default,
+                                    transition: leftDrawerOpened
+                                        ? theme.transitions.create('width')
+                                        : 'none',
+                                }}>
+                                <Toolbar>
+                                    <Header
+                                        handleLeftDrawerToggle={
+                                            handleLeftDrawerToggle
+                                        }
+                                    />
+                                </Toolbar>
+                            </AppBar>
+
+                            {/* drawer */}
+                            {user && user.type == userType && (
+                                <Sidebar
+                                    drawerOpen={
+                                        !matchDownMd
+                                            ? leftDrawerOpened
+                                            : !leftDrawerOpened
                                     }
+                                    drawerToggle={handleLeftDrawerToggle}
                                 />
-                            </Toolbar>
-                        </AppBar>
-
-                        {/* drawer */}
-                        {user && user.type == userType && (
-                            <Sidebar
-                                drawerOpen={
-                                    !matchDownMd
-                                        ? leftDrawerOpened
-                                        : !leftDrawerOpened
-                                }
-                                drawerToggle={handleLeftDrawerToggle}
-                            />
-                        )}
-
-                        {/* main content */}
-                        <Main theme={theme} open={leftDrawerOpened}>
-                            {(!user || user.type != userType) && (
-                                <h1>not autherized!!</h1>
                             )}
-                            {user && user.type == userType && <Outlet />}
-                        </Main>
 
-                        {/* <Customization /> */}
-                    </Box>
-                </SearchProvider>
-            </FilterProvider>
+                            {/* main content */}
+                            <Main theme={theme} open={leftDrawerOpened}>
+                                {(!user || user.type != userType) && (
+                                    <h1>not autherized!!</h1>
+                                )}
+                                {user && user.type == userType && <Outlet />}
+                            </Main>
+
+                            {/* <Customization /> */}
+                        </Box>
+                    </SearchProvider>
+                </FilterProvider>
+            </ContextProvider>
         </ChatContextProvider>
     );
 };

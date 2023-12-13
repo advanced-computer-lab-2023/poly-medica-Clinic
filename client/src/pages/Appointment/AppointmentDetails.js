@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     Dialog,
     DialogTitle,
@@ -8,15 +7,33 @@ import {
     Button,
 } from '@mui/material';
 import { getDay, getTime } from '../../utils/DateFormatter.js';
+import { useNavigate } from 'react-router-dom';
+import { DOCTOR_TYPE_ENUM, PATIENT_TYPE_ENUM } from '../../utils/Constants.js';
+import { VideoContext } from '../../contexts/VideoChatContext.js';
+import { useContext } from 'react';
 
 const AppointmentDetails = ({ selectedAppointment, handleDialogClose, user }) => {
+
+    const navigate = useNavigate();
+    const { answerCall, call, callAccepted } = useContext(VideoContext);
+    console.log('call = ', call);
     let patientFamilyMember, familyMemberText;
-    if(selectedAppointment){
+    if (selectedAppointment) {
         patientFamilyMember = selectedAppointment.patientFamilyMember;
-        familyMemberText = (user.type=='patient')? 
+        familyMemberText = (user.type == 'patient') ?
             'your family member Mr/Miss ' :
             `Mr/Miss ${selectedAppointment.patientName}'s family member: Mr/Miss `;
     }
+
+    const handleAttendAppointment = () => {
+        console.log('inside func');
+        navigate(`/${user.type}/pages/video-chat/${user.type === DOCTOR_TYPE_ENUM ?
+            selectedAppointment.patientId : selectedAppointment.doctorId}`);
+
+        if (user.type === DOCTOR_TYPE_ENUM) {
+            answerCall(selectedAppointment.patientId);
+        }
+    };
     return (
         <Dialog
             open={selectedAppointment}
@@ -33,7 +50,7 @@ const AppointmentDetails = ({ selectedAppointment, handleDialogClose, user }) =>
                     <DialogContent>
                         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5em' }}>
                             {
-                                user.type=='patient' 
+                                user.type == 'patient'
                                 &&
                                 <>
                                     <Typography variant='h4' >
@@ -42,7 +59,7 @@ const AppointmentDetails = ({ selectedAppointment, handleDialogClose, user }) =>
                                 </>
                             }
                             {
-                                user.type=='doctor' 
+                                user.type == 'doctor'
                                 &&
                                 <>
                                     <Typography variant='h4'>
@@ -63,7 +80,7 @@ const AppointmentDetails = ({ selectedAppointment, handleDialogClose, user }) =>
                         <Typography variant='body1'>
                             {selectedAppointment.type}
                         </Typography>
-                        {  
+                        {
                             patientFamilyMember
                             &&
                             <>
@@ -75,6 +92,11 @@ const AppointmentDetails = ({ selectedAppointment, handleDialogClose, user }) =>
                         }
                     </DialogContent>
                     <DialogActions>
+                        {(user.type === PATIENT_TYPE_ENUM || (call.isReceivedCall && !callAccepted)) &&
+                            <Button onClick={() => handleAttendAppointment()}>
+                                Attend Appointment
+                            </Button>
+                        }
                         <Button onClick={handleDialogClose} color='primary'>
                             Close
                         </Button>

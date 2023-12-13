@@ -40,10 +40,13 @@ io.on('connection', (socket) => {
 	console.log('Connected to socket.io');
 
 	socket.on('setup', (userId) => {
+		console.log('Room created with id  = ', userId);
 		socket.join(userId);
 	});
 
 	socket.on('join_room', (room) => {
+		console.log('room = ', room);
+		console.log('Another guy joined !!');
 		socket.join(room);
 	});
 
@@ -56,6 +59,17 @@ io.on('connection', (socket) => {
 			if (user.id !== data.userId)
 				socket.to(user.id).emit('receive_message', data);
 		});
+	});
+
+	socket.emit('start_video', socket.id);
+
+	socket.on('call_user', ({ userToCall, signalData, from, name }) => {
+		console.log('YOU ARE CALLING A USER: ', userToCall);
+		socket.to(userToCall).emit('call_user', { signal: signalData, from, name });
+	});
+
+	socket.on('answer_call', (data) => {
+		socket.to(data.to).emit('call_answered', data.signal);
 	});
 });
 
