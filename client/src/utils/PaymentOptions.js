@@ -47,10 +47,12 @@ export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amou
       if (amountInWallet >= amountToPay) {
         paymentAxios.post('/payment/wallet', { amountToPayByWallet: amountToPay, userId: userId })
           .then(
-            Swal.fire('success', 'Payment Succeeded', 'success').then(() => {
-              const callBackUrl = successfulPayment(userId, items, type);
-              navigate(callBackUrl, { replace: true });
-            }
+            Swal.fire('success', 'Payment Succeeded', 'success')
+              .then(() => {
+                setIsAddDialogOpen(false);
+                const callBackUrl = successfulPayment(userId, items, type);
+                navigate(callBackUrl, { replace: true });
+              }
             )
           )
           .catch((error) => {

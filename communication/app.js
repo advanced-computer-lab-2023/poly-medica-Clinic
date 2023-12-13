@@ -45,10 +45,10 @@ io.on('connection', (socket) => {
 		socket.join(userId);
 	});
 
-  socket.on('update notifications', (userId) => {
-	console.log(' emiting event ', userId);
-    socket.to(userId).emit("new notification", null);
-  })
+	socket.on('update notifications', (userId) => {
+		console.log(' emiting event ', userId);
+		socket.to(userId).emit('new notification', null);
+	});
 
 	socket.on('join_room', (room) => {
 		socket.join(room);
