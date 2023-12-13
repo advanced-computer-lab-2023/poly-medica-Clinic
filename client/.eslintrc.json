@@ -19,14 +19,8 @@
         "jest"
     ],
     "rules": {
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "semi": [
-            "error",
-            "always"
-        ],
+        "quotes": ["error", "single"],
+        "semi": ["error", "always"],
         "react/react-in-jsx-scope": "off",
         "react/display-name": "off",
         "react/prop-types": "off",

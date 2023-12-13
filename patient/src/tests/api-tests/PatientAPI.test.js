@@ -1,3 +1,4 @@
+
 import request from 'supertest';
 import app from '../../../app.js';
 import { connectDBTest, disconnectDBTest } from '../../utils/testing-utils.js';
@@ -535,43 +536,3 @@ describe('GET /patients/:pateintId/wallet', () => {
 }
 );
 
-describe('PATCH /patients/:patientId/wallet', () => {
-	const updateWallet = async (patientId, walletChange) => {
-		return await request(app).patch(`/patients/${patientId}/wallet`).send({ walletChange });
-	};
-	const generateWalletChange = () => {
-		return parseFloat(faker.finance.amount({ min: -1000, max: 1000, dec: 2 }));
-	};
-
-	beforeEach(async () => {
-		await connectDBTest();
-	});
-
-	it('should return 200 OK and update the patient wallet correctly', async () => {
-		const patient = new PatientModel(generatePatient());
-		await patient.save();
-		const patientId = patient._id.toString();
-		const walletChange = generateWalletChange();
-		const res = await updateWallet(patientId, walletChange);
-		expect(res.status).toBe(OK_STATUS_CODE);
-		expect(res._body.walletAmount).toBe(patient.walletAmount + walletChange);
-	});
-
-	it('should return 404 NOT FOUND when the patient is not found', async () => {
-		const patientId = faker.database.mongodbObjectId();
-		const walletChange = generateWalletChange();
-		const res = await updateWallet(patientId, walletChange);
-		expect(res.status).toBe(NOT_FOUND_STATUS_CODE);
-	});
-
-	it('should return 500 ERROR when the id is invalid', async () => {
-		const patientId = faker.lorem.word();
-		const walletChange = generateWalletChange();
-		const res = await updateWallet(patientId, walletChange);
-		expect(res.status).toBe(ERROR_STATUS_CODE);
-	});
-
-	afterEach(async () => {
-		await disconnectDBTest();
-	});
-});

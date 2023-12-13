@@ -32,6 +32,10 @@ const orderSchema = mongoose.Schema({
 		enum: ORDER_STATUS,
 		default: ORDER_STATUS[ZERO_INDEX],
 	},
+	paymentMethod: {
+		type: String,
+		required: true,
+	}
 }, { timestamps: true });
 
 const OrderModel = mongoose.model('order', orderSchema);
