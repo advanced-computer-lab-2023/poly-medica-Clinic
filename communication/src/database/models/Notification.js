@@ -2,12 +2,12 @@ import mongoose from 'mongoose';
 import notificationSchema from './notificationSchema.js';
 
 const userNotificationSchema = mongoose.Schema({
-    userId:{
+	userId:{
 		type: mongoose.Schema.Types.ObjectId,
-		required:[true, "user id is required"],
+		required:[true, 'user id is required'],
 		unique: true,
 	},
-    notifications: [notificationSchema]
+	notifications: [notificationSchema]
 });
 
 const Notification = mongoose.model('Notification', userNotificationSchema);
