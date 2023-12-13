@@ -6,6 +6,7 @@ import {
 	BAD_REQUEST_CODE_400,
 	CLINIC_ADMIN_ENUM,
 	CLINIC_REQ,
+	COMMUNICATION_USER_POST_URL,
 	DOCOTOR_CHECK_DOC_USERS,
 	DOCOTOR_SIGNUP_URL,
 	DOCTOR_ENUM,
@@ -19,6 +20,7 @@ import {
 	PATIENT_SIGNUP_URL,
 	PHARMACIST_BASE_URL,
 	PHARMACIST_ENUM,
+	PHARMACIST_SIGNUP_URL,
 	PHARMACY_ADMIN_ENUM,
 	PHARMACY_REQ,
 	SERVER_ERROR_REQUEST_CODE_500,
@@ -29,7 +31,7 @@ import ResetPasswordService from '../service/reset-password-service.js';
 
 
 export const user = (app) => {
-	const user = new UserService();
+	const service = new UserService();
 	const resetPassword = new ResetPasswordService();
 
 	const createToken = (id, userName, type) => {
@@ -38,7 +40,7 @@ export const user = (app) => {
 		});
 	};
 
-
+	
 
 	app.post('/signup/:request', async (req, res) => {
 		try {
@@ -49,47 +51,55 @@ export const user = (app) => {
 			let email = null;
 			let userName = null;
 			switch (type) {
-				case PATIENT_ENUM:
-					email = req.body.email;
-					userName = req.body.userName;
-					break;
-				case DOCTOR_ENUM: case PHARMACIST_ENUM:
-					email = req.body.userData.email;
-					userName = req.body.userData.userName;
-					break;
-				default:
-					throw new Error('invalid type of user');
+			case PATIENT_ENUM:
+				email = req.body.email;
+				userName = req.body.userName;
+				break;
+			case DOCTOR_ENUM:case PHARMACIST_ENUM:
+				email = req.body.userData.email;
+				userName = req.body.userData.userName;
+				break;
+			default:
+				throw new Error('invalid type of user');
 			}
 
-			const checkEmail = await user.findUserByEmail(email);
+			const checkEmail = await service.findUserByEmail(email);
 			if (checkEmail) {
 				throw new Error(DUB_EMAIL_ERROR_MESSAGE);
 			}
 
-			const checkUserName = await user.findUserByUserName(userName);
+			const checkUserName = await service.findUserByUserName(userName);
 			if (checkUserName) {
 				throw new Error(DUB_USERNAME_ERROR_MESSAGE);
-			}
-			switch (requestFrom) {
-				case CLINIC_REQ: await axios.post(DOCOTOR_CHECK_DOC_USERS, { email, userName }); break;
-				case PHARMACY_REQ: await axios.post(`${PHARMACIST_BASE_URL}check-pharmacist-req`, { email, userName }); break;
-				default: throw new Error('invalid system');
+			} // <= here same
+			switch(requestFrom){
+			case CLINIC_REQ:await axios.post(DOCOTOR_CHECK_DOC_USERS, { email, userName });break;
+			case PHARMACY_REQ:await axios.post(`${PHARMACIST_BASE_URL}check-pharmacist-req`, { email, userName });break;
+			default: throw new Error('invalid system');
 			}
 
-			// TODO: check if i put the docotor/ pharma request
+			switch (type) {
+				case PATIENT_ENUM:
+					signupData = await axios.post(PATIENT_SIGNUP_URL, req.body);
+					break;
+				case DOCTOR_ENUM:
+					signupData = await axios.post(DOCOTOR_SIGNUP_URL, req.body);
+					break;
+				case PHARMACIST_ENUM:
+					signupData = await axios.post(PHARMACIST_SIGNUP_URL, req.body);
+					break;
+				default:
+					throw new Error('invalid type of user');
+				}
+
 			if (type == PATIENT_ENUM) {
-				signupData = await axios.post(PATIENT_SIGNUP_URL, req.body);
-				await user.signupUser(signupData.data);
+				const userId = signupData.data.userId;
+				await axios.post(`${COMMUNICATION_USER_POST_URL}/${userId}`);
+				await service.signupUser(signupData.data);
 			}
-
 			res.status(OK_REQUEST_CODE_200).end();
 		} catch (err) {
 			if (err.response) {
-				if (err.response.data.errCode == DUPLICATE_KEY_ERROR_CODE) {
-					res
-						.status(BAD_REQUEST_CODE_400)
-						.send({ message: err.response.data.errMessage });
-				} else
 					res
 						.status(BAD_REQUEST_CODE_400)
 						.send({ message: err.response.data.errMessage });
@@ -105,25 +115,27 @@ export const user = (app) => {
 	app.delete('/users/:id', async (req, res) => {
 		try {
 			const userId = req.params.id;
-			await user.deleteUser(userId);
+			await service.deleteUser(userId);
+			await axios.delete(`${COMMUNICATION_USER_POST_URL}/${userId}`);
+			
 			res.status(OK_REQUEST_CODE_200).end();
 		} catch (err) {
+			console.log(err);
 			res
 				.status(SERVER_ERROR_REQUEST_CODE_500)
 				.send({ message: 'coudn\'t delete the user' });
 		}
 	});
 
-
 	app.patch('/users/:id/email/:email', async (req, res) => {
 		try {
 			const id = req.params.id;
 			const email = req.params.email;
-			const systemUser = await user.findUserByEmail(email);
+			const systemUser = await service.findUserByEmail(email);
 			if (systemUser) {
 				res.status(BAD_REQUEST_CODE_400).send({ errCode: DUPLICATE_KEY_ERROR_CODE, message: "this email is already exist in the system" });
 			} else {
-				const systemUser = await user.updateEmail(id, email);
+				const systemUser = await service.updateEmail(id, email);
 				//TODO: check the way of update akw
 				if (systemUser)
 					res.status(OK_REQUEST_CODE_200).end();
@@ -137,7 +149,9 @@ export const user = (app) => {
 
 	app.post('/doctors', async (req, res) => {
 		try {
-			await user.signupUser(req.body);
+			const userId = req.body.userId;
+			await axios.post(`${COMMUNICATION_USER_POST_URL}/${userId}`);
+			await service.signupUser(req.body);
 			res.status(OK_REQUEST_CODE_200).end();
 		} catch (err) {
 			console.log(err.message);
@@ -149,7 +163,10 @@ export const user = (app) => {
 
 	app.post('/pharmacists', async (req, res) => {
 		try {
-			await user.signupUser(req.body);
+			const userId = req.body.userId;
+			await axios.post(`${COMMUNICATION_USER_POST_URL}/${userId}`);
+			await axios.post(`${PHARMACIST_BASE_URL}archive/${userId}`);
+			await service.signupUser(req.body);
 			res.status(OK_REQUEST_CODE_200).end();
 		} catch (err) {
 			console.log(err.message);
@@ -163,23 +180,34 @@ export const user = (app) => {
 		try {
 			const requestFrom = req.params.request; // clinic, pharmacy
 			const userName = req.body.userName;
+			const email = req.body.email;
 
-			const checkUserName = await user.findUserByUserName(userName);
+			const checkUserName = await service.findUserByUserName(userName);
 			if (checkUserName) {
 				throw new Error(DUB_USERNAME_ERROR_MESSAGE);
 			}
 
-			await axios.post(DOCOTOR_CHECK_DOC_USERS, { userName });
-			await axios.post(`${PHARMACIST_BASE_URL}check-pharmacist-req`, { userName });
+			const checkEmail = await service.findUserByEmail(email);
+			if (checkEmail) {
+				throw new Error(DUB_EMAIL_ERROR_MESSAGE);
+			}
 
-			let signupData = null;
 			switch (requestFrom) {
-				case CLINIC_REQ: signupData = await axios.post(ADMIN_Clinic_SIGNUP_URL, req.body); break;
-				case PHARMACY_REQ: signupData = await axios.post(ADMIN_Pharmacy_SIGNUP_URL, req.body); break;
+				case CLINIC_REQ: await axios.post(DOCOTOR_CHECK_DOC_USERS, { email, userName }); break;
+				case PHARMACY_REQ: await axios.post(`${PHARMACIST_BASE_URL}check-pharmacist-req`, { email, userName }); break;
 				default: throw new Error('invalid system');
 			}
 
-			await user.signupUser(signupData.data);
+			let signupData = null;
+			switch(requestFrom){
+			case CLINIC_REQ: signupData = await axios.post(ADMIN_Clinic_SIGNUP_URL, req.body);break;
+			case PHARMACY_REQ: signupData = await axios.post(ADMIN_Pharmacy_SIGNUP_URL, req.body);break;
+			default: throw new Error('invalid system');
+			}
+
+			const userId = signupData.data.userId;
+			await axios.post(`${COMMUNICATION_USER_POST_URL}/${userId}`);
+			await service.signupUser(signupData.data);
 
 			res.status(OK_REQUEST_CODE_200).send({ message: 'admin added' });
 		} catch (err) {
@@ -200,7 +228,7 @@ export const user = (app) => {
 		}
 	});
 
-	const sendUserToken = (logedinUser, res, reset) => {
+	const sendUserToken = (logedinUser, res, reset) =>{
 		const token = createToken(
 			logedinUser.userId,
 			logedinUser.userName,
@@ -213,54 +241,57 @@ export const user = (app) => {
 		res.send({
 			id: logedinUser.userId,
 			userName: logedinUser.userName,
-			type: (logedinUser.type == PHARMACY_ADMIN_ENUM || logedinUser.type == CLINIC_ADMIN_ENUM) ? ADMIN_FRONT_ENUM : logedinUser.type,
-			reset: reset
+			type: (logedinUser.type == PHARMACY_ADMIN_ENUM || logedinUser.type == CLINIC_ADMIN_ENUM) ?ADMIN_FRONT_ENUM:logedinUser.type,
+			reset:reset
 		});
 	}
 	app.post('/login/:request', async (req, res) => {
 		try {
-			const requestFrom = req.params.request;
-			const logedinUser = await user.loginUser(req);
-			switch (requestFrom) {
-				case CLINIC_REQ: if (logedinUser.type == PHARMACIST_ENUM || logedinUser.type == PHARMACY_ADMIN_ENUM) throw new Error('invalid user'); break; //TODO: admin in login
-				case PHARMACY_REQ: if (logedinUser.type == DOCTOR_ENUM || logedinUser.type == CLINIC_ADMIN_ENUM) throw new Error('invalid user'); break; //TODO: admin in login
-				default: throw new Error('invalid system');
+			const requestFrom =  req.params.request;
+			const logedinUser = await service.loginUser(req);
+			switch(requestFrom){
+			case CLINIC_REQ: if (logedinUser.type == PHARMACIST_ENUM || logedinUser.type == PHARMACY_ADMIN_ENUM) throw new Error('invalid user'); break; //TODO: admin in login
+			case PHARMACY_REQ: if (logedinUser.type == DOCTOR_ENUM || logedinUser.type == CLINIC_ADMIN_ENUM) throw new Error('invalid user'); break; //TODO: admin in login
+			default: throw new Error('invalid system');
 			}
-			if (logedinUser.type == PHARMACY_ADMIN_ENUM || logedinUser.type == CLINIC_ADMIN_ENUM) {
+			if(logedinUser.type == PHARMACY_ADMIN_ENUM || logedinUser.type == CLINIC_ADMIN_ENUM){
 				logedinUser.type = ADMIN_FRONT_ENUM
 			}
 			sendUserToken(logedinUser, res, false)
 		} catch (err) {
-			if (err.message == 'incorrect Password') {
-				// access reset service
-				const userData = await user.findUserByUserName(req.body.userName);
-				if (userData.email) {
+			if(err.message == 'incorrect Password'){
+				const userData = await service.findUserByUserName(req.body.userName);
+				if(userData.email){
 					const resetUser = await resetPassword.getRecordByEmail(userData.email);
-					if (!resetUser || new Date() > new Date(resetUser.resetTokenExpiration)) {
-						await resetPassword.removeRecordByEmail(userData.email);
-						res.status(BAD_REQUEST_CODE_400).send({ message: err.message });
-					} else {
-						if (req.body.password == resetUser.OTP) {
-							await resetPassword.removeRecordByEmail(userData.email);
-							//TODO: let him 
-							sendUserToken(userData, res, true)
-						}
-						else
-							res.status(BAD_REQUEST_CODE_400).send({ message: err.message });
-						console.log('err: ', err.message);
-
-					}
-				} else {
+					if(!resetUser || new Date() > new Date(resetUser.resetTokenExpiration)){
+					await resetPassword.removeRecordByEmail(userData.email);
 					res.status(BAD_REQUEST_CODE_400).send({ message: err.message });
-					console.log('err: ', err.message);
-
+				} else{
+					if(req.body.password == resetUser.OTP){
+						await resetPassword.removeRecordByEmail(userData.email);
+						sendUserToken(userData, res, true)
+					}
+					else
+						res.status(BAD_REQUEST_CODE_400).send({ message: err.message });
 				}
+			} else{
+				res.status(BAD_REQUEST_CODE_400).send({ message: err.message });
+			}
 			}
 			else
 				res.status(BAD_REQUEST_CODE_400).send({ message: err.message });
-			console.log('err: ', err.message);
 		}
 	});
+
+	app.get('/user/:id/email', async (req, res) => {
+		try{
+			const id = req.params.id;
+			const email = await service.getuserEmail(id);
+			res.send(email);
+		} catch (err){
+			res.status(SERVER_ERROR_REQUEST_CODE_500).send({ message:err.message });
+		}
+	})
 
 	app.get('/check-user', async (req, res) => {
 		const token = req.cookies.jwt;
@@ -282,14 +313,14 @@ export const user = (app) => {
 	});
 
 	app.patch('/change-password/:userId', async (req, res) => {
-		try {
+		try{
 			const userId = req.params.userId;
 			const { password } = req.body;
-			await user.updatePassword(userId, password);
+			await service.updatePassword(userId, password);
 			res.status(OK_REQUEST_CODE_200).end();
-		} catch (err) {
+		} catch (err){
 			console.log(err);
-			res.status(SERVER_ERROR_REQUEST_CODE_500).send({ message: err.message });
+			res.status(SERVER_ERROR_REQUEST_CODE_500).send({ message:err.message });
 		}
 	})
 
@@ -297,5 +328,4 @@ export const user = (app) => {
 		res.cookie('jwt', '', { expires: new Date(0), path: '/' });
 		res.status(200).end();
 	});
-
 };

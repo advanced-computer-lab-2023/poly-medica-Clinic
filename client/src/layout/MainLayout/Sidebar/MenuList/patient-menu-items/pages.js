@@ -6,13 +6,15 @@ import {
     IconStethoscope,
     IconRegistered,
     IconPrescription,
-    IconCalendarTime
+    IconCalendarTime,
 } from '@tabler/icons';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 import MedicationIcon from '@mui/icons-material/Medication';
 import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import ChatIcon from '@mui/icons-material/Chat';
+
 // constant
 const icons = {
     IconKey,
@@ -26,7 +28,8 @@ const icons = {
     IconRegistered,
     AccountBoxIcon,
     IconCalendarTime,
-    AddBoxIcon
+    AddBoxIcon,
+    ChatIcon,
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
@@ -86,7 +89,15 @@ const pages = {
             icon: icons.Wallet,
             url: '/patient/wallet',
             target: false,
-        }
+        },
+        {
+            id: 'chat',
+            title: 'Chat',
+            type: 'item',
+            icon: icons.ChatIcon,
+            url: '/patient/pages/chat',
+            target: false,
+        },
     ],
 };
 

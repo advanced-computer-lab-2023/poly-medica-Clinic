@@ -32,6 +32,12 @@ const Appointment = mongoose.Schema({
 		enum: ['appointment', 'follow-up'],
 		required: true,
 	},
+	pricePaidByPatient: { // only in case type is appointment
+		type: Number
+	},
+	pricePaidToDoctor: { // only in case type is appointment
+		type: Number
+	},
 	patientFamilyMember: { // if exists
 		name: {
 			type: String,
@@ -50,7 +56,11 @@ const Appointment = mongoose.Schema({
 			type: String,
 			enum: FAMILY_RELATIONS,
 		},
-	}
+	},
+	isValid: {
+		type: Boolean,
+		default: true,
+	},
 });
 
 const AppointmentModel = mongoose.model('Appointment', Appointment);

@@ -1,6 +1,6 @@
 import PatientService from '../service/patient-service.js';
 import { isValidMongoId } from '../utils/Validation.js';
-import upload from '../config/MulterConfig.js';
+import upload from '../config/multerConfig.js';
 import {
 	EMPTY_SIZE,
 	NOT_FOUND_STATUS_CODE,
@@ -418,20 +418,19 @@ export const patient = (app) => {
 	}
 	);
 
-	app.patch('/patients/:pateintId/wallet', async (req, res) => {
-		const { pateintId } = req.params;
-		const { amount } = req.body;
-		console.log(amount);
-		if (!isValidMongoId(pateintId)) {
+	app.patch('/patients/:patientId/wallet', async (req, res) => {
+		const { patientId } = req.params;
+		const { walletChange } = req.body;
+		console.log('walletChange = ', walletChange);
+		if (!isValidMongoId(patientId)) {
 			return res
 				.status(ERROR_STATUS_CODE)
 				.json({ message: 'Patient ID is invalid' });
 		}
 		try {
-			const id = req.params.pateintId;
-			const user = await service.getPatientById(id);
+			const user = await service.getPatientById(patientId);
 			if (user) {
-				const walletAmount = await service.updateWallet(id, amount);
+				const walletAmount = await service.updateWallet(patientId, walletChange);
 				res.status(OK_STATUS_CODE).json({ walletAmount });
 			} else {
 				res.status(NOT_FOUND_STATUS_CODE).json({ message: 'Not found' });

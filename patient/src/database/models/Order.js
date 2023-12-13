@@ -43,6 +43,10 @@ const orderSchema = mongoose.Schema(
 		typeId: {
 			type: mongoose.Schema.Types.ObjectId,
 		},
+		paymentMethod: {
+			type: String,
+			required: true,
+		}
 	},
 	{ timestamps: true },
 );
