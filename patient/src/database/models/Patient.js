@@ -58,7 +58,7 @@ const patientSchema = mongoose.Schema({
 	familyMembers: [
 		{
 			id: {
-				type: mongoose.Schema.Types.ObjectId,
+				type: String,
 				// ref: 'Patient',
 				// required: true	
 			},

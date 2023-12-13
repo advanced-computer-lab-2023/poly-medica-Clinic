@@ -23,7 +23,8 @@ class AppointmentService {
 			pricePaidByPatient,
 			pricePaidToDoctor,
 			availableSlotsIdx,
-			patientFamilyMember
+			patientFamilyMember,
+			isValid,
 		} = appointment;
 
 		// deletes the available slot from the doctor's availableSlots array
@@ -44,6 +45,10 @@ class AppointmentService {
 			appointmentModelData.patientFamilyMember = patientFamilyMember;
 		}
 		return await this.repository.createAppointment(appointmentModelData);
+	}
+
+	async completeAppointment(appointmentId) {
+		return await this.repository.completeAppointment(appointmentId);
 	}
 
 	async rescheduleAppointment(appointmentId, doctorId, availableSlotsIdx){

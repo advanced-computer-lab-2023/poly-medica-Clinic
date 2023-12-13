@@ -1,6 +1,6 @@
 import PatientService from '../service/patient-service.js';
 import { isValidMongoId } from '../utils/Validation.js';
-import upload from '../config/MulterConfig.js';
+import upload from '../config/multerConfig.js';
 import {
 	EMPTY_SIZE,
 	NOT_FOUND_STATUS_CODE,

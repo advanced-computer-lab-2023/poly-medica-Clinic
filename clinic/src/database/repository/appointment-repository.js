@@ -9,8 +9,8 @@ class AppointmentRepository {
 		const appointments = await AppointmentModel.find({});
 		return appointments.filter(
 			(appointment) =>
-				appointment.patientId.toString() === id.toString() ||
-                appointment.doctorId.toString() === id.toString()
+				(appointment.patientId.toString() === id.toString() ||
+                appointment.doctorId.toString() === id.toString()) && appointment.isValid
 		);
 	}
 
@@ -28,6 +28,12 @@ class AppointmentRepository {
 	async updateAppointmentStatus(appointmentId, newStatus){
 		const appointment = await AppointmentModel.findById(appointmentId);
 		appointment.status = newStatus;
+		return await appointment.save();
+	}
+
+	async completeAppointment(appointmentId) {
+		const appointment = await AppointmentModel.findById(appointmentId);
+		appointment.status = 'Complete';
 		return await appointment.save();
 	}
 }
