@@ -23,8 +23,7 @@ class AppointmentService {
 			pricePaidByPatient,
 			pricePaidToDoctor,
 			availableSlotsIdx,
-			patientFamilyMember,
-			isValid,
+			patientFamilyMember
 		} = appointment;
 
 		// deletes the available slot from the doctor's availableSlots array
