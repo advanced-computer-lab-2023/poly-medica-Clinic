@@ -55,6 +55,7 @@ const DoctorDetailsAppointmentsCard = ({
             setSelectedMember({ index });
     };
     const handleBookNow = async () => {
+        const price = calcPrice(selectedDoctor.hourlyRate, loggedInPatientHealthPackage.doctorDiscount);
         const appointment = {
             patientId: loggedInPatient._id,
             doctorId: selectedDoctor._id,
@@ -63,7 +64,9 @@ const DoctorDetailsAppointmentsCard = ({
             date: slot.from,
             status: 'Incomplete',
             type: 'appointment',
-            availableSlotsIdx
+            availableSlotsIdx,
+            pricePaidByPatient: price,
+            pricePaidToDoctor: selectedDoctor.hourlyRate
         };
         if (selectedBookingType == 'family') {
             const familyMember = loggedInPatient.familyMembers[selectedMember.index];
@@ -76,7 +79,6 @@ const DoctorDetailsAppointmentsCard = ({
             };
             appointment.patientFamilyMember = patientFamilyMember;
         }
-        const price = calcPrice(selectedDoctor.hourlyRate, loggedInPatientHealthPackage.doctorDiscount);
         setSelectedAppointment(appointment);
         setAppointmentPrice(price);
         setDialogOpen(true);

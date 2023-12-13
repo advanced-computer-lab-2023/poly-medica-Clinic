@@ -1,12 +1,12 @@
 import AppointmentModel from '../models/Appointment.js';
-import DoctorModel from '../models/Doctor.js';
-import { ONE } from '../../utils/Constants.js';
 
 class AppointmentRepository {
-	
+	async findAppointmentById(appointmentId) {
+		const appointment = await AppointmentModel.findById(appointmentId);
+		return appointment;
+	}
 	async findAppointmentsByUserId(id) {
 		const appointments = await AppointmentModel.find({});
-		console.log(appointments);
 		return appointments.filter(
 			(appointment) =>
 				(appointment.patientId.toString() === id.toString() ||
@@ -18,14 +18,17 @@ class AppointmentRepository {
 		const newAppointment = new AppointmentModel(appointment);
 		return await newAppointment.save();
 	}
-
 	
-	async updateAvailableSlots(doctorId, availableSlotsIdx) {
-		const doctor = await DoctorModel.findById(doctorId);
-		// await printAllDoctors();
-		const availableSlots = doctor.availableSlots;
-		availableSlots.splice(availableSlotsIdx, ONE);
-		await DoctorModel.findByIdAndUpdate(doctorId, { availableSlots });
+	async updateAppointmentDate(appointmentId, newDate){
+		const appointment = await AppointmentModel.findById(appointmentId);
+		appointment.date = newDate;
+		return await appointment.save();
+	}
+
+	async updateAppointmentStatus(appointmentId, newStatus){
+		const appointment = await AppointmentModel.findById(appointmentId);
+		appointment.status = newStatus;
+		return await appointment.save();
 	}
 
 	async completeAppointment(appointmentId) {
