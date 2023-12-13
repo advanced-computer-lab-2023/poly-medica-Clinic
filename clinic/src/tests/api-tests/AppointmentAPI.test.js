@@ -51,7 +51,7 @@ describe('POST /appointments', () => {
 		// await printAllDoctors(NEGONE); //(runInBand needed here)
 		const res = await request(app)
 			.post('/appointments')
-			.send(appointmentData);
+			.send({ items: appointmentData });
 		// await printAllDoctors(ONE);
 
 		expect(res.status).toBe(OK_STATUS_CODE);
