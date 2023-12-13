@@ -42,11 +42,8 @@ class AppointmentService {
 		return await this.repository.createAppointment(appointmentModelData);
 	}
 
-	async updateAppointment(id, appointment) {
-		return await this.repository.updateAppointment(id, appointment);
-	}
-	async deleteAppointment(id) {
-		return await this.repository.deleteAppointment(id);
+	async completeAppointment(appointmentId) {
+		return await this.repository.completeAppointment(appointmentId);
 	}
 }
 

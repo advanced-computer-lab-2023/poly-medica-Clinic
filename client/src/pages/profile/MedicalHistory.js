@@ -8,7 +8,6 @@ import Loader from 'ui-component/Loader';
 import { Attachment } from '@mui/icons-material';
 import Swal from 'sweetalert2';
 import { downloadDocument } from 'utils/CommonUtils';
-import { OK_STATUS_CODE } from 'utils/Constants';
 
 const MedicalHistory = () => {
     const [documents, setDocuments] = useState();
@@ -23,7 +22,7 @@ const MedicalHistory = () => {
         patientAxios.get(`/patient/${user.id}/medical-history`).then((response) => {
             setDocuments(response.data);
             setLoading(false);
-        });
+        }).catch(err => console.log(err));
     }, []);
 
     const handleDocumentClick = async (document) => {
@@ -38,11 +37,9 @@ const MedicalHistory = () => {
 
     const handleDeleteDocument = (document) => {
         try {
-            patientAxios.patch(`/patient/${user.id}/medical-history/${document._id}`).then((response) => {
-                if (response.status === OK_STATUS_CODE) {
+            patientAxios.patch(`/patient/${user.id}/medical-history/${document._id}`).then(() => {
                     Swal.fire({ title: 'Deleted Successfully', icon: 'success' });
                     setDocuments(documents.filter((doc) => doc._id !== document._id));
-                }
             });
         } catch (err) {
             Swal.fire({ title: 'Deletion Failed', icon: 'error' });

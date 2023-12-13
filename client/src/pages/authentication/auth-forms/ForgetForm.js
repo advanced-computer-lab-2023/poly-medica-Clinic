@@ -11,6 +11,7 @@ import { authenticationAxios } from 'utils/AxiosConfig';
 // project imports
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router';
 
 
 // ============================|| FIREBASE - LOGIN ||============================ //
@@ -18,13 +19,14 @@ import Swal from 'sweetalert2';
 const ForgetForm = () => {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [email, setEmail] = useState('');
+	const navigate = useNavigate();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setIsSubmitting(true);
 		const postData = { 'email': email };
-		const response = await authenticationAxios.post('/reset-password', postData);		
-		if(response.status === 200){
+		try{
+			await authenticationAxios.post('/reset-password', postData);		
 			Swal.fire({
                 icon: 'success',
                 title: 'Success!',
@@ -32,12 +34,13 @@ const ForgetForm = () => {
               });
               setEmail('');
 			setIsSubmitting(false);
-		} else{
-            console.log(response.response, response.response.data);
+			navigate('/login/login3');
+		} catch(error){
+            
 			Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
-				text: response.response.data.errMessage,
+				text: error.response.data.errMessage,
 			});
 			setIsSubmitting(false);
 			}

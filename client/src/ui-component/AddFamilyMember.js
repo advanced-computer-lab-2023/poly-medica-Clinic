@@ -30,7 +30,7 @@ const AddFamilyMember = ({ setIsAddingMember, setFamilyMembers }) => {
             .then((data) => {
                 setIsAddingMember(false);
                 setFamilyMembers(data.familyMembers);
-            });
+            }).catch(err => console.log(err));
     };
     return (
         <MainCard

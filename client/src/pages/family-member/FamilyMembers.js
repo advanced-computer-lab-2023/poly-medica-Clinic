@@ -22,7 +22,6 @@ const FamilyMembers = () => {
     const [error , setError] = useState(false);
     const [newMember, setNewMember] = useState({
         name: '',
-        userName: '',
         nationalId: '',
         age: '',
         gender: '',
@@ -57,7 +56,6 @@ const FamilyMembers = () => {
         setIsAddingMember(true);
         setNewMember({
             name: '',
-            userName: '',
             nationalId: '',
             age: '',
             gender: '',

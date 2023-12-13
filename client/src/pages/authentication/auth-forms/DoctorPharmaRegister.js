@@ -15,7 +15,8 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 import { DatePicker } from '@mui/x-date-pickers';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
 import Swal from 'sweetalert2';
-import { clinicAxios, authenticationAxios } from 'utils/AxiosConfig';
+import { authenticationAxios } from 'utils/AxiosConfig';
+import { useNavigate } from 'react-router';
 
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
@@ -33,6 +34,7 @@ const FirebaseRegister = ({ type }) => {
 	const [speciality, setSpeciality] = useState('');
 	const [affiliation, setAffiliation] = useState('');
 	const [uploadedFiles, setUploadedFiles] = useState([]);
+	const navigate = useNavigate();
 
 	const handleUploadedFiles = (files) => {
 		const uploaded = [...uploadedFiles];
@@ -99,17 +101,12 @@ const FirebaseRegister = ({ type }) => {
 
 		formData.append('sendData', JSON.stringify(sendData));
 
-		const signupResponse = await authenticationAxios.post(
-			'/signup/clinic',
-			sendData,
-		);
-		if (signupResponse.status === 200) {
-			console.log('signupResponse', signupResponse);
-			const doctorRequestResponse = await clinicAxios.post(
-				'/add-doctor-req',
-				formData,
-			);
-			if (doctorRequestResponse.status === 200) {
+		
+			try {
+				await authenticationAxios.post(
+					'/signup/clinic',
+					sendData,
+				);
 				Swal.fire({
 					icon: 'success',
 					title: 'Sign-up Success!',
@@ -127,21 +124,14 @@ const FirebaseRegister = ({ type }) => {
 				setSpeciality('');
 				setAffiliation('');
 				setUploadedFiles([]);
-			} else {
+				navigate('/login/login3');
+			} catch(error) {
 				Swal.fire({
 					icon: 'error',
 					title: 'Oops...',
-					text: doctorRequestResponse.response.data.message,
+					text: error.response.data.message,
 				});
 				setIsSubmitting(false);
-			}
-		} else {
-			Swal.fire({
-				icon: 'error',
-				title: 'Oops...',
-				text: signupResponse.response.data.message,
-			});
-			setIsSubmitting(false);
 		}
 	};
 

@@ -35,6 +35,11 @@ class UserService {
 		const user  = await this.repository.updatePassword(userId, password);
 		return user;
 	}
+
+	async getuserEmail(id){
+		const userEmail = await this.repository.getUserEmail(id);
+		return userEmail;
+	}
 }
 
 export default UserService;
