@@ -94,7 +94,6 @@ const Appointment = () => {
 				selectedAppointment={selectedAppointment}
 				setSelectedAppointment={setSelectedAppointment}
 				handleDialogClose={handleDialogClose}
-				user={user}
 			/>
 			<Pagination
 				count={countPages}
