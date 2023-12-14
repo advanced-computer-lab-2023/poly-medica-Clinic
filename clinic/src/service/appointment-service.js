@@ -46,6 +46,10 @@ class AppointmentService {
 		return await this.repository.createAppointment(appointmentModelData);
 	}
 
+	async completeAppointment(appointmentId) {
+		return await this.repository.completeAppointment(appointmentId);
+	}
+
 	async rescheduleAppointment(appointmentId, doctorId, availableSlotsIdx){
 		
 		const appointment = await this.repository.findAppointmentById(appointmentId);

@@ -30,6 +30,12 @@ class AppointmentRepository {
 		appointment.status = newStatus;
 		return await appointment.save();
 	}
+
+	async completeAppointment(appointmentId) {
+		const appointment = await AppointmentModel.findById(appointmentId);
+		appointment.status = 'Complete';
+		return await appointment.save();
+	}
 }
 
 export default AppointmentRepository;
