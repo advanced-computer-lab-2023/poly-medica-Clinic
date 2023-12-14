@@ -9,12 +9,18 @@ import StyleIcon from '@mui/icons-material/Style';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import Swal from 'sweetalert2';
 import '../../../assets/css/swalStyle.css';
+import { useUserContext } from 'hooks/useUserContext.js';
 import { getDay, getTime } from '../../../utils/DateFormatter.js';
 import { patientCanRefund } from '../../../utils/AppointmentUtils.js';
 import { clinicAxios } from 'pages/utilities/AxiosConfig';
 import AppointmentStatus from '../AppointmentStatus';
 
-const AppointmentDetails = ({ selectedAppointment, setSelectedAppointment, user }) => {
+const AppointmentDetails = ({
+    selectedAppointment,
+    setSelectedAppointment,
+    handleAppoinmentUpdate
+}) => {
+    const { user } = useUserContext();
     const [cannotCompleteOrCancel, setCannotCompleteOrCancel] = useState(false);
     const handleCancel = async (refund) => {
         console.log('appointment cancelled, ', refund);
@@ -40,12 +46,14 @@ const AppointmentDetails = ({ selectedAppointment, setSelectedAppointment, user 
                     console.log('response.data = ', response.data);
                     const updatedAppointment = response.data;
                     setSelectedAppointment(updatedAppointment);
+                    handleAppoinmentUpdate(updatedAppointment);
                 });
             });
     };
     const handleComplete = async () => {
         // TODO: implement this function after merge with communication-service
         console.log('appointment completed');
+        // Don't forget to "handleAppoinmentUpdate"
     };
     const handleCancelConfirmation = () => {
         const refund = (user.type == 'doctor') || patientCanRefund(selectedAppointment.date);

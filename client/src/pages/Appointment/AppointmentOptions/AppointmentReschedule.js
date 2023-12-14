@@ -8,7 +8,8 @@ import '../../../assets/css/swalStyle.css';
 const AppointmentReschedule = ({ 
     selectedAppointment,
     setSelectedAppointment,
-    setTabValue 
+    setTabValue,
+    handleAppoinmentUpdate
 }) => {
     console.log('selectedAppointment', selectedAppointment);
     const [doctorAvailableSlots, setDoctorAvailableSlots] = useState(null);
@@ -41,6 +42,7 @@ const AppointmentReschedule = ({
 					setTabValue('1');
                     const updatedAppointment = response.data;
                     setSelectedAppointment(updatedAppointment);
+                    handleAppoinmentUpdate(updatedAppointment);
 				});
 			})
 			.catch((error) => {
