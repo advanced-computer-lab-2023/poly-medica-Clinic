@@ -37,13 +37,13 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
             'margin',
             open
                 ? {
-                      easing: theme.transitions.easing.easeOut,
-                      duration: theme.transitions.duration.enteringScreen,
-                  }
+                    easing: theme.transitions.easing.easeOut,
+                    duration: theme.transitions.duration.enteringScreen,
+                }
                 : {
-                      easing: theme.transitions.easing.sharp,
-                      duration: theme.transitions.duration.leavingScreen,
-                  }
+                    easing: theme.transitions.easing.sharp,
+                    duration: theme.transitions.duration.leavingScreen,
+                }
         ),
         [theme.breakpoints.up('md')]: {
             marginLeft: open ? 0 : -(drawerWidth - 20),
@@ -74,19 +74,21 @@ const MainLayout = ({ userType }) => {
     const id = user.id;
     const location = useLocation();
     useEffect(() => {
-        clinicAxios
-            .get('/doctors/' + id + '/status')
-            .then((res) => {
+        if (user.type === DOCTOR_TYPE_ENUM) {
+            clinicAxios.get('/doctors/' + id + '/status').then((res) => {
                 const status = res.data.status;
                 if (user && user.type === DOCTOR_TYPE_ENUM && !status) {
                     navigate('/doctor/pages/contract');
-                } else if (!user || user.type != userType) {
+                }
+                else if (!user || user.type != userType) {
                     navigate(`/${user.type}`);
                 }
-            })
-            .catch((err) => {
+            }).catch((err) => {
                 console.log(err);
             });
+        } else if (!user || user.type != userType) {
+            navigate(`/${user.type}`);
+        }
     }, [location.pathname]);
     const dispatch = useDispatch();
     const handleLeftDrawerToggle = () => {

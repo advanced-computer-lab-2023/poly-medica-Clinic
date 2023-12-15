@@ -8,6 +8,7 @@ const patientBaseUrl = 'http://localhost:8002';
 const pharmacyBaseUrl = 'http://localhost:8003';
 const paymentBaseUrl = 'http://localhost:8005';
 const authenticationBaseUrl = 'http://localhost:8004';
+const communicationBaseUrl = 'http://localhost:8006';
 
 export const clinicAxios = axios.create({
     baseURL: clinicBaseUrl,
@@ -80,5 +81,10 @@ export const paymentAxios = axios.create({
 });
 export const authenticationAxios = axios.create({
     baseURL: authenticationBaseUrl,
+    withCredentials: true,
+});
+
+export const communicationAxios = axios.create({
+    baseURL: communicationBaseUrl,
     withCredentials: true,
 });
