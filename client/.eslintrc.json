@@ -12,7 +12,6 @@
     },
     "plugins": ["react", "react-hooks", "jest"],
     "rules": {
-        "linebreak-style": ["error", "windows"],
         "quotes": ["error", "single"],
         "semi": ["error", "always"],
         "react/react-in-jsx-scope": "off",
