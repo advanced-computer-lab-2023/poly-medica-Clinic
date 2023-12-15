@@ -1,8 +1,10 @@
 export const CLINIC_BASE_URL = 'http://localhost:8001';
 export const PATIENT_BASE_URL = 'http://localhost:8002';
 export const PHARMACY_BASE_URL = 'http://localhost:8003';
+export const COMMUNICATION_BASE_URL = 'http://localhost:8006';
 const APPOINTMENT_STATUS = ['COMPLETE', 'INCOMPLETE', 'CANCELLED', 'RESCHEDULED'];
 const APPOINTMENT_CHRONOLGY = ['UPCOMING', 'PAST'];
+export const APPOINTMENT_NOTIFICATION_TYPE_ENUM = 'appointment';
 export const DATE_FILTER_ARRAY = ['Last week', 'Last month', 'Last year'];
 
 export const APPOINTMENT_FILTER_ARRAY = [

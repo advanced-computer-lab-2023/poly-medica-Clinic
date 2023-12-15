@@ -68,17 +68,22 @@ const MainLayout = ({ userType }) => {
 	const id=user.id;
 	const location = useLocation();
 	useEffect(() => {
-		clinicAxios.get('/doctors/'+id+'/status').then((res) => {
-			const status=res.data.status;
-			if(user && user.type === DOCTOR_TYPE_ENUM && !status){ 
-				navigate('/doctor/pages/contract');
-			}
-			else if(!user || user.type != userType){ 
-				navigate(`/${user.type}`);
-			}
-		}).catch((err) => {
-			console.log(err);
-		});
+		if(user.type === DOCTOR_TYPE_ENUM){
+			clinicAxios.get('/doctors/'+id+'/status').then((res) => {
+				const status=res.data.status;
+				if(user && user.type === DOCTOR_TYPE_ENUM && !status){ 
+					navigate('/doctor/pages/contract');
+				}
+				else if(!user || user.type != userType){ 
+					navigate(`/${user.type}`);
+				}
+			}).catch((err) => {
+				console.log(err);
+			});
+		} else if(!user || user.type != userType){ 
+			navigate(`/${user.type}`);
+		}
+		
 
 		
 	},[location.pathname]);
