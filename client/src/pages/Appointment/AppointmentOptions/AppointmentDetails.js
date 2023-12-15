@@ -9,10 +9,13 @@ import StyleIcon from '@mui/icons-material/Style';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import Swal from 'sweetalert2';
 import '../../../assets/css/swalStyle.css';
+import { clinicAxios, communicationAxios } from 'pages/utilities/AxiosConfig';
+import { useChat } from 'contexts/ChatContext.js';
+import { DOCTOR_TYPE_ENUM, PATIENT_TYPE_ENUM } from 'utils/Constants.js';
+import { chatExist } from 'utils/ChatUtils.js';
 import { useUserContext } from 'hooks/useUserContext.js';
 import { getDay, getTime } from '../../../utils/DateFormatter.js';
 import { patientCanRefund } from '../../../utils/AppointmentUtils.js';
-import { clinicAxios } from 'pages/utilities/AxiosConfig';
 import AppointmentStatus from '../AppointmentStatus';
 
 const AppointmentDetails = ({
@@ -20,6 +23,7 @@ const AppointmentDetails = ({
     setSelectedAppointment,
     handleAppoinmentUpdate
 }) => {
+    const { chats, setChats } = useChat();
     const { user } = useUserContext();
     const [cannotCompleteOrCancel, setCannotCompleteOrCancel] = useState(false);
     const handleCancel = async (refund) => {
@@ -53,7 +57,45 @@ const AppointmentDetails = ({
     const handleComplete = async () => {
         // TODO: implement this function after merge with communication-service
         console.log('appointment completed');
-        // Don't forget to "handleAppoinmentUpdate"
+        clinicAxios
+            .patch(`/appointments/complete/${selectedAppointment._id}`)
+            .then((response) => {
+                Swal.fire(
+                    'Appointment Completed!',
+                    'Your Appointment has been completed successfully!',
+                    'success',
+                    )
+                    
+                .then(() => {
+                    const app = response.data;
+                    setSelectedAppointment(app);
+                    handleAppoinmentUpdate(app);
+                    if (
+                        !chatExist(chats, app.patientId, app.doctorId) &&
+                        !chatExist(chats, app.doctorId, app.patientId)
+                    ) {
+                        const res = communicationAxios.post('/chat', {
+                            chat: {
+                                chatName: 'Doctor-Patient',
+                                users: [
+                                    {
+                                        id: app.patientId,
+                                        userType: PATIENT_TYPE_ENUM,
+                                    },
+                                    {
+                                        id: app.doctorId,
+                                        userType: DOCTOR_TYPE_ENUM,
+                                    },
+                                ],
+                            },
+                        });
+                        setChats([res.data, ...chats]);
+                    }
+                });
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
     const handleCancelConfirmation = () => {
         const refund = (user.type == 'doctor') || patientCanRefund(selectedAppointment.date);
