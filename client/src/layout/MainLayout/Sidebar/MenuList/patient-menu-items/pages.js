@@ -51,20 +51,28 @@ const pages = {
             target: false,
         },
         {
-            id: 'appointments',
+            id: 'appointment-follow-up',
             title: 'Appointments',
-            type: 'item',
+            type: 'collapse',
             icon: icons.IconCalendarTime,
-            url: '/patient/pages/appointments',
-            target: false,
-        },
-        {
-            id: 'follow-up-requests',
-            title: 'Follow-Up Requests',
-            type: 'item',
-            icon: icons.RequestPageIcon,
-            url: '/patient/pages/follow-up-requests',
-            target: false,
+            children: [
+                {
+                    id: 'appointments',
+                    title: 'Appointments',
+                    type: 'item',
+                    icon: icons.IconCalendarTime,
+                    url: '/patient/pages/appointments',
+                    target: false,
+                },
+                {
+                    id: 'follow-up-requests',
+                    title: 'Follow-Up Requests',
+                    type: 'item',
+                    icon: icons.RequestPageIcon,
+                    url: '/patient/pages/follow-up-requests',
+                    target: false,
+                }
+            ]
         },
         {
             id: 'prescriptions',

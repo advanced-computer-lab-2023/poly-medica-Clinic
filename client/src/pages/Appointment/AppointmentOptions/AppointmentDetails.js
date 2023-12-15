@@ -194,22 +194,26 @@ const AppointmentDetails = ({
                                 {selectedAppointment.type}
                             </Typography>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
-                            <AttachMoneyIcon style={{ marginRight: '0.4em' }}/>
-                            {
-                                user.type=='patient'
-                                &&
-                                <Typography variant='body1'>
-                                    {`Paid $${selectedAppointment.pricePaidByPatient}`}
-                                </Typography>                            }
-                            {
-                                user.type=='doctor'
-                                &&
-                                <Typography variant='body1'>
-                                    {`Received $${selectedAppointment.pricePaidToDoctor}`}
-                                </Typography>
-                            }
-                        </div>
+                        {
+                            selectedAppointment.type == 'appointment'
+                            &&
+                            <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
+                                <AttachMoneyIcon style={{ marginRight: '0.4em' }}/>
+                                {
+                                    user.type=='patient'
+                                    &&
+                                    <Typography variant='body1'>
+                                        {`Paid $${selectedAppointment.pricePaidByPatient}`}
+                                    </Typography>                            }
+                                {
+                                    user.type=='doctor'
+                                    &&
+                                    <Typography variant='body1'>
+                                        {`Received $${selectedAppointment.pricePaidToDoctor}`}
+                                    </Typography>
+                                }
+                            </div>
+                        }
 
                     </div>
                     
