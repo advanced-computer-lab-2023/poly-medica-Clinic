@@ -15,7 +15,7 @@ export default function App() {
   let paymentAmount = 0;
   let type = '';
   let item = [];
-  const selectedDoctor = '';
+  let selectedDoctor = '';
 
   if (location.state) {
     item = location.state.items;

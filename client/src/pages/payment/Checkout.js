@@ -74,15 +74,15 @@ export default function CheckoutForm({ item, type, selectedDoctor }) {
   };
 
   const handleCancel = async () => {
-      type = queryParams.get('type');
-      if(type === PAYMENT_ITEM_TYPES[0]){
-        navigate('/patient/pages/packages');
-      }else if (type === PAYMENT_ITEM_TYPES[1]){
-        if(selectedDoctor != ''){
-          navigate('/patient/pages/packages', {state : {selectedDoctor}});
-        }
+    if (type === PAYMENT_ITEM_TYPES[0]) {
+      navigate('/patient/pages/packages');
+    } else if (type === PAYMENT_ITEM_TYPES[1]) {
+      console.log('was here');
+      if (selectedDoctor != '') {
+        navigate('/patient/pages/doctors', { state: { selectedDoctor } });
       }
-  }
+    }
+  };
 
   return (
     <form id='payment-form' onSubmit={handleSubmit}>
@@ -94,7 +94,9 @@ export default function CheckoutForm({ item, type, selectedDoctor }) {
       //   handleCardExpiryChange(event.elementType === 'cardCvc' ? event : null);
       // }}
       />
-      <Button disabled={isLoading || !stripe || !elements} fullWidth variant="contained" onClick={handleSubmit}>
+      <Button disabled={isLoading || !stripe || !elements} fullWidth variant="contained" onClick={handleSubmit}
+        sx={{ mt: 0.5 }}
+      >
         {'Pay now'}
       </Button>
       {message && <div id='payment-message' style={
@@ -106,7 +108,11 @@ export default function CheckoutForm({ item, type, selectedDoctor }) {
           textAlign: 'center',
         }
       }>{message}</div>}
-      <Button disabled={isLoading || !stripe || !elements} fullWidth variant="contained" onClick={handleCancel}>
+
+      <Button disabled={isLoading || !stripe || !elements} fullWidth variant="outlined" onClick={handleCancel}
+        color='secondary'
+        sx={{ mt: 1 }}
+      >
         {'Cancel'}
       </Button>
 
