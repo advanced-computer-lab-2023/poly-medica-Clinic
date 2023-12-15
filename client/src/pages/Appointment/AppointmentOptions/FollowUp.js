@@ -25,13 +25,44 @@ const FollowUp = ({ selectedAppointment }) => {
         console.log('availableSlotsIdx', availableSlotsIdx);
         // call your backend here the same way in AppointmentReschedule 
         // ( which is still in progress )
+        const appointmentData = {
+            patientId: selectedAppointment.patientId,
+            doctorId: selectedAppointment.doctorId,
+            patientName: selectedAppointment.patientName,
+            doctorName: selectedAppointment.doctorName,
+            date: doctorAvailableSlots[availableSlotsIdx].from,
+            status: 'Incomplete',
+            type: 'follow-up',
+            availableSlotsIdx: availableSlotsIdx,
+            patientFamilyMember: selectedAppointment.patientFamilyMember,
+        };
+        await clinicAxios
+            .post('/appointments/follow-up-requests', appointmentData)
+            .then(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Your request has been sent successfully!',
+                })
+                .then(() => {
+                    // navigate to follow-up requests page
+                });
+            });
 
     };
     const handleConfirmation = (event) => {
+        if(selectedAppointment.status.toUpperCase() != 'COMPLETE'){
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'You cannot request a follow-up for an incomplete appointment!',
+            });
+            return;
+        }
         const availableSlotsIdx = parseInt(event.target.id);
         Swal.fire({
-			title: 'Confirm Rescheduling',
-			text: 'Are you sure you want to Reschedule this appointment?',
+			title: 'Confirm Request',
+			text: 'Are you sure you want to request this follow-up appointment?',
 			icon: 'question',
 			confirmButtonText: 'Yes',
 			showCancelButton: 'true',
