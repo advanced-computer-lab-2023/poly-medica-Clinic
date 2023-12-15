@@ -9,12 +9,12 @@ import { useState } from 'react';
 import { patientAxios } from 'utils/AxiosConfig';
 import { ADMIN_TYPE_ENUM, HEALTH_PACKAGE_STATUS, PATIENT_TYPE_ENUM, PAYMENT_ITEM_TYPES } from 'utils/Constants';
 import { ChoosePayment } from 'utils/PaymentOptions';
-const HealthPackagesList = ({ packages, handleEditButtonClick, handleDeleteButtonClick, subscribedPackage, setSubscribedPackage, discount }) => {
+const HealthPackagesList = ({ packages, handleEditButtonClick, isPaymentOpen, setIsPaymentOpen, handleDeleteButtonClick, subscribedPackage, setSubscribedPackage, discount }) => {
 
 	const { user } = useUserContext();
-	const [isDialogOpen, setDialogOpen] = useState(false);
 	const [totalPrice, setTotalPrice] = useState(0);
 	const [data, setData] = useState(null);
+
 	const handleSubscribe = (pack) => {
 		const healthPackage = {};
 		healthPackage.packageId = pack._id;
@@ -26,7 +26,7 @@ const HealthPackagesList = ({ packages, handleEditButtonClick, handleDeleteButto
 		packageData.healthPackage = healthPackage;
 		setData(packageData);
 		setTotalPrice(pack.price);
-		setDialogOpen(true);
+		setIsPaymentOpen(true);
 	};
 
 	const handleCancel = () => {
@@ -124,7 +124,7 @@ const HealthPackagesList = ({ packages, handleEditButtonClick, handleDeleteButto
 							</ul>
 						</CardContent>
 						{
-							user.type === ADMIN_TYPE_ENUM 
+							user.type === ADMIN_TYPE_ENUM
 							&&
 							<Stack direction="row" spacing={2} justifyContent="center" >
 								<Button variant="contained" color='secondary' endIcon={<EditIcon />} onClick={(event) => handleEditButtonClick(pack, event)} >
@@ -138,7 +138,7 @@ const HealthPackagesList = ({ packages, handleEditButtonClick, handleDeleteButto
 
 						<CardActions>
 							{
-								user.type === PATIENT_TYPE_ENUM 
+								user.type === PATIENT_TYPE_ENUM
 								&&
 								<Button fullWidth variant="contained" color='secondary' sx={{ background: isSubscribedPackage(pack) ? '#C71585' : '' }}
 									onClick={() => {
@@ -155,7 +155,7 @@ const HealthPackagesList = ({ packages, handleEditButtonClick, handleDeleteButto
 					</Card >
 				</Grid >
 			))}
-			<ChoosePayment isAddDialogOpen={isDialogOpen} setIsAddDialogOpen={setDialogOpen} items={data} amountToPay={totalPrice} type={PAYMENT_ITEM_TYPES[0]} />
+			<ChoosePayment isAddDialogOpen={isPaymentOpen} setIsAddDialogOpen={setIsPaymentOpen} items={data} amountToPay={totalPrice} type={PAYMENT_ITEM_TYPES[0]} />
 		</Grid >
 
 
