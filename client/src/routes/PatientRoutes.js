@@ -21,10 +21,15 @@ const LazyClinicDoctors = Loadable(lazy(() => import('pages/Doctors/Doctors')));
 const LazyAppointments = Loadable(
 	lazy(() => import('pages/Appointment/Appointment')),
 );
+const LazyFollowUpRequests = Loadable(
+	lazy(() => import('pages/FollowUpRequests/FollowUpRequests')),
+);
 const LazyPayment = Loadable(lazy(() => import('pages/payment/Payment')));
 const LazyAccount = Loadable(lazy(() => import('pages/profile/Account'))); //TODO: generalize this
 
 const LazyFamilyMembers = Loadable(lazy(() => import('pages/family-member/FamilyMembers.js')));
+
+const LazyChat = Loadable(lazy(() => import('pages/chat/Chat')));
 
 // utilities routing
 const UtilsTypography = Loadable(
@@ -71,6 +76,10 @@ const MainRoutes = {
 					element: <LazyAppointments />,
 				},
 				{
+					path: 'follow-up-requests',
+					element: <LazyFollowUpRequests />,
+				},
+				{
 					path: 'prescriptions',
 					element: <LazyPrescriptions />,
 				},
@@ -85,6 +94,10 @@ const MainRoutes = {
 				{
 					path: 'doctors',
 					element: <LazyClinicDoctors />,
+				},
+				{
+					path: 'chat',
+					element: <LazyChat />,
 				}
 			],
 		},

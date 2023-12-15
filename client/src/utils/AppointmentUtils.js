@@ -51,3 +51,12 @@ export const filterAppointmentByChronology = (appointment, selectedValue) => {
         }
     }
 };
+
+export const patientCanRefund = (appointmentDate) => {
+    // can refund if appointment is in the future by more than 24 hours
+    const today = new Date();
+    const appointment = new Date(appointmentDate);
+    const diff = Math.abs(appointment - today);
+    const diffInHours = Math.ceil(diff / (1000 * 60 * 60));
+    return diffInHours >= 24;
+};

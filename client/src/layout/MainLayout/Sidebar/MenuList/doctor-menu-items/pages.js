@@ -6,13 +6,16 @@ import {
     IconStethoscope,
     IconRegistered,
     IconPrescription,
-    IconCalendarTime
+    IconCalendarTime,
 } from '@tabler/icons';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 import MedicationIcon from '@mui/icons-material/Medication';
 import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import { Wallet } from '@mui/icons-material';
+import ChatIcon from '@mui/icons-material/Chat';
+import RequestPageIcon from '@mui/icons-material/RequestPage';
+
 // constant
 const icons = {
     IconKey,
@@ -26,7 +29,9 @@ const icons = {
     IconRegistered,
     AccountBoxIcon,
     IconCalendarTime,
-    Wallet
+    Wallet,
+    ChatIcon,
+    RequestPageIcon
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
@@ -38,12 +43,28 @@ const pages = {
     type: 'group',
     children: [
         {
-            id: 'appointments',
+            id: 'appointment-follow-up',
             title: 'Appointments',
-            type: 'item',
+            type: 'collapse',
             icon: icons.IconCalendarTime,
-            url: '/doctor/pages/appointments',
-            target: false,
+            children: [
+                {
+                    id: 'appointments',
+                    title: 'Appointments',
+                    type: 'item',
+                    icon: icons.IconCalendarTime,
+                    url: '/doctor/pages/appointments',
+                    target: false,
+                },
+                {
+                    id: 'follow-up-requests',
+                    title: 'Follow-Up Requests',
+                    type: 'item',
+                    icon: icons.RequestPageIcon,
+                    url: '/doctor/pages/follow-up-requests',
+                    target: false,
+                }
+            ]
         },
         {
             id: 'ListOfPatients',
@@ -67,6 +88,14 @@ const pages = {
             type: 'item',
             icon: icons.IconKey,
             url: '/doctor/pages/contract',
+            target: false,
+        },
+        {
+            id: 'chat',
+            title: 'Chat',
+            type: 'item',
+            icon: icons.ChatIcon,
+            url: '/doctor/pages/chat',
             target: false,
         },
     ],
