@@ -2,8 +2,14 @@ import PatientModel from '../models/Patient.js';
 import PrescriptionModel from '../models/Prescription.js';
 import axios from 'axios';
 import {
-	CLINIC_BASE_URL, FAMILY_MEMBERS_PROJECTION, HEALTH_PACKAGE_STATUS, PATIENT_FOLDER_NAME, ONE,
-	ZERO, PATIENT_ADDRESSES_PROJECTION, ZERO_INDEX
+	CLINIC_BASE_URL,
+	FAMILY_MEMBERS_PROJECTION,
+	HEALTH_PACKAGE_STATUS,
+	PATIENT_FOLDER_NAME,
+	ONE,
+	ZERO,
+	PATIENT_ADDRESSES_PROJECTION,
+	ZERO_INDEX,
 } from '../../utils/Constants.js';
 import { patientHasPackage } from '../../utils/PatientUtils.js';
 import { getImage } from '../../utils/ImageUtils.js';
@@ -22,7 +28,7 @@ class PatientRepository {
 		console.log('id = ', id);
 		const familyMembers = await PatientModel.findById(
 			id,
-			FAMILY_MEMBERS_PROJECTION
+			FAMILY_MEMBERS_PROJECTION,
 		);
 		console.log('Family = ', familyMembers);
 		return familyMembers;
@@ -41,7 +47,7 @@ class PatientRepository {
 		return await PatientModel.findOneAndUpdate(
 			{ _id: id },
 			{ familyMembers },
-			{ new: true, runValidators: true }
+			{ new: true, runValidators: true },
 		).select(FAMILY_MEMBERS_PROJECTION);
 	}
 
@@ -84,11 +90,10 @@ class PatientRepository {
 			dateOfBirth,
 			gender,
 			mobileNumber,
-			emergencyContact
+			emergencyContact,
 		);
 		return user;
 	}
-
 
 	async addHealthPackage(patientId, healthPackage) {
 		const patient = await PatientModel.findById(patientId);
@@ -112,19 +117,26 @@ class PatientRepository {
 			status: patientPackage.status,
 			subscribtionDate: patientPackage.subscribtionDate,
 			packageId: patientPackage.packageId,
-			renewalDate: patientPackage.renewalDate
+			renewalDate: patientPackage.renewalDate,
 		});
 		const filteredPackages = allPackages
 			.filter((chosenPackage) => patientHasPackage(patient, chosenPackage))
-			.map((chosenPackage) => combineAttributes(chosenPackage, patient.healthPackages.find((p) => p.packageId.toString() === chosenPackage._id.toString())));
+			.map((chosenPackage) =>
+				combineAttributes(
+					chosenPackage,
+					patient.healthPackages.find(
+						(p) => p.packageId.toString() === chosenPackage._id.toString(),
+					),
+				),
+			);
 		return filteredPackages;
 	}
-
 
 	async cancelHealthPackage(patientId, healthPackageId) {
 		const patient = await PatientModel.findById(patientId);
 		console.log(healthPackageId);
-		patient.healthPackages[ZERO_INDEX].status = HEALTH_PACKAGE_STATUS[ZERO_INDEX];
+		patient.healthPackages[ZERO_INDEX].status =
+			HEALTH_PACKAGE_STATUS[ZERO_INDEX];
 		await patient.save();
 		return patient;
 	}
@@ -143,15 +155,21 @@ class PatientRepository {
 
 	async deleteHealthRecord(patientId, recordId) {
 		const patient = await PatientModel.findById(patientId);
-		const deletedRecord = patient.healthRecords.find((record) => record._id.toString() === recordId.toString());
-		patient.healthRecords = patient.healthRecords.filter((record) => record._id.toString() !== recordId.toString());
+		const deletedRecord = patient.healthRecords.find(
+			(record) => record._id.toString() === recordId.toString(),
+		);
+		patient.healthRecords = patient.healthRecords.filter(
+			(record) => record._id.toString() !== recordId.toString(),
+		);
 		await patient.save();
 		return deletedRecord;
 	}
 
 	async getOneRecord(patientId, recordId) {
 		const patient = await PatientModel.findById(patientId);
-		const record = patient.healthRecords.find((record) => record._id.toString() === recordId.toString());
+		const record = patient.healthRecords.find(
+			(record) => record._id.toString() === recordId.toString(),
+		);
 		return record;
 	}
 
@@ -168,7 +186,7 @@ class PatientRepository {
 	async findPatientAddresses(id) {
 		const addresses = await PatientModel.findById(
 			id,
-			PATIENT_ADDRESSES_PROJECTION
+			PATIENT_ADDRESSES_PROJECTION,
 		);
 		if (addresses) {
 			addresses.deliveryAddresses.sort((a, b) => {
@@ -182,7 +200,7 @@ class PatientRepository {
 		const addresses = await PatientModel.findOneAndUpdate(
 			{ _id: id },
 			{ deliveryAddresses: address },
-			{ new: true, runValidators: true }
+			{ new: true, runValidators: true },
 		).select(PATIENT_ADDRESSES_PROJECTION);
 		if (addresses) {
 			addresses.deliveryAddresses.sort((a, b) => {
@@ -195,7 +213,7 @@ class PatientRepository {
 	async updateWalletAmount(id, amount) {
 		const updatedAmount = await PatientModel.findOneAndUpdate(
 			{ _id: id },
-			{ walletAmount : amount }
+			{ walletAmount: amount },
 		);
 		return updatedAmount.walletAmount;
 	}
