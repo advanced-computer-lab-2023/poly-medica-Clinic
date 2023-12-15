@@ -9,10 +9,11 @@ import { Button } from '@mui/material';
 import Swal from 'sweetalert2';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useUserContext } from 'hooks/useUserContext';
+import { PAYMENT_ITEM_TYPES } from '../../utils/Constants';
 //import Card from 'react-credit-cards'
 
 
-export default function CheckoutForm({ item, type }) {
+export default function CheckoutForm({ item, type, selectedDoctor }) {
   const stripe = useStripe();
   const elements = useElements();
   const [message, setMessage] = useState(null);
@@ -72,10 +73,21 @@ export default function CheckoutForm({ item, type }) {
     setIsLoading(false);
   };
 
+  const handleCancel = async () => {
+      type = queryParams.get('type');
+      if(type === PAYMENT_ITEM_TYPES[0]){
+        navigate('/patient/pages/packages');
+      }else if (type === PAYMENT_ITEM_TYPES[1]){
+        if(selectedDoctor != ''){
+          navigate('/patient/pages/packages', {state : {selectedDoctor}});
+        }
+      }
+  }
+
   return (
     <form id='payment-form' onSubmit={handleSubmit}>
 
-      <PaymentElement id='payment-element' options={paymentElementOptions} 
+      <PaymentElement id='payment-element' options={paymentElementOptions}
       // onChange={() => {
       //   handleCardNumberChange(event.elementType === 'cardNumber' ? event : null);
       //   handleCardExpiryChange(event.elementType === 'cardExpiry' ? event : null);
@@ -94,6 +106,10 @@ export default function CheckoutForm({ item, type }) {
           textAlign: 'center',
         }
       }>{message}</div>}
+      <Button disabled={isLoading || !stripe || !elements} fullWidth variant="contained" onClick={handleCancel}>
+        {'Cancel'}
+      </Button>
+
     </form>
   );
 }

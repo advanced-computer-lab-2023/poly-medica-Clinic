@@ -5,7 +5,7 @@ import { paymentAxios } from '../../utils/AxiosConfig';
 import CheckoutForm from './Checkout';
 import MainCard from '../../ui-component/cards/MainCard';
 import { useLocation } from 'react-router-dom';
-import { PUBLIC_KEY } from '../../utils/Constants';
+import { PAYMENT_ITEM_TYPES, PUBLIC_KEY } from '../../utils/Constants';
 const stripePromise = loadStripe(PUBLIC_KEY);
 
 export default function App() {
@@ -15,11 +15,15 @@ export default function App() {
   let paymentAmount = 0;
   let type = '';
   let item = [];
+  const selectedDoctor = '';
 
   if (location.state) {
     item = location.state.items;
     type = location.state.type;
     paymentAmount = location.state.amountToPay;
+    if(type === PAYMENT_ITEM_TYPES[1]){
+      selectedDoctor = location.state.selectedDoctor;
+    }
   } else {
     paymentAmount = 1;
   }
@@ -46,7 +50,7 @@ export default function App() {
       <div className='App'>
         {clientSecret && (
           <Elements options={options} stripe={stripePromise}>
-            <CheckoutForm item={item} type={type} />
+            <CheckoutForm item={item} type={type} selectedDoctor={selectedDoctor} />
           </Elements>
         )}
       </div>
