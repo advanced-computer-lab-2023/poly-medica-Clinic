@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import {
     Divider,
     List,
@@ -27,13 +27,9 @@ const ChatList = () => {
     const { socket, setSelectedChat, chats, setChats } = useChat();
 
     const socketRef = useRef(socket);
-    const [isLoading, setIsLoading] = useState(true);
-    isLoading;
     useEffect(() => {
         const fetchData = async () => {
             try {
-                setIsLoading(true);
-
                 const response = await communicationAxios.get(
                     `/chat/${userId}`
                 );
@@ -62,8 +58,6 @@ const ChatList = () => {
                 }
             } catch (err) {
                 console.error(err);
-            } finally {
-                setIsLoading(false);
             }
         };
 
