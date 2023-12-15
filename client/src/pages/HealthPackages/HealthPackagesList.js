@@ -10,7 +10,7 @@ import { patientAxios } from 'utils/AxiosConfig';
 import { ADMIN_TYPE_ENUM, HEALTH_PACKAGE_STATUS, PATIENT_TYPE_ENUM, PAYMENT_ITEM_TYPES } from 'utils/Constants';
 import { ChoosePayment } from 'utils/PaymentOptions';
 const HealthPackagesList = ({ packages, handleEditButtonClick, handleDeleteButtonClick, subscribedPackage, setSubscribedPackage, discount }) => {
-
+	console.log('discount ======== ', discount);
 	const { user } = useUserContext();
 	const [isDialogOpen, setDialogOpen] = useState(false);
 	const [totalPrice, setTotalPrice] = useState(0);

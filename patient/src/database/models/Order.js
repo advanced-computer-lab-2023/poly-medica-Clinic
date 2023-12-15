@@ -12,6 +12,7 @@ const orderSchema = mongoose.Schema(
 			{
 				medicineId: {
 					type: mongoose.Schema.Types.ObjectId,
+					required: true,
 				},
 				name: {
 					type: String,
@@ -35,6 +36,12 @@ const orderSchema = mongoose.Schema(
 			type: String,
 			enum: ORDER_STATUS,
 			default: ORDER_STATUS[ZERO_INDEX],
+		},
+		type: {
+			type: String,
+		},
+		typeId: {
+			type: mongoose.Schema.Types.ObjectId,
 		},
 	},
 	{ timestamps: true },
