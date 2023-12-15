@@ -31,7 +31,9 @@ const MedicalHistory = ({ patientId }) => {
         return `${PATIENT_BASE_URL}/patient/${userId}/medical-history/${document._id}`;
     };
 
-    const handleDeleteDocument = (document) => {
+    const handleDeleteDocument = (event, document) => {
+        event.stopPropagation();
+        event.preventDefault();
         try {
             patientAxios.patch(`/patient/${userId}/medical-history/${document._id}`).then((response) => {
                 if (response.status === OK_STATUS_CODE) {
@@ -103,7 +105,7 @@ const MedicalHistory = ({ patientId }) => {
                                                             <IconButton
                                                                 edge="end"
                                                                 aria-label="delete"
-                                                                onClick={() => handleDeleteDocument(document)}
+                                                                onClick={(e) => handleDeleteDocument(e, document)}
                                                             >
                                                                 <Delete color="primary" />
                                                             </IconButton>

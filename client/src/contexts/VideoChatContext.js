@@ -78,6 +78,7 @@ export const ContextProvider = ({ children }) => {
 
         socketRef.current.on('call_answered', (signal) => {
             setCallAccepted(true);
+            console.log('call answered is triggered');
             peer.signal(signal);
         });
 
