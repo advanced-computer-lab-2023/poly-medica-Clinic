@@ -15,10 +15,12 @@ import { useContext } from 'react';
 const AppointmentDetails = ({ selectedAppointment, handleDialogClose, user }) => {
 
     const navigate = useNavigate();
-    const { answerCall, call, callAccepted } = useContext(VideoContext);
-    console.log('call = ', call);
+    const { answerCall, call, callAccepted, socket } = useContext(VideoContext);
     let patientFamilyMember, familyMemberText;
+
     if (selectedAppointment) {
+        socket.emit('join_room', selectedAppointment.doctorId);
+        console.log('call = ', call);
         patientFamilyMember = selectedAppointment.patientFamilyMember;
         familyMemberText = (user.type == 'patient') ?
             'your family member Mr/Miss ' :

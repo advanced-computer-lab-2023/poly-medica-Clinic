@@ -24,6 +24,7 @@ import MedicalHistory from './MedicalHistory';
 import { authenticationAxios } from '../../utils/AxiosConfig';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
 import { useParams } from 'react-router';
+import DoctorContract from '../DoctorContract';
 const Page = () => {
 	const { patientId } = useParams();
 
@@ -89,8 +90,14 @@ const Page = () => {
 						)}
 						<div>
 							<Grid container spacing={3}>
-								<Grid xs={12} md={6} lg={4}>
-									{!patientId && <AccountProfile />}
+								<Grid Stack xs={12} md={6} lg={4}>
+									<Grid item xs={6} > {!patientId && <AccountProfile />} </Grid>
+									<Grid item xs={6} sx={{ marginTop: '10%' }}>
+										<Card sx={{ padding: '4%' }} > <CardHeader title="Employment Contract" />
+											<DoctorContract></DoctorContract>
+										</Card>
+									</Grid>
+
 								</Grid>
 								<Grid xs={12} md={6} lg={8}>
 									{user.type == DOCTOR_TYPE_ENUM && !patientId && (

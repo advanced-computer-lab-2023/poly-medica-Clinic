@@ -17,12 +17,13 @@ export const ContextProvider = ({ children }) => {
     const [myVideo, setMyVideo] = useState({});
     const [otherUserVideo, setOtherUserVideo] = useState({});
     const connectionRef = useRef();
-
+    const socketRef = useRef(socket);
     useEffect(() => {
         const initializeMediaStream = async () => {
             try {
                 const currentStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
                 setStream(currentStream);
+                console.log('stream for first video: ', currentStream);
                 setMyVideo({ current: { srcObject: currentStream } });
                 setVideoId(user.id);
             } catch (error) {
@@ -32,8 +33,8 @@ export const ContextProvider = ({ children }) => {
 
         initializeMediaStream();
 
-        socket.on('setup', user.id);
-        socket.on('call_user', ({ from, name: callerName, signal }) => {
+        socketRef.current.on('setup', user.id);
+        socketRef.current.on('call_user', ({ from, name: callerName, signal }) => {
             setCall({
                 isReceivedCall: true,
                 from,
@@ -45,21 +46,19 @@ export const ContextProvider = ({ children }) => {
         });
     }, []);
 
-    const answerCall = (id) => {
-        console.log(' The user answered the call !! ');
+    const answerCall = () => {
         setCallAccepted(true);
 
         const peer = new Peer({ initiator: false, trickle: false, stream });
 
         peer.on('signal', (data) => {
-            socket.emit('answer_call', { signal: data, to: call.from });
+            socketRef.current.emit('answer_call', { signal: data, to: call.from });
         });
 
         peer.on('stream', (currentStream) => {
-            setOtherUserVideo(currentStream);
+            console.log('stream for second video: ', currentStream);
+            setOtherUserVideo({ current: { srcObject: currentStream } });
         });
-
-        socket.on('join_room', id);
 
         peer.signal(call.signal);
 
@@ -67,18 +66,17 @@ export const ContextProvider = ({ children }) => {
     };
 
     const callUser = (id) => {
-        console.log('the user to be called has an id = ', id);
         const peer = new Peer({ initiator: true, trickle: false, stream });
 
         peer.on('signal', (data) => {
-            socket.emit('call_user', { userToCall: id, signalData: data, from: videoId, name });
+            socketRef.current.emit('call_user', { userToCall: id, signalData: data, from: videoId, name });
         });
 
         peer.on('stream', (currentStream) => {
             setOtherUserVideo(currentStream);
         });
 
-        socket.on('call_answered', (signal) => {
+        socketRef.current.on('call_answered', (signal) => {
             setCallAccepted(true);
             peer.signal(signal);
         });
@@ -105,7 +103,8 @@ export const ContextProvider = ({ children }) => {
             videoId,
             callUser,
             leaveCall,
-            answerCall
+            answerCall,
+            socket
         }}>
             {children}
         </VideoContext.Provider>

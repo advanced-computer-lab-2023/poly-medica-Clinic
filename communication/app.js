@@ -61,14 +61,15 @@ io.on('connection', (socket) => {
 		});
 	});
 
-	socket.emit('start_video', socket.id);
-
 	socket.on('call_user', ({ userToCall, signalData, from, name }) => {
 		console.log('YOU ARE CALLING A USER: ', userToCall);
+		console.log('the call is from: ', from);
 		socket.to(userToCall).emit('call_user', { signal: signalData, from, name });
 	});
 
 	socket.on('answer_call', (data) => {
+		console.log('the called user : ', data.to);
+		console.log('is there from? ', data.from);
 		socket.to(data.to).emit('call_answered', data.signal);
 	});
 });

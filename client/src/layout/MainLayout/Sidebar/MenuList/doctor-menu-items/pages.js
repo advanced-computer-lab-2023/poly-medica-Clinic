@@ -64,14 +64,6 @@ const pages = {
             target: false,
         },
         {
-            id: 'Contract',
-            title: 'Contract',
-            type: 'item',
-            icon: icons.IconKey,
-            url: '/doctor/pages/contract',
-            target: false,
-        },
-        {
             id: 'chat',
             title: 'Chat',
             type: 'item',

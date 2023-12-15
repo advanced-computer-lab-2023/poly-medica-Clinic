@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Outlet, useLocation } from 'react-router-dom';
 import { DOCTOR_TYPE_ENUM } from 'utils/Constants';
-
+import Swal from 'sweetalert2';
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
 import {
@@ -79,7 +79,8 @@ const MainLayout = ({ userType }) => {
             .then((res) => {
                 const status = res.data.status;
                 if (user && user.type === DOCTOR_TYPE_ENUM && !status) {
-                    navigate('/doctor/pages/contract');
+                    navigate('/doctor/pages/profile');
+                    Swal.fire({ title: 'Pending Offer', icon: 'info', text: 'Please Accept the offer first' });
                 } else if (!user || user.type != userType) {
                     navigate(`/${user.type}`);
                 }

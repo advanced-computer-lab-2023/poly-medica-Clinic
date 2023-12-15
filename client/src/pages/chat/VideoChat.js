@@ -4,19 +4,21 @@ import { useContext, useRef, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useUserContext } from '../../hooks/useUserContext';
 const VideoChat = () => {
-    const {  setName, name, callAccepted, myVideo, otherUserVideo, callEnded, stream, call, callUser, leaveCall } = useContext(VideoContext);
+    const {  setName, callAccepted, myVideo, otherUserVideo, callEnded, stream, callUser, leaveCall } = useContext(VideoContext);
     const myVideoRef = useRef();
     const { user } = useUserContext();
+    console.log('call accepted = ', callAccepted);
     const ongoingCall = callAccepted && !callEnded;
-    const otherUserVideoRef = useRef();
+   // const otherUserVideoRef = useRef();
     const { idToCall } = useParams();
     useEffect(() => {
         if (stream) {
             myVideoRef.current.srcObject = myVideo.current.srcObject;
             setName(user.username);
         }
-        if (callAccepted && otherUserVideo) {
-            otherUserVideoRef.current.srcObject = otherUserVideo;
+        if (otherUserVideo.current && callAccepted) {
+            console.log('otherUserCurrent: ', otherUserVideo.current.srcObject);
+         //   otherUserVideoRef.current.srcObject = otherUserVideo.current.srcObject;
         }
     }, [stream, callAccepted, otherUserVideo]);
 
@@ -30,7 +32,7 @@ const VideoChat = () => {
             {stream && (
                 <Paper>
                     <Grid item xs={6}>
-                        <Typography>{name}</Typography>
+                        <Typography>Patient</Typography>
                         <video playsInline muted autoPlay style={{ width: '550px' }} ref={myVideoRef}></video>
                     </Grid>
                 </Paper>
@@ -38,14 +40,14 @@ const VideoChat = () => {
             {ongoingCall && (
                 <Paper>
                     <Grid item xs={6}>
-                        <Typography>{call.name}</Typography>
-                        <video playsInline ref={otherUserVideoRef} style={{ width: '550px' }} autoPlay></video>
+                        <Typography>Doctor</Typography>
+                        <video playsInline ref={myVideoRef} style={{ width: '550px' }} autoPlay></video>
                     </Grid>
                 </Paper>
             )}
 
             {
-                ongoingCall ? (<Button onClick={() => leaveCall()}> Hang up </Button>) : (<Button onClick={() => callUser(idToCall)}> Call </Button>)
+                ongoingCall ? (<Button onClick={() => leaveCall()}> End </Button>) : (<Button onClick={() => callUser(idToCall)}> Call </Button>)
             }
         </Grid>
     );

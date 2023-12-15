@@ -20,7 +20,6 @@ const LazyAddAvailableSlots = Loadable(
     lazy(() => import('pages/DoctorAddAvailableSlots/AddAvailableSlots'))
 );
 
-const LazyDoctorContract = Loadable(lazy(() => import('pages/DoctorContract')));
 
 const LazyChat = Loadable(lazy(() => import('pages/chat/Chat')));
 
@@ -81,10 +80,6 @@ const DoctorRoutes = {
                 {
                     path: 'wallet',
                     element: <LazyWalletAmount />,
-                },
-                {
-                    path: 'contract',
-                    element: <LazyDoctorContract />,
                 },
 				{
 					path: 'chat',
