@@ -10,6 +10,7 @@ import {
     Button,
     Paper,
     IconButton,
+    Tooltip
 } from '@mui/material';
 import { AddCircleOutline, Subscriptions } from '@mui/icons-material';
 import AddFamilyMember from './AddFamilyMember';
@@ -66,7 +67,7 @@ const FamilyMembers = () => {
             relation: '',
             email: '',
             mobileNumber: '',
-            id:''
+            id: ''
         });
         setError(false);
     };
@@ -117,10 +118,11 @@ const FamilyMembers = () => {
                                     }}
                                 >
                                     <TableCell>
-                                        <IconButton onClick={() => handlePackageClick(member.id)}>
-                                            <Subscriptions color='secondary' />
-                                        </IconButton>
-
+                                        <Tooltip title='View Health Package Subscribtion'>
+                                            <IconButton onClick={() => handlePackageClick(member.id)}>
+                                                <Subscriptions color='secondary' />
+                                            </IconButton>
+                                        </Tooltip>
                                     </TableCell>
                                     <TableCell>{member.name}</TableCell>
                                     <TableCell>{member.nationalId}</TableCell>

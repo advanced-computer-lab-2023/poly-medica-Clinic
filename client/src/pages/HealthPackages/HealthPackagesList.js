@@ -91,9 +91,9 @@ const HealthPackagesList = ({ packages, handleEditButtonClick, handleDeleteButto
 								{discount > 0 ? (
 									<Typography
 										component="h2"
-										variant="h4"
+										variant="h5"
 										color="text.secondary"
-										sx={{ textDecoration: 'line-through' }}
+										sx={{ textDecoration: 'line-through', color: 'red' }}
 									>
 										{`$ ${pack.price}`}
 									</Typography>
@@ -104,7 +104,7 @@ const HealthPackagesList = ({ packages, handleEditButtonClick, handleDeleteButto
 								)}
 								{discount > 0 && (
 									<Typography sx={{ marginLeft: '2%' }} component="h2" variant="h4" color="text.primary">
-										{`$ ${pack.price - (pack.price * (discount / 100))}`}
+										{`$${pack.price - (pack.price * (discount / 100))}`}
 									</Typography>
 								)}
 								<Typography variant="h6" color="text.secondary">
