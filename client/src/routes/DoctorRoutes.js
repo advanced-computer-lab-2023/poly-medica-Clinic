@@ -13,6 +13,9 @@ const LazyDoctorListofPatients = Loadable(
 const LazyAppointments = Loadable(
     lazy(() => import('pages/Appointment/Appointment'))
 );
+const LazyFollowUpRequests = Loadable(
+	lazy(() => import('pages/FollowUpRequests/FollowUpRequests')),
+);
 const LazyWalletAmount = Loadable(
     lazy(() => import('pages/Wallet/WalletAmount'))
 );
@@ -70,6 +73,10 @@ const DoctorRoutes = {
                     path: 'appointments',
                     element: <LazyAppointments />,
                 },
+                {
+					path: 'follow-up-requests',
+					element: <LazyFollowUpRequests />,
+				},
                 {
                     path: 'my-patients',
                     element: <LazyDoctorListofPatients />,

@@ -14,6 +14,8 @@ import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import { Wallet } from '@mui/icons-material';
 import ChatIcon from '@mui/icons-material/Chat';
+import RequestPageIcon from '@mui/icons-material/RequestPage';
+
 // constant
 const icons = {
     IconKey,
@@ -29,6 +31,7 @@ const icons = {
     IconCalendarTime,
     Wallet,
     ChatIcon,
+    RequestPageIcon
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
@@ -45,6 +48,14 @@ const pages = {
             type: 'item',
             icon: icons.IconCalendarTime,
             url: '/doctor/pages/appointments',
+            target: false,
+        },
+        {
+            id: 'follow-up-requests',
+            title: 'Follow-Up Requests',
+            type: 'item',
+            icon: icons.RequestPageIcon,
+            url: '/doctor/pages/follow-up-requests',
             target: false,
         },
         {

@@ -4,11 +4,13 @@ import { Typography } from '@mui/material';
 import AvailableSlotsList from './AvailableSlotsList.js';
 import Swal from 'sweetalert2';
 import '../../../assets/css/swalStyle.css';
+import { useNavigate } from 'react-router-dom';
 
 const FollowUp = ({ selectedAppointment }) => {
     console.log('selectedAppointment', selectedAppointment);
     const [doctorAvailableSlots, setDoctorAvailableSlots] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const navigate = useNavigate();
     useEffect(() => {
         clinicAxios
             .get(`/doctor/${selectedAppointment.doctorId}`)
@@ -23,8 +25,6 @@ const FollowUp = ({ selectedAppointment }) => {
     , []);
     const handleFollowUpRequest = async (availableSlotsIdx) => {
         console.log('availableSlotsIdx', availableSlotsIdx);
-        // call your backend here the same way in AppointmentReschedule 
-        // ( which is still in progress )
         const appointmentData = {
             patientId: selectedAppointment.patientId,
             doctorId: selectedAppointment.doctorId,
@@ -36,6 +36,7 @@ const FollowUp = ({ selectedAppointment }) => {
             availableSlotsIdx: availableSlotsIdx,
             patientFamilyMember: selectedAppointment.patientFamilyMember,
         };
+        
         await clinicAxios
             .post('/appointments/follow-up-requests', appointmentData)
             .then(() => {
@@ -45,7 +46,7 @@ const FollowUp = ({ selectedAppointment }) => {
                     text: 'Your request has been sent successfully!',
                 })
                 .then(() => {
-                    // navigate to follow-up requests page
+                    navigate('/patient/pages/follow-up-requests', { replace: true });
                 });
             });
 

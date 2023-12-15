@@ -21,6 +21,9 @@ const LazyClinicDoctors = Loadable(lazy(() => import('pages/Doctors/Doctors')));
 const LazyAppointments = Loadable(
 	lazy(() => import('pages/Appointment/Appointment')),
 );
+const LazyFollowUpRequests = Loadable(
+	lazy(() => import('pages/FollowUpRequests/FollowUpRequests')),
+);
 const LazyPayment = Loadable(lazy(() => import('pages/payment/Payment')));
 const LazyAccount = Loadable(lazy(() => import('pages/profile/Account'))); //TODO: generalize this
 
@@ -71,6 +74,10 @@ const MainRoutes = {
 				{
 					path: 'appointments',
 					element: <LazyAppointments />,
+				},
+				{
+					path: 'follow-up-requests',
+					element: <LazyFollowUpRequests />,
 				},
 				{
 					path: 'prescriptions',
