@@ -7,6 +7,7 @@ import '../../../assets/css/swalStyle.css';
 import { communicationAxios } from 'utils/AxiosConfig.js';
 import { useUserContext } from 'hooks/useUserContext';
 import { PATIENT_TYPE_ENUM } from 'utils/Constants.js';
+import { getDay, getTime } from '../../../utils/DateFormatter.js';
 const AppointmentReschedule = ({
     selectedAppointment,
     setSelectedAppointment,
@@ -14,7 +15,7 @@ const AppointmentReschedule = ({
     handleAppoinmentUpdate
 }) => {
     const { user } = useUserContext();
-    const userIdToNotify = (user.type === PATIENT_TYPE_ENUM) ? selectedAppointment.doctorId : selectedAppointment.patientId;
+
     console.log('selectedAppointment', selectedAppointment);
     const [doctorAvailableSlots, setDoctorAvailableSlots] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -31,6 +32,19 @@ const AppointmentReschedule = ({
     }
         , []);
     const handleReschedule = async (availableSlotsIdx) => {
+        let userIdToNotify, notificationHead, notificationBody;
+        if (user.type === PATIENT_TYPE_ENUM) {
+            userIdToNotify = selectedAppointment.doctorId;
+            notificationHead = 'Appointment Rescheduled';
+            notificationBody = `Mr/Miss ${user.name} has rescheduled the appointment to be on
+                ${getDay(selectedAppointment.date)} at ${getTime(selectedAppointment.date)}`;
+        }
+        else{
+            userIdToNotify = selectedAppointment.patientId;
+            notificationHead = 'Appointment Rescheduled';
+            notificationBody = `Dr. ${user.name} has rescheduled the appointment to be on
+                ${getDay(selectedAppointment.date)} at ${getTime(selectedAppointment.date)}`;
+        }
         clinicAxios
             .patch(`/appointments/reschedule/${selectedAppointment._id}`, {
                 doctorId: selectedAppointment.doctorId,
@@ -48,8 +62,8 @@ const AppointmentReschedule = ({
                         setSelectedAppointment(updatedAppointment);
                         handleAppoinmentUpdate(updatedAppointment);
                         communicationAxios.post(`/notification/${userIdToNotify}/type/appointment`, {
-                            notificationHead: 'Appointment Rescheduled',
-                            NotificationBody: 'the new time is '
+                            notificationHead,
+                            notificationBody
                         });
                     });
             })

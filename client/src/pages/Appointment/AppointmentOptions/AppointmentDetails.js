@@ -29,8 +29,21 @@ const AppointmentDetails = ({
     const { chats, setChats } = useChat();
     const { user } = useUserContext();
     const [cannotCompleteOrCancel, setCannotCompleteOrCancel] = useState(false);
+    
     const handleCancel = async (refund) => {
-        console.log('appointment cancelled, ', refund);
+        let userIdToNotify, notificationHead, notificationBody;
+        if (user.type === PATIENT_TYPE_ENUM) {
+            userIdToNotify = selectedAppointment.doctorId;
+            notificationHead = 'Appointment Cancelled';
+            notificationBody = `Mr/Miss ${user.name} has cancelled the appointment
+             ${refund? 'and will be refunded' : 'and will not be refunded'}}`;
+        }
+        else{
+            userIdToNotify = selectedAppointment.patientId;
+            notificationHead = 'Appointment Cancelled';
+            notificationBody = `Dr. ${user.name} has cancelled the appointment
+             and you will be refunded`;
+        }
         const requestData = {
             doctorId: selectedAppointment.doctorId,
             appointmentDate: selectedAppointment.date,
@@ -50,10 +63,13 @@ const AppointmentDetails = ({
                     'success',
                 )
                 .then(() => {
-                    console.log('response.data = ', response.data);
                     const updatedAppointment = response.data;
                     setSelectedAppointment(updatedAppointment);
                     handleAppoinmentUpdate(updatedAppointment);
+                    communicationAxios.post(`/notification/${userIdToNotify}/type/appointment`, {
+                        notificationHead,
+                        notificationBody
+                    });
                 });
             });
     };
