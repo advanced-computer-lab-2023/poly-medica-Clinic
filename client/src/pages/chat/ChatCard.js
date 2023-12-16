@@ -1,45 +1,23 @@
-import { CardHeader, Avatar } from '@mui/material';
-import { getReceiver, getUserName } from 'utils/ChatUtils';
-import { useUserContext } from 'hooks/useUserContext';
-import { useState, useEffect } from 'react';
+import { Card } from '@mui/material';
+import ChatBox from './ChatBox';
+import ChatList from './ChatList';
+import { useChat } from 'contexts/ChatContext';
 
-const ChatCard = ({ chat }) => {
-    console.log(chat);
-    const { user } = useUserContext();
-    const [name, setName] = useState('');
-
-    useEffect(() => {
-        const fetchUserName = async () => {
-            try {
-                const userName = await getUserName(
-                    getReceiver(user, chat.users)
-                );
-                console.log(getReceiver(user, chat.users));
-                setName(userName);
-            } catch (error) {
-                console.error('Error fetching username:', error);
-            }
-        };
-
-        fetchUserName();
-    }, [user, chat.users]);
-    return (
-        <CardHeader
-            sx={{
-                padding: '0',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-            }}
-            avatar={
-                <Avatar sx={{ bgcolor: '#f3f3f3' }} aria-label='recipe'>
-                    {name.charAt(0).toUpperCase()}
-                </Avatar>
-            }
-            title={name}
-            subheader={chat.lastMessage && chat.lastMessage.content}
-        />
-    );
+const ChatCard = ({ setChatOpen }) => {
+    const { selectedChat } = useChat();
+  return (
+    <Card
+        sx={{
+            backgroundColor: 'transparent',
+            height: '100%',
+            width: '30%',
+            display: 'flex',
+            flexDirection: 'row-reverse',
+        }}>
+            {selectedChat && <ChatBox setChatOpen={ setChatOpen }></ChatBox> }
+            {!selectedChat && <ChatList setChatOpen={ setChatOpen }></ChatList> }
+        </Card>
+  );
 };
 
 export default ChatCard;

@@ -90,14 +90,6 @@ const pages = {
             url: '/patient/wallet',
             target: false,
         },
-        {
-            id: 'chat',
-            title: 'Chat',
-            type: 'item',
-            icon: icons.ChatIcon,
-            url: '/patient/pages/chat',
-            target: false,
-        },
     ],
 };
 

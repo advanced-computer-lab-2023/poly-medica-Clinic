@@ -1,18 +1,31 @@
 import { useState, useEffect, useRef } from 'react';
 import { communicationAxios } from 'pages/utilities/AxiosConfig';
-import { Paper, InputBase, List, ListItem, Typography } from '@mui/material';
+import { Paper, InputBase, List, ListItem, Typography, Card, CardActions, CardContent, CardHeader, IconButton } from '@mui/material';
 import { useUserContext } from 'hooks/useUserContext';
 import { isSender, getReceiverId } from '../../utils/ChatUtils.js';
 import { useChat } from 'contexts/ChatContext.js';
+import PerfectScrollbar from 'react-perfect-scrollbar';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import CloseIcon from '@mui/icons-material/Close';
 
-const ChatBox = () => {
+const ChatBox = ({ setChatOpen }) => {
     const [chatMessages, setChatMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
 
     const { user } = useUserContext();
     const userId = user.id;
-    const { socket, selectedChat, updateChat } = useChat();
+    const { socket, selectedChat, updateChat, setSelectedChat } = useChat();
 
+    const containerRef = useRef(null);
+
+    useEffect(() => {
+        if (containerRef.current) {
+        // When chatMessages are updated, scroll to the bottom
+        containerRef.current.scrollTop = containerRef.current.scrollHeight;
+        }
+    }, [chatMessages]);
+
+   
     useEffect(() => {
         if (!selectedChat) return;
         communicationAxios
@@ -67,39 +80,58 @@ const ChatBox = () => {
         };
 
         socketRef.current.on('receive_message', handleReceiveMessage);
-
         return () => {
             socketRef.current.off('receive_message', handleReceiveMessage);
         };
     }, [selectedChat]);
 
     return (
-        <Paper
+        <Card
+            elevation={5}
             style={{
-                width: '67%',
-                height: '100%',
+                height: '92%',
+                width: '92%',
                 padding: '0px',
             }}>
-            {selectedChat && (
-                <Paper
+                <CardHeader
                     sx={{
-                        height: '100%',
-                        margin: 2,
+                        paddingBottom: 2,
+                        paddingTop: 1,
+                    }}
+                    avatar={
+                    <IconButton onClick={() => setSelectedChat(null)}>
+                        <ArrowBackIcon></ArrowBackIcon>
+                    </IconButton>
+                    }
+                    action={
+                        <IconButton aria-label="settings" onClick={() => setChatOpen(false)}>
+                            <CloseIcon />
+                        </IconButton>
+                    }
+                >
+                    
+                </CardHeader>
+                <CardContent
+                    sx={{
+                        paddingTop: 0,
+                        height: '78%',
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'center',
                     }}>
+                    <PerfectScrollbar 
+                        containerRef={(ref) => (containerRef.current = ref)}
+                    >
                     <List
                         sx={{
                             display: 'flex',
                             flexDirection: 'column-reverse',
                             width: '100%',
-                            padding: 2,
-                            backgroundColor: '#fafafa',
+                            padding: 0,
+                            backgroundColor: '#f6f6f6',
                             overflowY: 'auto',
-                            height: '65vh',
-                            maxHeight: '65vh',
-                        }}>
+                        }}
+                        >
                         {chatMessages.map((message, index) => {
                             return (
                                 <ListItem
@@ -139,12 +171,16 @@ const ChatBox = () => {
                             );
                         })}
                     </List>
+                    </PerfectScrollbar>
+                </CardContent>
+                <CardActions sx={{
+                    padding: 0,
+                }}>
                     <InputBase
                         sx={{
                             margin: '0px auto',
-                            marginTop: 2,
                             padding: 1,
-                            width: '95%',
+                            width: '80%',
                             backgroundColor: '#f5f5f5',
                         }}
                         value={newMessage}
@@ -156,9 +192,9 @@ const ChatBox = () => {
                             }
                         }}
                     />
-                </Paper>
-            )}
-        </Paper>
+                </CardActions>
+            
+        </Card>
     );
 };
 

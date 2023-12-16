@@ -71,14 +71,6 @@ const pages = {
             url: '/doctor/pages/contract',
             target: false,
         },
-        {
-            id: 'chat',
-            title: 'Chat',
-            type: 'item',
-            icon: icons.ChatIcon,
-            url: '/doctor/pages/chat',
-            target: false,
-        },
     ],
 };
 
