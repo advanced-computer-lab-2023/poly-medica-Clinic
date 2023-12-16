@@ -11,9 +11,7 @@ const generateDoctor = () => {
 			until: faker.date.anytime(),
 		});
 	}
-	const wallet = {
-		amount: faker.number.int({ min: 1, max: 10000 }), 
-	};
+	const walletAmount = faker.number.int({ min: 1, max: 10000 });
 	return {
 		userData,
 		speciality: faker.lorem.word({ length: { min: 5, max: 8 } }),
@@ -21,7 +19,7 @@ const generateDoctor = () => {
 		affiliation: faker.company.name(),
 		educationalBackground: faker.lorem.sentence({ min: 3, max: 10 }),
 		availableSlots,
-		wallet,
+		walletAmount,
 
 	};
 };

@@ -42,6 +42,8 @@ export const PHARMACIST_BASE_URL = 'http://localhost:8003/';
 
 export const PHARMACIST_SIGNUP_URL = 'http://localhost:8003/add-pharmacist-req';
 
+export const COMMUNICATION_USER_POST_URL = "http://localhost:8006/user"
+
 export const DUB_EMAIL_ERROR_MESSAGE = 'that email is already registered';
 
 export const DUB_USERNAME_ERROR_MESSAGE = 'that username is already registered';

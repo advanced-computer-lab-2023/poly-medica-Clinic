@@ -24,10 +24,12 @@ export const admin = (app) => {
 				userId: adminUser._id,
 				password: adminUser.password,
 				userName: adminUser.userName,
+				email: adminUser.email,
 				type: ADMIN_ENUM,
 			};
 			res.send(req.body);
 		} catch (err) {
+			console.log(err);
 			if (err.code == DUPLICATE_KEY_ERROR_CODE) {
 				const duplicateKeyAttrb = Object.keys(err.keyPattern)[ZERO_INDEX];
 				const keyAttrb = duplicateKeyAttrb.split('.');
