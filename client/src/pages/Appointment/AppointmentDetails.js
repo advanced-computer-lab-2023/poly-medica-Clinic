@@ -14,13 +14,18 @@ import { useContext } from 'react';
 
 const AppointmentDetails = ({ selectedAppointment, handleDialogClose, user }) => {
 
+    let runningAppointment;
     const navigate = useNavigate();
     const { answerCall, call, callAccepted, socket } = useContext(VideoContext);
     let patientFamilyMember, familyMemberText;
 
     if (selectedAppointment) {
+        const currentDate = new Date();
+        const appointmentDate = new Date(selectedAppointment.date);
+        const oneHourLater = new Date(appointmentDate.getTime() + 60 * 60 * 1000);
+        runningAppointment = currentDate >= appointmentDate && currentDate <= oneHourLater;
+        
         socket.emit('join_room', selectedAppointment.doctorId);
-        console.log('call = ', call);
         patientFamilyMember = selectedAppointment.patientFamilyMember;
         familyMemberText = (user.type == 'patient') ?
             'your family member Mr/Miss ' :
@@ -94,7 +99,7 @@ const AppointmentDetails = ({ selectedAppointment, handleDialogClose, user }) =>
                         }
                     </DialogContent>
                     <DialogActions>
-                        {(user.type === PATIENT_TYPE_ENUM || (call.isReceivedCall && !callAccepted)) &&
+                        {((user.type === PATIENT_TYPE_ENUM && runningAppointment) || (call.isReceivedCall && !callAccepted)) &&
                             <Button onClick={() => handleAttendAppointment()}>
                                 Attend Appointment
                             </Button>
@@ -110,3 +115,5 @@ const AppointmentDetails = ({ selectedAppointment, handleDialogClose, user }) =>
 };
 
 export default AppointmentDetails;
+
+

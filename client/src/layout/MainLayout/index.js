@@ -74,20 +74,24 @@ const MainLayout = ({ userType }) => {
     const id = user.id;
     const location = useLocation();
     useEffect(() => {
-        clinicAxios
-            .get('/doctors/' + id + '/status')
-            .then((res) => {
-                const status = res.data.status;
-                if (user && user.type === DOCTOR_TYPE_ENUM && !status) {
-                    navigate('/doctor/pages/profile');
-                    Swal.fire({ title: 'Pending Offer', icon: 'info', text: 'Please Accept the offer first' });
-                } else if (!user || user.type != userType) {
-                    navigate(`/${user.type}`);
-                }
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+        const isDoctor = user.type === DOCTOR_TYPE_ENUM;
+        if (!user || user.type != userType) {
+            navigate(`/${user.type}`);
+        }
+        if (isDoctor) {
+            clinicAxios
+                .get('/doctors/' + id + '/status')
+                .then((res) => {
+                    const status = res.data.status;
+                    if (user && isDoctor && !status) {
+                        navigate('/doctor/pages/profile');
+                        Swal.fire({ title: 'Pending Offer', icon: 'info', text: 'Please Accept the offer first' });
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
     }, [location.pathname]);
     const dispatch = useDispatch();
     const handleLeftDrawerToggle = () => {

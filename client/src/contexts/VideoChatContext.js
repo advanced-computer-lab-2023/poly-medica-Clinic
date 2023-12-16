@@ -34,7 +34,7 @@ export const ContextProvider = ({ children }) => {
         initializeMediaStream();
 
         socketRef.current.on('setup', user.id);
-        socketRef.current.on('call_user', ({ from, name: callerName, signal }) => {
+        socketRef.current.on('call_user', ({ signal, from, name: callerName }) => {
             setCall({
                 isReceivedCall: true,
                 from,
@@ -52,11 +52,12 @@ export const ContextProvider = ({ children }) => {
         const peer = new Peer({ initiator: false, trickle: false, stream });
 
         peer.on('signal', (data) => {
+            console.log('inside ans 1');
             socketRef.current.emit('answer_call', { signal: data, to: call.from });
         });
 
         peer.on('stream', (currentStream) => {
-            console.log('stream for second video: ', currentStream);
+            console.log('inside ans 2');
             setOtherUserVideo({ current: { srcObject: currentStream } });
         });
 
@@ -67,16 +68,16 @@ export const ContextProvider = ({ children }) => {
 
     const callUser = (id) => {
         const peer = new Peer({ initiator: true, trickle: false, stream });
-
         peer.on('signal', (data) => {
+            console.log('here 1');
             socketRef.current.emit('call_user', { userToCall: id, signalData: data, from: videoId, name });
         });
-
         peer.on('stream', (currentStream) => {
-            setOtherUserVideo(currentStream);
+            console.log('here 2');
+            setOtherUserVideo({ current: { srcObject: currentStream } });
         });
-
         socketRef.current.on('call_answered', (signal) => {
+            console.log('here 3');
             setCallAccepted(true);
             console.log('call answered is triggered');
             peer.signal(signal);

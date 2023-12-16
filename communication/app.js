@@ -40,13 +40,10 @@ io.on('connection', (socket) => {
 	console.log('Connected to socket.io');
 
 	socket.on('setup', (userId) => {
-		console.log('Room created with id  = ', userId);
 		socket.join(userId);
 	});
 
 	socket.on('join_room', (room) => {
-		console.log('room = ', room);
-		console.log('Another guy joined !!');
 		socket.join(room);
 	});
 
@@ -71,6 +68,7 @@ io.on('connection', (socket) => {
 		console.log('the called user : ', data.to);
 		console.log('is there from? ', data.from);
 		socket.to(data.to).emit('call_answered', data.signal);
+		console.log('The call answered is emitted');
 	});
 });
 
