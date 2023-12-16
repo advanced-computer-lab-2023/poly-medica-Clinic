@@ -80,16 +80,7 @@ export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amou
           confirmButtonText: 'Yes'
         }).then((result) => {
           if (result.isConfirmed) {
-            paymentAxios.post('/payment/wallet', { amountToPayByWallet: amountInWallet, userId: userId }).then(
-              Swal.fire('success', 'Payment Succeeded', 'success')
-                .then(() => {
-                  setIsAddDialogOpen(false);
-                  const callBackUrl = successfulPayment(userId, items, type);
-                  navigate(callBackUrl, { replace: true });
-                  setPaymentDone(1);
-                }
-                )
-            )
+            paymentAxios.post('/payment/wallet', { amountToPayByWallet: amountInWallet, userId: userId })
               .catch((error) => {
                 console.log('Error in payment with the wallet', error);
               });
