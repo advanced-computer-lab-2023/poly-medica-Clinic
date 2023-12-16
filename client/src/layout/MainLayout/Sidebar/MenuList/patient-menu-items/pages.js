@@ -100,14 +100,6 @@ const pages = {
             target: false,
         },
         {
-            id: 'Wallet',
-            title: 'Wallet',
-            type: 'item',
-            icon: icons.Wallet,
-            url: '/patient/wallet',
-            target: false,
-        },
-        {
             id: 'chat',
             title: 'Chat',
             type: 'item',

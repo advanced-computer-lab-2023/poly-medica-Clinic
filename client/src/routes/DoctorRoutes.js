@@ -30,6 +30,10 @@ const LazyHome = Loadable(lazy(() => import('pages/Home/Home')));
 
 const Account = Loadable(lazy(() => import('pages/profile/Account')));
 
+const LazyPrescription = Loadable(
+    lazy(() => import('pages/prescriptions/Prescriptions'))
+);
+
 // utilities routing
 const UtilsTypography = Loadable(
     lazy(() => import('pages/utilities/Typography'))
@@ -101,6 +105,10 @@ const DoctorRoutes = {
 				{
 					path: 'chat',
 					element: <LazyChat />,
+				},
+                {
+					path: 'patients/:patientId/prescriptions',
+					element: <LazyPrescription />,
 				}
             ],
         },

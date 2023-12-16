@@ -47,9 +47,9 @@ export default function MedicineCard({
 			}}
 		>
 			<CardActionArea>
-				<IconButton onClick={() => handleMedicineDelete()}>
+				{userType === 'doctor' && (<IconButton onClick={() => handleMedicineDelete()}>
 					<Close />
-				</IconButton>
+				</IconButton>)}
 				<CardMedia
 					component='img'
 					height='140'

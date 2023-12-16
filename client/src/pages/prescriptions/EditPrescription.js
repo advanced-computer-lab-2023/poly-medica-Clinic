@@ -7,10 +7,7 @@ import {
 	Button,
 	TextField,
 	FormControl,
-	Select,
-	MenuItem,
 	CircularProgress,
-	InputLabel,
 } from '@mui/material';
 
 const EditPrescription = ({
@@ -23,15 +20,6 @@ const EditPrescription = ({
 	setEditErrorMessage,
 }) => {
 	const [isLoading, setIsLoading] = useState(false);
-	const [status, setStatus] = useState('');
-
-	const handleStatusChange = (e) => {
-		setStatus(e.target.value);
-		setSelectedEditPrescription({
-			...selectedEditPrescription,
-			filled: e.target.value,
-		});
-	};
 
 	return (
 		<Dialog
@@ -41,7 +29,6 @@ const EditPrescription = ({
 				setIsEditDialogOpen(false);
 				setTimeout(() => {
 					setEditErrorMessage('');
-					setStatus('');
 				}, 1000);
 			}}
 		>
@@ -54,32 +41,10 @@ const EditPrescription = ({
 							handleSaveEdit(e);
 							setTimeout(() => {
 								setIsLoading(false);
-								setStatus('');
 							}, 2000);
 						}}
 						id='editPrescriptionForm'
 					>
-						<FormControl required fullWidth>
-							<InputLabel required margin='norma;' id='status-label'>
-								Filled
-							</InputLabel>
-							<Select
-								fullWidth
-								labelId='status-label'
-								id='status-select'
-								value={status}
-								onChange={handleStatusChange}
-								label='Status'
-								required
-							>
-								<MenuItem fullWidth value='true'>
-									True
-								</MenuItem>
-								<MenuItem fullWidth value='false'>
-									False
-								</MenuItem>
-							</Select>
-						</FormControl>
 						<FormControl required fullWidth>
 							<TextField
 								fullWidth
@@ -110,7 +75,6 @@ const EditPrescription = ({
 						setIsEditDialogOpen(false);
 						setTimeout(() => {
 							setEditErrorMessage('');
-							setStatus('');
 						}, 1000);
 					}}
 					color='secondary'

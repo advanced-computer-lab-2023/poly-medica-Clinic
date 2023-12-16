@@ -39,6 +39,7 @@ const Prescriptions = () => {
 	const [editErrorMessage, setEditErrorMessage] = useState('');
 	const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 	const [description, setDescription] = useState('');
+	const [patientName, setPatientName] = useState('');
 
 	useEffect(() => {
 		const getPrescriptions = async () => {
@@ -81,6 +82,13 @@ const Prescriptions = () => {
 		};
 		getPrescriptions();
 	}, [prescriptions.length]);
+
+	useEffect(() => {
+		patientAxios.get(`/patients/${patientID}`).then((response) => {
+			setPatientName(response.data.patient.name);
+		}
+		);
+	},[]);
 
 	useEffect(() => {
 		try {
@@ -194,7 +202,7 @@ const Prescriptions = () => {
 	return loadingMedicine || loadingPrescription ? (
 		<Loader />
 	) : (
-		<MainCard title='Prescriptions'>
+		<MainCard title= {`Mr/Mrs ${patientName} Prescriptions`}>
 			<PrescriptionsList
 				prescriptions={prescriptions}
 				handleSelectingPrescription={handleSelectingPrescription}
