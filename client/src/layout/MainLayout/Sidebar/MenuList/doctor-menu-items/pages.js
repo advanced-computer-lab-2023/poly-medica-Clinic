@@ -68,7 +68,7 @@ const pages = {
         },
         {
             id: 'ListOfPatients',
-            title: 'My Patients',
+            title: 'Patients',
             type: 'item',
             icon: icons.IconStethoscope,
             url: '/doctor/pages/my-patients',
@@ -76,7 +76,7 @@ const pages = {
         },
         {
             id: 'add-available-slots',
-            title: 'Add Available Slots',
+            title: 'Available Slots',
             type: 'item',
             icon: icons.IconStethoscope,
             url: '/doctor/pages/add-available-slots',
