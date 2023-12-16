@@ -35,13 +35,13 @@ const AppointmentDetails = ({
         if (user.type === PATIENT_TYPE_ENUM) {
             userIdToNotify = selectedAppointment.doctorId;
             notificationHead = 'Appointment Cancelled';
-            notificationBody = `Mr/Miss ${user.name} has cancelled the appointment
+            notificationBody = `Mr/Miss ${user.userName} has cancelled the appointment
              ${refund? 'and will be refunded' : 'and will not be refunded'}}`;
         }
         else{
             userIdToNotify = selectedAppointment.patientId;
             notificationHead = 'Appointment Cancelled';
-            notificationBody = `Dr. ${user.name} has cancelled the appointment
+            notificationBody = `Dr. ${user.userName} has cancelled the appointment
              and you will be refunded`;
         }
         const requestData = {
@@ -62,11 +62,12 @@ const AppointmentDetails = ({
                     'Your Appointment has been cancelled successfully!',
                     'success',
                 )
-                .then(() => {
+                .then(async () => {
                     const updatedAppointment = response.data;
                     setSelectedAppointment(updatedAppointment);
                     handleAppoinmentUpdate(updatedAppointment);
-                    communicationAxios.post(`/notification/${userIdToNotify}/type/appointment`, {
+                    await communicationAxios.post(`/notification/${userIdToNotify}/type/appointment`, {
+                        senderName: user.userName,
                         notificationHead,
                         notificationBody
                     });
