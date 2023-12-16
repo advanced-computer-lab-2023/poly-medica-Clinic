@@ -26,6 +26,7 @@ const LazyAddAvailableSlots = Loadable(
 const LazyDoctorContract = Loadable(lazy(() => import('pages/DoctorContract')));
 
 const LazyChat = Loadable(lazy(() => import('pages/chat/Chat')));
+const LazyHome = Loadable(lazy(() => import('pages/Home/Home')));
 
 const Account = Loadable(lazy(() => import('pages/profile/Account')));
 
@@ -56,6 +57,10 @@ const DoctorRoutes = {
                     path: 'default',
                     element: <DashboardDefault />,
                 },
+                {
+                    path: 'home',
+                    element: <LazyHome />,
+                }
             ],
         },
         {
