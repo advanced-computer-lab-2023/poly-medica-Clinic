@@ -50,9 +50,13 @@ const AddFamilyMember = ({
         setValue(event.target.value);
     };
 
+    const handleClose = () => {
+        setIsOpen(false);
+    };
+
     return (
         <div>
-            <Dialog open={isOpen} onClose={setIsOpen}>
+            <Dialog open={isOpen} onClose={handleClose}>
                 <DialogTitle variant='h3'>Add Family Member</DialogTitle>
                 <DialogContent>
                     <FamilyMemberOptions
