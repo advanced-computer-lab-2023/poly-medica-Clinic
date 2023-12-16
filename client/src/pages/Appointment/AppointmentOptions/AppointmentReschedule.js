@@ -36,13 +36,13 @@ const AppointmentReschedule = ({
         if (user.type === PATIENT_TYPE_ENUM) {
             userIdToNotify = selectedAppointment.doctorId;
             notificationHead = 'Appointment Rescheduled';
-            notificationBody = `Mr/Miss ${user.name} has rescheduled the appointment to be on
+            notificationBody = `Mr/Miss ${user.userName} has rescheduled the appointment to be on
                 ${getDay(selectedAppointment.date)} at ${getTime(selectedAppointment.date)}`;
         }
         else{
             userIdToNotify = selectedAppointment.patientId;
             notificationHead = 'Appointment Rescheduled';
-            notificationBody = `Dr. ${user.name} has rescheduled the appointment to be on
+            notificationBody = `Dr. ${user.userName} has rescheduled the appointment to be on
                 ${getDay(selectedAppointment.date)} at ${getTime(selectedAppointment.date)}`;
         }
         clinicAxios
@@ -56,12 +56,13 @@ const AppointmentReschedule = ({
                     'Your Appointment has been rescheduled successfully!',
                     'success',
                 )
-                    .then(() => {
+                    .then(async () => {
                         setTabValue('1');
                         const updatedAppointment = response.data;
                         setSelectedAppointment(updatedAppointment);
                         handleAppoinmentUpdate(updatedAppointment);
-                        communicationAxios.post(`/notification/${userIdToNotify}/type/appointment`, {
+                        await communicationAxios.post(`/notification/${userIdToNotify}/type/appointment`, {
+                            senderName: user.userName,
                             notificationHead,
                             notificationBody
                         });
