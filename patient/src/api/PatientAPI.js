@@ -126,6 +126,7 @@ export const patient = (app) => {
 		}
 		try {
 			const { member } = req.body;
+			console.log('member = ', member);
 			if (member.email || member.mobileNumber) {
 				const patient = await service.getPatient(member);
 				if (!patient) {
@@ -417,20 +418,19 @@ export const patient = (app) => {
 	}
 	);
 
-	app.patch('/patients/:pateintId/wallet', async (req, res) => {
-		const { pateintId } = req.params;
-		const { amount } = req.body;
-		console.log(amount);
-		if (!isValidMongoId(pateintId)) {
+	app.patch('/patients/:patientId/wallet', async (req, res) => {
+		const { patientId } = req.params;
+		const { walletChange } = req.body;
+		console.log('walletChange = ', walletChange);
+		if (!isValidMongoId(patientId)) {
 			return res
 				.status(ERROR_STATUS_CODE)
 				.json({ message: 'Patient ID is invalid' });
 		}
 		try {
-			const id = req.params.pateintId;
-			const user = await service.getPatientById(id);
+			const user = await service.getPatientById(patientId);
 			if (user) {
-				const walletAmount = await service.updateWallet(id, amount);
+				const walletAmount = await service.updateWallet(patientId, walletChange);
 				res.status(OK_STATUS_CODE).json({ walletAmount });
 			} else {
 				res.status(NOT_FOUND_STATUS_CODE).json({ message: 'Not found' });

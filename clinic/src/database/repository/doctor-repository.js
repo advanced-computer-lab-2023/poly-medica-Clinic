@@ -5,6 +5,7 @@ import {
 	DOCTOR_PROJECTION,
 	SIXTY,
 	THOUSAND,
+	ONE
 } from '../../utils/Constants.js';
 import DoctoerReqModel from '../models/DoctorReq.js';
 import AppointmentModel from '../models/Appointment.js';
@@ -166,6 +167,20 @@ class DoctorRepository {
 			{ new: true, runValidators: true },
 		);
 		return doctor;
+	}
+
+	// deletes the available slot from the doctor's availableSlots array
+	async deleteSlot(doctorId, availableSlotsIdx) {
+		const doctor = await DoctorModel.findById(doctorId);
+		const availableSlots = doctor.availableSlots;
+		availableSlots.splice(availableSlotsIdx, ONE);
+		return await DoctorModel.findByIdAndUpdate(doctorId, { availableSlots });
+	}
+
+	async updateWallet(doctorId, walletChange){
+		const doctor = await DoctorModel.findById(doctorId);
+		doctor.walletAmount += walletChange;
+		return await doctor.save();
 	}
 }
 

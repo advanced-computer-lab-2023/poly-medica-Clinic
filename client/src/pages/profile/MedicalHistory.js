@@ -139,7 +139,7 @@ const MedicalHistory = ({ patientId }) => {
                         sx={{ mt: 2 }}
                     >
                         Upload Document
-                        <input type="file" accept=".pdf, .doc, .docx" style={{ display: 'none' }} onChange={handleFileChange} />
+                        <input type="file" accept=".pdf, .jpg, .png, .jpeg" style={{ display: 'none' }} onChange={handleFileChange} />
                     </Button>
                     {uploadedFileName && (
                         <Typography variant='subtitle2'>Uploaded File: {uploadedFileName}</Typography>

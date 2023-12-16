@@ -74,36 +74,54 @@ const DoctorAddAvailableSlots = () => {
 
 
     return(
-        <> 
-            <DateSelector selectedDate={selectedDate} handleSelectedDate={handleSelectedDate} />    
-    
-            <TimeSelector selectedTime={selectedTime} handleSelectedTime={handleSelectedTime} />
-        
-              <Typography marginLeft={
-                '10px'
-              } variant="caption" display="block" gutterBottom>
-                Note: The slot duration is 1 hour
-            </Typography>
- 
-        <Button variant="contained" color="primary" sx={{
-                margin: '10px',
-               
-             }}
-             onClick={ onClick }
-             disabled={isButtonDisabled} >
-                Add New Slot
-            </Button>  
-            {/*add header to the Table    */}
+        <>
+            <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                <section>
+                    <Typography
+                        marginLeft={ '10px' } 
+                        fontSize={20} 
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                    >
+                        My available slots
+                    </Typography>
+                    <AvailableSlotsTable  availableSlots={availableSlots}/>
+                </section>
+                
+                <section style={{ marginTop: '5em' }}>
+                    <section style={{ display: 'flex', flexDirection: 'column' }}>
+                        <DateSelector selectedDate={selectedDate} handleSelectedDate={handleSelectedDate} />    
+                        <TimeSelector selectedTime={selectedTime} handleSelectedTime={handleSelectedTime} />
+                    </section>
 
-            <Typography marginLeft={
-                '10px'
-              } 
-              fontSize={20} 
-              variant="caption" display="block" gutterBottom>
-                The available slots
-            </Typography>
+                    <section style={{ marginLeft: '0.6em' }}>    
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            sx={{ margin: '10px' }}
+                            onClick={ onClick }
+                            disabled={isButtonDisabled}
+                        >
+                            Add New Slot
+                        </Button>
+                        <Typography
+                            marginLeft={'10px'}
+                            variant="caption"
+                            display="block"
+                            gutterBottom
+                        >
+                            Kindly note that the slot duration is 1 hour
+                        </Typography>
+                    </section>
+                </section>
 
-           <AvailableSlotsTable  availableSlots={availableSlots}/>
+                
+                
+            </div>
+
+
+            
         </>
     ) ; 
 };

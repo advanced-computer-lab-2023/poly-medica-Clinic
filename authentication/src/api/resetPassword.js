@@ -23,7 +23,7 @@ export const resetPassword = (app) => {
 		
 		try {
 			const userRecord = await user.findUserByEmail(email);
-			if(!userRecord ){
+			if(!userRecord){
 				throw new Error('invalid user in the system');
 			}
 
@@ -53,6 +53,7 @@ export const resetPassword = (app) => {
 		
 			transporter.sendMail(mailOptions, (error, info) => {
 				if (error) {
+					console.log(error);
 					res.status(500).json({ message: 'Failed to send email' });
 				} else {
 					res.json({ message: 'Email sent' });

@@ -4,11 +4,17 @@ const generatePrescription = (patientId, doctorId) => {
 	return {
 		patientId,
 		doctorId,
-		patientName: faker.person.firstName(),
 		doctorName: faker.person.firstName(),
 		date: faker.date.anytime(),
 		filled: faker.datatype.boolean(),
-		description: faker.lorem.paragraph()
+		description: faker.lorem.paragraph(),
+		medicines: [
+			{
+				medicineId: faker.database.mongodbObjectId(),
+				amount: faker.number.int({ min: 1, max: 10 }),
+			},
+		],
+		price: faker.number.float({ min: 1, max: 1000 }),
 	};
 };
 

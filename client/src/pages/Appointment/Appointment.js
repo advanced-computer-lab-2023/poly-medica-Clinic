@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { clinicAxios } from 'pages/utilities/AxiosConfig';
 import MainCard from 'ui-component/cards/MainCard';
 import AppointmentList from './AppointmentList.js';
-import AppointmentDetails from './AppointmentDetails.js';
+import AppointmentOptions from './AppointmentOptions/AppointmentOptions.js';
 import { useUserContext } from 'hooks/useUserContext.js';
 import { useFilter } from 'contexts/FilterContext.js';
 import {
@@ -23,6 +23,7 @@ const Appointment = () => {
 	const [selectedAppointment, setSelectedAppointment] = useState(null);
 	const [countPages, setCountPages] = useState(0);
 	const [currentPage, setCurrentPage] = useState(0); // 0-indexed
+	const isNormalRender = useRef(true);
 	const { filterData, updateFilter } = useFilter();
 	const { user } = useUserContext();
 	const userId = user.id;
@@ -38,18 +39,24 @@ const Appointment = () => {
 			.get('/appointments/' + userId)
 			.then((response) => {
 				const resAppointments = response.data;
+				isNormalRender.current = true;
 				setOriginalAppointments(resAppointments);
-				setFilteredAppointments(resAppointments);
 				updateFilter(APPOINTMENT_FILTER_ARRAY);
-				setCountPages(Math.ceil(resAppointments.length/LIMIT_PER_PAGE));
-				paginate(resAppointments, 0);
-				console.log('appointments = ', resAppointments);
 			})
 			.catch((error) => {
 				console.log(error);
 			});
 	}, []);
 
+	// to handle updating an appointment (reshedule/delete)
+	const handleAppoinmentUpdate = (updatedAppointment) => {
+		const updatedAppointments = originalAppointments.map((appointment) =>
+			appointment._id === updatedAppointment._id ? updatedAppointment : appointment
+		);
+		isNormalRender.current = false;
+		setOriginalAppointments(updatedAppointments);
+	};
+	
 	useEffect(() => {
 		const resultAppointments = originalAppointments.filter((appointment) =>
 			(
@@ -62,8 +69,10 @@ const Appointment = () => {
 		);
 		setFilteredAppointments(resultAppointments);
 		setCountPages(Math.ceil(resultAppointments.length/LIMIT_PER_PAGE));
-		paginate(resultAppointments, 0);
-		setCurrentPage(0);
+		const pageToRender = isNormalRender.current ? 0 : currentPage;
+		paginate(resultAppointments, pageToRender);
+		setCurrentPage(pageToRender);
+		isNormalRender.current = true;
 	}, [filterData, originalAppointments]);
 
 	const handleDialogClose = () => {
@@ -82,10 +91,11 @@ const Appointment = () => {
 				appointments={appointments}
 				setSelectedAppointment={setSelectedAppointment}
 				/>}
-			<AppointmentDetails
+			<AppointmentOptions
 				selectedAppointment={selectedAppointment}
+				setSelectedAppointment={setSelectedAppointment}
 				handleDialogClose={handleDialogClose}
-				user={user}
+				handleAppoinmentUpdate={handleAppoinmentUpdate}
 			/>
 			<Pagination
 				count={countPages}

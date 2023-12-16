@@ -12,6 +12,7 @@ const orderSchema = mongoose.Schema(
 			{
 				medicineId: {
 					type: mongoose.Schema.Types.ObjectId,
+					required: true,
 				},
 				name: {
 					type: String,
@@ -39,7 +40,13 @@ const orderSchema = mongoose.Schema(
 		paymentMethod: {
 			type: String,
 			required: true,
-		}
+		},
+		type: {
+			type: String,
+		},
+		typeId: {
+			type: mongoose.Schema.Types.ObjectId,
+		},
 	},
 	{ timestamps: true },
 );

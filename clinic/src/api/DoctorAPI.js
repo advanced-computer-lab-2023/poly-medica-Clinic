@@ -186,7 +186,7 @@ export const doctor = (app) => {
 		} catch (error) {
 			// console.log(error);
 			if(error.response){
-				res.status(BAD_REQUEST_CODE_400).send({message: error.response.data.message});
+				res.status(BAD_REQUEST_CODE_400).send({ message: error.response.data.message });
 			}
 			else res.status(ERROR_STATUS_CODE).json({ message: error });
 		}
@@ -297,6 +297,24 @@ export const doctor = (app) => {
 			const walletAmount = await service.getWalletAmount(id);
 
 			res.status(OK_STATUS_CODE).json({ walletAmount });
+		} catch (error) {
+			res.status(NOT_FOUND_STATUS_CODE).json({ message: error });
+		}
+	});
+
+	app.patch('/doctors/:doctorId/wallet', async (req, res) => {
+		try {
+			const { doctorId } = req.params;
+			if (!isValidMongoId(doctorId)){
+				return res
+					.status(ERROR_STATUS_CODE)
+					.json({ message: 'Invalid ID' });
+			}
+			// walletChange is +ve if paid to doctor, -ve if deducted from doctor
+			const walletChange = parseFloat(req.body.walletChange);
+			console.log('walletChange = ', walletChange);
+			const updatedDoctor = await service.updateWallet(doctorId, walletChange);
+			res.status(OK_STATUS_CODE).json({ updatedDoctor });
 		} catch (error) {
 			res.status(NOT_FOUND_STATUS_CODE).json({ message: error });
 		}
