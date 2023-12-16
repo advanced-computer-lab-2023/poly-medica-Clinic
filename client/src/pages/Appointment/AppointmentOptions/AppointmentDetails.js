@@ -7,6 +7,7 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import HelpCenterIcon from '@mui/icons-material/HelpCenter';
 import StyleIcon from '@mui/icons-material/Style';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import { useTheme } from '@mui/material/styles';
 import Swal from 'sweetalert2';
 import '../../../assets/css/swalStyle.css';
 import { clinicAxios, communicationAxios } from 'pages/utilities/AxiosConfig';
@@ -23,6 +24,8 @@ const AppointmentDetails = ({
     setSelectedAppointment,
     handleAppoinmentUpdate
 }) => {
+    const theme = useTheme();
+    console.log('theme = ', theme);
     const { chats, setChats } = useChat();
     const { user } = useUserContext();
     const [cannotCompleteOrCancel, setCannotCompleteOrCancel] = useState(false);
@@ -231,8 +234,17 @@ const AppointmentDetails = ({
                     <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
                         <Button
                             variant='contained'
-                            color='error'
-                            sx = {{ marginTop: '3em', width: '15em' }}
+                            color= 'inherit'
+                            sx = {{
+                                color: '#FFFFFF',
+                                marginTop: '3em',
+                                width: '15em',
+                                backgroundColor: '#BE001C',
+                                ':hover': {
+                                    backgroundColor: '#BE001C',
+                                    boxShadow: '0 2px 14px 0 rgb(32 40 45 / 8%)',
+                                },
+                            }}
                             onClick={handleCancelConfirmation}
                             disabled={cannotCompleteOrCancel}
                         >
@@ -243,7 +255,7 @@ const AppointmentDetails = ({
                             &&
                             <Button
                                 variant='contained'
-                                color='success'
+                                color='secondary'
                                 sx = {{ marginTop: '3em', width: '15em' }}
                                 onClick={handleCompleteConfirmation}
                                 disabled={cannotCompleteOrCancel}
