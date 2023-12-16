@@ -24,6 +24,7 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import { usePayment } from 'contexts/PaymentContext';
 
 export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amountToPay, type, selectedDoctor }) => {
   const [amountInWallet, setAmountInWallet] = useState(0);
@@ -31,6 +32,7 @@ export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amou
   const { user } = useUserContext();
   const userId = user.id;
 
+  const { setPaymentDone } = usePayment();
   console.log('items  ', items);
   console.log('price = ', amountToPay);
   const [value, setValue] = useState('credit-card');
@@ -60,8 +62,9 @@ export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amou
                 setIsAddDialogOpen(false);
                 const callBackUrl = successfulPayment(userId, items, type);
                 navigate(callBackUrl, { replace: true });
+                setPaymentDone(1);
               }
-            )
+              )
           )
           .catch((error) => {
             console.log('Error in payment with the wallet', error);
@@ -77,7 +80,16 @@ export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amou
           confirmButtonText: 'Yes'
         }).then((result) => {
           if (result.isConfirmed) {
-            paymentAxios.post('/payment/wallet', { amountToPayByWallet: amountInWallet, userId: userId })
+            paymentAxios.post('/payment/wallet', { amountToPayByWallet: amountInWallet, userId: userId }).then(
+              Swal.fire('success', 'Payment Succeeded', 'success')
+                .then(() => {
+                  setIsAddDialogOpen(false);
+                  const callBackUrl = successfulPayment(userId, items, type);
+                  navigate(callBackUrl, { replace: true });
+                  setPaymentDone(1);
+                }
+                )
+            )
               .catch((error) => {
                 console.log('Error in payment with the wallet', error);
               });

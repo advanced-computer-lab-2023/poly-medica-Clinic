@@ -18,6 +18,8 @@ import { useUserContext } from 'hooks/useUserContext.js';
 import { getDay, getTime } from '../../../utils/DateFormatter.js';
 import { patientCanRefund } from '../../../utils/AppointmentUtils.js';
 import AppointmentStatus from '../AppointmentStatus';
+import { usePayment } from 'contexts/PaymentContext';
+
 
 const AppointmentDetails = ({
     selectedAppointment,
@@ -29,7 +31,8 @@ const AppointmentDetails = ({
     const { chats, setChats } = useChat();
     const { user } = useUserContext();
     const [cannotCompleteOrCancel, setCannotCompleteOrCancel] = useState(false);
-    
+    const { setPaymentDone } = usePayment();
+
     const handleCancel = async (refund) => {
         let userIdToNotify, notificationHead, notificationBody;
         if (user.type === PATIENT_TYPE_ENUM) {
@@ -70,6 +73,7 @@ const AppointmentDetails = ({
                         notificationHead,
                         notificationBody
                     });
+                    setPaymentDone(1);
                 });
             });
     };

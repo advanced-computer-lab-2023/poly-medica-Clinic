@@ -36,16 +36,16 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
 		console.log('payment done is :', paymentDone);
 		if (userType === 'patient') {
 			patientAxios.get(`/patients/${userId}/wallet`).then((response) => {
-				setamountInWallet(response.data.walletAmount);
+				setamountInWallet(Math.round(response.data.walletAmount));
 			});
 		
 		} else if (userType === 'doctor') {
 			clinicAxios.get(`/doctors/${userId}/wallet`).then((response) => {
-				setamountInWallet(response.data.walletAmount);
+				setamountInWallet(Math.round(response.data.walletAmount));
 			});
 		}
 		setPaymentDone(0);
-	}, []);
+	}, [paymentDone]);
 
 	const drawer = (
 		<>
