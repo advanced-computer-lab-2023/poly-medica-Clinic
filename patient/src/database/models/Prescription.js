@@ -31,15 +31,18 @@ const Prescription = mongoose.Schema({
 			medicineId: {
 				type: mongoose.Schema.Types.ObjectId,
 			},
+			price: {
+				type: Number,
+			},
 			amount: {
 				type: Number,
 			},
 		},
 	],
-	price: {
-		type: Number,
+	inCart: {
+		type: Boolean,
+		default: false,
 	},
-
 	purchased: {
 		type: Boolean,
 		default: false,
