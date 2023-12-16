@@ -26,6 +26,9 @@ const orderSchema = mongoose.Schema(
 					type: Number,
 					default: 1,
 				},
+				prescriptionId: {
+					type: mongoose.Schema.Types.ObjectId,
+				},
 			},
 		],
 		amount: {

@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-	List
-} from '@mui/material';
+import { List } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
 import DoctorPatientCard from './DoctorPatientCard';
 import DoctorPatientDialog from './DoctorPatientDialog';
@@ -32,6 +30,7 @@ const Patients = () => {
 			.get('/doctors/' + id + '/patients')
 			.then((response) => {
 				const data = response.data;
+				console.log('ALL PATIENS === ', data);
 				setPatients(data.finalListOFPatients);
 				setOriginalPatients(data.finalListOFPatients);
 				updateFilter([
@@ -65,21 +64,11 @@ const Patients = () => {
 		const filteredPatients = originalPatients.filter(
 			(patient) =>
 				patient.name.includes(searchQuery) &&
-				(
-					!filterData[0].selectedValue
-					||
-					(
-						filterData[0].selectedValue === 'Finished'
-						&&
-						!isUpcomingAppointment(patient._id)
-					)
-					||
-					(
-						filterData[0].selectedValue === 'Upcoming'
-						&&
-						isUpcomingAppointment(patient._id)
-					)
-				),
+				(!filterData[0].selectedValue ||
+					(filterData[0].selectedValue === 'Finished' &&
+						!isUpcomingAppointment(patient._id)) ||
+					(filterData[0].selectedValue === 'Upcoming' &&
+						isUpcomingAppointment(patient._id))),
 		);
 		setPatients(filteredPatients);
 	}, [originalPatients, searchQuery, filterData]);
