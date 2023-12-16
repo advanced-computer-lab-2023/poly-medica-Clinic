@@ -200,7 +200,7 @@ const DoctorDetailsAppointmentsCard = ({
                     </Accordion>
                 </CardContent>
             </Card>
-            <ChoosePayment isAddDialogOpen={isDialogOpen} setIsAddDialogOpen={setDialogOpen} amountToPay={appointmentPrice} type={PAYMENT_ITEM_TYPES[1]} items={selectedAppointment} />
+            <ChoosePayment isAddDialogOpen={isDialogOpen} setIsAddDialogOpen={setDialogOpen} amountToPay={appointmentPrice} type={PAYMENT_ITEM_TYPES[1]} items={selectedAppointment} selectedDoctor={selectedDoctor} />
         </>
     );
 };

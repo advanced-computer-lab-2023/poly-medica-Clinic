@@ -14,6 +14,7 @@ import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import ChatIcon from '@mui/icons-material/Chat';
+import RequestPageIcon from '@mui/icons-material/RequestPage';
 
 // constant
 const icons = {
@@ -30,6 +31,7 @@ const icons = {
     IconCalendarTime,
     AddBoxIcon,
     ChatIcon,
+    RequestPageIcon
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
@@ -49,14 +51,29 @@ const pages = {
             target: false,
         },
         {
-            id: 'appointments',
+            id: 'appointment-follow-up',
             title: 'Appointments',
-            type: 'item',
+            type: 'collapse',
             icon: icons.IconCalendarTime,
-            url: '/patient/pages/appointments',
-            target: false,
+            children: [
+                {
+                    id: 'appointments',
+                    title: 'Appointments',
+                    type: 'item',
+                    icon: icons.IconCalendarTime,
+                    url: '/patient/pages/appointments',
+                    target: false,
+                },
+                {
+                    id: 'follow-up-requests',
+                    title: 'Follow-Up Requests',
+                    type: 'item',
+                    icon: icons.RequestPageIcon,
+                    url: '/patient/pages/follow-up-requests',
+                    target: false,
+                }
+            ]
         },
-
         {
             id: 'prescriptions',
             title: 'Prescriptions',
@@ -83,11 +100,11 @@ const pages = {
             target: false,
         },
         {
-            id: 'Wallet',
-            title: 'Wallet',
+            id: 'chat',
+            title: 'Chat',
             type: 'item',
-            icon: icons.Wallet,
-            url: '/patient/wallet',
+            icon: icons.ChatIcon,
+            url: '/patient/pages/chat',
             target: false,
         },
     ],

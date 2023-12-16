@@ -1,12 +1,15 @@
 import { Typography } from '@mui/material';
 import { calcPrice } from '../../utils/PriceCalculator.js';
+import DoctorPrice from './DoctorPrice.js';
 import DoctorIcon from '../../assets/images/icons/DoctorIcon.png';
 import CoronavirusIcon from '@mui/icons-material/Coronavirus';
 import WorkIcon from '@mui/icons-material/Work';
 import SchoolIcon from '@mui/icons-material/School';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import PaidIcon from '@mui/icons-material/Paid';
+
 
 const DoctorDetailsHeader = ({ selectedDoctor, loggedInPatientHealthPackage }) => {
+    const price = calcPrice(selectedDoctor.hourlyRate, loggedInPatientHealthPackage && loggedInPatientHealthPackage.doctorDiscount); 
     return (
         <>
             <div
@@ -44,9 +47,13 @@ const DoctorDetailsHeader = ({ selectedDoctor, loggedInPatientHealthPackage }) =
                         </Typography>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
-                        <AttachMoneyIcon style={{ marginRight: '0.4em' }}/>
+                        <PaidIcon style={{ marginRight: '0.4em' }}/>
                         <Typography variant='body1'>
-                            {`${calcPrice(selectedDoctor.hourlyRate, loggedInPatientHealthPackage.doctorDiscount)}`}
+                        <DoctorPrice
+                            priceBeforeDiscount={selectedDoctor.hourlyRate}
+                            priceAfterDiscount={price}
+                            margin={10}
+                        />
                         </Typography>
                     </div>
                 </div>

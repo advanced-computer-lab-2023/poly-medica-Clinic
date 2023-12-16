@@ -6,6 +6,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import http from 'http';
 import { Server } from 'socket.io';
+import { notification } from './src/api/NotificationAPI.js';
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use(
 
 chat(app);
 message(app);
+notification(app);
 
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -41,6 +43,11 @@ io.on('connection', (socket) => {
 
 	socket.on('setup', (userId) => {
 		socket.join(userId);
+	});
+
+	socket.on('update notifications', (userId) => {
+		console.log(' emiting event ', userId);
+		socket.to(userId).emit('new notification', null);
 	});
 
 	socket.on('join_room', (room) => {

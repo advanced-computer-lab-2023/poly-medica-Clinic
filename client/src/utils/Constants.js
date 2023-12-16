@@ -12,6 +12,7 @@ const APPOINTMENT_STATUS = [
     'RESCHEDULED',
 ];
 const APPOINTMENT_CHRONOLGY = ['UPCOMING', 'PAST'];
+export const APPOINTMENT_NOTIFICATION_TYPE_ENUM = 'appointment';
 export const DATE_FILTER_ARRAY = ['Last week', 'Last month', 'Last year'];
 
 export const APPOINTMENT_FILTER_ARRAY = [

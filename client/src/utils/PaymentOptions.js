@@ -24,13 +24,15 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import { usePayment } from 'contexts/PaymentContext';
 
-export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amountToPay, type }) => {
+export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amountToPay, type, selectedDoctor }) => {
   const [amountInWallet, setAmountInWallet] = useState(0);
   const navigate = useNavigate();
   const { user } = useUserContext();
   const userId = user.id;
 
+  const { setPaymentDone } = usePayment();
   console.log('items  ', items);
   console.log('price = ', amountToPay);
   const [value, setValue] = useState('credit-card');
@@ -50,7 +52,7 @@ export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amou
   const handlePaymentMethod = () => {
 
     if (value === 'credit-card') {
-      navigate('/patient/pages/payment', { state: { items, amountToPay, type }, replace: true });
+      navigate('/patient/pages/payment', { state: { items, amountToPay, type, selectedDoctor }, replace: true });
     } else if (value === 'wallet') {
       if (amountInWallet >= amountToPay) {
         paymentAxios.post('/payment/wallet', { amountToPayByWallet: amountToPay, userId: userId })
@@ -60,8 +62,9 @@ export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amou
                 setIsAddDialogOpen(false);
                 const callBackUrl = successfulPayment(userId, items, type);
                 navigate(callBackUrl, { replace: true });
+                setPaymentDone(1);
               }
-            )
+              )
           )
           .catch((error) => {
             console.log('Error in payment with the wallet', error);
@@ -82,7 +85,7 @@ export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amou
                 console.log('Error in payment with the wallet', error);
               });
             const amountToPayByCard = amountToPay - amountInWallet;
-            navigate('/patient/pages/payment', { state: { items, amountToPay: amountToPayByCard, type }, replace: true });
+            navigate('/patient/pages/payment', { state: { items, amountToPay: amountToPayByCard, type, selectedDoctor }, replace: true });
           }
         });
       }

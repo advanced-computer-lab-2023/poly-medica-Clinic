@@ -11,6 +11,7 @@ import { isValidMongoId } from '../utils/Validation.js';
 export const appointment = (app) => {
 	const service = new AppointmentService();
 	const doctorService = new DoctorService();
+	
 	app.get('/appointments/:id', async (req, res) => {
 		const { id } = req.params;
 		if (!isValidMongoId(id)) {
@@ -114,6 +115,60 @@ export const appointment = (app) => {
 		catch (err) {
 			res.status(ERROR_STATUS_CODE).json({
 				message: 'appointment not cancelled due to an error',
+			});
+			console.log(err.message);
+		}
+	});
+
+
+	app.post('/appointments/follow-up-requests', async (req, res) => {
+		const appointment = req.body;
+		try {
+			const newAppointment = await service.createAppointmentFollowUp(appointment);
+			res.status(OK_STATUS_CODE).json(newAppointment);
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({
+				message: 'appointment not created due to an error',
+			});
+			console.log(err.message);
+		}
+	});
+
+	app.get('/appointments/follow-up-requests/:id', async (req, res) => {
+		const { id } = req.params;
+		if (!isValidMongoId(id)) {
+			return res.status(ERROR_STATUS_CODE).json({
+				message: 'invalid id',
+			});
+		}
+		try {
+			const appointments = await service.getFollowUpRequests(id);
+			res.status(OK_STATUS_CODE).json(appointments);
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({
+				message: 'follow-up requests not found',
+			});
+		}
+	});
+
+	app.patch('/appointments/follow-up-requests/handle/:appointmentId', async (req, res) => {
+		const { appointmentId } = req.params;
+		if (!isValidMongoId(appointmentId)) {
+			return res.status(ERROR_STATUS_CODE).json({
+				message: 'invalid id',
+			});
+		}
+		try {
+			const { 
+				accepted,
+				doctorId, // only in case accepted is false
+				appointmentDate // only in case accepted is false
+			} = req.body;
+			const updatedAppointment = await service.handleFollowUpRequest(appointmentId, accepted, doctorId, appointmentDate);
+			res.status(OK_STATUS_CODE).json(updatedAppointment);
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({
+				message: 'follow-up request not handled due to an error',
 			});
 			console.log(err.message);
 		}
