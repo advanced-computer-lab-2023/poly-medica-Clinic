@@ -9,17 +9,9 @@ const icons = { IconDashboard, HomeIcon };
 
 const dashboard = {
 	id: 'dashboard',
-	title: 'Dashboard',
+	title: 'Home',
 	type: 'group',
 	children: [
-		{
-			id: 'default',
-			title: 'Dashboard',
-			type: 'item',
-			url: '/patient/dashboard/default',
-			icon: icons.IconDashboard,
-			breadcrumbs: false
-		},
 		{
 			id: 'home',
 			title: 'Home',
