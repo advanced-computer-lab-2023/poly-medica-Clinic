@@ -1,15 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {
-	Table,
-	TableBody,
-	TableCell,
-	TableContainer,
-	TableHead,
-	TableRow,
-	Paper,
+	List
 } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
-import PatientRow from './DoctorPatientRow';
+import DoctorPatientCard from './DoctorPatientCard';
+import DoctorPatientDialog from './DoctorPatientDialog';
 import { useUserContext } from 'hooks/useUserContext';
 import { useSearch } from 'contexts/SearchContext';
 import { useFilter } from 'contexts/FilterContext';
@@ -20,6 +15,7 @@ const Patients = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [appointments, setAppointments] = useState([]);
 	const [loggedInDoctor, setLoggedInDoctor] = useState(null);
+	const [selectedPatient, setSelectedPatient] = useState(null);
 	const { searchQuery } = useSearch();
 	const { filterData, updateFilter } = useFilter();
 	const { user } = useUserContext();
@@ -99,37 +95,33 @@ const Patients = () => {
 			});
 	}, []);
 
+	const handleDoctorPatientDetailsClose = () => {
+		setSelectedPatient(null);
+	};
 	return (
 		<MainCard title='Patients'>
 			{isLoading ? (
 				<>Loading...</>
 			) : (
-				<div>
-					<TableContainer component={Paper}>
-						<Table>
-							<TableHead>
-								<TableRow>
-									<TableCell>Name</TableCell>
-									<TableCell>Email</TableCell>
-									<TableCell>Date of Birth</TableCell>
-									<TableCell>Gender</TableCell>
-									<TableCell>Mobile Number</TableCell>
-									<TableCell>Follow up</TableCell>
-								</TableRow>
-							</TableHead>
-							<TableBody>
-								{Array.isArray(patients) &&
-									patients.map((patient) => (
-										<PatientRow
-											key={patient._id}
-											patient={patient}
-											loggedInDoctor={loggedInDoctor}
-										/>
-									))}
-							</TableBody>
-						</Table>
-					</TableContainer>
-				</div>
+				<>
+					<List>
+						{Array.isArray(patients) &&
+							patients.map((patient, index) => (
+								<div key={index}>
+									<DoctorPatientCard
+										patient={patient}
+										setSelectedPatient={setSelectedPatient}
+									/>
+								</div>
+							))}
+					</List>
+					<DoctorPatientDialog
+						selectedPatient={selectedPatient}
+						handleDialogClose={handleDoctorPatientDetailsClose}
+						loggedInDoctor={loggedInDoctor}
+						setLoggedInDoctor={setLoggedInDoctor}
+					/>
+				</>
 			)}
 		</MainCard>
 	);
