@@ -362,4 +362,17 @@ export const user = (app) => {
 		res.cookie('jwt', '', { expires: new Date(0), path: '/' });
 		res.status(200).end();
 	});
+
+	app.get('/pharmacists/id', async (req, res) =>{
+		try{
+			let pharmacist = await service.getPharmacistid();
+			pharmacist = pharmacist.map(element => element.userId);
+			res.send(pharmacist);
+		} catch(err){
+			res.status(SERVER_ERROR_REQUEST_CODE_500).send({ message:err.message });
+		}
+	})
+
 };
+
+
