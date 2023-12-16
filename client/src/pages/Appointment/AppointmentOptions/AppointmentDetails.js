@@ -18,6 +18,8 @@ import { useUserContext } from 'hooks/useUserContext.js';
 import { getDay, getTime } from '../../../utils/DateFormatter.js';
 import { patientCanRefund } from '../../../utils/AppointmentUtils.js';
 import AppointmentStatus from '../AppointmentStatus';
+import { usePayment } from 'contexts/PaymentContext';
+
 
 const AppointmentDetails = ({
     selectedAppointment,
@@ -29,8 +31,22 @@ const AppointmentDetails = ({
     const { chats, setChats } = useChat();
     const { user } = useUserContext();
     const [cannotCompleteOrCancel, setCannotCompleteOrCancel] = useState(false);
+    const { setPaymentDone } = usePayment();
+
     const handleCancel = async (refund) => {
-        console.log('appointment cancelled, ', refund);
+        let userIdToNotify, notificationHead, notificationBody;
+        if (user.type === PATIENT_TYPE_ENUM) {
+            userIdToNotify = selectedAppointment.doctorId;
+            notificationHead = 'Appointment Cancelled';
+            notificationBody = `Mr/Miss ${user.userName} has cancelled the appointment
+             ${refund? 'and will be refunded' : 'and will not be refunded'}}`;
+        }
+        else{
+            userIdToNotify = selectedAppointment.patientId;
+            notificationHead = 'Appointment Cancelled';
+            notificationBody = `Dr. ${user.userName} has cancelled the appointment
+             and you will be refunded`;
+        }
         const requestData = {
             doctorId: selectedAppointment.doctorId,
             appointmentDate: selectedAppointment.date,
@@ -49,11 +65,16 @@ const AppointmentDetails = ({
                     'Your Appointment has been cancelled successfully!',
                     'success',
                 )
-                .then(() => {
-                    console.log('response.data = ', response.data);
+                .then(async () => {
                     const updatedAppointment = response.data;
                     setSelectedAppointment(updatedAppointment);
                     handleAppoinmentUpdate(updatedAppointment);
+                    await communicationAxios.post(`/notification/${userIdToNotify}/type/appointment`, {
+                        senderName: user.userName,
+                        notificationHead,
+                        notificationBody
+                    });
+                    setPaymentDone(1);
                 });
             });
     };

@@ -43,17 +43,17 @@ const NotificationSection = () => {
 	const matchesXs = useMediaQuery(theme.breakpoints.down('md'));
 
 	const [open, setOpen] = useState(false);
-	const { user } = useUserContext(); 
+	const { user } = useUserContext();
 	const [notifications, setNotifications] = useState([]);
 	const [numberOfUnseenNotification, setNumberOfUnseenNotification] = useState(0);
 	const [dataChange, setDataChange] = useState(false);
 	const socket = io.connect(COMMUNICATION_BASE_URL);
-	
+
 	const handledataChange = () => {
 		console.log('in data change');
 		setDataChange(!dataChange);
 	};
-	
+
 	const anchorRef = useRef(null);
 
 	const handleToggle = () => {
@@ -71,16 +71,16 @@ const NotificationSection = () => {
 	useEffect(() => {
 		if (prevOpen.current === true && open === false) {
 			anchorRef.current.focus();
-		} else if( prevOpen.current === false && open === true ){
-			communicationAxios.get(`/notifications/${user.id}`).then( response => {
-				setNotifications( () => [ ...response.data ]);
+		} else if (prevOpen.current === false && open === true) {
+			communicationAxios.get(`/notifications/${user.id}`).then(response => {
+				setNotifications(() => [...response.data].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
 				let counter = 0;
-				response.data.map( notification => {
-					if(!notification.notificationState)
+				response.data.map(notification => {
+					if (!notification.notificationState)
 						counter++;
 				});
 				setNumberOfUnseenNotification(counter);
-			}).catch( error => {
+			}).catch(error => {
 				console.log(error);
 				Swal.fire({
 					icon: 'error',
@@ -94,34 +94,34 @@ const NotificationSection = () => {
 
 	useEffect(() => {
 		console.log('heree');
-			communicationAxios.get(`/notifications/${user.id}`).then( response => {
-				setNotifications( () => [ ...response.data ]);
-				let counter = 0;
-				response.data.map( notification => {
-					if(!notification.notificationState)
-						counter++;
-				});
-				setNumberOfUnseenNotification(counter);
-			}).catch( error => {
-				console.log(error);
-				Swal.fire({
-					icon: 'error',
-					title: 'Oops...',
-					text: error.response.data.errMessage,
-				});
+		communicationAxios.get(`/notifications/${user.id}`).then(response => {
+			setNotifications(() => [...response.data]);
+			let counter = 0;
+			response.data.map(notification => {
+				if (!notification.notificationState)
+					counter++;
 			});
+			setNumberOfUnseenNotification(counter);
+		}).catch(error => {
+			console.log(error);
+			Swal.fire({
+				icon: 'error',
+				title: 'Oops...',
+				text: error.response.data.errMessage,
+			});
+		});
 	}, [dataChange]);
 
 
 
-    useEffect(() => {
-			socket.emit(
-				'setup',
-				user.id
-			);
-			socket.on('new notification', handledataChange);
-			
-    }, [socket]);
+	useEffect(() => {
+		socket.emit(
+			'setup',
+			user.id
+		);
+		socket.on('new notification', handledataChange);
+
+	}, [socket]);
 
 	return (
 		<>
@@ -135,28 +135,28 @@ const NotificationSection = () => {
 				}}
 			>
 				<ButtonBase sx={{ borderRadius: '12px' }}>
-				<Badge badgeContent={numberOfUnseenNotification} color="error">
-					<Avatar
-						variant="rounded"
-						sx={{
-							...theme.typography.commonAvatar,
-							...theme.typography.mediumAvatar,
-							transition: 'all .2s ease-in-out',
-							background: theme.palette.secondary.light,
-							color: theme.palette.secondary.dark,
-							'&[aria-controls="menu-list-grow"],&:hover': {
-								background: theme.palette.secondary.dark,
-								color: theme.palette.secondary.light
-							}
-						}}
-						ref={anchorRef}
-						aria-controls={open ? 'menu-list-grow' : undefined}
-						aria-haspopup="true"
-						onClick={handleToggle}
-						color="inherit"
-					>
-						<IconBell stroke={1.5} size="1.3rem" />
-					</Avatar>
+					<Badge badgeContent={numberOfUnseenNotification} color="error">
+						<Avatar
+							variant="rounded"
+							sx={{
+								...theme.typography.commonAvatar,
+								...theme.typography.mediumAvatar,
+								transition: 'all .2s ease-in-out',
+								background: theme.palette.secondary.light,
+								color: theme.palette.secondary.dark,
+								'&[aria-controls="menu-list-grow"],&:hover': {
+									background: theme.palette.secondary.dark,
+									color: theme.palette.secondary.light
+								}
+							}}
+							ref={anchorRef}
+							aria-controls={open ? 'menu-list-grow' : undefined}
+							aria-haspopup="true"
+							onClick={handleToggle}
+							color="inherit"
+						>
+							<IconBell stroke={1.5} size="1.3rem" />
+						</Avatar>
 					</Badge>
 				</ButtonBase>
 			</Box>
@@ -200,12 +200,12 @@ const NotificationSection = () => {
 													</Stack>
 												</Grid>
 												<Grid item>
-													<Typography onClick={ () => {
-														
-														communicationAxios.patch(`/notifications/${user.id}`).then( () => {
+													<Typography onClick={() => {
+
+														communicationAxios.patch(`/notifications/${user.id}`).then(() => {
 															setNumberOfUnseenNotification(0);
 															handledataChange();
-														}).catch( error => {
+														}).catch(error => {
 															console.log(error);
 															Swal.fire({
 																icon: 'error',
@@ -213,8 +213,8 @@ const NotificationSection = () => {
 																text: error.response.data.errMessage,
 															});
 														});
-													} } sx={{ marginLeft: 1 }} component={Link} to="#" variant="subtitle2" color="primary">
-                            Mark as all read
+													}} sx={{ marginLeft: 1 }} component={Link} to="#" variant="subtitle2" color="primary">
+														Mark as all read
 													</Typography>
 												</Grid>
 											</Grid>
@@ -226,7 +226,7 @@ const NotificationSection = () => {
 										</Grid>
 									</Grid>
 									<Divider />
-									
+
 								</MainCard>
 							</ClickAwayListener>
 						</Paper>
