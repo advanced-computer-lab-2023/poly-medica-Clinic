@@ -7,6 +7,7 @@ import bodyParser from 'body-parser';
 import http from 'http';
 import { Server } from 'socket.io';
 import { notification } from './src/api/NotificationAPI.js';
+import UserSocketModel from './src/database/models/UserSocket.js';
 
 const app = express();
 
@@ -40,6 +41,7 @@ const io = new Server(server, {
 
 io.on('connection', (socket) => {
 	console.log('Connected to socket.io');
+	console.log('socketid: ', socket.id);
 
 	socket.on('setup', (userId) => {
 		socket.join(userId);
@@ -63,6 +65,42 @@ io.on('connection', (socket) => {
 			if (user.id !== data.userId)
 				socket.to(user.id).emit('receive_message', data);
 		});
+	});
+
+	socket.on('ready', async ({ userId }) => {
+		try {
+			console.log('inside ready with id = ', userId);
+			const userSockets = await UserSocketModel.findOne({ userId: userId.toString() });
+			if (userSockets) {
+				userSockets.socketId = socket.id;
+				userSockets.save();
+			}
+			else {
+				const newUser = { userId: userId, socketId: socket.id };
+				const newUserSocket = new UserSocketModel(newUser);
+				newUserSocket.save();
+			}
+			socket.emit("me", socket.id);
+
+		} catch (err) {
+			console.log('err: ', err.message);
+		}
+	});
+
+	socket.on("disconnect", () => {
+		socket.broadcast.emit("callEnded");
+	});
+
+	socket.on("callUser", async ({ userToCall, signalData, from, name }) => {
+		console.log('called user succeessfully');
+		const userSocketId = await UserSocketModel.findOne({ userId: userToCall });
+		io.to(userSocketId.socketId).emit("callUser", { signal: signalData, from, name });
+	});
+
+	socket.on("answerCall", (data) => {
+		console.log('inside answer call');
+		io.to(data.to).emit('hello');
+		io.to(data.to).emit("callAccepted", data.signal)
 	});
 });
 

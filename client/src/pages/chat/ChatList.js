@@ -121,8 +121,10 @@ const ChatList = () => {
                                             marginRight: 2,
                                             marginTop: 1,
                                         }}
+                                    
                                         onClick={() => handleSelectChat(chat)}>
                                         {chat && <ChatCard chat={chat} />}
+                                        {console.log('chat === ', chat)}
                                     </ListItemButton>
                                 )}
                             </div>

@@ -50,10 +50,7 @@ export const HealthPackageSubscription = ({ memberId, openPackages, setOpenPacka
                                         <TableCell>Subscribed Package:</TableCell>
                                         <TableCell>{healthPackage.name}</TableCell>
                                     </TableRow>
-                                    <TableRow>
-                                        <TableCell>Status:</TableCell>
-                                        <TableCell>{healthPackage.status}</TableCell>
-                                    </TableRow>
+                                    {/* Add more rows for other health package details */}
                                 </TableBody>
                             </Table>
                         </TableContainer>
@@ -61,7 +58,7 @@ export const HealthPackageSubscription = ({ memberId, openPackages, setOpenPacka
                         <p>This family member is not subscribed to any health packages.</p>
                     )
                 ) : (
-                    <p>This family member cannot subscribe to health packages as they have no account.</p>
+                    <p>This family member is subscribed to the same package as you</p>
                 )}
             </DialogContent>
             <DialogActions>
