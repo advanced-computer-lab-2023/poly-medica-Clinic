@@ -16,6 +16,7 @@ import { DatePicker } from '@mui/x-date-pickers';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
 import Swal from 'sweetalert2';
 import { clinicAxios, authenticationAxios } from 'utils/AxiosConfig';
+import { useNavigate } from 'react-router';
 
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
@@ -64,6 +65,7 @@ const FirebaseRegister = ({ type }) => {
 
 	const [strength, setStrength] = useState(0);
 	const [level, setLevel] = useState();
+	const navigate = useNavigate();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -122,6 +124,7 @@ const FirebaseRegister = ({ type }) => {
 					title: 'Sign-up Success!',
 					text: 'You request have been successfully send',
 				});
+				navigate('/login/login3');
 				setIsSubmitting(false);
 				setPassword('');
 				setUserName('');
