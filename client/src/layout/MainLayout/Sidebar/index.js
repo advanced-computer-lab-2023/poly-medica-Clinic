@@ -4,7 +4,7 @@ import EarningCard from 'ui-component/EarningCard';
 import { useTheme } from '@mui/material/styles';
 import { Box, Chip, Drawer, Stack, useMediaQuery, List } from '@mui/material';
 import { useUserContext } from 'hooks/useUserContext';
-//import { usePayment } from 'contexts/PaymentContext';
+import { usePayment } from 'contexts/PaymentContext';
 // third-party
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { BrowserView, MobileView } from 'react-device-detect';
@@ -28,10 +28,12 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
 	const userId = user.id;
 
 	const [amountInWallet, setamountInWallet] = useState(0);
+	console.log(usePayment());
+	const { paymentDone, setPaymentDone } = usePayment();
 
 
 	useEffect(() => {
-		console.log(userType);
+		console.log('payment done is :', paymentDone);
 		if (userType === 'patient') {
 			patientAxios.get(`/patients/${userId}/wallet`).then((response) => {
 				setamountInWallet(response.data.walletAmount);
@@ -42,7 +44,7 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
 				setamountInWallet(response.data.walletAmount);
 			});
 		}
-		
+		setPaymentDone(0);
 	}, []);
 
 	const drawer = (
