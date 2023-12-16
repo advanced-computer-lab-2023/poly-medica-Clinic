@@ -10,7 +10,7 @@ import AuthCardWrapper from '../AuthCardWrapper';
 import Logo from 'ui-component/Logo';
 import PatientRegister from '../auth-forms/PatientRegister';
 import DoctorPharmaRegister from '../auth-forms/DoctorPharmaRegister';
-import AuthFooter from 'ui-component/cards/AuthFooter';
+// import AuthFooter from 'ui-component/cards/AuthFooter';
 import { useState } from 'react';
 
 // assets
@@ -77,9 +77,9 @@ const Register = () => {
 						</Grid>
 					</Grid>
 				</Grid>
-				<Grid item xs={12} sx={{ m: 3, mt: 1 }}>
+				{/* <Grid item xs={12} sx={{ m: 3, mt: 1 }}>
 					<AuthFooter />
-				</Grid>
+				</Grid> */}
 			</Grid>
 		</AuthWrapper1>
 	);
