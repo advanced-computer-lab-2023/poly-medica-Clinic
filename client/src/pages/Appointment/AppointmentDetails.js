@@ -8,24 +8,18 @@ import {
 } from '@mui/material';
 import { getDay, getTime } from '../../utils/DateFormatter.js';
 import { useNavigate } from 'react-router-dom';
-import { DOCTOR_TYPE_ENUM, PATIENT_TYPE_ENUM } from '../../utils/Constants.js';
-import { VideoContext } from '../../contexts/VideoChatContext.js';
-import { useContext } from 'react';
+import { DOCTOR_TYPE_ENUM } from '../../utils/Constants.js';
+
 
 const AppointmentDetails = ({ selectedAppointment, handleDialogClose, user }) => {
-
     let runningAppointment;
     const navigate = useNavigate();
-    const { answerCall, call, callAccepted, socket } = useContext(VideoContext);
     let patientFamilyMember, familyMemberText;
-
     if (selectedAppointment) {
         const currentDate = new Date();
         const appointmentDate = new Date(selectedAppointment.date);
         const oneHourLater = new Date(appointmentDate.getTime() + 60 * 60 * 1000);
         runningAppointment = currentDate >= appointmentDate && currentDate <= oneHourLater;
-        
-        socket.emit('join_room', selectedAppointment.doctorId);
         patientFamilyMember = selectedAppointment.patientFamilyMember;
         familyMemberText = (user.type == 'patient') ?
             'your family member Mr/Miss ' :
@@ -33,13 +27,8 @@ const AppointmentDetails = ({ selectedAppointment, handleDialogClose, user }) =>
     }
 
     const handleAttendAppointment = () => {
-        console.log('inside func');
         navigate(`/${user.type}/pages/video-chat/${user.type === DOCTOR_TYPE_ENUM ?
             selectedAppointment.patientId : selectedAppointment.doctorId}`);
-
-        if (user.type === DOCTOR_TYPE_ENUM) {
-            answerCall(selectedAppointment.patientId);
-        }
     };
     return (
         <Dialog
@@ -99,7 +88,8 @@ const AppointmentDetails = ({ selectedAppointment, handleDialogClose, user }) =>
                         }
                     </DialogContent>
                     <DialogActions>
-                        {((user.type === PATIENT_TYPE_ENUM && runningAppointment) || (call.isReceivedCall && !callAccepted)) &&
+
+                        {(runningAppointment) &&
                             <Button onClick={() => handleAttendAppointment()}>
                                 Attend Appointment
                             </Button>

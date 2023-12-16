@@ -6,6 +6,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import http from 'http';
 import { Server } from 'socket.io';
+import UserSocketModel from './src/database/models/UserSocket.js';
 
 const app = express();
 
@@ -38,6 +39,7 @@ const io = new Server(server, {
 
 io.on('connection', (socket) => {
 	console.log('Connected to socket.io');
+	console.log('socketid: ', socket.id);
 
 	socket.on('setup', (userId) => {
 		socket.join(userId);
@@ -58,17 +60,40 @@ io.on('connection', (socket) => {
 		});
 	});
 
-	socket.on('call_user', ({ userToCall, signalData, from, name }) => {
-		console.log('YOU ARE CALLING A USER: ', userToCall);
-		console.log('the call is from: ', from);
-		socket.to(userToCall).emit('call_user', { signal: signalData, from, name });
+	socket.on('ready', async ({ userId }) => {
+		try {
+			console.log('inside ready with id = ', userId);
+			const userSockets = await UserSocketModel.findOne({ userId: userId.toString() });
+			if (userSockets) {
+				userSockets.socketId = socket.id;
+				userSockets.save();
+			}
+			else {
+				const newUser = { userId: userId, socketId: socket.id };
+				const newUserSocket = new UserSocketModel(newUser);
+				newUserSocket.save();
+			}
+			socket.emit("me", socket.id);
+
+		} catch (err) {
+			console.log('err: ', err.message);
+		}
 	});
 
-	socket.on('answer_call', (data) => {
-		console.log('the called user : ', data.to);
-		console.log('is there from? ', data.from);
-		socket.to(data.to).emit('call_answered', data.signal);
-		console.log('The call answered is emitted');
+	socket.on("disconnect", () => {
+		socket.broadcast.emit("callEnded");
+	});
+
+	socket.on("callUser", async ({ userToCall, signalData, from, name }) => {
+		console.log('called user succeessfully');
+		const userSocketId = await UserSocketModel.findOne({ userId: userToCall });
+		io.to(userSocketId.socketId).emit("callUser", { signal: signalData, from, name });
+	});
+
+	socket.on("answerCall", (data) => {
+		console.log('inside answer call');
+		io.to(data.to).emit('hello');
+		io.to(data.to).emit("callAccepted", data.signal)
 	});
 });
 

@@ -11,11 +11,9 @@ import { clinicAxios, communicationAxios } from 'pages/utilities/AxiosConfig';
 import { useChat } from 'contexts/ChatContext.js';
 import { DOCTOR_TYPE_ENUM, PATIENT_TYPE_ENUM } from 'utils/Constants.js';
 import { chatExist } from 'utils/ChatUtils.js';
-
 const AppointmentCard = ({ appointment, setSelectedAppointment }) => {
     const { user } = useUserContext();
     const { chats, setChats } = useChat();
-
     // TODO: move this to a Appointment Details
     // Note: the state is not updated correctly after the patch request
     const handleCompleteAppointment = () => {
@@ -51,7 +49,9 @@ const AppointmentCard = ({ appointment, setSelectedAppointment }) => {
             });
     };
     return (
-        <ListItemButton onClick={() => setSelectedAppointment(appointment)}>
+        <ListItemButton onClick={() => {
+            setSelectedAppointment(appointment);
+        }}>
             <ListItemAvatar sx={{ paddingRight: '2%' }}>
                 <TodayIcon />
             </ListItemAvatar>

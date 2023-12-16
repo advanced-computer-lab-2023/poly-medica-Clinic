@@ -1,43 +1,20 @@
 import { Typography, Grid, Paper, Button } from '@mui/material';
-import { VideoContext } from '../../contexts/VideoChatContext';
-import { useContext, useRef, useEffect } from 'react';
+import { SocketContext } from '../../contexts/VideoChatContext';
+import { useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import { useUserContext } from '../../hooks/useUserContext';
+import { useUserContext } from 'hooks/useUserContext';
+import { DOCTOR_TYPE_ENUM } from 'utils/Constants';
 
 const VideoChat = () => {
-    const {
-        setName,
-        callAccepted,
-        myVideo,
-        otherUserVideo,
-        callEnded,
-        stream,
-        callUser,
-        leaveCall,
-    } = useContext(VideoContext);
-
-    const myVideoRef = useRef();
     const { user } = useUserContext();
+    const { name, callAccepted, answerCall, myVideo, userVideo, callEnded, stream, call, leaveCall, callUser } = useContext(SocketContext);
     const ongoingCall = callAccepted && !callEnded;
-    const otherUserVideoRef = useRef();
     const { idToCall } = useParams();
-
-    useEffect(() => {
-        if (stream) {
-            myVideoRef.current.srcObject = myVideo.current.srcObject;
-            setName(user.username);
-        }
-
-        if (otherUserVideo.current && callAccepted) {
-            otherUserVideoRef.current.srcObject = otherUserVideo.current.srcObject;
-        }
-    }, [stream, callAccepted, otherUserVideo]);
-
     return (
         <Grid container spacing={3} justifyContent="center" alignItems="center">
             <Grid item xs={12}>
                 <Typography variant="h2" sx={{ marginBottom: '2%' }}>
-                    Video Chat
+                    {name}
                 </Typography>
             </Grid>
             {stream && (
@@ -46,25 +23,33 @@ const VideoChat = () => {
                         <Typography variant="h5" sx={{ marginBottom: '1rem' }}>
                             Your Video
                         </Typography>
+                        {myVideo.current ? (<>Success</>) : (<>Fail</>)}
+
                         <video
                             playsInline
                             muted
                             autoPlay
                             style={{ width: '100%', borderRadius: '8px' }}
-                            ref={myVideoRef}
+                            ref={myVideo}
                         ></video>
                     </Paper>
                 </Grid>
             )}
+            <Button onClick={() => {
+                if (user.type === DOCTOR_TYPE_ENUM) {
+                    answerCall();
+                }
+            }}>Accept</Button>
             {ongoingCall && (
                 <Grid item xs={12} md={6}>
                     <Paper elevation={3} sx={{ padding: '3%', textAlign: 'center' }}>
                         <Typography variant="h5" sx={{ marginBottom: '1rem' }}>
-                            Doctor
+                            {call.name}
                         </Typography>
+                        {userVideo.current ? (<>Success</>) : (<>Fail</>)}
                         <video
                             playsInline
-                            ref={otherUserVideoRef}
+                            ref={userVideo}
                             style={{ width: '100%', borderRadius: '8px' }}
                             autoPlay
                         ></video>
