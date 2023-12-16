@@ -162,6 +162,7 @@ export const notification = (app) => {
 				const userId = pharmacist[i];
 				await addNotificationForUser(userId, type, notification);
 			}
+			res.status(OK_STATUS_CODE).end();
 		} catch(error){
 			res.status(ERROR_STATUS_CODE).send({ errMessage: error.message });
 		}
