@@ -85,6 +85,7 @@ export const user = (app) => {
 			}
 
 			if (type == PATIENT_ENUM) {
+				signupData = await axios.post(PATIENT_SIGNUP_URL, req.body);
 				const userId = signupData.data.userId;
 				await axios.post(`${COMMUNICATION_USER_POST_URL}/${userId}`);
 				await service.signupUser(signupData.data);
