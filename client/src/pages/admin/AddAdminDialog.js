@@ -8,6 +8,7 @@ import {
 	DialogActions,
 	TextField,
 	Button,
+	CircularProgress,
 	Box,
 	Grid,
 	FormControl,
@@ -31,8 +32,8 @@ const AddAdminDialog = ({
 	level,
 	setLevel,
 	errorMessage,
+	adminIsBeingAdded,
 }) => {
-
 	return (
 		<Dialog open={openAddDialog} onClose={handleCloseAddDialog}>
 			<DialogTitle>Add New Admin</DialogTitle>
@@ -93,17 +94,24 @@ const AddAdminDialog = ({
 				)}
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={handleCloseAddDialog} color='primary'>
+				<Button onClick={() => handleCloseAddDialog()} color='primary'>
 					Cancel
 				</Button>
-				<Button
-					onClick={handleAddAdmin}
-					color='primary'
-					variant='contained'
-					disabled={isAddButtonDisabled}
-				>
-					Add
-				</Button>
+				{!adminIsBeingAdded && (
+					<Button
+						onClick={() => handleAddAdmin()}
+						color='primary'
+						variant='contained'
+						disabled={isAddButtonDisabled}
+					>
+						Add
+					</Button>
+				)}
+				{adminIsBeingAdded && (
+					<Button color='primary' disabled>
+						<CircularProgress color='inherit' size={25} />
+					</Button>
+				)}
 			</DialogActions>
 		</Dialog>
 	);
