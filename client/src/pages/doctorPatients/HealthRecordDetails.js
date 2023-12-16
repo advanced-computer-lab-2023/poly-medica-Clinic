@@ -53,7 +53,7 @@ const HealthRecordDetails = ({ isPatientDetailsOpen, handleClose, patient }) => 
 						View Pofile
 					</Button>
 
-					<Button variant='outlined' sx={{ marginTop: '2%', marginLeft: '5%' }} onClick={() => { navigate(`/doctor/pages/patients/${patient._id}/prescriptions`); }}>
+					<Button variant='outlined' sx={{ marginTop: '2%', marginLeft: '5%' }} onClick={() => { navigate(`/doctor/pages/my-patients/${patient._id}/prescriptions`); }}>
 						View Prescriptions
 					</Button>
 

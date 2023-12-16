@@ -14,13 +14,17 @@ const LazyAppointments = Loadable(
     lazy(() => import('pages/Appointment/Appointment'))
 );
 const LazyFollowUpRequests = Loadable(
-	lazy(() => import('pages/FollowUpRequests/FollowUpRequests')),
+    lazy(() => import('pages/FollowUpRequests/FollowUpRequests')),
 );
 const LazyWalletAmount = Loadable(
     lazy(() => import('pages/Wallet/WalletAmount'))
 );
 const LazyAddAvailableSlots = Loadable(
     lazy(() => import('pages/DoctorAddAvailableSlots/AddAvailableSlots'))
+);
+
+const LazyPrescriptions = Loadable(
+    lazy(() => import('pages/prescriptions/Prescriptions'))
 );
 
 const LazyDoctorContract = Loadable(lazy(() => import('pages/DoctorContract')));
@@ -74,9 +78,9 @@ const DoctorRoutes = {
                     element: <LazyAppointments />,
                 },
                 {
-					path: 'follow-up-requests',
-					element: <LazyFollowUpRequests />,
-				},
+                    path: 'follow-up-requests',
+                    element: <LazyFollowUpRequests />,
+                },
                 {
                     path: 'my-patients',
                     element: <LazyDoctorListofPatients />,
@@ -93,10 +97,14 @@ const DoctorRoutes = {
                     path: 'contract',
                     element: <LazyDoctorContract />,
                 },
-				{
-					path: 'chat',
-					element: <LazyChat />,
-				}
+                {
+                    path: 'chat',
+                    element: <LazyChat />,
+                },
+                {
+                    path: 'my-patients/:patientId/prescriptions',
+                    element: <LazyPrescriptions />
+                }
             ],
         },
         {
