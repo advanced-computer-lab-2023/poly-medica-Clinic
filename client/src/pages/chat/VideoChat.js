@@ -7,7 +7,7 @@ import { DOCTOR_TYPE_ENUM } from 'utils/Constants';
 
 const VideoChat = () => {
     const { user } = useUserContext();
-    const { name, callAccepted, answerCall, myVideo, userVideo, callEnded, stream, call, leaveCall, callUser } = useContext(SocketContext);
+    const { name, callAccepted, answerCall, myVideo, userVideo, callEnded, stream, leaveCall, callUser, call } = useContext(SocketContext);
     const ongoingCall = callAccepted && !callEnded;
     const { idToCall } = useParams();
     return (
@@ -21,10 +21,8 @@ const VideoChat = () => {
                 <Grid item xs={12} md={6}>
                     <Paper elevation={3} sx={{ padding: '3%', textAlign: 'center' }}>
                         <Typography variant="h5" sx={{ marginBottom: '1rem' }}>
-                            Your Video
+                            Patient
                         </Typography>
-                        {myVideo.current ? (<>Success</>) : (<>Fail</>)}
-
                         <video
                             playsInline
                             muted
@@ -35,18 +33,13 @@ const VideoChat = () => {
                     </Paper>
                 </Grid>
             )}
-            <Button onClick={() => {
-                if (user.type === DOCTOR_TYPE_ENUM) {
-                    answerCall();
-                }
-            }}>Accept</Button>
+
             {ongoingCall && (
                 <Grid item xs={12} md={6}>
                     <Paper elevation={3} sx={{ padding: '3%', textAlign: 'center' }}>
                         <Typography variant="h5" sx={{ marginBottom: '1rem' }}>
-                            {call.name}
+                            Doctor
                         </Typography>
-                        {userVideo.current ? (<>Success</>) : (<>Fail</>)}
                         <video
                             playsInline
                             ref={userVideo}
@@ -56,17 +49,18 @@ const VideoChat = () => {
                     </Paper>
                 </Grid>
             )}
-
-            <Grid item xs={12}>
+            <Grid item xs={12} align='center'>
                 {ongoingCall ? (
                     <Button variant="contained" color="error" onClick={() => leaveCall()}>
                         End Call
                     </Button>
                 ) : (
-                    <Button variant="contained" color="primary" onClick={() => callUser(idToCall)}>
-                        Call
+                    (user.type !== DOCTOR_TYPE_ENUM || call.isReceivingCall) &&
+                    <Button variant="contained" color="primary" onClick={user.type === DOCTOR_TYPE_ENUM ? () => answerCall() : () => callUser(idToCall)}>
+                        {user.type === DOCTOR_TYPE_ENUM ? 'Answer Call' : 'Call Doctor'}
                     </Button>
                 )}
+
             </Grid>
         </Grid>
     );
