@@ -16,7 +16,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import Loader from 'ui-component/Loader';
 import { authenticationAxios } from './utils/AxiosConfig';
-
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 
 // ==============================|| APP ||============================== //
@@ -58,6 +59,7 @@ const App = () => {
 	}, []);
 
 	return (
+		<DndProvider backend={HTML5Backend}>
 			<ThemeProvider theme={themes(customization)}>
 				<CssBaseline />
 				<LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -65,6 +67,7 @@ const App = () => {
 				{!isLoading && <Routes />}
 				</LocalizationProvider>
 			</ThemeProvider>
+		</DndProvider>
 	);
 };
 

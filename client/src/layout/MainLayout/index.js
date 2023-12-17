@@ -16,6 +16,7 @@ import {
 
 import Header from './Header';
 import Sidebar from './Sidebar';
+import Chat from '../../pages/chat/Chat';
 // import Customization from '../Customization';
 
 import { drawerWidth } from 'store/constant';
@@ -66,6 +67,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
 // ==============================|| MAIN LAYOUT ||============================== //
 
 const MainLayout = ({ userType }) => {
+    Outlet;
     const theme = useTheme();
     const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
     const navigate = useNavigate();
@@ -138,13 +140,19 @@ const MainLayout = ({ userType }) => {
                                 />
                             )}
 
-                            {/* main content */}
-                            <Main theme={theme} open={leftDrawerOpened}>
-                                {(!user || user.type != userType) && (
-                                    <h1>not autherized!!</h1>
-                                )}
-                                {user && user.type == userType && <Outlet />}
-                            </Main>
+                        {/* main content */}
+                        <Main theme={theme} open={leftDrawerOpened} sx={{ position: 'relative' }}>
+                            {(!user || user.type != userType) && (
+                                <h1>not autherized!!</h1>
+                            )}
+                            {user && user.type == userType &&
+                            <Chat> 
+                                <div>
+                                <Outlet />
+                                </div>
+                            </Chat>
+                            }
+                        </Main>
 
                             {/* <Customization /> */}
                         </Box>

@@ -35,6 +35,8 @@
     "react-apexcharts": "^1.4.0",
     "react-copy-to-clipboard": "^5.1.0",
     "react-device-detect": "^2.2.2",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
     "react-perfect-scrollbar": "^1.5.8",
     "react-redux": "^8.0.2",
