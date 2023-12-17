@@ -199,7 +199,10 @@ const ProfileSection = () => {
                                         }}
                                     >
                                         <Box sx={{ p: 2 }}>
-                                            <UpgradePlanCard />
+                                            {
+                                                user.type === 'patient' &&
+                                                <UpgradePlanCard />
+                                            }
                                          
                                             <Divider />
                                             <List
