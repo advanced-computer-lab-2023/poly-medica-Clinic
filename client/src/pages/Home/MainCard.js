@@ -8,7 +8,7 @@ import Healthcare from '../../assets/images/static/Healthcare.jpeg';
 const MainCard = () => {
     const MainCardData = {
         title: 'Better Healthcare for a Better Lifestyle',
-        description: 'Book online appointments with the best doctor in your city.\n All your medical and pharamacy needs, one place. ',
+        description: 'Book online appointments with the best doctors in your city.\n All your medical and pharamacy needs, one place. ',
         image: Healthcare,
         imageAltText: 'Healthcare Ahmaaaaad'
     };

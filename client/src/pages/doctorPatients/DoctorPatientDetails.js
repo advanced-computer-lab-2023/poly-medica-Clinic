@@ -80,7 +80,7 @@ const DoctorPatientDetails = ({ selectedPatient }) => {
                                 View Pofile
                             </Button>
 
-                            <Button variant='outlined' sx={{ marginTop: '2%', marginLeft: '5%' }} onClick={() => { navigate(`/doctor/pages/patients/${selectedPatient._id}/prescriptions`); }}>
+                            <Button variant='outlined' sx={{ marginTop: '2%', marginLeft: '5%' }} onClick={() => { navigate(`/doctor/pages/my-patients/${selectedPatient._id}/prescriptions`); }}>
                                 View Prescriptions
                             </Button>
                         </div>

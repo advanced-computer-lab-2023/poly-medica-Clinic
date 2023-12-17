@@ -3,6 +3,14 @@ import { List } from '@mui/material';
 import AppointmentCard from './AppointmentCard.js';
 
 const AppointmentList = ({ appointments, setSelectedAppointment }) => {
+
+    const isRunningAppointment = (selectedAppointment) => {
+        const currentDate = new Date();
+        const appointmentDate = new Date(selectedAppointment.date);
+        const oneHourLater = new Date(appointmentDate.getTime() + 60 * 60 * 1000);
+        return currentDate >= appointmentDate && currentDate <= oneHourLater;
+    };
+
     return (
         <List>
             {Array.isArray(appointments) &&
@@ -12,6 +20,7 @@ const AppointmentList = ({ appointments, setSelectedAppointment }) => {
                             <AppointmentCard
                                 appointment={appointment}
                                 setSelectedAppointment={setSelectedAppointment}
+                                isRunning={isRunningAppointment(appointment)}
                             ></AppointmentCard>
                         </div>
                     </div>

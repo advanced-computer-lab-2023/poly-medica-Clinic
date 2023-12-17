@@ -38,8 +38,8 @@ const icons = {
 
 const pages = {
     id: 'pages',
-    title: 'Pages',
-    caption: 'Pages Caption',
+    title: 'Dashboard',
+    // caption: 'Pages Caption',
     type: 'group',
     children: [
         {
@@ -80,14 +80,6 @@ const pages = {
             type: 'item',
             icon: icons.IconStethoscope,
             url: '/doctor/pages/add-available-slots',
-            target: false,
-        },
-        {
-            id: 'Contract',
-            title: 'Contract',
-            type: 'item',
-            icon: icons.IconKey,
-            url: '/doctor/pages/contract',
             target: false,
         },
     ],

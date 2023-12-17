@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import EarningCard from 'ui-component/EarningCard';
+import TotalIncomeDarkCard from 'ui-component/cards/TotalIncomeDarkCard';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Box, Chip, Drawer, Stack, useMediaQuery, List } from '@mui/material';
@@ -63,18 +63,19 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
 						paddingRight: '16px'
 					}}
 				>
-					<MenuList />
-					<Stack direction="row" justifyContent="center" sx={{ mb: 2 }}>
-						<Chip label={process.env.REACT_APP_VERSION} disabled chipcolor="secondary" size="small" sx={{ cursor: 'pointer' }} />
-					</Stack>
 					<List
 						subheader={
 							userType != 'admin' && (
-								<EarningCard isLoading={false} earning={'Poly-Wallet'} value={amountInWallet} />
+								<TotalIncomeDarkCard title={`$${amountInWallet}`} subTitle={'Poly-Wallet'}/>
 							)
 						}
 					>
 					</List>
+					<MenuList />
+					<Stack direction="row" justifyContent="center" sx={{ mb: 2 }}>
+						<Chip label={process.env.REACT_APP_VERSION} disabled chipcolor="secondary" size="small" sx={{ cursor: 'pointer' }} />
+					</Stack>
+					
 				</PerfectScrollbar>
 			</BrowserView>
 			<MobileView>

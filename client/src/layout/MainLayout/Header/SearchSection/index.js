@@ -143,7 +143,6 @@ const SearchSection = () => {
 		updateFilter(updatedFilterData);
 	};
 
-
 	const handleInputChange = (e) => {
 		const inputValue = e.target.value;
 		setValue(inputValue);
