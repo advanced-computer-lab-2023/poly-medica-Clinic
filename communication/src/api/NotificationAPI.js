@@ -156,7 +156,8 @@ export const notification = (app) => {
 			const type = MEDICINE_NOTIFICATION_TYPE_ENUM;
 			const notification = {
 				notificationHead:`medicine out of stock`, 
-    			notificationBody: `the medicine ${medicineName} is out of stock`
+    			notificationBody: `the medicine ${medicineName} is out of stock`,
+				senderName : "system"
 			};
 			for(let i = 0; i !=pharmacist.length; i++){
 				const userId = pharmacist[i];
@@ -165,6 +166,7 @@ export const notification = (app) => {
 			res.status(OK_STATUS_CODE).end();
 		} catch(error){
 			res.status(ERROR_STATUS_CODE).send({ errMessage: error.message });
+			console.log(error);
 		}
 	})
 };
