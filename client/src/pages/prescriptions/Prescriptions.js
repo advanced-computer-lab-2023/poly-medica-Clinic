@@ -88,13 +88,13 @@ const Prescriptions = () => {
 			setPatientName(response.data.patient.name);
 		}
 		);
-	},[]);
+	}, []);
 
 	useEffect(() => {
 		try {
 			pharmacyAxios.get('/medicines').then((response) => {
 				const responseMedicines = response.data.medicines;
-				setMedicines(responseMedicines);
+				setMedicines(responseMedicines.filter((medicine) => medicine.quantity > 0 && !medicine.archive));
 				setLoadingMedicine(false);
 			});
 		} catch (err) {
@@ -113,7 +113,7 @@ const Prescriptions = () => {
 					)) &&
 				(!filterData[1].selectedValue ||
 					prescription.doctorName.toString() ===
-						filterData[1].selectedValue.toString()) &&
+					filterData[1].selectedValue.toString()) &&
 				(!filterData[2].selectedValue ||
 					prescription.filled.toString() === filterData[2].selectedValue),
 		);
@@ -202,7 +202,7 @@ const Prescriptions = () => {
 	return loadingMedicine || loadingPrescription ? (
 		<Loader />
 	) : (
-		<MainCard title= {`Mr/Mrs ${patientName} Prescriptions`}>
+		<MainCard title={`Mr/Mrs ${patientName} Prescriptions`}>
 			<PrescriptionsList
 				prescriptions={prescriptions}
 				handleSelectingPrescription={handleSelectingPrescription}
