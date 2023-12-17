@@ -29,9 +29,15 @@ const LazyPrescriptions = Loadable(
 
 
 const LazyChat = Loadable(lazy(() => import('pages/chat/Chat')));
+const LazyHome = Loadable(lazy(() => import('pages/Home/Home')));
 
 const Account = Loadable(lazy(() => import('pages/profile/Account')));
 const LazyVideoChat = Loadable(lazy(() => import('pages/chat/VideoChat.js')));
+
+const LazyPrescription = Loadable(
+    lazy(() => import('pages/prescriptions/Prescriptions'))
+);
+
 // utilities routing
 const UtilsTypography = Loadable(
     lazy(() => import('pages/utilities/Typography'))
@@ -59,6 +65,10 @@ const DoctorRoutes = {
                     path: 'default',
                     element: <DashboardDefault />,
                 },
+                {
+                    path: 'home',
+                    element: <LazyHome />,
+                }
             ],
         },
         {
@@ -104,7 +114,11 @@ const DoctorRoutes = {
                 {
 					path: 'video-chat/:idToCall',
 					element: <LazyVideoChat/>
-				}
+                },
+				{
+					path: 'chat',
+					element: <LazyChat />,
+				},
             ],
         },
         {

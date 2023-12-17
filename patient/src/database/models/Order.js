@@ -26,6 +26,9 @@ const orderSchema = mongoose.Schema(
 					type: Number,
 					default: 1,
 				},
+				prescriptionId: {
+					type: mongoose.Schema.Types.ObjectId,
+				},
 			},
 		],
 		amount: {
@@ -36,6 +39,10 @@ const orderSchema = mongoose.Schema(
 			type: String,
 			enum: ORDER_STATUS,
 			default: ORDER_STATUS[ZERO_INDEX],
+		},
+		paymentMethod: {
+			type: String,
+			required: true,
 		},
 		type: {
 			type: String,

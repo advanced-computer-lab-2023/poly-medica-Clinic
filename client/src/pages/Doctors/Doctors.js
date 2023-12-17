@@ -7,6 +7,8 @@ import { useUserContext } from 'hooks/useUserContext';
 import { useFilter } from 'contexts/FilterContext.js';
 import { useSearch } from 'contexts/SearchContext.js';
 import { isDateInAvailableSlots } from 'utils/AppointmentUtils.js';
+import { useLocation } from 'react-router-dom';
+
 
 const Doctors = () => {
     const { user } = useUserContext();
@@ -17,9 +19,11 @@ const Doctors = () => {
     const [loggedInPatient, setLoggedInPatient] = useState(null);
     const [loggedInPatientHealthPackage, setLoggedInPatientHealthPackage] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
+    const [redirected, setRedirceted] = useState(false);
     const { filterData, updateFilter } = useFilter();
     const { searchQuery } = useSearch();
     const specialities = [];
+    const location = useLocation();
     useEffect(() => {
         doctorAxios
             .get('/doctors')
@@ -48,6 +52,11 @@ const Doctors = () => {
             .catch((error) => {
                 console.log(error);
             });
+
+        if (location.state) {
+            setSelectedDoctor(location.state.selectedDoctor);
+            setRedirceted(true);
+        }
     }, []);
 
     const applySelectedSearch = (doctor, value) => {
@@ -129,7 +138,7 @@ const Doctors = () => {
     }, []);
 
     return (
-        isLoaded 
+        isLoaded
         &&
         <MainCard title='Doctors'>
             <DoctorList
@@ -137,6 +146,13 @@ const Doctors = () => {
                 setSelectedDoctor={setSelectedDoctor}
                 loggedInPatientHealthPackage={loggedInPatientHealthPackage}
             />
+            {redirected && <DoctorDetails
+                selectedDoctor={selectedDoctor}
+                handleDialogClose={handleDialogClose}
+                loggedInPatient={loggedInPatient}
+                loggedInPatientHealthPackage={loggedInPatientHealthPackage}
+            />
+            }
             <DoctorDetails
                 selectedDoctor={selectedDoctor}
                 handleDialogClose={handleDialogClose}

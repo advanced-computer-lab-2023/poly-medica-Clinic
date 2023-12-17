@@ -38,8 +38,8 @@ const icons = {
 
 const pages = {
     id: 'pages',
-    title: 'Pages',
-    caption: 'Pages Caption',
+    title: 'Dashboard',
+    // caption: 'Pages Caption',
     type: 'group',
     children: [
         {
@@ -68,7 +68,7 @@ const pages = {
         },
         {
             id: 'ListOfPatients',
-            title: 'My Patients',
+            title: 'Patients',
             type: 'item',
             icon: icons.IconStethoscope,
             url: '/doctor/pages/my-patients',
@@ -76,7 +76,7 @@ const pages = {
         },
         {
             id: 'add-available-slots',
-            title: 'Add Available Slots',
+            title: 'Available Slots',
             type: 'item',
             icon: icons.IconStethoscope,
             url: '/doctor/pages/add-available-slots',

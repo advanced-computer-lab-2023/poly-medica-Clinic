@@ -36,12 +36,14 @@ class AppointmentService {
 			doctorName,
 			date,
 			status,
-			type,
-			pricePaidByPatient: parseFloat(pricePaidByPatient),
-			pricePaidToDoctor: parseFloat(pricePaidToDoctor)
+			type
 		};
 		if(patientFamilyMember){
 			appointmentModelData.patientFamilyMember = patientFamilyMember;
+		}
+		if(pricePaidByPatient && pricePaidToDoctor){
+			appointmentModelData.pricePaidByPatient = parseFloat(pricePaidByPatient);
+			appointmentModelData.pricePaidToDoctor = parseFloat(pricePaidToDoctor);
 		}
 		return await this.repository.createAppointment(appointmentModelData);
 	}

@@ -30,6 +30,7 @@ const LazyAccount = Loadable(lazy(() => import('pages/profile/Account'))); //TOD
 const LazyFamilyMembers = Loadable(lazy(() => import('pages/family-member/FamilyMembers.js')));
 const LazyVideoChat = Loadable(lazy(() => import('pages/chat/VideoChat.js')));
 const LazyChat = Loadable(lazy(() => import('pages/chat/Chat')));
+const LazyHome = Loadable(lazy(() => import('pages/Home/Home')));
 
 // utilities routing
 const UtilsTypography = Loadable(
@@ -57,6 +58,10 @@ const MainRoutes = {
 					path: 'default',
 					element: <DashboardDefault />,
 				},
+				{
+					path: 'home',
+					element: <LazyHome />,
+				}
 			],
 		},
 		{

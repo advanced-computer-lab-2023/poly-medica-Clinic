@@ -40,7 +40,9 @@ const PrescriptionDetails = ({
 		if (selectedMedicine) {
 			selectedPrescription.medicines.push({
 				amount: 1,
+				name: selectedMedicine.name,
 				medicineId: selectedMedicine._id,
+				price: selectedMedicine.price,
 			});
 			patientAxios
 				.patch(`/prescriptions/${selectedPrescription._id}`, {

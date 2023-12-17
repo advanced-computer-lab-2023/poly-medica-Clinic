@@ -40,6 +40,11 @@ class UserService {
 		const userEmail = await this.repository.getUserEmail(id);
 		return userEmail;
 	}
+
+	async getPharmacistid(){
+		const pharmacits = await this.repository.getPharmacistid();
+		return pharmacits;
+	}
 }
 
 export default UserService;

@@ -148,7 +148,7 @@ export const PatientAccountProfileDetails = () => {
                                     value={values.gender}
                                 />
                             </Grid>
-                            {isPatient && <Grid xs={12} md={6}>
+                            {/* {isPatient && <Grid xs={12} md={6}>
                                 <TextField
                                     fullWidth
                                     label='Wallet Amount'
@@ -157,7 +157,7 @@ export const PatientAccountProfileDetails = () => {
                                     disabled
                                     value={values.walletAmount}
                                 />
-                            </Grid>}
+                            </Grid>} */}
 
                         </Grid>
                         <Divider sx={{ mt: 5 }} />

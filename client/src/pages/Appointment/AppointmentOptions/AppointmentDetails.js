@@ -7,6 +7,7 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import HelpCenterIcon from '@mui/icons-material/HelpCenter';
 import StyleIcon from '@mui/icons-material/Style';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import { useTheme } from '@mui/material/styles';
 import Swal from 'sweetalert2';
 import '../../../assets/css/swalStyle.css';
 import { clinicAxios, communicationAxios } from 'pages/utilities/AxiosConfig';
@@ -18,19 +19,37 @@ import { getDay, getTime } from '../../../utils/DateFormatter.js';
 import { patientCanRefund } from '../../../utils/AppointmentUtils.js';
 import AppointmentStatus from '../AppointmentStatus';
 import { useNavigate } from 'react-router-dom';
+import { usePayment } from 'contexts/PaymentContext';
+
 
 const AppointmentDetails = ({
     selectedAppointment,
     setSelectedAppointment,
     handleAppoinmentUpdate
 }) => {
+    const theme = useTheme();
+    console.log('theme = ', theme);
     const { chats, setChats } = useChat();
     const { user } = useUserContext();
     const navigate = useNavigate();
 
     const [cannotCompleteOrCancel, setCannotCompleteOrCancel] = useState(false);
+    const { setPaymentDone } = usePayment();
+
     const handleCancel = async (refund) => {
-        console.log('appointment cancelled, ', refund);
+        let userIdToNotify, notificationHead, notificationBody;
+        if (user.type === PATIENT_TYPE_ENUM) {
+            userIdToNotify = selectedAppointment.doctorId;
+            notificationHead = 'Appointment Cancelled';
+            notificationBody = `Mr/Miss ${user.userName} has cancelled the appointment
+             ${refund? 'and will be refunded' : 'and will not be refunded'}}`;
+        }
+        else{
+            userIdToNotify = selectedAppointment.patientId;
+            notificationHead = 'Appointment Cancelled';
+            notificationBody = `Dr. ${user.userName} has cancelled the appointment
+             and you will be refunded`;
+        }
         const requestData = {
             doctorId: selectedAppointment.doctorId,
             appointmentDate: selectedAppointment.date,
@@ -49,12 +68,17 @@ const AppointmentDetails = ({
                     'Your Appointment has been cancelled successfully!',
                     'success',
                 )
-                    .then(() => {
-                        console.log('response.data = ', response.data);
-                        const updatedAppointment = response.data;
-                        setSelectedAppointment(updatedAppointment);
-                        handleAppoinmentUpdate(updatedAppointment);
+                .then(async () => {
+                    const updatedAppointment = response.data;
+                    setSelectedAppointment(updatedAppointment);
+                    handleAppoinmentUpdate(updatedAppointment);
+                    await communicationAxios.post(`/notification/${userIdToNotify}/type/appointment`, {
+                        senderName: user.userName,
+                        notificationHead,
+                        notificationBody
                     });
+                    setPaymentDone(1);
+                });
             });
     };
     const handleComplete = async () => {
@@ -243,8 +267,17 @@ const AppointmentDetails = ({
                     <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
                         <Button
                             variant='contained'
-                            color='error'
-                            sx={{ marginTop: '3em', width: '15em' }}
+                            color= 'inherit'
+                            sx = {{
+                                color: '#FFFFFF',
+                                marginTop: '3em',
+                                width: '15em',
+                                backgroundColor: '#BE001C',
+                                ':hover': {
+                                    backgroundColor: '#BE001C',
+                                    boxShadow: '0 2px 14px 0 rgb(32 40 45 / 8%)',
+                                },
+                            }}
                             onClick={handleCancelConfirmation}
                             disabled={cannotCompleteOrCancel}
                         >
@@ -255,8 +288,8 @@ const AppointmentDetails = ({
                             &&
                             <Button
                                 variant='contained'
-                                color='success'
-                                sx={{ marginTop: '3em', width: '15em' }}
+                                color='secondary'
+                                sx = {{ marginTop: '3em', width: '15em' }}
                                 onClick={handleCompleteConfirmation}
                                 disabled={cannotCompleteOrCancel}
                             >
