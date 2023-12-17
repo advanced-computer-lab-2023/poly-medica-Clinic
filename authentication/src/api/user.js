@@ -164,7 +164,6 @@ export const user = (app) => {
 		try {
 			const userId = req.body.userId;
 			await axios.post(`${COMMUNICATION_USER_POST_URL}/${userId}`);
-			await axios.post(`${PHARMACIST_BASE_URL}archive/${userId}`);
 			await service.signupUser(req.body);
 			res.status(OK_REQUEST_CODE_200).end();
 		} catch (err) {
