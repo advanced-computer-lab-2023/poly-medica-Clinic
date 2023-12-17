@@ -5,15 +5,17 @@ import {
 	DialogActions,
 	Button,
 	Typography,
-	Grid,
 	IconButton,
+	List,
+	Divider,
+	Tooltip
 } from '@mui/material';
 import { useUserContext } from 'hooks/useUserContext';
 import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import MedicineCard from './MedicineCard';
-import { Add } from '@mui/icons-material';
+import { AddCircle } from '@mui/icons-material';
 import { formatMedicines } from '../../utils/PrescriptionUtils';
 import { OK_STATUS_CODE } from 'utils/Constants';
 import { patientAxios } from 'utils/AxiosConfig';
@@ -88,47 +90,47 @@ const PrescriptionDetails = ({
 						<Typography variant='body1'>
 							{selectedPrescription.filled ? 'Yes' : 'No'}
 						</Typography>
-						<Typography sx={{ marginBottom: '5%' }} variant='subtitle1'>
+						<Typography sx={{ marginBottom: '2%' }} variant='subtitle1'>
 							Medicines:
 						</Typography>
-						<Grid container spacing={2}>
-							<Grid container spacing={2} alignItems={'center'}>
-								{formattedMedicines.map((medicine, index) => (
-									<Grid item xs={4} key={index}>
-										<MedicineCard
-											medicine={medicine}
-											selectedPrescription={selectedPrescription}
-											setSelectedPrescription={setSelectedMedicine}
-											userType={user.type}
-										/>
-									</Grid>
-								))}
-								{user.type === 'doctor' && (
-									<>
-										{addMode ? (
-											<AddMedicine
-												medicines={medicines}
-												selectedMedicine={selectedMedicine}
-												setSelectedMedicine={setSelectedMedicine}
-												handleSaveClick={handleSaveClick}
-												handleCancelClick={handleCancelClick}
-											/>
-										) : (
-											<Grid item xs={4}>
-												<IconButton
-													onClick={handleAddClick}
-													title='Add medicine'
-													color='primary'
-													sx={{ height: '100%', width: '100%' }}
-												>
-													<Add />
-												</IconButton>
-											</Grid>
-										)}
-									</>
+
+						<List>
+							{formattedMedicines.map((medicine, index) => (
+								<>
+									<MedicineCard
+										key={index}
+										medicine={medicine}
+										selectedPrescription={selectedPrescription}
+										setSelectedPrescription={setSelectedMedicine}
+										userType={user.type}
+									/>
+									<Divider />
+								</>
+							))}
+						</List>
+						{user.type === 'doctor' && (
+							<>
+								{addMode ? (
+									<AddMedicine
+										medicines={medicines}
+										selectedMedicine={selectedMedicine}
+										setSelectedMedicine={setSelectedMedicine}
+										handleSaveClick={handleSaveClick}
+										handleCancelClick={handleCancelClick}
+									/>
+								) : (
+									<Tooltip title='Add medicine'>
+										<IconButton
+											onClick={handleAddClick}
+											color='primary'
+											sx={{ height: '100%', width: '100%' }}
+										>
+											<AddCircle />
+										</IconButton>
+									</Tooltip>
 								)}
-							</Grid>
-						</Grid>
+							</>
+						)}
 
 						<Typography sx={{ marginTop: '5%' }} variant='subtitle1'>
 							Description:

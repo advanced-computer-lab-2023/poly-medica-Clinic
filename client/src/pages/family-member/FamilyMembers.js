@@ -9,7 +9,8 @@ import {
     TableCell,
     Paper,
     IconButton,
-    Fab,
+    Tooltip,
+    Fab
 } from '@mui/material';
 
 import { Add, Subscriptions } from '@mui/icons-material';
@@ -123,10 +124,11 @@ const FamilyMembers = () => {
                                     }}
                                 >
                                     <TableCell>
-                                        <IconButton onClick={() => handlePackageClick(member.id)}>
-                                            <Subscriptions color='secondary' />
-                                        </IconButton>
-
+                                        <Tooltip title='View Health Package Subscribtion'>
+                                            <IconButton onClick={() => handlePackageClick(member.id)}>
+                                                <Subscriptions color='secondary' />
+                                            </IconButton>
+                                        </Tooltip>
                                     </TableCell>
                                     <TableCell>{member.name}</TableCell>
                                     <TableCell>{member.nationalId}</TableCell>

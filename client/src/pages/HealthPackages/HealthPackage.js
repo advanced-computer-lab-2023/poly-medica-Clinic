@@ -27,6 +27,7 @@ const HealthPackages = () => {
 	const [selectedEditPackages, setSelectedEditPackages] = useState(null);
 	const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 	const { user } = useUserContext();
+	const [isPaymentOpen, setIsPaymentOpen] = useState(false);
 
 	useEffect(() => {
 		clinicAxios.get('/packages')
@@ -35,7 +36,7 @@ const HealthPackages = () => {
 				setPackage(response.data.allPackages);
 
 			}).then(() => {
-				if(user.type=== PATIENT_TYPE_ENUM){
+				if (user.type === PATIENT_TYPE_ENUM) {
 					patientAxios.get(`/patient/${user.id}/health-packages`).then((response) => {
 						setSubscribedPackage(response.data.healthPackages[0]);
 					}).then(() => {
@@ -46,7 +47,7 @@ const HealthPackages = () => {
 						);
 					});
 				}
-				else{
+				else {
 					setLoading(false);
 				}
 			})
@@ -56,7 +57,7 @@ const HealthPackages = () => {
 			});
 
 
-	}, []);
+	}, [isPaymentOpen]);
 
 	const handleAddDialogOpen = () => {
 		setIsAddDialogOpen(true);
@@ -146,7 +147,7 @@ const HealthPackages = () => {
 		console.log(discount);
 		return (
 			<MainCard title="Packages">
-				<HealthPackagesList packages={packages} handleEditButtonClick={handleEditButtonClick} handleDeleteButtonClick={handleDeleteButtonClick} subscribedPackage={subscribedPackage} setSubscribedPackage={setSubscribedPackage} discount = {discount} />
+				<HealthPackagesList packages={packages} isPaymentOpen={isPaymentOpen} setIsPaymentOpen={setIsPaymentOpen} handleEditButtonClick={handleEditButtonClick} handleDeleteButtonClick={handleDeleteButtonClick} subscribedPackage={subscribedPackage} setSubscribedPackage={setSubscribedPackage} discount={discount} />
 				{
 					user.type === ADMIN_TYPE_ENUM
 					&&

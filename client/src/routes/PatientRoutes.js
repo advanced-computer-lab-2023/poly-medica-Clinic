@@ -28,7 +28,7 @@ const LazyPayment = Loadable(lazy(() => import('pages/payment/Payment')));
 const LazyAccount = Loadable(lazy(() => import('pages/profile/Account'))); //TODO: generalize this
 
 const LazyFamilyMembers = Loadable(lazy(() => import('pages/family-member/FamilyMembers.js')));
-
+const LazyVideoChat = Loadable(lazy(() => import('pages/chat/VideoChat.js')));
 const LazyChat = Loadable(lazy(() => import('pages/chat/Chat')));
 const LazyHome = Loadable(lazy(() => import('pages/Home/Home')));
 
@@ -38,7 +38,6 @@ const UtilsTypography = Loadable(
 );
 const UtilsColor = Loadable(lazy(() => import('pages/utilities/Color')));
 const UtilsShadow = Loadable(lazy(() => import('pages/utilities/Shadow')));
-
 // sample page routing
 const SamplePage = Loadable(lazy(() => import('pages/sample-page')));
 
@@ -103,6 +102,10 @@ const MainRoutes = {
 				{
 					path: 'chat',
 					element: <LazyChat />,
+				},
+				{
+					path: 'video-chat/:idToCall',
+					element: <LazyVideoChat/>
 				}
 			],
 		},

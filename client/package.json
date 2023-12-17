@@ -33,6 +33,7 @@
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.0",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-device-detect": "^2.2.2",
     "react-dom": "^18.2.0",
     "react-perfect-scrollbar": "^1.5.8",
@@ -41,6 +42,7 @@
     "react-router-dom": "6.3.0",
     "react-scripts": "5.0.1",
     "redux": "^4.2.0",
+    "simple-peer": "^9.11.1",
     "socket.io-client": "^4.7.2",
     "sweetalert2": "^11.7.32",
     "yup": "^0.32.11"
