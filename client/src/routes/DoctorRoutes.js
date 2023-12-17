@@ -34,9 +34,6 @@ const LazyHome = Loadable(lazy(() => import('pages/Home/Home')));
 const Account = Loadable(lazy(() => import('pages/profile/Account')));
 const LazyVideoChat = Loadable(lazy(() => import('pages/chat/VideoChat.js')));
 
-const LazyPrescription = Loadable(
-    lazy(() => import('pages/prescriptions/Prescriptions'))
-);
 
 // utilities routing
 const UtilsTypography = Loadable(

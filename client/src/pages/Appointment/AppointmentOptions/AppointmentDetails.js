@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
     Typography,
-    Button
+    Button,
+    Grid
 } from '@mui/material';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import HelpCenterIcon from '@mui/icons-material/HelpCenter';
@@ -42,9 +43,9 @@ const AppointmentDetails = ({
             userIdToNotify = selectedAppointment.doctorId;
             notificationHead = 'Appointment Cancelled';
             notificationBody = `Mr/Miss ${user.userName} has cancelled the appointment
-             ${refund? 'and will be refunded' : 'and will not be refunded'}}`;
+             ${refund ? 'and will be refunded' : 'and will not be refunded'}}`;
         }
-        else{
+        else {
             userIdToNotify = selectedAppointment.patientId;
             notificationHead = 'Appointment Cancelled';
             notificationBody = `Dr. ${user.userName} has cancelled the appointment
@@ -68,17 +69,17 @@ const AppointmentDetails = ({
                     'Your Appointment has been cancelled successfully!',
                     'success',
                 )
-                .then(async () => {
-                    const updatedAppointment = response.data;
-                    setSelectedAppointment(updatedAppointment);
-                    handleAppoinmentUpdate(updatedAppointment);
-                    await communicationAxios.post(`/notification/${userIdToNotify}/type/appointment`, {
-                        senderName: user.userName,
-                        notificationHead,
-                        notificationBody
+                    .then(async () => {
+                        const updatedAppointment = response.data;
+                        setSelectedAppointment(updatedAppointment);
+                        handleAppoinmentUpdate(updatedAppointment);
+                        await communicationAxios.post(`/notification/${userIdToNotify}/type/appointment`, {
+                            senderName: user.userName,
+                            notificationHead,
+                            notificationBody
+                        });
+                        setPaymentDone(1);
                     });
-                    setPaymentDone(1);
-                });
             });
     };
     const handleComplete = async () => {
@@ -264,47 +265,53 @@ const AppointmentDetails = ({
                         </>
                     }
 
-                    <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-                        <Button
-                            variant='contained'
-                            color= 'inherit'
-                            sx = {{
-                                color: '#FFFFFF',
-                                marginTop: '3em',
-                                width: '15em',
-                                backgroundColor: '#BE001C',
-                                ':hover': {
+                    <Grid container spacing={5}>
+                        <Grid item xs={4}>
+                            <Button
+                                variant='contained'
+                                color='inherit'
+                                sx={{
+                                    color: '#FFFFFF',
+                                    marginTop: '3em',
                                     backgroundColor: '#BE001C',
-                                    boxShadow: '0 2px 14px 0 rgb(32 40 45 / 8%)',
-                                },
-                            }}
-                            onClick={handleCancelConfirmation}
-                            disabled={cannotCompleteOrCancel}
-                        >
-                            Cancel Appointment
-                        </Button>
+                                    ':hover': {
+                                        backgroundColor: '#BE001C',
+                                        boxShadow: '0 2px 14px 0 rgb(32 40 45 / 8%)',
+                                    },
+                                }}
+                                onClick={handleCancelConfirmation}
+                                disabled={cannotCompleteOrCancel}
+                            >
+                                Cancel Appointment
+                            </Button>
+                        </Grid>
+
                         {
                             user.type == 'doctor'
                             &&
-                            <Button
-                                variant='contained'
-                                color='secondary'
-                                sx = {{ marginTop: '3em', width: '15em' }}
-                                onClick={handleCompleteConfirmation}
-                                disabled={cannotCompleteOrCancel}
-                            >
-                                Complete Appointment
-                            </Button>
+                            <Grid item xs={4}>
+                                <Button
+                                    variant='contained'
+                                    color='secondary'
+                                    sx={{ marginTop: '3em' }}
+                                    onClick={handleCompleteConfirmation}
+                                    disabled={cannotCompleteOrCancel}
+                                >
+                                    Complete Appointment
+                                </Button>
+                            </Grid>
                         }
                         {(runningAppointment) &&
-                            <Button
-                                variant='contained'
-                                sx={{ marginTop: '3em', width: '15em' }}
-                                onClick={() => handleAttendAppointment()}>
-                                Attend Appointment
-                            </Button>
+                            <Grid item xs={4}>
+                                <Button
+                                    variant='contained'
+                                    sx={{ marginTop: '3em' }}
+                                    onClick={() => handleAttendAppointment()}>
+                                    Attend Appointment
+                                </Button>
+                            </Grid>
                         }
-                    </div>
+                    </Grid>
                 </>
             )}
         </>
