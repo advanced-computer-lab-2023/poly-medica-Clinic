@@ -105,12 +105,15 @@ export const ChatContextProvider = ({ children }) => {
 
         const updateMessagesNumber = () => {
             let tot = 0;
+            console.log(chats);
             chats.map(chat => {
-                chat.users.map(user => {
-                    if(user.id === userId) {
-                        tot += user.unseen;
-                    }
-                });
+                if(chat && chat.users) {
+                    chat.users.map(user => {
+                        if(user.id === userId) {
+                            tot += user.unseen;
+                        }
+                    });
+                }
             });
             setMessagesNumber(tot);
         };

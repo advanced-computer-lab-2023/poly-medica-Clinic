@@ -1,10 +1,9 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { communicationAxios } from 'pages/utilities/AxiosConfig';
 import { Paper, InputBase, List, ListItem, Typography, Card, CardActions, CardContent, CardHeader, IconButton } from '@mui/material';
 import { useUserContext } from 'hooks/useUserContext';
 import { isSender, getReceiverId } from '../../utils/ChatUtils.js';
 import { useChat } from 'contexts/ChatContext.js';
-import PerfectScrollbar from 'react-perfect-scrollbar';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -13,15 +12,6 @@ const ChatBox = ({ setChatOpen }) => {
     const { user } = useUserContext();
     const userId = user.id;
     const { socket, selectedChat, updateChat, setSelectedChat, chatMessages, setChatMessages, newMessage, setNewMessage,  } = useChat();
-
-    const containerRef = useRef(null);
-
-    useEffect(() => {
-        if (containerRef.current) {
-            containerRef.current.scrollTop = containerRef.current.scrollHeight;
-        }
-    }, [chatMessages]);
-
    
     useEffect(() => {
         if (!selectedChat) return;
@@ -105,15 +95,13 @@ const ChatBox = ({ setChatOpen }) => {
                         flexDirection: 'column',
                         justifyContent: 'center',
                     }}>
-                    <PerfectScrollbar 
-                        containerRef={(ref) => (containerRef.current = ref)}
-                    >
+                    
                     <List
                         sx={{
                             display: 'flex',
                             flexDirection: 'column-reverse',
                             width: '100%',
-                            // height: '100%',
+                            height: '100%',
                             padding: 0,
                             backgroundColor: '#f6f6f6',
                             overflowY: 'auto',
@@ -158,7 +146,6 @@ const ChatBox = ({ setChatOpen }) => {
                             );
                         })}
                     </List>
-                    </PerfectScrollbar>
                 </CardContent>
                 <CardActions sx={{
                     padding: 0,

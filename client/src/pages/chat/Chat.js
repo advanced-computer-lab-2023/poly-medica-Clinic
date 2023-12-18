@@ -7,8 +7,8 @@ import { useDrop } from 'react-dnd';
 const Chat = ({ children }) => {
   const [isChatOpen, setChatOpen] = useState(false);
   const [position, setPosition] = useState({
-    left: window.innerWidth - window.innerWidth * 0.25,
-    top: window.innerHeight - window.innerHeight * 0.22,
+    left: window.innerWidth - window.innerWidth * 0.1,
+    top: window.innerHeight - window.innerHeight * 0.1,
   });
 
   const handleDrop = (delta) => {
@@ -32,22 +32,20 @@ const Chat = ({ children }) => {
   });
 
   const containerStyle = {
-    marginLeft: '0px',
-    display: 'flex',
-    justifyContent: 'space-around',
+    position: 'relative',
+    padding: 3,
     width: '100%',
     height: '100%',
-    position: 'relative',
-    left: '50%',
-    top: '50%',
-    transform: 'translate(-50%, -50%)', // Center the container
-    padding: 3,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   };
 
   const updatePosition = () => {
     setPosition({
-      left: window.innerWidth - window.innerWidth * 0.25,
-      top: window.innerHeight - window.innerHeight * 0.22,
+      left: window.innerWidth - window.innerWidth * 0.1,
+      top: window.innerHeight - window.innerHeight * 0.1,
     });
   };
 
@@ -56,13 +54,13 @@ const Chat = ({ children }) => {
     return () => {
       window.removeEventListener('resize', updatePosition);
     };
-  }, []); // Empty dependency array ensures that the effect runs only once, similar to componentDidMount
+  }, []);
 
   const childrenWithStyles = React.Children.map(children, (child) => {
     return React.cloneElement(child, {
       style: {
         ...child.props.style,
-        display: isChatOpen && window.innerWidth < 1000? 'none' : 'block',
+        display: isChatOpen && window.innerWidth < 1000 ? 'none' : 'block',
         pointerEvents: isChatOpen ? 'none' : 'auto',
         opacity: isChatOpen ? 0.5 : 1,
         width: isChatOpen ? '70%' : '100%',
@@ -72,7 +70,9 @@ const Chat = ({ children }) => {
 
   return (
     <Container ref={drop} sx={containerStyle}>
-      <DraggableChatButton isChatOpen={isChatOpen} position={position} setChatOpen={setChatOpen} />
+      {!location.pathname.includes('profile') && (
+        <DraggableChatButton isChatOpen={isChatOpen} position={position} setChatOpen={setChatOpen} />
+      )}
       {childrenWithStyles}
       {isChatOpen && <ChatCard setChatOpen={setChatOpen} />}
     </Container>

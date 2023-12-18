@@ -9,22 +9,24 @@ const DraggableChatButton = ({ isChatOpen, position, setChatOpen }) => {
 
   const [, drag] = useDrag({
     type: 'CHAT_BUTTON',
+    item: { type: 'CHAT_BUTTON' }, // Specify the item type
   });
+
   const buttonStyle = {
-    position: 'absolute',
+    position: 'fixed',
     left: position.left,
     top: position.top,
-    display: isChatOpen? 'none' : 'block',
+    display: isChatOpen ? 'none' : 'block',
     transition: 'transform 0.3s',
     transform: isChatOpen ? 'translateY(-50%)' : 'translateY(0)',
-    zIndex: '1000',
+    zIndex: '99999',
   };
-  setChatOpen;
+
   return (
     <Transition in={isChatOpen} timeout={300}>
       {(state) => (
-        <div ref={drag} style={{ ...buttonStyle , cursor: 'move', opacity: state === 'entering' || state === 'exiting' ? 1 : 1 }}>
-          <Badge badgeContent={isChatOpen? 0 : messagesNumber} color='primary'>
+        <div ref={drag} style={{ ...buttonStyle, cursor: 'move', opacity: state === 'entering' || state === 'exiting' ? 1 : 1 }}>
+          <Badge badgeContent={isChatOpen ? 0 : messagesNumber} color='primary'>
             <Fab color="primary" aria-label="chat" onClick={() => setChatOpen(!isChatOpen)}>
               <ChatIcon />
             </Fab>
