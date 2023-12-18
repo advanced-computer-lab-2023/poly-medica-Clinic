@@ -18,6 +18,7 @@ export const ONE = 1;
 export const ZERO = 0;
 export const FOURTEEN = 14;
 export const HALF = 0.5;
+export const TEN=10;
 export const TWELVE = 12;
 export const INF = 1e18;
 export const PORT = 8002;

@@ -5,14 +5,14 @@ import PregnantWomanIcon from '@mui/icons-material/PregnantWoman';
 import WcIcon from '@mui/icons-material/Wc';
 import PhoneIcon from '@mui/icons-material/Phone';
 import ContactEmergencyIcon from '@mui/icons-material/ContactEmergency';
-import { useNavigate } from 'react-router';
 import { getDay } from '../../utils/DateFormatter.js';
+import { useNavigate } from 'react-router-dom';
 
 const DoctorPatientDetails = ({ selectedPatient }) => {
     const navigate = useNavigate();
     let title = '';
-    if(selectedPatient){
-        title = (selectedPatient.gender=='MALE')? 'Mr.':'Miss.';
+    if (selectedPatient) {
+        title = (selectedPatient.gender == 'MALE') ? 'Mr.' : 'Miss.';
     }
     return (
         <>
@@ -42,31 +42,31 @@ const DoctorPatientDetails = ({ selectedPatient }) => {
                             </div>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.7em' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
-                                    <EmailIcon style={{ marginRight: '0.4em' }}/>
+                                    <EmailIcon style={{ marginRight: '0.4em' }} />
                                     <Typography variant='body1'>
                                         {`${selectedPatient.email}`}
                                     </Typography>
                                 </div>
                                 <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
-                                    <PregnantWomanIcon style={{ marginRight: '0.4em' }}/>
+                                    <PregnantWomanIcon style={{ marginRight: '0.4em' }} />
                                     <Typography variant='body1'>
                                         {`Born on ${getDay(selectedPatient.dateOfBirth)}`}
                                     </Typography>
                                 </div>
                                 <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
-                                    <WcIcon style={{ marginRight: '0.4em' }}/>
+                                    <WcIcon style={{ marginRight: '0.4em' }} />
                                     <Typography variant='body1'>
                                         {`${selectedPatient.gender}`}
                                     </Typography>
                                 </div>
                                 <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
-                                    <PhoneIcon style={{ marginRight: '0.4em' }}/>
+                                    <PhoneIcon style={{ marginRight: '0.4em' }} />
                                     <Typography variant='body1'>
                                         {`${selectedPatient.mobileNumber}`}
                                     </Typography>
                                 </div>
                                 <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
-                                    <ContactEmergencyIcon style={{ marginRight: '0.4em' }}/>
+                                    <ContactEmergencyIcon style={{ marginRight: '0.4em' }} />
                                     <Typography variant='body1'>
                                         {`${selectedPatient.emergencyContact.name} - ${selectedPatient.emergencyContact.mobile}`}
                                     </Typography>
@@ -74,13 +74,13 @@ const DoctorPatientDetails = ({ selectedPatient }) => {
                             </div>
 
                         </div>
-                        
+
                         <div style={{ display: 'flex', justifyContent: 'center' }}>
-                            <Button variant='outlined' sx={{ marginTop: '2%' }} onClick={() => { navigate(`/doctor/pages/profile/${selectedPatient._id}`); }}>
+                            <Button variant='outlined' sx={{ marginTop: '2%' }} onClick={() => { navigate(`/doctor/pages/profile/${selectedPatient._id}`, { state: { selectedPatient } }); }}>
                                 View Pofile
                             </Button>
 
-                            <Button variant='outlined' sx={{ marginTop: '2%', marginLeft: '5%' }} onClick={() => { navigate(`/doctor/pages/my-patients/${selectedPatient._id}/prescriptions`); }}>
+                            <Button variant='outlined' sx={{ marginTop: '2%', marginLeft: '5%' }} onClick={() => { navigate(`/doctor/pages/my-patients/${selectedPatient._id}/prescriptions`, { state: { selectedPatient } }); }}>
                                 View Prescriptions
                             </Button>
                         </div>

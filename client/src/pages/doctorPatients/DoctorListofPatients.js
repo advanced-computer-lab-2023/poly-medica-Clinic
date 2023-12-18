@@ -7,7 +7,14 @@ import { useUserContext } from 'hooks/useUserContext';
 import { useSearch } from 'contexts/SearchContext';
 import { useFilter } from 'contexts/FilterContext';
 import { clinicAxios } from 'utils/AxiosConfig';
+import { useLocation } from 'react-router-dom';
+
 const Patients = () => {
+	const location = useLocation();
+	let redirectedPatient = '';
+	if(location.state){
+		redirectedPatient = location.state.selectedPatient;
+	}
 	const [patients, setPatients] = useState([]);
 	const [originalPatients, setOriginalPatients] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
@@ -45,6 +52,9 @@ const Patients = () => {
 				console.error('Error fetching data:', error);
 				setIsLoading(false);
 			});
+		if(redirectedPatient){
+			setSelectedPatient(redirectedPatient);
+		}
 	}, []);
 
 	const isUpcomingAppointment = (id) => {

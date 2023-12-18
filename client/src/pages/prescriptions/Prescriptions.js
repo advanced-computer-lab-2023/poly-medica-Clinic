@@ -16,10 +16,15 @@ import {
 import { filterAppointmentsByDate } from 'utils/AppointmentUtils';
 import { pharmacyAxios } from 'pages/utilities/AxiosConfig';
 import Loader from 'ui-component/Loader';
-import { Fab } from '@mui/material';
+import { Fab, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useLocation, useNavigate } from 'react-router-dom';
+
 
 const Prescriptions = () => {
+	const navigate = useNavigate();
+	const location = useLocation();
 	const { user } = useUserContext();
 	const patientID =
 		user.type === PATIENT_TYPE_ENUM ? user.id : useParams().patientId;
@@ -40,6 +45,11 @@ const Prescriptions = () => {
 	const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 	const [description, setDescription] = useState('');
 	const [patientName, setPatientName] = useState('');
+	let selectedPatient = '';
+	if(location.state){
+		selectedPatient = location.state.selectedPatient;
+	}
+	
 
 	useEffect(() => {
 		const getPrescriptions = async () => {
@@ -202,6 +212,15 @@ const Prescriptions = () => {
 	return loadingMedicine || loadingPrescription ? (
 		<Loader />
 	) : (
+		<>
+		{(user.type === DOCTOR_TYPE_ENUM && patientID) && (
+			<Button variant="outlined" startIcon={<ArrowBackIcon />} color='secondary' onClick={() => { navigate('/doctor/pages/my-patients', { state: { selectedPatient } }); }}
+				sx={{ mb: 1.5 }}
+			>
+				Back to my patients
+			</Button>
+		)
+		}
 		<MainCard title={`Mr/Mrs ${patientName} Prescriptions`}>
 			<PrescriptionsList
 				prescriptions={prescriptions}
@@ -249,7 +268,9 @@ const Prescriptions = () => {
 				handleCancelAdd={handleCancelAdd}
 				setDescription={setDescription}
 			/>
+
 		</MainCard>
+		</>
 	);
 };
 

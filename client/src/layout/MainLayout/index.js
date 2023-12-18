@@ -78,7 +78,7 @@ const MainLayout = ({ userType }) => {
     useEffect(() => {
         const isDoctor = user.type === DOCTOR_TYPE_ENUM;
         if (!user || user.type != userType) {
-            navigate(`/${user.type}`);
+            navigate(`/${user.type}/dashboard/home`);
         }
         if (isDoctor) {
             clinicAxios

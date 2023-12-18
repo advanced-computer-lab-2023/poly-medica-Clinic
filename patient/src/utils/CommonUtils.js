@@ -1,6 +1,7 @@
+import dayjs from 'dayjs';
 import PDFDocument from 'pdfkit';
 import fs from 'fs';
-import { FOURTEEN, HALF, TWELVE, ONE, ZERO_INDEX } from './Constants.js';
+import { FOURTEEN, TWELVE, HALF, ONE, ZERO_INDEX } from './Constants.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 const currentFilePath = getFileUrl();
@@ -43,8 +44,6 @@ export const generatePrescriptionPDF = async (prescription, date) => {
 	const doc = new PDFDocument();
 	const stream = fs.createWriteStream(filePath);
 
-	console.log('prescription ==== ' + ' ' + prescription);
-
 	const pdfPromise = new Promise((resolve, reject) => {
 		doc.pipe(stream);
 
@@ -53,18 +52,17 @@ export const generatePrescriptionPDF = async (prescription, date) => {
 			.text('Prescription Details', { align: 'center' })
 			.moveDown(HALF);
 		doc.fontSize(TWELVE).text(`Doctor: ${prescription.doctorName}`);
-		doc.text(`Date: ${prescription.date}`);
+		doc.text(`Date: ${dayjs(prescription.date)}`);
 		doc.text(`Description: ${prescription.description}`).moveDown(HALF);
 
 		doc.fontSize(TWELVE).text('Medicines:');
 		prescription.medicines.forEach((medicine, index) => {
 			doc.text(
-				`${index + ONE}. Medicine ID: ${medicine.medicineId}, Amount: ${
+				`${index + ONE}. Medicine Name: ${medicine.name}, Amount: ${
 					medicine.amount
 				}`,
 			);
 		});
-		doc.moveDown(HALF).text(`Price: ${prescription.price}`);
 
 		doc.end();
 
