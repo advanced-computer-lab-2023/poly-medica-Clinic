@@ -6,7 +6,7 @@ import logo from 'assets/images/logo.png';
 
 const Logo = () => {
 	return (
-		<img src={logo} alt="Berry" width="60" height="50" />
+		<img src={logo} alt="Berry" width="170" height="50" />
 	);
 };
 

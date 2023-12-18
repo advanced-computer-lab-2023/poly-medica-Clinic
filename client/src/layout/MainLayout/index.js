@@ -67,18 +67,18 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
 // ==============================|| MAIN LAYOUT ||============================== //
 
 const MainLayout = ({ userType }) => {
-    Outlet;
     const theme = useTheme();
     const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
     const navigate = useNavigate();
     const leftDrawerOpened = useSelector((state) => state.customization.opened);
+
     const { user } = useUserContext();
     const id = user.id;
     const location = useLocation();
     useEffect(() => {
         const isDoctor = user.type === DOCTOR_TYPE_ENUM;
         if (!user || user.type != userType) {
-            navigate(`/${user.type}`);
+            navigate(`/${user.type}/dashboard/home`);
         }
         if (isDoctor) {
             clinicAxios
@@ -145,10 +145,11 @@ const MainLayout = ({ userType }) => {
                             {(!user || user.type != userType) && (
                                 <h1>not autherized!!</h1>
                             )}
-                            {user && user.type == userType &&
+                            {user && user.type == userType && 
+                            user.type === 'admin' || user.type === 'doctor' && user.status ? <Outlet /> : 
                             <Chat> 
                                 <div>
-                                <Outlet />
+                                    <Outlet />
                                 </div>
                             </Chat>
                             }

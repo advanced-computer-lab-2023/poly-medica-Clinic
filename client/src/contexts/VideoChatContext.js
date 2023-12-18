@@ -117,6 +117,27 @@ const ContextProvider = ({ children }) => {
         window.location.reload();
     };
 
+    
+    const muteMicrophone = () => {
+        const tracks = stream.getAudioTracks();
+        tracks.forEach(track => track.enabled = false);
+    };
+
+    const unmuteMicrophone = () => {
+        const tracks = stream.getAudioTracks();
+        tracks.forEach(track => track.enabled = true);
+    };
+
+    const closeCamera = () => {
+        const tracks = stream.getVideoTracks();
+        tracks.forEach(track => track.enabled = false);
+    };
+
+    const openCamera = () => {
+        const tracks = stream.getVideoTracks();
+        tracks.forEach(track => track.enabled = true);
+    };
+
     return (
         <SocketContext.Provider value={{
             call,
@@ -130,7 +151,11 @@ const ContextProvider = ({ children }) => {
             me,
             callUser,
             leaveCall,
-            answerCall
+            answerCall,
+            muteMicrophone,
+            unmuteMicrophone,
+            openCamera,
+            closeCamera
         }}
         >
             {children}

@@ -67,6 +67,15 @@ io.on('connection', (socket) => {
 		});
 	});
 
+	socket.on('message_seen', (data) => {
+		console.log(data);
+		data.chat.users.map((user) => {
+			if (user.id !== data.sender)
+				socket.to(user.id).emit('update_chat_seen', {
+					chat: data.chat,
+				});
+		});
+	});
 	socket.on('ready', async ({ userId }) => {
 		try {
 			console.log('inside ready with id = ', userId);

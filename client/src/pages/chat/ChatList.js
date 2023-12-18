@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import {
     Divider,
     List,
@@ -8,65 +8,34 @@ import {
     CardHeader,
 } from '@mui/material';
 import { useUserContext } from 'hooks/useUserContext';
-import { communicationAxios } from 'pages/utilities/AxiosConfig';
-import ChatCard from './ChatListCard';
+import ChatListCard from './ChatListCard';
 import { useChat } from 'contexts/ChatContext';
 import {
     DOCTOR_TYPE_ENUM,
-    PATIENT_TYPE_ENUM,
     PHARMACIST_TYPE_ENUM,
-    PHARMACY_MONGO_ID,
 } from 'utils/Constants';
-import { isEqual } from 'lodash';
-import { chatExist } from 'utils/ChatUtils';
 import CloseIcon from '@mui/icons-material/Close';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
 const ChatList = ({ setChatOpen }) => {
     const { user } = useUserContext();
-    const userId = user.id,
-        userType = user.type;
-    const { socket, setSelectedChat, chats, setChats } = useChat();
-
+    const userId = user.id, userType = user.type;
+    const { socket, setSelectedChat, chats, updateChat } = useChat();
+    
     const socketRef = useRef(socket);
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await communicationAxios.get(
-                    `/chat/${userId}`
-                );
-                if (
-                    userType === PATIENT_TYPE_ENUM &&
-                    !chatExist(response.data, userId, PHARMACY_MONGO_ID) &&
-                    !chatExist(response.data, PHARMACY_MONGO_ID, userId)
-                ) {
-                    const res = await communicationAxios.post('/chat', {
-                        chat: {
-                            chatName: 'Pharmacy',
-                            users: [
-                                {
-                                    id: PHARMACY_MONGO_ID,
-                                    userType: PHARMACIST_TYPE_ENUM,
-                                },
-                                { id: userId, userType: PATIENT_TYPE_ENUM },
-                            ],
-                        },
-                    });
-                    setChats([res.data, ...response.data]);
-                } else {
-                    if (!isEqual(response.data, chats)) {
-                        setChats(response.data);
-                    }
-                }
-            } catch (err) {
-                console.error(err);
-            }
-        };
-
-        fetchData();
-    }, [chats]);
 
     const handleSelectChat = (chat) => {
+        chat.users.map(user => {
+            if(user.id === userId) {
+                user.unseen = 0;
+            }
+            return user;
+        });
+        socketRef.current.emit('message_seen', {
+            sender: user.id,
+            chat,
+        });
+        updateChat(chat, null, 2);
         setSelectedChat((prevChat) => {
             if (prevChat) {
                 socketRef.current.emit('leave_room', prevChat._id);
@@ -80,7 +49,8 @@ const ChatList = ({ setChatOpen }) => {
         <Card
             elevation={5}
             style={{
-                height: '90%',
+                height: '100%',
+                maxHeight: '560px',
                 width: '92%',
                 padding: '0px',
             }}>
@@ -123,8 +93,7 @@ const ChatList = ({ setChatOpen }) => {
                                         }}
                                     
                                         onClick={() => handleSelectChat(chat)}>
-                                        {chat && <ChatCard chat={chat} />}
-                                        {console.log('chat === ', chat)}
+                                        {chat && <ChatListCard chat={chat} />}
                                     </ListItemButton>
                                     </>
                                 )}
