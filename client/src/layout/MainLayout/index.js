@@ -67,11 +67,11 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
 // ==============================|| MAIN LAYOUT ||============================== //
 
 const MainLayout = ({ userType }) => {
-    Outlet;
     const theme = useTheme();
     const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
     const navigate = useNavigate();
     const leftDrawerOpened = useSelector((state) => state.customization.opened);
+
     const { user } = useUserContext();
     const id = user.id;
     const location = useLocation();

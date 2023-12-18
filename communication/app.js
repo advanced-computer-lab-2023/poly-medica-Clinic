@@ -57,6 +57,16 @@ io.on('connection', (socket) => {
 				socket.to(user.id).emit('receive_message', data);
 		});
 	});
+
+	socket.on('message_seen', (data) => {
+		console.log(data);
+		data.chat.users.map((user) => {
+			if (user.id !== data.sender)
+				socket.to(user.id).emit('update_chat_seen', {
+					chat: data.chat,
+				});
+		});
+	});
 });
 
 export default server;

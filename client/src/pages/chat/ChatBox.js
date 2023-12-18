@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { communicationAxios } from 'pages/utilities/AxiosConfig';
 import { Paper, InputBase, List, ListItem, Typography, Card, CardActions, CardContent, CardHeader, IconButton } from '@mui/material';
 import { useUserContext } from 'hooks/useUserContext';
@@ -9,19 +9,16 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CloseIcon from '@mui/icons-material/Close';
 
 const ChatBox = ({ setChatOpen }) => {
-    const [chatMessages, setChatMessages] = useState([]);
-    const [newMessage, setNewMessage] = useState('');
 
     const { user } = useUserContext();
     const userId = user.id;
-    const { socket, selectedChat, updateChat, setSelectedChat } = useChat();
+    const { socket, selectedChat, updateChat, setSelectedChat, chatMessages, setChatMessages, newMessage, setNewMessage,  } = useChat();
 
     const containerRef = useRef(null);
 
     useEffect(() => {
         if (containerRef.current) {
-        // When chatMessages are updated, scroll to the bottom
-        containerRef.current.scrollTop = containerRef.current.scrollHeight;
+            containerRef.current.scrollTop = containerRef.current.scrollHeight;
         }
     }, [chatMessages]);
 
@@ -56,40 +53,23 @@ const ChatBox = ({ setChatOpen }) => {
                     selectedChat,
                     room: selectedChat._id,
                 });
-                updateChat(selectedChat, response.data._id);
                 setChatMessages((prevMessages) => {
                     return [response.data, ...prevMessages];
                 });
                 setNewMessage('');
+                updateChat(selectedChat, response.data._id, 1);
             })
             .catch((err) => {
                 console.log(err);
             });
     };
 
-    const socketRef = useRef(socket);
-    useEffect(() => {
-        const handleReceiveMessage = (data) => {
-            updateChat(data.selectedChat, data.message._id);
-            if (selectedChat && selectedChat._id === data.room) {
-                setChatMessages((prevMessages) => [
-                    data.message,
-                    ...prevMessages,
-                ]);
-            }
-        };
-
-        socketRef.current.on('receive_message', handleReceiveMessage);
-        return () => {
-            socketRef.current.off('receive_message', handleReceiveMessage);
-        };
-    }, [selectedChat]);
-
     return (
         <Card
             elevation={5}
             style={{
-                height: '92%',
+                height: '100%',
+                maxHeight: '560px',
                 width: '92%',
                 padding: '0px',
             }}>
@@ -104,7 +84,11 @@ const ChatBox = ({ setChatOpen }) => {
                     </IconButton>
                     }
                     action={
-                        <IconButton aria-label="settings" onClick={() => setChatOpen(false)}>
+                        <IconButton aria-label="settings" onClick={() => {
+                            // console.log(chats, selectedChat);
+                            setSelectedChat(null);
+                            setChatOpen(false);
+                        }}>
                             <CloseIcon />
                         </IconButton>
                     }
@@ -113,8 +97,10 @@ const ChatBox = ({ setChatOpen }) => {
                 </CardHeader>
                 <CardContent
                     sx={{
-                        paddingTop: 0,
-                        height: '78%',
+                        backgroundColor: '#f6f6f6',
+                        padding: 0,
+                        margin: '8px 24px 16px 24px',
+                        height: '74%',
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'center',
@@ -127,6 +113,7 @@ const ChatBox = ({ setChatOpen }) => {
                             display: 'flex',
                             flexDirection: 'column-reverse',
                             width: '100%',
+                            // height: '100%',
                             padding: 0,
                             backgroundColor: '#f6f6f6',
                             overflowY: 'auto',
