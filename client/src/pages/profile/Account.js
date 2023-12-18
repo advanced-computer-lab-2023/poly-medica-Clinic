@@ -24,6 +24,7 @@ import MedicalHistory from './MedicalHistory';
 import { authenticationAxios } from '../../utils/AxiosConfig';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
 import { useParams } from 'react-router';
+import DoctorContract from '../DoctorContract';
 const Page = () => {
 	const { patientId } = useParams();
 
@@ -31,8 +32,8 @@ const Page = () => {
 	const [password, setPassword] = useState('');
 	const [strength, setStrength] = useState(0);
 	const [level, setLevel] = useState();
-	const doctorInPatientProfile = patientId && user.type === DOCTOR_TYPE_ENUM;
-
+	const isDoctor = user.type === DOCTOR_TYPE_ENUM;
+	const doctorInPatientProfile = patientId && isDoctor;
 	const submitPassword = async () => {
 		if (!level || level.label != 'Strong') {
 			Swal.fire({
@@ -89,11 +90,23 @@ const Page = () => {
 						)}
 						<div>
 							<Grid container spacing={3}>
-								<Grid xs={12} md={6} lg={4}>
-									{!patientId && <AccountProfile />}
+
+								<Grid Stack xs={12} md={6} lg={4}>
+									<Grid item xs={6} > {!patientId && <AccountProfile />} </Grid>
+									{isDoctor && !patientId && <Grid item xs={6} sx={{ marginTop: '10%' }}>
+										<Card sx={{ padding: '4%' }} > <CardHeader title="Employment Contract" />
+											<DoctorContract />
+										</Card>
+									</Grid>}
+									{(user.type == PATIENT_TYPE_ENUM || patientId) && (
+										<Grid item xs={6} sx={{ marginTop: patientId ? '0' : '10%' }}>
+											<MedicalHistory patientId={patientId} />
+										</Grid>
+									)}
+
 								</Grid>
 								<Grid xs={12} md={6} lg={8}>
-									{user.type == DOCTOR_TYPE_ENUM && !patientId && (
+									{isDoctor && !patientId && (
 										<DcotorAccountProfileDetails />
 									)}
 									{(user.type == PATIENT_TYPE_ENUM || patientId) && (
@@ -172,11 +185,6 @@ const Page = () => {
 									{/* TODO: admin !! */}
 									{/* here will be the gener */}
 								</Grid>
-								{(user.type == PATIENT_TYPE_ENUM || patientId) && (
-									<Grid item xs={12}>
-										<MedicalHistory patientId={patientId} />
-									</Grid>
-								)}
 							</Grid>
 						</div>
 					</Stack>

@@ -71,7 +71,7 @@ const MobileSearch = ({ value, setValue, popupState }) => {
 		updateSearchQuery(inputValue);
 	};
 
-	
+
 
 	return (
 		<OutlineInputStyle
@@ -157,7 +157,7 @@ const SearchSection = () => {
 		setDrawerOpen(false);
 	};
 
-	return (
+	return filterData[0].values.length > 0 ? (
 		<>
 			<Box sx={{ display: { xs: 'block', md: 'none' } }}>
 
@@ -228,15 +228,15 @@ const SearchSection = () => {
 							<FilterDropdown
 								filterData={filterData}
 								onChange={handleFilterChange}
-								isDrawerOpen = {isDrawerOpen}
-								handleDrawerClose = {handleDrawerClose}
+								isDrawerOpen={isDrawerOpen}
+								handleDrawerClose={handleDrawerClose}
 							/>
 						)}
 					</Grid>
 				</Grid>
 			</Box>
 		</>
-	);
+	) : (<></>);
 };
 
 export default SearchSection;

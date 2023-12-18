@@ -36,12 +36,14 @@ class AppointmentService {
 			doctorName,
 			date,
 			status,
-			type,
-			pricePaidByPatient: parseFloat(pricePaidByPatient),
-			pricePaidToDoctor: parseFloat(pricePaidToDoctor)
+			type
 		};
 		if(patientFamilyMember){
 			appointmentModelData.patientFamilyMember = patientFamilyMember;
+		}
+		if(pricePaidByPatient && pricePaidToDoctor){
+			appointmentModelData.pricePaidByPatient = parseFloat(pricePaidByPatient);
+			appointmentModelData.pricePaidToDoctor = parseFloat(pricePaidToDoctor);
 		}
 		return await this.repository.createAppointment(appointmentModelData);
 	}
@@ -79,6 +81,56 @@ class AppointmentService {
 		return updatedAppointment;
 
 		
+	}
+
+	async createAppointmentFollowUp(appointment){
+		const { 
+			patientId,
+			doctorId,
+			patientName,
+			doctorName,
+			date,
+			status,
+			type,
+			availableSlotsIdx,
+			patientFamilyMember
+		} = appointment;
+
+		// deletes the available slot from the doctor's availableSlots array
+		await this.doctorRepository.deleteSlot(doctorId, availableSlotsIdx);
+
+		const appointmentModelData = {
+			patientId,
+			doctorId,
+			patientName,
+			doctorName,
+			date,
+			status,
+			type
+		};
+		if(patientFamilyMember){
+			appointmentModelData.patientFamilyMember = patientFamilyMember;
+		}
+		const followUpData = {
+			isValid: true,
+			accepted: false,
+			handled: false,
+		};
+		appointmentModelData.followUpData = followUpData;
+
+		return await this.repository.createAppointment(appointmentModelData);
+	}
+
+	async getFollowUpRequests(id){
+		return await this.repository.getFollowUpRequests(id);
+	}
+
+	async handleFollowUpRequest(appointmentId, accepted, doctorId, appointmentDate){
+		if(!accepted){
+			// add oldSlot to doctor available slots
+			await this.doctorRepository.addSlot(doctorId, appointmentDate);
+		}
+		return await this.repository.handleFollowUpRequest(appointmentId, accepted);
 	}
 }
 

@@ -7,11 +7,13 @@ import {
     TableHead,
     TableRow,
     TableCell,
-    Button,
     Paper,
     IconButton,
+    Tooltip,
+    Fab
 } from '@mui/material';
-import { AddCircleOutline, Subscriptions } from '@mui/icons-material';
+
+import { Add, Subscriptions } from '@mui/icons-material';
 import AddFamilyMember from './AddFamilyMember';
 import { useUserContext } from 'hooks/useUserContext';
 import { patientAxios } from '../../utils/AxiosConfig';
@@ -66,7 +68,7 @@ const FamilyMembers = () => {
             relation: '',
             email: '',
             mobileNumber: '',
-            id:''
+            id: ''
         });
         setError(false);
     };
@@ -80,18 +82,23 @@ const FamilyMembers = () => {
     return (
         <MainCard
             title='Family Members'
-            secondary={
-                <Button
-                    variant='contained'
-                    color='secondary'
-                    startIcon={<AddCircleOutline />}
-                    onClick={handleClick}
-                >
-                    Add Family Member
-                </Button>
-            }
+
         >
+
             {isLoading && <p>Loading...</p>}
+            {!isLoading && (<Fab
+                color="secondary"
+                aria-label="Add"
+                onClick={handleClick}
+                sx={{
+                    position: 'fixed',
+                    bottom: 16,
+                    right: 16,
+                    zIndex: 9999,
+                }}
+            >
+                <Add />
+            </Fab>)}
             {!isLoading && (
                 <TableContainer component={Paper}>
                     <Table>
@@ -117,10 +124,11 @@ const FamilyMembers = () => {
                                     }}
                                 >
                                     <TableCell>
-                                        <IconButton onClick={() => handlePackageClick(member.id)}>
-                                            <Subscriptions color='secondary' />
-                                        </IconButton>
-
+                                        <Tooltip title='View Health Package Subscribtion'>
+                                            <IconButton onClick={() => handlePackageClick(member.id)}>
+                                                <Subscriptions color='secondary' />
+                                            </IconButton>
+                                        </Tooltip>
                                     </TableCell>
                                     <TableCell>{member.name}</TableCell>
                                     <TableCell>{member.nationalId}</TableCell>

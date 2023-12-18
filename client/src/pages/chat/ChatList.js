@@ -91,6 +91,7 @@ const ChatList = ({ setChatOpen }) => {
                                             marginRight: 2,
                                            
                                         }}
+                                    
                                         onClick={() => handleSelectChat(chat)}>
                                         {chat && <ChatListCard chat={chat} />}
                                     </ListItemButton>

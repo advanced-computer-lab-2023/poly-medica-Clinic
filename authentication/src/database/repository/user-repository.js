@@ -1,4 +1,4 @@
-import { INCORRECT_PASSWORD_ERROR_MESSAGE, INCORRECT_USER_ERROR_MESSAGE } from '../../utils/Constants.js';
+import { INCORRECT_PASSWORD_ERROR_MESSAGE, INCORRECT_USER_ERROR_MESSAGE, PHARMACIST_ENUM } from '../../utils/Constants.js';
 import User from '../models/Users.js';
 import bcrypt from 'bcrypt';
 
@@ -44,20 +44,21 @@ class UserRepository {
 	}
 
 	async updatePassword(userId, password){
-		let user = await User.findOne({ userId: userId })
+		const user = await User.findOne({ userId: userId })
 		const salt = await bcrypt.genSalt();
 		password = await bcrypt.hash(password, salt);
 		user.password = password;
-		user = await user.save();
-		return user;
+		await user.save();
 	}
 
-	async updateEmail(id, email){
-		let user = await User.findOne({userId: id});
-		console.log(id, email, {user});
-		user.email = email;
-		user = await user.save();
-		return user;
+	async getUserEmail(userId){
+		const user = await User.findOne({ userId: userId }, "email").lean();
+		return user.email;
+	}
+
+	async getPharmacistid(){
+		const pharmacist = await User.find({ type: PHARMACIST_ENUM }, "userId").lean();
+		return pharmacist;
 	}
 }
 

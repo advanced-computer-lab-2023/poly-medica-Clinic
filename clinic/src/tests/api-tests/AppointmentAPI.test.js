@@ -13,6 +13,7 @@ import DoctorModel from '../../database/models/Doctor.js';
 import generateDoctor from '../model-generators/generateDoctor.js';
 import generateAppointment from '../model-generators/generateAppointment.js';
 
+
 import axios from 'axios';
 import { describe, beforeEach, afterEach, expect, it, jest } from '@jest/globals';
 import { faker } from '@faker-js/faker';
@@ -277,3 +278,156 @@ describe('PATCH /appointments/cancel/:appointmentId', () => {
 	});
 });
 
+describe('POST /appointments/follow-up-requests', () => {
+	beforeEach(async () => {
+		await connectDBTest();
+	});
+
+	it('should return 200 OK and the created appointmentfollowUp', async () => {
+		let doctor = new DoctorModel(generateDoctor());
+		await doctor.save();
+
+		let availableSlots = doctor.availableSlots;
+		const availableSlotsIdx = faker.number.int({
+			min: 0,
+			max: availableSlots.length - ONE,
+		});
+		const selectedSlot = availableSlots[availableSlotsIdx];
+		const patientId = faker.database.mongodbObjectId();
+		const doctorId = doctor._id.toString();
+		const appointmentData = generateAppointment(patientId, doctorId);
+		appointmentData.type = 'follow-up';
+		appointmentData.date = selectedSlot.from;
+		appointmentData.availableSlotsIdx = availableSlotsIdx;
+
+		const res = await request(app)
+			.post('/appointments/follow-up-requests')
+			.send(appointmentData);
+
+		expect(res.status).toBe(OK_STATUS_CODE);
+		expect(res._body.patientId).toEqual(patientId);
+		expect(res._body.doctorId).toEqual(doctorId);
+		// ensuring that the selected availableSlot is removed
+		doctor = await DoctorModel.findById(doctorId);
+		availableSlots = doctor.availableSlots;
+		for (let i = 0; i < availableSlots.length; i++) {
+			expect(availableSlots[i].from).not.toEqual(selectedSlot.from);
+			expect(availableSlots[i].until).not.toEqual(selectedSlot.until);
+		}
+		// ensuring that it's a followUp
+		expect(res._body.type).toEqual('follow-up');
+		expect(res._body.followUpData.isValid).toBeTruthy();
+	});
+	afterEach(async () => {
+		await disconnectDBTest();
+	});
+});
+
+describe('GET /appointments/follow-up-requests/:id', () => {
+	beforeEach(async () => {
+		await connectDBTest();
+	});
+
+	const generateAppointments = async (doctorId, patientId, followUpRequestsCount) => {
+		for (let i = 0; i < followUpRequestsCount; i++) {
+			const appointment = new AppointmentModel(generateAppointment(patientId, doctorId));
+			appointment.type = 'follow-up';
+			appointment.followUpData = {
+				isValid: true,
+				accepted: faker.datatype.boolean(),
+				handled: faker.datatype.boolean()
+			};
+			await appointment.save();
+		}
+		const lenNormalAppointments = faker.number.int({ min: 5, max: 10 });
+		for (let i = 0; i < lenNormalAppointments; i++) {
+			const appointment = new AppointmentModel(generateAppointment(patientId, doctorId));
+			await appointment.save();
+		}
+	};
+
+	it('should return 200 OK and get all follow-up requests to a doctor', async () => {
+		const doctor = new DoctorModel(generateDoctor());
+		await doctor.save();
+		const patientId = faker.database.mongodbObjectId();
+		const len = faker.number.int({ min: 5, max: 10 });
+		await generateAppointments(doctor._id.toString(), patientId, len);
+		const res = await request(app)
+			.get(`/appointments/follow-up-requests/${doctor._id}`);
+		expect(res.status).toBe(OK_STATUS_CODE);
+		expect(res._body.length).toEqual(len);
+	});
+	
+	it('should return 500 ERROR when the id is invalid', async () => {
+		const id = faker.lorem.word();
+		const res = await request(app).get(`/appointments/follow-up-requests/${id}`);
+		expect(res.status).toBe(ERROR_STATUS_CODE);
+	});
+
+	afterEach(async () => {
+		await disconnectDBTest();
+	});
+});
+
+describe('PATCH /appointments/follow-up-requests/handle/:appointmentId', () => {
+	beforeEach(async () => {
+		await connectDBTest();
+	});
+	
+	it('should return 200 OK and the accepted appointment', async () => {
+		const patientId = faker.database.mongodbObjectId();
+		const doctorId = faker.database.mongodbObjectId();
+		const appointment = new AppointmentModel(generateAppointment(patientId, doctorId));
+		appointment.type = 'follow-up';
+		appointment.followUpData = {
+			isValid: true,
+			accepted: false,
+			handled: false
+		};
+		await appointment.save();
+
+		const res = await request(app)
+			.patch(`/appointments/follow-up-requests/handle/${appointment._id}`)
+			.send({
+				accepted: true
+			});
+		expect(res.status).toBe(OK_STATUS_CODE);
+		expect(res._body.followUpData.handled).toBeTruthy();
+		expect(res._body.followUpData.accepted).toBeTruthy();
+	});
+
+	it('should return 200 OK and the rejected appointment', async () => {
+		const doctor = new DoctorModel(generateDoctor());
+		await doctor.save();
+		const patientId = faker.database.mongodbObjectId();
+		const appointment = new AppointmentModel(generateAppointment(patientId, doctor._id.toString()));
+		appointment.type = 'follow-up';
+		appointment.followUpData = {
+			isValid: true,
+			accepted: false,
+			handled: false
+		};
+		await appointment.save();
+
+		const res = await request(app)
+			.patch(`/appointments/follow-up-requests/handle/${appointment._id}`)
+			.send({
+				accepted: false,
+				doctorId: appointment.doctorId,
+				appointmentDate: appointment.date
+			});
+		expect(res.status).toBe(OK_STATUS_CODE);
+		expect(res._body.followUpData.handled).toBeTruthy();
+		expect(res._body.followUpData.accepted).toBeFalsy();
+	});
+
+	it('should return 500 ERROR when the id is invalid', async () => {
+		const id = faker.lorem.word();
+		const res = await request(app).patch(`/appointments/follow-up-requests/handle/${id}`);
+		expect(res.status).toBe(ERROR_STATUS_CODE);
+	});
+
+	afterEach(async () => {
+		await disconnectDBTest();
+	});
+});

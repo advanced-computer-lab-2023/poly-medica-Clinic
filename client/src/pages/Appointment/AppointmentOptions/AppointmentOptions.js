@@ -11,17 +11,20 @@ import {
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
+import { useUserContext } from 'hooks/useUserContext.js';
+import { PATIENT_TYPE_ENUM } from 'utils/Constants';
 import AppointmentDetails from './AppointmentDetails';
 import AppointmentReschedule from './AppointmentReschedule';
 import FollowUp from './FollowUp';
 
 
-const AppointmentOptions = ({ 
+const AppointmentOptions = ({
     selectedAppointment, 
     setSelectedAppointment, 
     handleDialogClose,
     handleAppoinmentUpdate
 }) => {
+    const { user } = useUserContext();
     const [tabValue, setTabValue] = useState('1');
     const [cannotReschedule, setCannotReschedule] = useState(false);
     const handleTabChange = (event, newTabValue) => {
@@ -58,7 +61,11 @@ const AppointmentOptions = ({
                         <TabList value={tabValue} onChange={handleTabChange}>
                             <Tab label="Appointment Details" value='1'/>
                             <Tab label="Reschedule" value='2' disabled={cannotReschedule}/>
-                            <Tab label="Follow Up" value='3'/>
+                            {
+                                user.type == PATIENT_TYPE_ENUM
+                                &&
+                                <Tab label="Follow Up" value='3'/>
+                            }
                         </TabList>
                     </Box>
                 </DialogTitle>

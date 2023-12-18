@@ -9,17 +9,28 @@ import {
 	TextField,
 	Button,
 	CircularProgress,
+	Box,
+	Grid,
+	FormControl,
+	Typography,
 } from '@mui/material';
+import { strengthColor, strengthIndicator } from 'utils/password-strength';
 
 const AddAdminDialog = ({
 	openAddDialog,
 	handleCloseAddDialog,
 	newAdminUsername,
 	newAdminPassword,
+	newAdminEmail,
 	setNewAdminUsername,
 	setNewAdminPassword,
+	setNewAdminEmail,
 	handleAddAdmin,
 	isAddButtonDisabled,
+	strength,
+	setStrength,
+	level,
+	setLevel,
 	errorMessage,
 	adminIsBeingAdded,
 }) => {
@@ -39,8 +50,41 @@ const AddAdminDialog = ({
 					label='Password'
 					fullWidth
 					value={newAdminPassword}
-					onChange={(e) => setNewAdminPassword(e.target.value)}
+					onChange={(e) => {
+						setNewAdminPassword(e.target.value);
+						const temp = strengthIndicator(e.target.value);
+						setStrength(temp);
+						setLevel(strengthColor(temp));
+					}}
 					margin='normal'
+					required
+				/>
+				{strength !== 0 && (
+					<FormControl fullWidth>
+						<Box sx={{ mb: 2 }}>
+							<Grid container spacing={2} alignItems='center'>
+								<Grid item>
+									<Box
+										style={{ backgroundColor: level?.color }}
+										sx={{ width: 85, height: 8, borderRadius: '7px' }}
+									/>
+								</Grid>
+								<Grid item>
+									<Typography variant='subtitle1' fontSize='0.75rem'>
+										{level?.label}
+									</Typography>
+								</Grid>
+							</Grid>
+						</Box>
+					</FormControl>
+				)}
+				<TextField
+					label='email'
+					fullWidth
+					value={newAdminEmail}
+					onChange={(e) => setNewAdminEmail(e.target.value)}
+					margin='normal'
+					type='email'
 					required
 				/>
 				{errorMessage && (
@@ -50,7 +94,7 @@ const AddAdminDialog = ({
 				)}
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={handleCloseAddDialog} color='primary'>
+				<Button onClick={() => handleCloseAddDialog()} color='primary'>
 					Cancel
 				</Button>
 				{!adminIsBeingAdded && (

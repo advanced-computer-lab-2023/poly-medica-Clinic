@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
-
+import TotalIncomeDarkCard from 'ui-component/cards/TotalIncomeDarkCard';
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Box, Chip, Drawer, Stack, useMediaQuery } from '@mui/material';
-
+import { Box, Chip, Drawer, Stack, useMediaQuery, List } from '@mui/material';
+import { useUserContext } from 'hooks/useUserContext';
+import { usePayment } from 'contexts/PaymentContext';
 // third-party
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { BrowserView, MobileView } from 'react-device-detect';
@@ -13,11 +14,38 @@ import MenuList from './MenuList';
 import LogoSection from './LogoSection';
 import { drawerWidth } from 'store/constant';
 
+import { useState, useEffect } from 'react';
+import { patientAxios, clinicAxios } from 'utils/AxiosConfig';
+
 // ==============================|| SIDEBAR DRAWER ||============================== //
 
 const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
 	const theme = useTheme();
 	const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
+
+	const { user } = useUserContext();
+	const userType = user.type;
+	const userId = user.id;
+
+	const [amountInWallet, setamountInWallet] = useState(0);
+	console.log(usePayment());
+	const { paymentDone, setPaymentDone } = usePayment();
+
+
+	useEffect(() => {
+		console.log('payment done is :', paymentDone);
+		if (userType === 'patient') {
+			patientAxios.get(`/patients/${userId}/wallet`).then((response) => {
+				setamountInWallet(response.data.walletAmount.toFixed(2));
+			});
+		
+		} else if (userType === 'doctor') {
+			clinicAxios.get(`/doctors/${userId}/wallet`).then((response) => {
+				setamountInWallet(response.data.walletAmount.toFixed(2));
+			});
+		}
+		setPaymentDone(0);
+	}, [paymentDone]);
 
 	const drawer = (
 		<>
@@ -35,10 +63,19 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
 						paddingRight: '16px'
 					}}
 				>
+					<List
+						subheader={
+							userType != 'admin' && (
+								<TotalIncomeDarkCard title={`$${amountInWallet}`} subTitle={'Poly-Wallet'}/>
+							)
+						}
+					>
+					</List>
 					<MenuList />
 					<Stack direction="row" justifyContent="center" sx={{ mb: 2 }}>
 						<Chip label={process.env.REACT_APP_VERSION} disabled chipcolor="secondary" size="small" sx={{ cursor: 'pointer' }} />
 					</Stack>
+					
 				</PerfectScrollbar>
 			</BrowserView>
 			<MobileView>

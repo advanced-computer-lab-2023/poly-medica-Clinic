@@ -31,17 +31,28 @@ const MedicalHistory = ({ patientId }) => {
         return `${PATIENT_BASE_URL}/patient/${userId}/medical-history/${document._id}`;
     };
 
-    const handleDeleteDocument = (document) => {
-        try {
-            patientAxios.patch(`/patient/${userId}/medical-history/${document._id}`).then((response) => {
-                if (response.status === OK_STATUS_CODE) {
-                    Swal.fire({ title: 'Deleted Successfully', icon: 'success' });
-                    setDocuments(documents.filter((doc) => doc._id !== document._id));
+    const handleDeleteDocument = (event, document) => {
+        event.preventDefault();
+        event.stopPropagation();
+        Swal.fire({
+            title: 'Are you sure?',
+            icon: 'warning',
+            showCancelButton: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                try {
+                    patientAxios.patch(`/patient/${userId}/medical-history/${document._id}`)
+                        .then((response) => {
+                            if (response.status === OK_STATUS_CODE) {
+                                Swal.fire({ title: 'Deleted Successfully', icon: 'success' });
+                                setDocuments(documents.filter((doc) => doc._id !== document._id));
+                            }
+                        });
+                } catch (err) {
+                    Swal.fire({ title: 'Deletion Failed', icon: 'error' });
                 }
-            });
-        } catch (err) {
-            Swal.fire({ title: 'Deletion Failed', icon: 'error' });
-        }
+            }
+        });
     };
 
     const handleUploadDocument = () => {
@@ -103,7 +114,7 @@ const MedicalHistory = ({ patientId }) => {
                                                             <IconButton
                                                                 edge="end"
                                                                 aria-label="delete"
-                                                                onClick={() => handleDeleteDocument(document)}
+                                                                onClick={(e) => handleDeleteDocument(e, document)}
                                                             >
                                                                 <Delete color="primary" />
                                                             </IconButton>
@@ -139,7 +150,7 @@ const MedicalHistory = ({ patientId }) => {
                         sx={{ mt: 2 }}
                     >
                         Upload Document
-                        <input type="file" accept=".pdf, .doc, .docx" style={{ display: 'none' }} onChange={handleFileChange} />
+                        <input type="file" accept=".pdf, .jpg, .png, .jpeg" style={{ display: 'none' }} onChange={handleFileChange} />
                     </Button>
                     {uploadedFileName && (
                         <Typography variant='subtitle2'>Uploaded File: {uploadedFileName}</Typography>

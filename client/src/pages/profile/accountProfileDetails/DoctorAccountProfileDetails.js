@@ -199,7 +199,7 @@ export const DoctorAccountProfileDetails = () => {
                                     value={values.educationalBackground}
                                 />
                             </Grid>
-                            <Grid
+                            {/* <Grid
                                 xs={12}
                                 // md={6}
                             >
@@ -212,7 +212,7 @@ export const DoctorAccountProfileDetails = () => {
                                     required
                                     value={values.walletAmount}
                                 />
-                            </Grid>
+                            </Grid> */}
                         </Grid>
                     </Box>
                 </CardContent>

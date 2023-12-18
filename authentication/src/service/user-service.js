@@ -6,8 +6,8 @@ class UserService {
 
 	}
 
-	async signupUser(req) {
-		const user = await this.repository.signupUser(req);
+	async signupUser(data) {
+		const user = await this.repository.signupUser(data);
 		return user;
 	}
 
@@ -36,11 +36,15 @@ class UserService {
 		return user;
 	}
 
-	async updateEmail(id, email){
-		let user = await this.repository.updateEmail(id, email);
-		return user;
+	async getuserEmail(id){
+		const userEmail = await this.repository.getUserEmail(id);
+		return userEmail;
 	}
 
+	async getPharmacistid(){
+		const pharmacits = await this.repository.getPharmacistid();
+		return pharmacits;
+	}
 }
 
 export default UserService;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
     Dialog,
     DialogTitle,
@@ -22,8 +22,8 @@ export const HealthPackageSubscription = ({ memberId, openPackages, setOpenPacka
             if (memberId) {
                 try {
                     patientAxios.get(`/patient/${memberId}/health-packages`).then((response) => {
-						setHealthPackage(response.data.healthPackages[0]);
-					});
+                        setHealthPackage(response.data.healthPackages[0]);
+                    });
                 } catch (error) {
                     console.log('error = ', error.response.data.message);
                 }
@@ -58,7 +58,7 @@ export const HealthPackageSubscription = ({ memberId, openPackages, setOpenPacka
                         <p>This family member is not subscribed to any health packages.</p>
                     )
                 ) : (
-                    <p>This family member cannot subscribe to health packages as they have no account.</p>
+                    <p>This family member is subscribed to the same package as you</p>
                 )}
             </DialogContent>
             <DialogActions>

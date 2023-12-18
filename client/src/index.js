@@ -4,6 +4,7 @@ import App from 'App';
 import { store } from 'store';
 import 'assets/scss/style.scss';
 import { UserContextProvider } from './contexts/UserContext';
+import { PaymentProvider } from './contexts/PaymentContext';
 import { BrowserRouter } from 'react-router-dom';
 
 // ==============================|| REACT DOM RENDER  ||============================== //
@@ -13,8 +14,10 @@ const root = createRoot(container); // createRoot(container!) if you use TypeScr
 root.render(
   <Provider store={store}>
     <BrowserRouter>
-    <UserContextProvider>
-      <App />
+      <UserContextProvider>
+        <PaymentProvider>
+          <App />
+        </PaymentProvider>
       </UserContextProvider>
     </BrowserRouter>
   </Provider>

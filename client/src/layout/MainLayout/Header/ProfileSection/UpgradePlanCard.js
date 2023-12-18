@@ -51,6 +51,8 @@ const UpgradePlanCard = () => {
 	useEffect(() => {
 		patientAxios.get(`/patient/${user.id}/health-packages`).then((response) => {
 			setHealthPackages(response.data.healthPackages);
+		}).catch((err) => {
+			console.log(err);
 		});
 	}, []);
 	return (
