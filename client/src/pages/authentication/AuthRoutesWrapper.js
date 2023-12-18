@@ -14,7 +14,7 @@ const AuthRoutesWrapper = () => {
     useEffect(() => {
 		setIsLoading(true);
 		if(user){
-			navigate(`/${user.type}`);
+			navigate(`/${user.type}/dashboard/home`);
 		}else {
 			authenticationAxios.get('/check-user', { withCredentials: true }).then(async userData => {
 				await dispatch({ auth: true, payload: userData.data });
