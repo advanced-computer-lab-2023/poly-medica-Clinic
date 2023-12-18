@@ -13,6 +13,7 @@ import {
 	CardActions,
 	FormControl,
 } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AccountProfile from './AccountProfile';
 import DcotorAccountProfileDetails from './accountProfileDetails/DoctorAccountProfileDetails';
 import PatientAccountProfileDetails from './accountProfileDetails/PatientAccountProfileDetails';
@@ -23,17 +24,22 @@ import Swal from 'sweetalert2';
 import MedicalHistory from './MedicalHistory';
 import { authenticationAxios } from '../../utils/AxiosConfig';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router';
+
 import DoctorContract from '../DoctorContract';
 const Page = () => {
+	const navigate = useNavigate();
+	const location = useLocation();
 	const { patientId } = useParams();
-
 	const { user } = useUserContext();
 	const [password, setPassword] = useState('');
 	const [strength, setStrength] = useState(0);
 	const [level, setLevel] = useState();
 	const isDoctor = user.type === DOCTOR_TYPE_ENUM;
 	const doctorInPatientProfile = patientId && isDoctor;
+	const selectedPatient = location.state.selectedPatient;
+
 	const submitPassword = async () => {
 		if (!level || level.label != 'Strong') {
 			Swal.fire({
@@ -89,7 +95,16 @@ const Page = () => {
 							</div>
 						)}
 						<div>
+							{doctorInPatientProfile && (
+								<Button variant="outlined" startIcon={<ArrowBackIcon />} color='secondary' onClick={() => { navigate('/doctor/pages/my-patients', { state: { selectedPatient } }); }}
+									sx={{ mb:1.5 }}
+								>
+									Back to my patients
+								</Button>
+							)}
 							<Grid container spacing={3}>
+
+
 
 								<Grid Stack xs={12} md={6} lg={4}>
 									<Grid item xs={6} > {!patientId && <AccountProfile />} </Grid>
