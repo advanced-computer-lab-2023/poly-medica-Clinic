@@ -75,6 +75,7 @@ io.on('connection', (socket) => {
 					chat: data.chat,
 				});
 		});
+	});
 	socket.on('ready', async ({ userId }) => {
 		try {
 			console.log('inside ready with id = ', userId);
