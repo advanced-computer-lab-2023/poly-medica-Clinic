@@ -7,9 +7,11 @@ const ChatCard = ({ setChatOpen }) => {
   const { selectedChat } = useChat();
 
   const cardStyle = {
+    position: window.innerWidth < 1000 ? 'static' : 'fixed',
+    right: window.innerWidth < 1000 ? 'auto' : 16,
     backgroundColor: 'transparent',
-    height: '100%',
-    width: window.innerWidth < 1000 ? '70%' : '34%', // Adjusted width for smaller screens
+    height: window.innerWidth < 1000? '100%' : '70%',
+    width: window.innerWidth < 1000 ? '70%' : '25%', // Adjusted width for smaller screens
     display: 'flex',
     justifyContent: 'space-around',
   };

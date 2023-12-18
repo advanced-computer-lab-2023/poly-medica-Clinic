@@ -38,8 +38,7 @@ const Chat = ({ children }) => {
     height: '100%',
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: isChatOpen && isChatOpen && window.innerWidth > 1000? 'start' : 'center',
   };
 
   const updatePosition = () => {
