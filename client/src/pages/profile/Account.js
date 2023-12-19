@@ -23,13 +23,13 @@ import Swal from 'sweetalert2';
 import MedicalHistory from './MedicalHistory';
 import { authenticationAxios } from '../../utils/AxiosConfig';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
-import {  useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router';
 
 import DoctorContract from '../DoctorContract';
 const Page = () => {
 	const navigate = useNavigate();
-//	const location = useLocation();
+	const location = useLocation();
 	const { patientId } = useParams();
 	const { user } = useUserContext();
 	const [password, setPassword] = useState('');
@@ -38,7 +38,7 @@ const Page = () => {
 	const isDoctor = user.type === DOCTOR_TYPE_ENUM;
 	const doctorInPatientProfile = patientId && isDoctor;
 	let selectedPatient = '';
-	if(location.state){
+	if (location.state) {
 		selectedPatient = location.state.selectedPatient;
 	}
 
@@ -98,8 +98,8 @@ const Page = () => {
 						)}
 						<div>
 							{doctorInPatientProfile && (
-								<Button variant="outlined" startIcon={<ArrowBackIcon />} color='secondary' onClick={() => { navigate('/doctor/pages/my-patients'); }}
-									sx={{ mb:1.5 }}
+								<Button variant="outlined" startIcon={<ArrowBackIcon />} color='secondary' onClick={() => { navigate('/doctor/pages/my-patients', { state: { selectedPatient } }); }}
+									sx={{ mb: 1.5 }}
 								>
 									Back to my patients
 								</Button>
