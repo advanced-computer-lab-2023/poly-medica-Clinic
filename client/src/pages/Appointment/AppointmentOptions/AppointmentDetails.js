@@ -188,6 +188,8 @@ const AppointmentDetails = ({
     const handleAttendAppointment = () => {
         navigate(`/${user.type}/pages/video-chat/${user.type === DOCTOR_TYPE_ENUM ?
             selectedAppointment.patientId : selectedAppointment.doctorId}`);
+
+        window.location.reload();
     };
     return (
         <>

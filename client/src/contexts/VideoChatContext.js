@@ -16,8 +16,6 @@ const ContextProvider = ({ children }) => {
     const [name, setName] = useState('');
     const [call, setCall] = useState({});
     const [me, setMe] = useState('');
-    // const [myVideo, setMyVideo] = useState({});
-    // const [userVideo, setUserVideo] = useState({});
     const myVideo = useRef();
     const userVideo = useRef();
     const connectionRef = useRef();
@@ -33,7 +31,7 @@ const ContextProvider = ({ children }) => {
                     if (myVideo.current)
                         myVideo.current.srcObject = currentStream;
                     console.log('video curr = ', myVideo.current);
-                }, 2000);
+                }, 1000);
 
 
             });
@@ -67,7 +65,7 @@ const ContextProvider = ({ children }) => {
                 if (userVideo.current) {
                     userVideo.current.srcObject = currentStream;
                 }
-            }, 2000);
+            }, 1000);
         });
 
         peer.signal(call.signal);
@@ -93,7 +91,7 @@ const ContextProvider = ({ children }) => {
             setTimeout(() => {
                 console.log('me = ', me);
                 socket.emit('callUser', { userToCall: id, signalData: data, from: me, name });
-            }, 2000);
+            }, 1000);
         });
 
         peer.on('stream', (currentStream) => {
@@ -102,7 +100,7 @@ const ContextProvider = ({ children }) => {
                     console.log('inside currentStream ', currentStream);
                     userVideo.current.srcObject = currentStream;
                 }
-            }, 2000);
+            }, 1000);
         });
 
 
