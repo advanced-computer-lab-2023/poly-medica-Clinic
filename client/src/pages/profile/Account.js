@@ -14,7 +14,6 @@ import {
 	FormControl,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import AccountProfile from './AccountProfile';
 import DcotorAccountProfileDetails from './accountProfileDetails/DoctorAccountProfileDetails';
 import PatientAccountProfileDetails from './accountProfileDetails/PatientAccountProfileDetails';
 import { useUserContext } from 'hooks/useUserContext';
@@ -24,13 +23,13 @@ import Swal from 'sweetalert2';
 import MedicalHistory from './MedicalHistory';
 import { authenticationAxios } from '../../utils/AxiosConfig';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
-import { useLocation, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router';
 
 import DoctorContract from '../DoctorContract';
 const Page = () => {
 	const navigate = useNavigate();
-	const location = useLocation();
+//	const location = useLocation();
 	const { patientId } = useParams();
 	const { user } = useUserContext();
 	const [password, setPassword] = useState('');
@@ -38,7 +37,7 @@ const Page = () => {
 	const [level, setLevel] = useState();
 	const isDoctor = user.type === DOCTOR_TYPE_ENUM;
 	const doctorInPatientProfile = patientId && isDoctor;
-	const selectedPatient = location.state.selectedPatient;
+	// const selectedPatient = location.state.selectedPatient;
 
 	const submitPassword = async () => {
 		if (!level || level.label != 'Strong') {
@@ -96,7 +95,7 @@ const Page = () => {
 						)}
 						<div>
 							{doctorInPatientProfile && (
-								<Button variant="outlined" startIcon={<ArrowBackIcon />} color='secondary' onClick={() => { navigate('/doctor/pages/my-patients', { state: { selectedPatient } }); }}
+								<Button variant="outlined" startIcon={<ArrowBackIcon />} color='secondary' onClick={() => { navigate('/doctor/pages/my-patients'); }}
 									sx={{ mb:1.5 }}
 								>
 									Back to my patients
@@ -107,14 +106,13 @@ const Page = () => {
 
 
 								<Grid Stack xs={12} md={6} lg={4}>
-									<Grid item xs={6} > {!patientId && <AccountProfile />} </Grid>
-									{isDoctor && !patientId && <Grid item xs={6} sx={{ marginTop: '10%' }}>
+									{isDoctor && !patientId && <Grid item xs={6}>
 										<Card sx={{ padding: '4%' }} > <CardHeader title="Employment Contract" />
 											<DoctorContract />
 										</Card>
 									</Grid>}
 									{(user.type == PATIENT_TYPE_ENUM || patientId) && (
-										<Grid item xs={6} sx={{ marginTop: patientId ? '0' : '10%' }}>
+										<Grid item xs={6}>
 											<MedicalHistory patientId={patientId} />
 										</Grid>
 									)}

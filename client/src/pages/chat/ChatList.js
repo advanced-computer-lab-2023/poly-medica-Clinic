@@ -52,7 +52,7 @@ const ChatList = ({ setChatOpen }) => {
                 height: '100%',
                 maxHeight: '560px',
                 width: '92%',
-                padding: '0px',
+                padding: '0px'
             }}>
             <CardHeader
                 action={

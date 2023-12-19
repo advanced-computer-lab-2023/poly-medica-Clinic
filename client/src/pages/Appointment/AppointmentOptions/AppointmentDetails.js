@@ -282,7 +282,7 @@ const AppointmentDetails = ({
                                 onClick={handleCancelConfirmation}
                                 disabled={cannotCompleteOrCancel}
                             >
-                                Cancel Appointment
+                                Cancel
                             </Button>
                         </Grid>
 
@@ -297,7 +297,7 @@ const AppointmentDetails = ({
                                     onClick={handleCompleteConfirmation}
                                     disabled={cannotCompleteOrCancel}
                                 >
-                                    Complete Appointment
+                                    Complete
                                 </Button>
                             </Grid>
                         }
@@ -307,7 +307,7 @@ const AppointmentDetails = ({
                                     variant='contained'
                                     sx={{ marginTop: '3em' }}
                                     onClick={() => handleAttendAppointment()}>
-                                    Attend Appointment
+                                    Attend
                                 </Button>
                             </Grid>
                         }
