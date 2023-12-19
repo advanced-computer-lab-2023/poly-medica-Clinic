@@ -43,7 +43,7 @@ class UserRepository {
 		return user;
 	}
 
-	async updatePassword(userId, password){
+	async updatePassword(userId, password) {
 		const user = await User.findOne({ userId: userId })
 		const salt = await bcrypt.genSalt();
 		password = await bcrypt.hash(password, salt);
@@ -51,12 +51,19 @@ class UserRepository {
 		await user.save();
 	}
 
-	async getUserEmail(userId){
+	async getUserEmail(userId) {
 		const user = await User.findOne({ userId: userId }, "email").lean();
 		return user.email;
 	}
 
-	async getPharmacistid(){
+	async updateEmail(id, email) {
+		const user = await User.findOne({ userId: id });
+		user.email = email;
+		await user.save();
+		return user;
+	}
+
+	async getPharmacistid() {
 		const pharmacist = await User.find({ type: PHARMACIST_ENUM }, "userId").lean();
 		return pharmacist;
 	}

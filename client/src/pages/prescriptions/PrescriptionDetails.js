@@ -108,7 +108,7 @@ const PrescriptionDetails = ({
 								</>
 							))}
 						</List>
-						{user.type === 'doctor' && (
+						{user.type === 'doctor' && !selectedPrescription.filled && (
 							<>
 								{addMode ? (
 									<AddMedicine

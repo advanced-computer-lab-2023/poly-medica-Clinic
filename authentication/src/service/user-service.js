@@ -41,6 +41,11 @@ class UserService {
 		return userEmail;
 	}
 
+	async updateEmail(id, email) {
+		const systemUser = await this.repository.updateEmail(id, email);
+		return systemUser;
+	}
+
 	async getPharmacistid(){
 		const pharmacits = await this.repository.getPharmacistid();
 		return pharmacits;

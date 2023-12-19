@@ -143,6 +143,7 @@ export const user = (app) => {
 			}
 		} catch (err) {
 			res.status(SERVER_ERROR_REQUEST_CODE_500).send({ message: err.message });
+			console.log('the err: ', err.message);
 		}
 	});
 
