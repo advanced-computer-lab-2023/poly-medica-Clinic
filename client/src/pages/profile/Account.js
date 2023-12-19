@@ -37,7 +37,10 @@ const Page = () => {
 	const [level, setLevel] = useState();
 	const isDoctor = user.type === DOCTOR_TYPE_ENUM;
 	const doctorInPatientProfile = patientId && isDoctor;
-	// const selectedPatient = location.state.selectedPatient;
+	let selectedPatient = '';
+	if(location.state){
+		selectedPatient = location.state.selectedPatient;
+	}
 
 	const submitPassword = async () => {
 		if (!level || level.label != 'Strong') {

@@ -90,7 +90,7 @@ const ChatBox = ({ setChatOpen }) => {
                         backgroundColor: '#f6f6f6',
                         padding: 0,
                         margin: '8px 24px 16px 24px',
-                        height: '74%',
+                        height: '70%',
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'center',

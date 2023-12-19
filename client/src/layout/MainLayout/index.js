@@ -146,7 +146,7 @@ const MainLayout = ({ userType }) => {
                                 <h1>not autherized!!</h1>
                             )}
                             {user && user.type == userType && 
-                            user.type === 'admin' || user.type === 'doctor' && user.status ? <Outlet /> : 
+                            user.type === 'admin' ? <Outlet /> : 
                             <Chat> 
                                 <div>
                                     <Outlet />
