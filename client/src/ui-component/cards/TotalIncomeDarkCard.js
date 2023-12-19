@@ -59,7 +59,8 @@ const TotalIncomeDarkCard = ({ isLoading, title, subTitle }) => {
 											...theme.typography.commonAvatar,
 											...theme.typography.largeAvatar,
 											backgroundColor: theme.palette.secondary[800],
-											color: '#fff'
+											color: '#fff',
+											cursor: 'default'
 										}}
 									>
 										<TableChartOutlinedIcon fontSize="inherit" />
