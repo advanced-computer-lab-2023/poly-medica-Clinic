@@ -4,7 +4,7 @@ import { useUserContext } from 'hooks/useUserContext';
 import CircularProgress from '@mui/material/CircularProgress';
 import { List } from '@mui/material';
 import FollowUpRequestCard from './FollowUpRequestCard.js';
-
+import NoDataFound from '../NoDataFound.js';
 const FollowUpRequests = () => {
     const [followUpRequests, setFollowUpRequests] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -40,18 +40,19 @@ const FollowUpRequests = () => {
             }
             {
                 !isLoading
-                &&
-                <List>
-                    {Array.isArray(followUpRequests) &&
-                        followUpRequests.map((followUpRequest, index) => (
-                            <div key={index}>
-                                <FollowUpRequestCard
-                                    followUpRequest={followUpRequest}
-                                    handleUpdateFollowUpRequest={handleUpdateFollowUpRequest}
-                                ></FollowUpRequestCard>
-                            </div>
-                        ))}
-                </List>
+                    &&
+                    followUpRequests.length == 0 ? <NoDataFound itemName={'Requests'} /> :
+                    <List>
+                        {Array.isArray(followUpRequests) &&
+                            followUpRequests.map((followUpRequest, index) => (
+                                <div key={index}>
+                                    <FollowUpRequestCard
+                                        followUpRequest={followUpRequest}
+                                        handleUpdateFollowUpRequest={handleUpdateFollowUpRequest}
+                                    ></FollowUpRequestCard>
+                                </div>
+                            ))}
+                    </List>
             }
         </>
     );

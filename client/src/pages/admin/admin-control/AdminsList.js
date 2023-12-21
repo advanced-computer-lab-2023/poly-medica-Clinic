@@ -1,11 +1,10 @@
 import React from 'react';
 import { List } from '@mui/material';
 import AdminCard from './AdminCard';
-import { useUserContext } from 'hooks/useUserContext';
+import { useAdminContext } from 'hooks/useAdminContext';
 
-const AdminsList = ({ admins, handleRemoveAdmin, setSelectedAdmin }) => {
-	const { user } = useUserContext();
-	console.log({ user });
+const AdminsList = () => {
+	const { admins } = useAdminContext();
 	return (
 		<List>
 			{Array.isArray(admins) &&
@@ -15,8 +14,6 @@ const AdminsList = ({ admins, handleRemoveAdmin, setSelectedAdmin }) => {
 							<div key={index}>
 								<AdminCard
 									admin={admin}
-									handleRemoveAdmin={handleRemoveAdmin}
-									setSelectedAdmin={setSelectedAdmin}
 								>
 									{' '}
 								</AdminCard>

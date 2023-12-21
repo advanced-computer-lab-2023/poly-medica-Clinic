@@ -8,14 +8,15 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import { CircularProgress } from '@mui/material';
 
-const DeleteConfirmationDialog = ({
+const AcceptConfirmationDialog = ({
 	open,
 	onClose,
 	onConfirm,
 	title,
 	content,
 	errorMessage,
-	someoneIsBeingDeleted,
+	someoneIsBeingAccepted,
+	selectedDoctorRequest,
 }) => {
 	return (
 		<Dialog open={open} onClose={onClose}>
@@ -30,12 +31,16 @@ const DeleteConfirmationDialog = ({
 				<Button onClick={() => onClose()} color='primary'>
 					Cancel
 				</Button>
-				{!someoneIsBeingDeleted && (
-					<Button onClick={() => onConfirm()} color='error' variant='contained'>
-						Delete
+				{!someoneIsBeingAccepted && (
+					<Button
+						onClick={() => onConfirm(selectedDoctorRequest)}
+						color='primary'
+						variant='contained'
+					>
+						confirm
 					</Button>
 				)}
-				{someoneIsBeingDeleted && (
+				{someoneIsBeingAccepted && (
 					<Button color='primary' disabled>
 						<CircularProgress color='inherit' size={25} />
 					</Button>
@@ -45,4 +50,4 @@ const DeleteConfirmationDialog = ({
 	);
 };
 
-export default DeleteConfirmationDialog;
+export default AcceptConfirmationDialog;

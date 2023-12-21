@@ -188,6 +188,8 @@ const AppointmentDetails = ({
     const handleAttendAppointment = () => {
         navigate(`/${user.type}/pages/video-chat/${user.type === DOCTOR_TYPE_ENUM ?
             selectedAppointment.patientId : selectedAppointment.doctorId}`);
+
+        window.location.reload();
     };
     return (
         <>
@@ -282,7 +284,7 @@ const AppointmentDetails = ({
                                 onClick={handleCancelConfirmation}
                                 disabled={cannotCompleteOrCancel}
                             >
-                                Cancel Appointment
+                                Cancel
                             </Button>
                         </Grid>
 
@@ -297,7 +299,7 @@ const AppointmentDetails = ({
                                     onClick={handleCompleteConfirmation}
                                     disabled={cannotCompleteOrCancel}
                                 >
-                                    Complete Appointment
+                                    Complete
                                 </Button>
                             </Grid>
                         }
@@ -307,7 +309,7 @@ const AppointmentDetails = ({
                                     variant='contained'
                                     sx={{ marginTop: '3em' }}
                                     onClick={() => handleAttendAppointment()}>
-                                    Attend Appointment
+                                    Attend
                                 </Button>
                             </Grid>
                         }

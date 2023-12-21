@@ -8,8 +8,18 @@ import {
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useAdminContext } from 'hooks/useAdminContext';
 
-const AdminCard = ({ admin, handleRemoveAdmin, setSelectedAdmin }) => {
+const AdminCard = ({ admin }) => {
+
+	const { setSelectedAdmin, setAdminToDelete, setConfirmDeleteDialogOpen } = useAdminContext();
+
+	const handleRemoveAdmin = (e, adminId) => {
+		e.stopPropagation();
+		setAdminToDelete(adminId);
+		setConfirmDeleteDialogOpen(true);
+	};
+
 	return (
 		<ListItem button key={admin._id} onClick={() => setSelectedAdmin(admin)}>
 			<ListItemAvatar>
