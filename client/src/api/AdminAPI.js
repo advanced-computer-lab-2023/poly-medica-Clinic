@@ -12,6 +12,6 @@ export const addAdmin = async (newAdmin) => {
 };
 
 export const deleteAdmin = async (adminToDelete) => {
-    const response = clinicAxios.delete(`/admins/${adminToDelete}`);
+    const response = await clinicAxios.delete(`/admins/${adminToDelete}`);
     return response.data;
 };
