@@ -64,3 +64,5 @@ export const ZERO_INDEX = 0;
 export const PAYMENT_ITEM_TYPES = ['Health-Package', 'appointment'];
 
 export const LIMIT_PER_PAGE = 5;
+
+export const TWO_SECONDS = 2000;
