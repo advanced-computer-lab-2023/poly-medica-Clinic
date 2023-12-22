@@ -6,7 +6,6 @@ import Loadable from 'ui-component/Loadable';
 import { PATIENT_TYPE_ENUM } from 'utils/Constants';
 
 // dashboard routing
-const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 const LazyPrescriptions = Loadable(
 	lazy(() => import('pages/prescriptions/Prescriptions')),
 );
@@ -22,7 +21,7 @@ const LazyAppointments = Loadable(
 	lazy(() => import('pages/Appointment/Appointment')),
 );
 const LazyFollowUpRequests = Loadable(
-	lazy(() => import('pages/FollowUpRequests/FollowUpRequests')),
+	lazy(() => import('pages/follow-up-requests/FollowUpRequests')),
 );
 const LazyPayment = Loadable(lazy(() => import('pages/payment/Payment')));
 const LazyAccount = Loadable(lazy(() => import('pages/profile/Account'))); //TODO: generalize this
@@ -48,16 +47,8 @@ const MainRoutes = {
 	element: <MainLayout userType={PATIENT_TYPE_ENUM} />,
 	children: [
 		{
-			path: 'patient',
-			element: <DashboardDefault />,
-		},
-		{
 			path: 'dashboard',
 			children: [
-				{
-					path: 'default',
-					element: <DashboardDefault />,
-				},
 				{
 					path: 'home',
 					element: <LazyHome />,

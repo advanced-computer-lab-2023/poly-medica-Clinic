@@ -5,6 +5,12 @@ import {
     PHARMACY_MONGO_ID,
 } from 'utils/Constants';
 
+
+export const getDoctor = async (id) => {
+    const response = await clinicAxios.get(`/doctor/${id}`);
+    return response.data;
+};
+
 export const getDoctors = async () => {
     const response = await clinicAxios.get('/doctors');
     return response.data;
@@ -22,8 +28,35 @@ export const addDoctor = async (doctorReq) => {
     return response.data;
 };
 
+export const getDoctorSlots = async (user) => {
+    const response = await clinicAxios.get(`/doctors/${user.id}/slots`);
+    return response.data;
+};
+
+export const addDoctorSlot = async (from, user) => {
+    const response = await clinicAxios.post(`/doctors/${user.id}/slots`, { from });
+    return response.data;
+};
+
+export const getAppointments = async (id) => {
+    const response = await clinicAxios.get(`/appointments/${id}`);
+    return response.data;
+};
+
+export const addAppointment = async (appointment) => {
+    const response = await clinicAxios
+        .post('/appointments', { items: appointment });
+    return response.data;
+};
+
+export const getDoctorPatients = async (id) => {
+    const response = await clinicAxios
+        .get('/doctors/' + id + '/patients');
+    return response.data;
+};
+
 export const addDoctorChat = async (doctor) => {
-    communicationAxios.post('/chat', {
+    await communicationAxios.post('/chat', {
         chat: {
             chatName: 'Pharmacy',
             users: [

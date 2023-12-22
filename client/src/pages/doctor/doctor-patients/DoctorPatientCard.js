@@ -3,12 +3,16 @@ import {
     ListItemText,
     ListItemAvatar,
 } from '@mui/material';
-import DoctorIcon from '../../assets/images/icons/DoctorIcon.png';
+import DoctorIcon from '../../../assets/images/icons/DoctorIcon.png';
+import { useDoctorContext } from 'hooks/useDoctorContext';
+import { getTitle } from 'utils/CommonUtils';
 
-const DoctorPatientCard = ({ patient, setSelectedPatient }) => {
-    const title = (patient.gender=='MALE')? 'Mr.':'Miss.';
-    
-    return(
+const DoctorPatientCard = ({ patient }) => {
+    const { setSelectedPatient } = useDoctorContext();
+
+    const title = getTitle(patient);
+
+    return (
         <ListItemButton onClick={() => setSelectedPatient(patient)}>
             <ListItemAvatar sx={{ paddingRight: '2%' }}>
                 <img

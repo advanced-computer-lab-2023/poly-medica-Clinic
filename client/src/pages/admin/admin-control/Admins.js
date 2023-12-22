@@ -8,7 +8,7 @@ import AdminsList from './AdminsList';
 import AdminDetails from './AdminDetails';
 import DeleteConfirmationDialog from './DeleteConfirmationDialog';
 import AddAdminDialog from './AddAdminDialog';
-import { clinicAxios } from 'utils/AxiosConfig';
+import { getAdmins } from 'api/AdminAPI';
 import Message from 'ui-component/Message';
 import { TWO_SECONDS } from 'utils/Constants';
 import Loader from 'ui-component/Loader';
@@ -17,17 +17,16 @@ const Admins = () => {
 	const { setAdmins, setIsLoading, admins, setErrorMessage, isLoading, removeAdmin, addAdmin, setOpenAddDialog } = useAdminContext();
 
 	useEffect(() => {
-		clinicAxios
-			.get('/admins')
-			.then((response) => {
-				console.log(response);
-				setAdmins(
-					response.data.admins.filter(
-						(admin) => admin.userName !== user.userName,
-					),
-				);
-				setIsLoading(false);
-			})
+
+		getAdmins().then((response) => {
+			console.log(response);
+			setAdmins(
+				response.admins.filter(
+					(admin) => admin.userName !== user.userName,
+				),
+			);
+			setIsLoading(false);
+		})
 			.catch(() => {
 				setErrorMessage('Error fetching admins data');
 				setIsLoading(false);
@@ -42,7 +41,7 @@ const Admins = () => {
 	return (
 		<MainCard title='Admins'>
 			{isLoading ? (
-				<Loader/>
+				<Loader />
 			) : (
 				<>
 					<AdminsList />

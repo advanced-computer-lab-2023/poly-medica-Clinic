@@ -4,23 +4,22 @@ import { lazy } from 'react';
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
 import { DOCTOR_TYPE_ENUM } from 'utils/Constants';
-
+import DoctorProvider from 'contexts/DoctorContext';
 // dashboard routing
-const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 const LazyDoctorListofPatients = Loadable(
-    lazy(() => import('pages/doctorPatients/DoctorListofPatients'))
+    lazy(() => import('pages/doctor/doctor-patients/DoctorListofPatients'))
 );
 const LazyAppointments = Loadable(
     lazy(() => import('pages/Appointment/Appointment'))
 );
 const LazyFollowUpRequests = Loadable(
-    lazy(() => import('pages/FollowUpRequests/FollowUpRequests')),
+    lazy(() => import('pages/follow-up-requests/FollowUpRequests')),
 );
 const LazyWalletAmount = Loadable(
     lazy(() => import('pages/Wallet/WalletAmount'))
 );
 const LazyAddAvailableSlots = Loadable(
-    lazy(() => import('pages/DoctorAddAvailableSlots/AddAvailableSlots'))
+    lazy(() => import('pages/doctor/available-slots/AddAvailableSlots'))
 );
 
 const LazyPrescriptions = Loadable(
@@ -51,17 +50,11 @@ const DoctorRoutes = {
     path: '/doctor',
     element: <MainLayout userType={DOCTOR_TYPE_ENUM} />,
     children: [
-        {
-            path: 'doctor',
-            element: <DashboardDefault />,
-        },
+
         {
             path: 'dashboard',
             children: [
-                {
-                    path: 'default',
-                    element: <DashboardDefault />,
-                },
+
                 {
                     path: 'home',
                     element: <LazyHome />,
@@ -89,11 +82,19 @@ const DoctorRoutes = {
                 },
                 {
                     path: 'my-patients',
-                    element: <LazyDoctorListofPatients />,
+                    element:
+                        <DoctorProvider>
+                            <LazyDoctorListofPatients />
+                        </DoctorProvider>
+                    ,
                 },
                 {
                     path: 'add-available-slots',
-                    element: <LazyAddAvailableSlots />,
+                    element:
+                        <DoctorProvider>
+                            <LazyAddAvailableSlots />
+                        </DoctorProvider>
+                    ,
                 },
                 {
                     path: 'wallet',
@@ -109,13 +110,13 @@ const DoctorRoutes = {
                     element: <LazyPrescriptions />
                 },
                 {
-					path: 'video-chat/:idToCall',
-					element: <LazyVideoChat/>
+                    path: 'video-chat/:idToCall',
+                    element: <LazyVideoChat />
                 },
-				{
-					path: 'chat',
-					element: <LazyChat />,
-				},
+                {
+                    path: 'chat',
+                    element: <LazyChat />,
+                },
             ],
         },
         {

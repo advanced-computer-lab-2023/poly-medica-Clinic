@@ -1,5 +1,10 @@
 import { authenticationAxios, clinicAxios } from 'utils/AxiosConfig';
 
+export const getAdmins = async () => {
+    const response = await clinicAxios.get('/admins');
+    return response.data;
+};
+
 export const addAdmin = async (newAdmin) => {
 
     const response = await authenticationAxios.post('/admins/clinic', JSON.stringify(newAdmin), {
