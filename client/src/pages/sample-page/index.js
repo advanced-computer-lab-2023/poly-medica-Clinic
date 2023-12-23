@@ -16,10 +16,8 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 import BajajAreaChartCard from 'ui-component/charts/BajajaChart/BajajAreaChartCard';
 import EarningCard from 'ui-component/EarningCard';
 import PopularCard from 'ui-component/charts/PopularCard';
-import TotalGrowthBarChart from 'pages/dashboard/TotalGrowthBarChart';
 import TotalIncomeDarkCard from 'ui-component/cards/TotalIncomeDarkCard';
 import TotalIncomeLightCard from 'ui-component/cards/TotalIncomeLightCard';
-import TotalOrderLineChartCard from 'pages/dashboard/TotalOrderLineChartCard';
 
 
 // ==============================|| SAMPLE PAGE ||============================== //
@@ -81,13 +79,6 @@ const SamplePage = () => (
 				<PopularCard isLoading={false} data={[100, 15, 10, 50, 30, 40, 25]} title={'malek is the Boss'} subTitle={'the greatest'} value={1000} earningList={[{ title:'malek mohamed', value:1550, subTitle:'great', benefit:true }, { title:'Reliance', value:200.00, subTitle:'10% Profit', benefit:false }, { title:'TTML', value:7800.00, subTitle:'10% Profit', benefit:false }]}/>
 			</Grid>
 
-			<Grid item width={'100%'}>
-				<TotalGrowthBarChart isLoading={false}/>
-			</Grid>
-
-			<Grid item width={'100%'}>
-				<TotalOrderLineChartCard/>
-			</Grid>
 
 			<Grid item>
 				<TotalIncomeDarkCard title={'255$'} subTitle={'total income'}/>

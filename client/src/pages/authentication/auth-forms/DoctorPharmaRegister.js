@@ -76,7 +76,7 @@ const FirebaseRegister = ({ type }) => {
 				text: 'Please upload documents for verification',
 			});
 			return;
-		} else if (!level || level.label != 'Strong'){
+		} else if (!level || level.label != 'Strong') {
 			Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
@@ -137,7 +137,7 @@ const FirebaseRegister = ({ type }) => {
 				setSpeciality('');
 				setAffiliation('');
 				setUploadedFiles([]);
-			} catch(error) {
+			} catch (error) {
 				Swal.fire({
 					icon: 'error',
 					title: 'Oops...',
@@ -145,7 +145,7 @@ const FirebaseRegister = ({ type }) => {
 				});
 				setIsSubmitting(false);
 			}
-		} catch(error) {
+		} catch (error) {
 			Swal.fire({
 				icon: 'error',
 				title: 'Oops...',

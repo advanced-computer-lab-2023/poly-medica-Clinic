@@ -8,3 +8,9 @@ export const downloadDocument = (data) => {
 	a.click();
 	URL.revokeObjectURL(url);
 };
+
+export const getTitle = (person) => {
+	if (person) {
+		return (person.gender == 'MALE') ? 'Mr.' : 'Miss.';
+	}
+};
