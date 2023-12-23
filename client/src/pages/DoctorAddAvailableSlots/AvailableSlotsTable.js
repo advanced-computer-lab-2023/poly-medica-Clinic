@@ -9,9 +9,7 @@ const availableSlotsTable = ({ availableSlots } ) => {
     const theme = useTheme();
     const [page, setPage] = useState(0);
     const handleChangePage = (event, newPage) => {
-        console.log(newPage);
         setPage(newPage);
-        console.log(availableSlots.slice(newPage*LIMIT_PER_PAGE, newPage*LIMIT_PER_PAGE + LIMIT_PER_PAGE));
     };
     const randomNumberInRange = (min, max) => { 
         return Math.floor(Math.random()  

@@ -49,8 +49,6 @@ const HealthPackagesList = ({ packages, handleEditButtonClick, isPaymentOpen, se
 	};
 
 	const isSubscribedPackage = (pack) => {
-		console.log('Subscribed Package = ', subscribedPackage);
-		console.log('pack = ', pack);
 		return subscribedPackage && pack.name === subscribedPackage.name && subscribedPackage.status === HEALTH_PACKAGE_STATUS[1];
 	};
 

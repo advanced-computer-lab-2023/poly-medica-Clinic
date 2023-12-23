@@ -18,7 +18,6 @@ export const HealthPackageSubscription = ({ memberId, openPackages, setOpenPacka
 
     useEffect(() => {
         const fetchData = async () => {
-            console.log('memberId = ', memberId);
             if (memberId) {
                 try {
                     patientAxios.get(`/patient/${memberId}/health-packages`).then((response) => {

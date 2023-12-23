@@ -1,6 +1,6 @@
 import request from 'supertest';
 import server from '../../../app.js';
-import { connectDBTest, disconnectDBTest } from '../../utils/testing-utils.js';
+import { connectDBTest, disconnectDBTest } from '../../utils/TestingUtils.js';
 import { OK_STATUS_CODE, ERROR_STATUS_CODE, ZERO, TIME_OUT } from '../../utils/Constants.js';
 import ChatModel from '../../database/models/Chat.js'; '../../database/models/Chat.js';
 import generateChat from '../model-generators/generateChat.js';

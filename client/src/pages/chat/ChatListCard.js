@@ -14,7 +14,6 @@ const ChatListCard = ({ chat }) => {
         } else {
             setUnseen(chat.users[1].unseen);
         }
-        console.log(chat);
     }, [chat]);
 
     useEffect(() => {

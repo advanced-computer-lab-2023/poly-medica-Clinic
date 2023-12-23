@@ -84,7 +84,6 @@ const Prescriptions = () => {
 					},
 				]);
 				setLoadingPrescription(false);
-				console.log('prescription now false');
 			} catch (err) {
 				setLoadingPrescription(false);
 				console.log(err);
@@ -135,8 +134,6 @@ const Prescriptions = () => {
 	};
 
 	const handleSelectingPrescription = (prescription, doctor) => {
-		console.log('prescription 000 === ', prescription);
-		console.log('doctor 0000 === ', doctor);
 		setSelectedPrescription(prescription);
 		setPrescriptionDoctor(doctor);
 	};

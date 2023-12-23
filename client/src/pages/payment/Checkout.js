@@ -77,7 +77,6 @@ export default function CheckoutForm({ item, type, selectedDoctor }) {
     if (type === PAYMENT_ITEM_TYPES[0]) {
       navigate('/patient/pages/packages');
     } else if (type === PAYMENT_ITEM_TYPES[1]) {
-      console.log('was here');
       if (selectedDoctor != '') {
         navigate('/patient/pages/doctors', { state: { selectedDoctor } });
       }

@@ -84,7 +84,6 @@ const AppointmentDetails = ({
     };
     const handleComplete = async () => {
         // TODO: implement this function after merge with communication-service
-        console.log('appointment completed');
         clinicAxios
             .patch(`/appointments/complete/${selectedAppointment._id}`)
             .then((response) => {
@@ -268,25 +267,29 @@ const AppointmentDetails = ({
                     }
 
                     <Grid container spacing={5}>
-                        <Grid item xs={4}>
-                            <Button
-                                variant='contained'
-                                color='inherit'
-                                sx={{
-                                    color: '#FFFFFF',
-                                    marginTop: '3em',
-                                    backgroundColor: '#BE001C',
-                                    ':hover': {
+                        {
+                            selectedAppointment.type == 'appointment'
+                            &&
+                            <Grid item xs={4}>
+                                <Button
+                                    variant='contained'
+                                    color='inherit'
+                                    sx={{
+                                        color: '#FFFFFF',
+                                        marginTop: '3em',
                                         backgroundColor: '#BE001C',
-                                        boxShadow: '0 2px 14px 0 rgb(32 40 45 / 8%)',
-                                    },
-                                }}
-                                onClick={handleCancelConfirmation}
-                                disabled={cannotCompleteOrCancel}
-                            >
-                                Cancel
-                            </Button>
-                        </Grid>
+                                        ':hover': {
+                                            backgroundColor: '#BE001C',
+                                            boxShadow: '0 2px 14px 0 rgb(32 40 45 / 8%)',
+                                        },
+                                    }}
+                                    onClick={handleCancelConfirmation}
+                                    disabled={cannotCompleteOrCancel}
+                                >
+                                    Cancel
+                                </Button>
+                            </Grid>
+                        }
 
                         {
                             user.type == 'doctor'

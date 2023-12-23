@@ -74,7 +74,6 @@ const FamilyMembers = () => {
     };
 
     const handlePackageClick = (id) => {
-        console.log('current Id = ', id);
         setMemberId(id);
         setOpenPackages(true);
     };

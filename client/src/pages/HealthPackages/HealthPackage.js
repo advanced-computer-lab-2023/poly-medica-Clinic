@@ -32,7 +32,6 @@ const HealthPackages = () => {
 	useEffect(() => {
 		clinicAxios.get('/packages')
 			.then((response) => {
-				console.log(response.data.allPackages);
 				setPackage(response.data.allPackages);
 
 			}).then(() => {
@@ -103,7 +102,6 @@ const HealthPackages = () => {
 	};
 
 	const handleDeleteButtonClick = (pack) => {
-		console.log(pack);
 		clinicAxios.delete(`/packages/${pack._id}`)
 			.then(() => {
 				setPackage((prevPackage) => {
@@ -144,7 +142,6 @@ const HealthPackages = () => {
 
 	if (loading) return (<Loader></Loader>);
 	else {
-		console.log(discount);
 		return (
 			<MainCard title="Packages">
 				<HealthPackagesList packages={packages} isPaymentOpen={isPaymentOpen} setIsPaymentOpen={setIsPaymentOpen} handleEditButtonClick={handleEditButtonClick} handleDeleteButtonClick={handleDeleteButtonClick} subscribedPackage={subscribedPackage} setSubscribedPackage={setSubscribedPackage} discount={discount} />

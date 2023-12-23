@@ -37,7 +37,6 @@ const Patients = () => {
 			.get('/doctors/' + id + '/patients')
 			.then((response) => {
 				const data = response.data;
-				console.log('ALL PATIENS === ', data);
 				setPatients(data.finalListOFPatients);
 				setOriginalPatients(data.finalListOFPatients);
 				updateFilter([

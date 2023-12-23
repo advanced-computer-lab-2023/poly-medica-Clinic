@@ -17,11 +17,10 @@ import { useUserContext } from 'hooks/useUserContext';
     const [amount, setWalletAmount] = useState([]); 
     useEffect (() => {
         if(user.type == 'doctor'){
-           console.log(user.id);
-        doctorAxios.get('/doctors/'+ id+ '/wallet')
-        .then((response) => {
-            console.log(response);
-            setWalletAmount(JSON.stringify(response.data.walletAmount));
+            doctorAxios.get('/doctors/'+ id+ '/wallet')
+            .then((response) => {
+                console.log(response);
+                setWalletAmount(JSON.stringify(response.data.walletAmount));
         })
         .catch((error) => {
             console.error('Error fetching data:', error);

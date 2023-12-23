@@ -38,7 +38,6 @@ export const DoctorAccountProfileDetails = () => {
             .get(getPatientsURL, { withCredentials: true })
             .then((response) => {
                 const values = response.data.doctor;
-                console.log('values', values);
 
                 setValues({
                     name: values.userData.name,
@@ -97,7 +96,6 @@ export const DoctorAccountProfileDetails = () => {
 
     return (loading)?(<Loader></Loader>):(
         <form autoComplete='off' onSubmit={handleSubmit}>
-            {  console.log(loading) }  
             <Card>
                 <CardHeader
                     subheader='The information can be edited'

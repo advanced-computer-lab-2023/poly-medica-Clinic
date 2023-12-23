@@ -34,7 +34,6 @@ const Doctors = () => {
                     const doctor = response.data[i];
                     specialities.push(doctor.speciality);
                 }
-                console.log(response);
                 updateFilter([
                     {
                         attribute: 'Speciality',

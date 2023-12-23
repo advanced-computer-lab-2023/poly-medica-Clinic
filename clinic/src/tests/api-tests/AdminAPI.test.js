@@ -1,6 +1,6 @@
 import request from 'supertest';
 import app from '../../../app.js';
-import { connectDBTest, disconnectDBTest } from '../../utils/testing-utils.js';
+import { connectDBTest, disconnectDBTest } from '../../utils/TestingUtils.js';
 import {
 	OK_STATUS_CODE,
 	ERROR_STATUS_CODE,

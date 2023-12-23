@@ -11,8 +11,6 @@ export default function MedicineCard({
 	userType,
 }) {
 
-	console.log('medicine: ', medicine);
-	console.log('selected presc: ', selectedPrescription);
 	const handleMedicineAmount = (value) => {
 		medicine.amount += value;
 		if (medicine.amount < 1) medicine.amount = 1;
