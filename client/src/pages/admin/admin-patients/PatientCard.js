@@ -8,8 +8,16 @@ import {
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { usePatientContext } from 'hooks/usePatientContext';
+const PatientCard = ({ patient }) => {
 
-const PatientCard = ({ patient, handleRemovePatient, setSelectedPatient }) => {
+	const { setSelectedPatient, setPatientToDelete, setConfirmDeleteDialogOpen } = usePatientContext();
+
+	const handleRemovePatient = (e) => {
+		e.stopPropagation();
+		setPatientToDelete(patient._id);
+		setConfirmDeleteDialogOpen(true);
+	};
 	return (
 		<ListItem
 			button
@@ -26,7 +34,7 @@ const PatientCard = ({ patient, handleRemovePatient, setSelectedPatient }) => {
 				<IconButton
 					edge='end'
 					aria-label='delete'
-					onClick={(e) => handleRemovePatient(e, patient._id)}
+					onClick={(e) => handleRemovePatient(e)}
 					color='error'
 				>
 					<DeleteIcon />

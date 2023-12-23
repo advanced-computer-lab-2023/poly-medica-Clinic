@@ -12,11 +12,9 @@ const LazyPrescriptions = Loadable(
 const LazyPackages = Loadable(
 	lazy(() => import('pages/HealthPackages/HealthPackage')),
 );
-const LazyWalletAmount = Loadable(
-	lazy(() => import('pages/Wallet/WalletAmount')),
-);
 
-const LazyClinicDoctors = Loadable(lazy(() => import('pages/Doctors/Doctors')));
+
+const LazyClinicDoctors = Loadable(lazy(() => import('pages/patient/patient-doctors/Doctors')));
 const LazyAppointments = Loadable(
 	lazy(() => import('pages/Appointment/Appointment')),
 );
@@ -26,7 +24,7 @@ const LazyFollowUpRequests = Loadable(
 const LazyPayment = Loadable(lazy(() => import('pages/payment/Payment')));
 const LazyAccount = Loadable(lazy(() => import('pages/profile/Account'))); //TODO: generalize this
 
-const LazyFamilyMembers = Loadable(lazy(() => import('pages/family-member/FamilyMembers.js')));
+const LazyFamilyMembers = Loadable(lazy(() => import('pages/patient/family-members/FamilyMembers.js')));
 const LazyVideoChat = Loadable(lazy(() => import('pages/chat/VideoChat.js')));
 const LazyChat = Loadable(lazy(() => import('pages/chat/Chat')));
 const LazyHome = Loadable(lazy(() => import('pages/Home/Home')));
@@ -120,10 +118,6 @@ const MainRoutes = {
 		{
 			path: 'sample-page',
 			element: <SamplePage />,
-		},
-		{
-			path: 'wallet',
-			element: <LazyWalletAmount />,
 		},
 	],
 };

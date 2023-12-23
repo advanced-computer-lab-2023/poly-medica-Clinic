@@ -31,26 +31,26 @@ const FirebaseLogin = () => {
 		e.preventDefault();
 		setIsSubmitting(true);
 		const postData = { 'userName': userName, 'password': password };
-		try{
+		try {
 			const response = await authenticationAxios.post('/login/clinic', postData);
-			const data = response.data;		
-			dispatch({ auth: true, payload:data });
-			if(data.reset)
+			const data = response.data;
+			dispatch({ auth: true, payload: data });
+			if (data.reset)
 				navigate(`/${data.type}/pages/profile`);
 			else
-					navigate(`/${data.type}/dashboard/home`);
+				navigate(`/${data.type}/dashboard/home`);
 			setIsSubmitting(false);
-		} catch(err){		
-		Swal.fire({
+		} catch (err) {
+			Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
 				text: err.response.data.message,
 			});
 			setIsSubmitting(false);
-			}
+		}
 	};
 
-	return (	
+	return (
 		<>
 			<Grid container direction="column" justifyContent="center" spacing={2}>
 				<Grid item xs={12} container alignItems="center" justifyContent="center">
@@ -59,42 +59,42 @@ const FirebaseLogin = () => {
 					</Box>
 				</Grid>
 			</Grid>
-					<form onSubmit={handleSubmit}>
-						<FormControl fullWidth required sx={{ marginBottom:3 }}>
-							<TextField
-							type='text'
-							required
-							label="username"
-							value={userName}
-							onChange={e => setUserName(e.target.value)}
-							title='AuthLoginTextFieldUserName'
-							/>
-						</FormControl>
+			<form onSubmit={handleSubmit}>
+				<FormControl fullWidth required sx={{ marginBottom: 3 }}>
+					<TextField
+						type='text'
+						required
+						label="username"
+						value={userName}
+						onChange={e => setUserName(e.target.value)}
+						title='AuthLoginTextFieldUserName'
+					/>
+				</FormControl>
 
-						<FormControl fullWidth required>
-							<TextField
-							type={'password'}
-							label="password"
-							value={password}
-							required
-							onChange={e => setPassword(e.target.value)}
-							title='AuthLoginTextFieldPassword'
-							sx={{ ...theme.typography.customInput }}
-							/>
-						</FormControl>
-						<Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-							<Typography data-testid="AuthLoginTypographyForgotPassword" onClick={ () => { navigate('/login/reset-password'); } } variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
-								Forgot Password?
-							</Typography>
-						</Stack>
-						<Box sx={{ mt: 2 }}>
-							<AnimateButton>
-								<Button title='AuthLoginButtonSignIn' disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">
-                  Sign in
-								</Button>
-							</AnimateButton>
-						</Box>
-					</form>
+				<FormControl fullWidth required>
+					<TextField
+						type={'password'}
+						label="password"
+						value={password}
+						required
+						onChange={e => setPassword(e.target.value)}
+						title='AuthLoginTextFieldPassword'
+						sx={{ ...theme.typography.customInput }}
+					/>
+				</FormControl>
+				<Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
+					<Typography data-testid="AuthLoginTypographyForgotPassword" onClick={() => { navigate('/login/reset-password'); }} variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
+						Forgot Password?
+					</Typography>
+				</Stack>
+				<Box sx={{ mt: 2 }}>
+					<AnimateButton>
+						<Button title='AuthLoginButtonSignIn' disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">
+							Sign in
+						</Button>
+					</AnimateButton>
+				</Box>
+			</form>
 		</>
 	);
 };

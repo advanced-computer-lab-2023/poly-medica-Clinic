@@ -14,8 +14,8 @@ import {
 	FormControl,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import DcotorAccountProfileDetails from './accountProfileDetails/DoctorAccountProfileDetails';
-import PatientAccountProfileDetails from './accountProfileDetails/PatientAccountProfileDetails';
+import DcotorAccountProfileDetails from './account-data/DoctorAccountProfileDetails';
+import PatientAccountProfileDetails from './account-data/PatientAccountProfileDetails';
 import { useUserContext } from 'hooks/useUserContext';
 import { DOCTOR_TYPE_ENUM, PATIENT_TYPE_ENUM } from 'utils/Constants';
 import { useState } from 'react';
@@ -26,7 +26,7 @@ import { strengthColor, strengthIndicator } from 'utils/password-strength';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router';
 
-import DoctorContract from '../DoctorContract';
+import DoctorContract from '../doctor/DoctorContract';
 const Page = () => {
 	const navigate = useNavigate();
 	const location = useLocation();

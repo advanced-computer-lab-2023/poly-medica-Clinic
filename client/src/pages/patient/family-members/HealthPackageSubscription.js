@@ -11,7 +11,7 @@ import {
     TableRow,
     TableCell,
 } from '@mui/material';
-import { patientAxios } from '../../utils/AxiosConfig';
+import { patientAxios } from '../../../utils/AxiosConfig';
 
 export const HealthPackageSubscription = ({ memberId, openPackages, setOpenPackages }) => {
     const [healthPackage, setHealthPackage] = useState(null);

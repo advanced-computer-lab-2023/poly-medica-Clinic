@@ -6,9 +6,10 @@ import Loadable from 'ui-component/Loadable';
 import { ADMIN_TYPE_ENUM } from 'utils/Constants';
 import AdminProvider from '../contexts/AdminContext';
 import DoctorProvider from '../contexts/DoctorContext';
+import PatientProvider from '../contexts/PatientContext';
 // dashboard routing
 const LazyAdmins = Loadable(lazy(() => import('pages/admin/admin-control/Admins')));
-const LazyPatients = Loadable(lazy(() => import('pages/patient/Patients')));
+const LazyPatients = Loadable(lazy(() => import('pages/admin/admin-patients/Patients')));
 const LazyDoctors = Loadable(lazy(() => import('pages/admin/admin-doctors/Doctors')));
 const LazyDoctorRequests = Loadable(lazy(() => import('pages/admin/admin-doctors/DoctorRequests')));
 const Account = Loadable(lazy(() => import('pages/profile/Account')));
@@ -59,7 +60,11 @@ const AdminRoutes = {
 				},
 				{
 					path: 'patients',
-					element: <LazyPatients />,
+					element:
+						<PatientProvider>
+							<LazyPatients />
+						</PatientProvider>
+					,
 				},
 				{
 					path: 'doctors',

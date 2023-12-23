@@ -55,6 +55,17 @@ export const getDoctorPatients = async (id) => {
     return response.data;
 };
 
+export const getDoctorStatus = async (id) => {
+    const response = await clinicAxios.get('doctors/' + id + '/status');
+    return response.data;
+};
+
+export const updateDoctorStatus = async (id) => {
+    const response = await clinicAxios.post('doctors/' + id + '/status');
+    return response.data;
+
+};
+
 export const addDoctorChat = async (doctor) => {
     await communicationAxios.post('/chat', {
         chat: {

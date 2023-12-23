@@ -15,9 +15,6 @@ const LazyAppointments = Loadable(
 const LazyFollowUpRequests = Loadable(
     lazy(() => import('pages/follow-up-requests/FollowUpRequests')),
 );
-const LazyWalletAmount = Loadable(
-    lazy(() => import('pages/Wallet/WalletAmount'))
-);
 const LazyAddAvailableSlots = Loadable(
     lazy(() => import('pages/doctor/available-slots/AddAvailableSlots'))
 );
@@ -95,10 +92,6 @@ const DoctorRoutes = {
                             <LazyAddAvailableSlots />
                         </DoctorProvider>
                     ,
-                },
-                {
-                    path: 'wallet',
-                    element: <LazyWalletAmount />,
                 },
 
                 {

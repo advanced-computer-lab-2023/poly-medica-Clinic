@@ -1,11 +1,11 @@
-import DoctorIcon from '../../assets/images/icons/DoctorIcon.png';
+import DoctorIcon from '../../../assets/images/icons/DoctorIcon.png';
 import EmailIcon from '@mui/icons-material/Email';
 import PregnantWomanIcon from '@mui/icons-material/PregnantWoman';
 import WcIcon from '@mui/icons-material/Wc';
 import PhoneIcon from '@mui/icons-material/Phone';
 import ContactEmergencyIcon from '@mui/icons-material/ContactEmergency';
-import { getDay } from '../../utils/DateFormatter.js';
-
+import { getDay } from '../../../utils/DateFormatter.js';
+import { usePatientContext } from 'hooks/usePatientContext';
 import {
 	Dialog,
 	DialogTitle,
@@ -14,9 +14,22 @@ import {
 	DialogActions,
 	Button,
 } from '@mui/material';
+import { styled } from '@mui/system';
+import { commonStyles } from 'ui-component/CommonStyles';
 
-const PatientDetails = ({ selectedPatient, handleDialogClose }) => {
+const useStyles = styled(() => commonStyles);
+
+const PatientDetails = () => {
+
+	const classes = useStyles();
+
 	const title = ' ';
+	const { selectedPatient, setSelectedPatient, setErrorMessage } = usePatientContext();
+	const handleDialogClose = () => {
+		setSelectedPatient(null);
+		setErrorMessage('');
+	};
+
 	return (
 		<Dialog
 			open={selectedPatient}
@@ -30,13 +43,7 @@ const PatientDetails = ({ selectedPatient, handleDialogClose }) => {
 					</DialogTitle>
 					<DialogContent>
 						<div
-							style={{
-								display: 'flex',
-								justifyContent: 'space-around',
-								alignItems: 'center',
-								flexDirection: 'row',
-								marginBottom: '5em',
-							}}
+							className={classes.container}
 						>
 							<div>
 								<img
@@ -50,18 +57,10 @@ const PatientDetails = ({ selectedPatient, handleDialogClose }) => {
 								</Typography>
 							</div>
 							<div
-								style={{
-									display: 'flex',
-									flexDirection: 'column',
-									gap: '0.7em',
-								}}
+								className={classes.infoContainer}
 							>
 								<div
-									style={{
-										display: 'flex',
-										alignItems: 'center',
-										flexDirection: 'row',
-									}}
+									className={classes.emailContainer}
 								>
 									<EmailIcon style={{ marginRight: '0.4em' }} />
 									<Typography variant='body1'>
@@ -69,11 +68,7 @@ const PatientDetails = ({ selectedPatient, handleDialogClose }) => {
 									</Typography>
 								</div>
 								<div
-									style={{
-										display: 'flex',
-										alignItems: 'center',
-										flexDirection: 'row',
-									}}
+									className={classes.emailContainer}
 								>
 									<PregnantWomanIcon style={{ marginRight: '0.4em' }} />
 									<Typography variant='body1'>
@@ -81,11 +76,7 @@ const PatientDetails = ({ selectedPatient, handleDialogClose }) => {
 									</Typography>
 								</div>
 								<div
-									style={{
-										display: 'flex',
-										alignItems: 'center',
-										flexDirection: 'row',
-									}}
+									className={classes.emailContainer}
 								>
 									<WcIcon style={{ marginRight: '0.4em' }} />
 									<Typography variant='body1'>
@@ -93,11 +84,7 @@ const PatientDetails = ({ selectedPatient, handleDialogClose }) => {
 									</Typography>
 								</div>
 								<div
-									style={{
-										display: 'flex',
-										alignItems: 'center',
-										flexDirection: 'row',
-									}}
+									className={classes.emailContainer}
 								>
 									<PhoneIcon style={{ marginRight: '0.4em' }} />
 									<Typography variant='body1'>
@@ -105,11 +92,7 @@ const PatientDetails = ({ selectedPatient, handleDialogClose }) => {
 									</Typography>
 								</div>
 								<div
-									style={{
-										display: 'flex',
-										alignItems: 'center',
-										flexDirection: 'row',
-									}}
+									className={classes.emailContainer}
 								>
 									<ContactEmergencyIcon style={{ marginRight: '0.4em' }} />
 									<Typography variant='body1'>
