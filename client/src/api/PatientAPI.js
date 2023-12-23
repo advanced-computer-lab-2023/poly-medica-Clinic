@@ -1,5 +1,15 @@
 import { patientAxios, clinicAxios } from 'utils/AxiosConfig';
 
+export const getPatient = async (patientID) => {
+    const response = await patientAxios.get(`/patients/${patientID}`);
+    return response.data;
+};
+
+export const getPatientHealthPackage = async (patientID) => {
+    const response = await patientAxios.get(`/patient/${patientID}/health-packages`);
+    return response.data;
+};
+
 export const getPatients = async () => {
     const response = await patientAxios.get('/patients');
     return response.data;

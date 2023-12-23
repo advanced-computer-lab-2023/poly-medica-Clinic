@@ -2,7 +2,8 @@ export const CLINIC_BASE_URL = 'http://localhost:8001';
 export const PATIENT_BASE_URL = 'http://localhost:8002';
 export const PHARMACY_BASE_URL = 'http://localhost:8003';
 export const COMMUNICATION_BASE_URL = 'http://localhost:8006';
-
+export const FAMILY_BOOKING_TYPE = 'family';
+export const MY_SELF_BOOKING_TYPE = 'myself';
 export const PHARMACY_MONGO_ID = '5fc7a921328d333b8ce85141';
 
 const APPOINTMENT_STATUS = [

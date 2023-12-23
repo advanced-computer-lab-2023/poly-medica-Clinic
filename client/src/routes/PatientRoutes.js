@@ -10,9 +10,10 @@ const LazyPrescriptions = Loadable(
 	lazy(() => import('pages/prescriptions/Prescriptions')),
 );
 const LazyPackages = Loadable(
-	lazy(() => import('pages/HealthPackages/HealthPackage')),
+	lazy(() => import('pages/health-packages/HealthPackage')),
 );
-
+import DoctorProvider from 'contexts/DoctorContext';
+import PatientProvider from 'contexts/PatientContext';
 
 const LazyClinicDoctors = Loadable(lazy(() => import('pages/patient/patient-doctors/Doctors')));
 const LazyAppointments = Loadable(
@@ -86,7 +87,13 @@ const MainRoutes = {
 				},
 				{
 					path: 'doctors',
-					element: <LazyClinicDoctors />,
+					element:
+						<PatientProvider>
+							<DoctorProvider>
+								<LazyClinicDoctors />
+							</DoctorProvider>
+						</PatientProvider>
+					,
 				},
 				{
 					path: 'chat',
@@ -94,7 +101,7 @@ const MainRoutes = {
 				},
 				{
 					path: 'video-chat/:idToCall',
-					element: <LazyVideoChat/>
+					element: <LazyVideoChat />
 				}
 			],
 		},

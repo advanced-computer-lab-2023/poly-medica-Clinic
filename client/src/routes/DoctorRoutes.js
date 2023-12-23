@@ -5,6 +5,8 @@ import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
 import { DOCTOR_TYPE_ENUM } from 'utils/Constants';
 import DoctorProvider from 'contexts/DoctorContext';
+import PatientProvider from 'contexts/PatientContext';
+
 // dashboard routing
 const LazyDoctorListofPatients = Loadable(
     lazy(() => import('pages/doctor/doctor-patients/DoctorListofPatients'))
@@ -81,7 +83,9 @@ const DoctorRoutes = {
                     path: 'my-patients',
                     element:
                         <DoctorProvider>
-                            <LazyDoctorListofPatients />
+                            <PatientProvider>
+                                <LazyDoctorListofPatients />
+                            </PatientProvider>
                         </DoctorProvider>
                     ,
                 },

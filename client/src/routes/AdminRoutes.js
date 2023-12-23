@@ -14,7 +14,7 @@ const LazyDoctors = Loadable(lazy(() => import('pages/admin/admin-doctors/Doctor
 const LazyDoctorRequests = Loadable(lazy(() => import('pages/admin/admin-doctors/DoctorRequests')));
 const Account = Loadable(lazy(() => import('pages/profile/Account')));
 const LazyPackages = Loadable(
-	lazy(() => import('pages/HealthPackages/HealthPackage')),
+	lazy(() => import('pages/health-packages/HealthPackage')),
 );
 const LazyHome = Loadable(lazy(() => import('pages/Home/Home')));
 // utilities routing

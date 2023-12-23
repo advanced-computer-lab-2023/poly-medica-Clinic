@@ -6,54 +6,50 @@ import CoronavirusIcon from '@mui/icons-material/Coronavirus';
 import WorkIcon from '@mui/icons-material/Work';
 import SchoolIcon from '@mui/icons-material/School';
 import PaidIcon from '@mui/icons-material/Paid';
+import { styled } from '@mui/system';
+import { commonStyles } from 'ui-component/CommonStyles.js';
 
+const useStyles = styled(() => commonStyles);
 
 const DoctorDetailsHeader = ({ selectedDoctor, loggedInPatientHealthPackage }) => {
-    const price = calcPrice(selectedDoctor.hourlyRate, loggedInPatientHealthPackage && loggedInPatientHealthPackage.doctorDiscount); 
+    const classes = useStyles();
+    const price = calcPrice(selectedDoctor.hourlyRate, loggedInPatientHealthPackage && loggedInPatientHealthPackage.doctorDiscount);
     return (
         <>
-            <div
-                style={{
-                    display: 'flex',
-                    justifyContent: 'space-around',
-                    alignItems: 'center',
-                    flexDirection: 'row',
-                    marginBottom: '5em',
-                }}
-            >
+            <div className={classes.container} >
                 <img
                     src={DoctorIcon}
                     alt={selectedDoctor.userData.name}
                     width='100'
                     height='100'
                 />
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.7em' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
-                        <CoronavirusIcon style={{ marginRight: '0.4em' }}/>
+                <div className={classes.infoContainer}>
+                    <div className={classes.emailContainer}>
+                        <CoronavirusIcon style={{ marginRight: '0.4em' }} />
                         <Typography variant='body1'>
                             {`${selectedDoctor.speciality}`}
                         </Typography>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
-                        <WorkIcon style={{ marginRight: '0.4em' }}/>
+                    <div className={classes.emailContainer}>
+                        <WorkIcon style={{ marginRight: '0.4em' }} />
                         <Typography variant='body1'>
                             {`${selectedDoctor.affiliation}`}
                         </Typography>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
-                        <SchoolIcon style={{ marginRight: '0.4em' }}/>
+                    <div className={classes.emailContainer}>
+                        <SchoolIcon style={{ marginRight: '0.4em' }} />
                         <Typography variant='body1'>
                             {`${selectedDoctor.educationalBackground}`}
                         </Typography>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
-                        <PaidIcon style={{ marginRight: '0.4em' }}/>
+                    <div className={classes.emailContainer}>
+                        <PaidIcon style={{ marginRight: '0.4em' }} />
                         <Typography variant='body1'>
-                        <DoctorPrice
-                            priceBeforeDiscount={selectedDoctor.hourlyRate}
-                            priceAfterDiscount={price}
-                            margin={10}
-                        />
+                            <DoctorPrice
+                                priceBeforeDiscount={selectedDoctor.hourlyRate}
+                                priceAfterDiscount={price}
+                                margin={10}
+                            />
                         </Typography>
                     </div>
                 </div>
