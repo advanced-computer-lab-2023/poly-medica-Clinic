@@ -6,10 +6,10 @@ import {
 } from '@stripe/react-stripe-js';
 import { paymentElementOptions, paymentStatus } from '../../utils/PaymentUtils';
 import { Button } from '@mui/material';
-import Swal from 'sweetalert2';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useUserContext } from 'hooks/useUserContext';
 import { PAYMENT_ITEM_TYPES } from '../../utils/Constants';
+import { showFailureAlert } from 'utils/swal';
 
 export default function CheckoutForm({ item, type, selectedDoctor }) {
   const stripe = useStripe();
@@ -63,11 +63,10 @@ export default function CheckoutForm({ item, type, selectedDoctor }) {
 
     if (error.type === 'card_error' || error.type === 'validation_error') {
       setMessage(error.message);
-      Swal.fire('error', error.message, 'error');
     } else {
       setMessage('An unexpected error occurred.');
-      Swal.fire('error', error.message, 'error');
     }
+    showFailureAlert('error', error.message);
     setIsLoading(false);
   };
 

@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Outlet, useLocation } from 'react-router-dom';
 import { DOCTOR_TYPE_ENUM } from 'utils/Constants';
-import Swal from 'sweetalert2';
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
 import {
@@ -28,6 +27,7 @@ import { useUserContext } from 'hooks/useUserContext';
 import { useEffect } from 'react';
 import { ContextProvider } from 'contexts/VideoChatContext';
 import { getDoctorStatus } from 'api/DoctorAPI';
+import { showVerificationAlert } from 'utils/swal';
 // styles
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
     ({ theme, open }) => ({
@@ -86,7 +86,7 @@ const MainLayout = ({ userType }) => {
                     const status = res.status;
                     if (user && isDoctor && !status) {
                         navigate('/doctor/pages/profile');
-                        Swal.fire({ title: 'Pending Offer', icon: 'info', text: 'Please Accept the offer first' });
+                        showVerificationAlert('Pending Offer', 'Please Accept the offer first');
                     }
                 })
                 .catch((err) => {

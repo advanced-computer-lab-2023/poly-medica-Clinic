@@ -12,6 +12,7 @@ import '../../../assets/css/swalStyle.css';
 import { useDoctorContext } from 'hooks/useDoctorContext.js';
 import { getTitle } from 'utils/CommonUtils.js';
 import { addAppointment } from 'api/DoctorAPI.js';
+import { showSuccessAlert } from 'utils/swal.js';
 
 const FollowUp = () => {
 	const { selectedPatient, loggedInDoctor, setLoggedInDoctor } = useDoctorContext();
@@ -35,20 +36,15 @@ const FollowUp = () => {
 		};
 		addAppointment(appointment)
 			.then(() => {
-				Swal.fire(
-					'Follow up Schedule!',
-					'Your Follow up has been scheduled successfully!',
-					'success',
-				)
-					.then(() => {
-						const newAvailableSlots = availableSlots.filter((slot, index) => index !== availableSlotsIdx);
-						setAvailableSlots(newAvailableSlots);
-						setLoggedInDoctor(oldDoctor => {
-							const newDoctor = oldDoctor;
-							newDoctor.availableSlots = newAvailableSlots;
-							return newDoctor;
-						});
+				showSuccessAlert('Follow up Schedule!', 'Your Follow up has been scheduled successfully!', () => {
+					const newAvailableSlots = availableSlots.filter((slot, index) => index !== availableSlotsIdx);
+					setAvailableSlots(newAvailableSlots);
+					setLoggedInDoctor(oldDoctor => {
+						const newDoctor = oldDoctor;
+						newDoctor.availableSlots = newAvailableSlots;
+						return newDoctor;
 					});
+				});
 			})
 			.catch((error) => {
 				console.log(error);

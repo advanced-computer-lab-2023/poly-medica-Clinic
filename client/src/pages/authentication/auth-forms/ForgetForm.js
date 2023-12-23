@@ -10,8 +10,8 @@ import {
 import { authenticationAxios } from 'utils/AxiosConfig';
 // project imports
 import AnimateButton from 'ui-component/extended/AnimateButton';
-import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router';
+import { showFailureAlert, showSuccessAlert } from 'utils/swal';
 
 
 // ============================|| FIREBASE - LOGIN ||============================ //
@@ -27,21 +27,12 @@ const ForgetForm = () => {
 		const postData = { 'email': email };
 		try {
 			await authenticationAxios.post('/reset-password', postData);
-			Swal.fire({
-				icon: 'success',
-				title: 'Success!',
-				text: 'Email sent successfully',
-			});
+			showSuccessAlert('Success!', 'Email sent successfully');
 			navigate('/login/login3');
 			setEmail('');
 			setIsSubmitting(false);
 		} catch (error) {
-
-			Swal.fire({
-				icon: 'error',
-				title: 'Oops...',
-				text: error.response.data.errMessage,
-			});
+			showFailureAlert('Oops...', error.response.data.errMessage);
 			setIsSubmitting(false);
 		}
 	};

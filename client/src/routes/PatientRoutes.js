@@ -10,7 +10,7 @@ const LazyPrescriptions = Loadable(
 	lazy(() => import('pages/prescriptions/Prescriptions')),
 );
 const LazyPackages = Loadable(
-	lazy(() => import('pages/HealthPackages/HealthPackage')),
+	lazy(() => import('pages/health-packages/HealthPackage')),
 );
 
 

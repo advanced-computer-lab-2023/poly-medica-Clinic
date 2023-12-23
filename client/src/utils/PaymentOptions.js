@@ -25,6 +25,7 @@ import Avatar from '@mui/material/Avatar';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import { usePayment } from 'contexts/PaymentContext';
+import { showSuccessAlert } from './swal';
 
 export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amountToPay, type, selectedDoctor }) => {
   const [amountInWallet, setAmountInWallet] = useState(0);
@@ -57,14 +58,14 @@ export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amou
       if (amountInWallet >= amountToPay) {
         paymentAxios.post('/payment/wallet', { amountToPayByWallet: amountToPay, userId: userId })
           .then(
-            Swal.fire('success', 'Payment Succeeded', 'success')
-              .then(() => {
-                setIsAddDialogOpen(false);
-                const callBackUrl = successfulPayment(userId, items, type);
-                navigate(callBackUrl, { replace: true });
-                setPaymentDone(1);
-              }
-              )
+            showSuccessAlert('success', 'Payment Succeeded', 
+            () => {
+              setIsAddDialogOpen(false);
+              const callBackUrl = successfulPayment(userId, items, type);
+              navigate(callBackUrl, { replace: true });
+              setPaymentDone(1);
+            }
+            )
           )
           .catch((error) => {
             console.log('Error in payment with the wallet', error);

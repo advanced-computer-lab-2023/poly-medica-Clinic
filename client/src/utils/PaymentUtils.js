@@ -1,6 +1,6 @@
 import { clinicAxios, patientAxios, paymentAxios } from './AxiosConfig';
-import Swal from 'sweetalert2';
 import { PAYMENT_ITEM_TYPES } from './Constants';
+import { showFailureAlert, showSuccessAlert } from './swal';
 
 export const successfulPayment = (userId, items, type) => {
   console.log('items = ', items);
@@ -31,12 +31,11 @@ export const paymentStatus = (userId, status, navigate, item, type) => {
 
   switch (status) {
     case 'succeeded': {
-
-      Swal.fire('success', 'Payment Succeeded', 'success').then(() => {
+      showSuccessAlert('success', 'Payment Succeeded', () => {
         const callBackUrl = successfulPayment(userId ,item, type);
         navigate(callBackUrl, { replace: true });
-      }
-      ).catch((error) => {
+      })
+      .catch((error) => {
         console.log('Error the purchase', error);
       });
       return ('Payment succeeded!');
@@ -47,8 +46,7 @@ export const paymentStatus = (userId, status, navigate, item, type) => {
     }
 
     case 'requires_payment_method': {
-
-      Swal.fire('error', 'failed payment', 'error');
+      showFailureAlert('error', 'failed payment');
       return ('Your payment was not successful, please try again.');
     }
 

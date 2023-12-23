@@ -30,10 +30,10 @@ import NotificationList from './NotificationList';
 // assets
 import { IconBell } from '@tabler/icons';
 import { useUserContext } from 'hooks/useUserContext';
-import Swal from 'sweetalert2';
 import { communicationAxios } from 'utils/AxiosConfig';
 import { COMMUNICATION_BASE_URL } from 'utils/Constants';
 import { io } from 'socket.io-client';
+import { showFailureAlert } from 'utils/swal';
 
 
 // ==============================|| NOTIFICATION ||============================== //
@@ -82,11 +82,7 @@ const NotificationSection = () => {
 				setNumberOfUnseenNotification(counter);
 			}).catch(error => {
 				console.log(error);
-				Swal.fire({
-					icon: 'error',
-					title: 'Oops...',
-					text: error.response.data.errMessage,
-				});
+				showFailureAlert('Oops...', error.response.data.errMessage);
 			});
 		}
 		prevOpen.current = open;
@@ -104,11 +100,7 @@ const NotificationSection = () => {
 			setNumberOfUnseenNotification(counter);
 		}).catch(error => {
 			console.log(error);
-			Swal.fire({
-				icon: 'error',
-				title: 'Oops...',
-				text: error.response.data.errMessage,
-			});
+			showFailureAlert('Oops...', error.response.data.errMessage);
 		});
 	}, [dataChange]);
 
@@ -207,11 +199,7 @@ const NotificationSection = () => {
 															handledataChange();
 														}).catch(error => {
 															console.log(error);
-															Swal.fire({
-																icon: 'error',
-																title: 'Oops...',
-																text: error.response.data.errMessage,
-															});
+															showFailureAlert('Oops...', error.response.data.errMessage);
 														});
 													}} sx={{ marginLeft: 1 }} component={Link} to="#" variant="subtitle2" color="primary">
 														Mark as all read

@@ -10,11 +10,11 @@ import {
     TextField,
     Unstable_Grid2 as Grid,
 } from '@mui/material';
-import Swal from 'sweetalert2';
 import { useUserContext } from 'hooks/useUserContext';
 import format from 'date-fns/format';
 import { clinicAxios } from '../../../utils/AxiosConfig';
 import Loader from 'ui-component/Loader';
+import { showFailureAlert, showSuccessAlert } from 'utils/swal';
 
 export const DoctorAccountProfileDetails = () => {
     const [values, setValues] = useState({
@@ -76,20 +76,11 @@ export const DoctorAccountProfileDetails = () => {
             .then((response) => {
                 const values = response.data.doctor;
                 console.log('values', values);
-                Swal.fire({
-                    icon: 'success', // Set the icon to a success icon
-                    title: 'Success', // Title of the pop-up
-                    text: 'Data updated successfully', // Message text
-                });
+                showSuccessAlert('success', 'Data updated successfully');
                 setLoading(false);
             })
             .catch((err) => {
-                
-                Swal.fire({
-                    icon: 'error', // Set the icon to a success icon
-                    title: 'error', // Title of the pop-up
-                    text: err.response.data.message, // Message text
-                });
+                showFailureAlert('error', err.response.data.message);
                 setLoading(false);
             });
     };

@@ -19,7 +19,7 @@ import { authenticationAxios } from 'utils/AxiosConfig';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import { DatePicker } from '@mui/x-date-pickers';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
-import Swal from 'sweetalert2';
+import { showFailureAlert, showSuccessAlert } from 'utils/swal';
 
 
 
@@ -82,11 +82,7 @@ const FirebaseRegister = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		if (!level || level.label != 'Strong') {
-			Swal.fire({
-				icon: 'error',
-				title: 'Oops...',
-				text: 'Please enter a Strong password. \n Password must be at least 8 characters and include one number, one letter, one capital letter, and one special character.',
-			});
+			showFailureAlert('Oops...', 'Please enter a Strong password. \n Password must be at least 8 characters and include one number, one letter, one capital letter, and one special character.');
 			return;
 		}
 		setIsSubmitting(true);
@@ -95,19 +91,11 @@ const FirebaseRegister = () => {
 
 		try {
 			await authenticationAxios.post('/signup/clinic', sendData);
-			Swal.fire({
-				icon: 'success',
-				title: 'Sign-up Success!',
-				text: 'You have successfully signed up, you can now login',
-			});
+			showSuccessAlert('Sign-up Success!', 'You have successfully signed up, you can now login');
 			navigate('/login/login3');
 			setIsSubmitting(false);
 		} catch (error) {
-			Swal.fire({
-				icon: 'error',
-				title: 'Oops...',
-				text: error.response.data.message,
-			});
+			showFailureAlert('Oops...', error.response.data.message);
 			setIsSubmitting(false);
 		}
 

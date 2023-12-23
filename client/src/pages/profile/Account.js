@@ -19,7 +19,6 @@ import PatientAccountProfileDetails from './account-data/PatientAccountProfileDe
 import { useUserContext } from 'hooks/useUserContext';
 import { DOCTOR_TYPE_ENUM, PATIENT_TYPE_ENUM } from 'utils/Constants';
 import { useState } from 'react';
-import Swal from 'sweetalert2';
 import MedicalHistory from './MedicalHistory';
 import { authenticationAxios } from '../../utils/AxiosConfig';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
@@ -27,6 +26,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router';
 
 import DoctorContract from '../doctor/DoctorContract';
+import { showFailureAlert, showSuccessAlert } from 'utils/swal';
 const Page = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -44,33 +44,20 @@ const Page = () => {
 
 	const submitPassword = async () => {
 		if (!level || level.label != 'Strong') {
-			Swal.fire({
-				icon: 'error',
-				title: 'Oops...',
-				text: 'Please enter a Strong password. \n Password must be at least 8 characters and include one number, one letter, one capital letter, and one special character.',
-			});
+			showFailureAlert('Oops...', 'Please enter a Strong password. \n Password must be at least 8 characters and include one number, one letter, one capital letter, and one special character.');
 			return;
 		}
 		try {
 			await authenticationAxios.patch(`/change-password/${user.id}`, {
 				password,
 			});
-
-			Swal.fire({
-				icon: 'success',
-				title: 'Success!',
-				text: 'password changed successfully',
-			});
+			showSuccessAlert('Success!', 'password changed successfully');
 			setPassword('');
 			const temp = strengthIndicator('');
 			setStrength(temp);
 			setLevel(strengthColor(temp));
 		} catch (err) {
-			Swal.fire({
-				icon: 'error',
-				title: 'Oops...',
-				text: err.response.data.message,
-			});
+			showFailureAlert('Oops...', err.response.data.message);
 		}
 	};
 

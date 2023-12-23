@@ -13,8 +13,8 @@ import { useUserContext } from 'hooks/useUserContext';
 import { useNavigate } from 'react-router-dom';
 // project imports
 import AnimateButton from 'ui-component/extended/AnimateButton';
-import Swal from 'sweetalert2';
 import { authenticationAxios } from 'utils/AxiosConfig';
+import { showFailureAlert } from 'utils/swal';
 
 
 // ============================|| FIREBASE - LOGIN ||============================ //
@@ -41,11 +41,7 @@ const FirebaseLogin = () => {
 				navigate(`/${data.type}/dashboard/home`);
 			setIsSubmitting(false);
 		} catch (err) {
-			Swal.fire({
-				icon: 'error',
-				title: 'Oops...',
-				text: err.response.data.message,
-			});
+			showFailureAlert('Oops...', err.response.data.message);
 			setIsSubmitting(false);
 		}
 	};

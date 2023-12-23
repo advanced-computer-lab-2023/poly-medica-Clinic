@@ -33,9 +33,9 @@ import UpgradePlanCard from './UpgradePlanCard';
 
 // assets
 import { IconLogout, IconSettings, IconUser } from '@tabler/icons';
-import Swal from 'sweetalert2';
 import { useUserContext } from 'hooks/useUserContext';
 import { authenticationAxios } from 'utils/AxiosConfig';
+import { showFailureAlert } from 'utils/swal';
 // ==============================|| PROFILE MENU ||============================== //
 
 const ProfileSection = () => {
@@ -57,11 +57,7 @@ const ProfileSection = () => {
                 navigate('/login/login3');
             })
             .catch(() => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'failed to logout',
-                });
+                showFailureAlert('Oops...', 'failed to logout');
             });
     };
 

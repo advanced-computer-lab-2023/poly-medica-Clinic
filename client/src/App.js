@@ -11,13 +11,13 @@ import themes from 'themes';
 import { useEffect, useState } from 'react';
 import { useUserContext } from 'hooks/useUserContext';
 import { useNavigate, useLocation } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import Loader from 'ui-component/Loader';
 import { authenticationAxios } from './utils/AxiosConfig';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { showFailureAlert } from './utils/swal';
 
 
 // ==============================|| APP ||============================== //
@@ -44,11 +44,7 @@ const App = () => {
 			
 		}).catch( async () => {
 			if(location.pathname != '/login/login3' && location.pathname != '/login/register/register3'){
-				Swal.fire({
-				icon: 'error',
-				title: 'Oops...',
-				text: 'you are not autherized, please login',
-			});
+			showFailureAlert('Oops...', 'you are not autherized, please login');
 			navigate('/login/login3');
 			setIsLoading(false);
 		}
