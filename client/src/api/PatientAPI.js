@@ -39,3 +39,8 @@ export const updateHealthPackageStatus = async (user, subscribedPackage) => {
     const response = await patientAxios.patch(`patient/${user.id}/health-packages/${subscribedPackage.packageId}`);
     return response.data;
 };
+
+export const getPatientPrescription = async (patientID) => {
+    const response = await patientAxios.get(`patient/${patientID}/prescriptions`);
+    return response.data;
+};
