@@ -89,7 +89,6 @@ const PrescriptionItem = ({
 							maxHeight: '3em',
 						}}
 					/>
-					{/* <Typography variant="h5" sx={{ paddingLeft: '2%', align:'center' }}> {dayjs(prescription.date).format('LL')} </Typography> */}
 				</LocalizationProvider>
 
 				{user.type === 'doctor' && !prescription.filled && (

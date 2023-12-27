@@ -8,7 +8,6 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import HelpCenterIcon from '@mui/icons-material/HelpCenter';
 import StyleIcon from '@mui/icons-material/Style';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import { useTheme } from '@mui/material/styles';
 import Swal from 'sweetalert2';
 import '../../../assets/css/swalStyle.css';
 import { clinicAxios, communicationAxios } from 'pages/utilities/AxiosConfig';
@@ -28,8 +27,6 @@ const AppointmentDetails = ({
     setSelectedAppointment,
     handleAppoinmentUpdate
 }) => {
-    const theme = useTheme();
-    console.log('theme = ', theme);
     const { chats, setChats } = useChat();
     const { user } = useUserContext();
     const navigate = useNavigate();
