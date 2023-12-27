@@ -13,19 +13,17 @@ const DoctorProvider = ({ children }) => {
     const [errorMessage, setErrorMessage] = useState('');
     const [availableSlots, setAvailableSlots] = useState([]);
     const [selectedDate, setSelectedDate] = useState(null);
-    const [selectedTime, setSelectedTime] = useState(null);   
-    const [patients, setPatients] = useState([]);
-	const [originalPatients, setOriginalPatients] = useState([]);
-	const [appointments, setAppointments] = useState([]);
-	const [loggedInDoctor, setLoggedInDoctor] = useState(null);
-	const [selectedPatient, setSelectedPatient] = useState(null);
-    
+    const [selectedTime, setSelectedTime] = useState(null);
+    const [appointments, setAppointments] = useState([]);
+    const [loggedInDoctor, setLoggedInDoctor] = useState(null);
+    const [selectedDoctor, setSelectedDoctor] = useState(null);
+    const [originalDoctors, setOriginalDoctors] = useState([]);
+
     const contextValue = {
         doctors, setDoctors, isLoading, setIsLoading, confirmDeleteDialogOpen, setConfirmDeleteDialogOpen, setSelectedTime,
-        doctorToDelete, setDoctorToDelete, doctorIsBeingDeleted, setDoctorIsBeingDeleted, doctorDeleted, selectedTime,
+        doctorToDelete, setDoctorToDelete, doctorIsBeingDeleted, setDoctorIsBeingDeleted, doctorDeleted, selectedTime, setOriginalDoctors,
         setDoctorDeleted, errorMessage, setErrorMessage, availableSlots, setAvailableSlots, selectedDate, setSelectedDate,
-        patients, setPatients, originalPatients, setOriginalPatients, appointments, setAppointments, loggedInDoctor, setLoggedInDoctor,
-        selectedPatient, setSelectedPatient
+        appointments, setAppointments, loggedInDoctor, setLoggedInDoctor, selectedDoctor, setSelectedDoctor, originalDoctors
     };
 
     return (

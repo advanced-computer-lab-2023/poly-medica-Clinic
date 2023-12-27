@@ -14,9 +14,10 @@ import TabPanel from '@mui/lab/TabPanel';
 import DoctorPatientDetails from './DoctorPatientDetails';
 import FollowUp from './FollowUp';
 import { useDoctorContext } from 'hooks/useDoctorContext';
+import { usePatientContext } from 'hooks/usePatientContext';
 const DoctorPatientDialog = () => {
-    const { selectedPatient, loggedInDoctor, setLoggedInDoctor, setSelectedPatient } = useDoctorContext();
-
+    const { loggedInDoctor, setLoggedInDoctor } = useDoctorContext();
+    const { selectedPatient, setSelectedPatient } = usePatientContext();
     const [tabValue, setTabValue] = useState('1');
 
     const handleDialogClose = () => {

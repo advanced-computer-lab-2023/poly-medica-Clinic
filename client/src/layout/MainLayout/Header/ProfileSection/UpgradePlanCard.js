@@ -5,9 +5,9 @@ import { Button, Card, CardContent, Grid, Stack, Typography } from '@mui/materia
 import { useUserContext } from 'hooks/useUserContext';
 // project imports
 import AnimateButton from 'ui-component/extended/AnimateButton';
-import { patientAxios } from 'utils/AxiosConfig';
 import { HEALTH_PACKAGE_STATUS } from 'utils/Constants';
 import { useNavigate } from 'react-router-dom';
+import { getPatientHealthPackage } from 'api/PatientAPI';
 // styles
 const CardStyle = styled(Card)(({ theme }) => ({
 	background: theme.palette.warning.light,
@@ -49,7 +49,7 @@ const UpgradePlanCard = () => {
 	const formattedRenewalDate = renewalDate.toLocaleString('en-US', options);
 	const navigate = useNavigate();
 	useEffect(() => {
-		patientAxios.get(`/patient/${user.id}/health-packages`).then((response) => {
+		getPatientHealthPackage(user.id).then((response) => {
 			setHealthPackages(response.data.healthPackages);
 		}).catch((err) => {
 			console.log(err);

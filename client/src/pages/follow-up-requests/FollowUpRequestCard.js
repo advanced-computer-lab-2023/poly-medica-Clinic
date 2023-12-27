@@ -37,7 +37,6 @@ const FollowUpRequestCard = ({
             followUpStatus = 'Accepted';
         }
         else{
-            console.log('heeeeeere!!!');
             followUpStatus = 'Rejected';
         }
     }

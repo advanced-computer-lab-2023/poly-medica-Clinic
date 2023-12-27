@@ -8,10 +8,17 @@ import {
 } from '@mui/material';
 import DoctorDetailsHeader from './DoctorDetailsHeader.js';
 import DoctorDetailsAppointmentsList from './DoctorDetailsAppointmentsList.js';
+import { usePatientContext } from 'hooks/usePatientContext.js';
+import { useDoctorContext } from 'hooks/useDoctorContext.js';
+const DoctorDetails = () => {
 
+    const { loggedInPatient, loggedInPatientHealthPackage } = usePatientContext();
+    const { selectedDoctor, setSelectedDoctor } = useDoctorContext();
 
+    const handleDialogClose = () => {
+        setSelectedDoctor(null);
+    };
 
-const DoctorDetails = ({ selectedDoctor, handleDialogClose, loggedInPatient, loggedInPatientHealthPackage }) => {
     return (
         <Dialog
             open={selectedDoctor}
@@ -22,12 +29,12 @@ const DoctorDetails = ({ selectedDoctor, handleDialogClose, loggedInPatient, log
         >
             {selectedDoctor && (
                 <>
-                    <DialogTitle align='center' variant='h2' sx={{ marginBottom:'1em' }}>
+                    <DialogTitle align='center' variant='h2' sx={{ marginBottom: '1em' }}>
                         {`Dr. ${selectedDoctor.userData.name}`}
                     </DialogTitle>
 
                     <DialogContent>
-                        <DoctorDetailsHeader 
+                        <DoctorDetailsHeader
                             selectedDoctor={selectedDoctor}
                             loggedInPatientHealthPackage={loggedInPatientHealthPackage}
                         />
@@ -37,8 +44,8 @@ const DoctorDetails = ({ selectedDoctor, handleDialogClose, loggedInPatient, log
                             loggedInPatientHealthPackage={loggedInPatientHealthPackage}
                         />
                     </DialogContent>
-                    
-                    
+
+
                     <DialogActions>
                         <Button onClick={handleDialogClose} color='primary'>
                             Close

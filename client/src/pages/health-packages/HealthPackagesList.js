@@ -1,32 +1,49 @@
 import { Typography, Grid, Card, CardHeader, Box, CardActions, Button, CardContent } from '@mui/material';
-import { Star } from '@mui/icons-material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Stack from '@mui/material/Stack';
 import { useUserContext } from 'hooks/useUserContext';
 import Swal from 'sweetalert2';
 import { useState } from 'react';
-import { patientAxios } from 'utils/AxiosConfig';
-import { ADMIN_TYPE_ENUM, HEALTH_PACKAGE_STATUS, PATIENT_TYPE_ENUM, PAYMENT_ITEM_TYPES } from 'utils/Constants';
+import { ADMIN_TYPE_ENUM, PATIENT_TYPE_ENUM, PAYMENT_ITEM_TYPES } from 'utils/Constants';
 import { ChoosePayment } from 'utils/PaymentOptions';
-const HealthPackagesList = ({ packages, handleEditButtonClick, isPaymentOpen, setIsPaymentOpen, handleDeleteButtonClick, subscribedPackage, setSubscribedPackage, discount }) => {
+import { createPackageData, isSubscribedPackage } from 'utils/HealthPackageUtils';
+import { usePatientContext } from 'hooks/usePatientContext';
+import { useAdminContext } from 'hooks/useAdminContext';
+import { deleteHealthPackage } from 'api/AdminAPI';
+import { updateHealthPackageStatus } from 'api/PatientAPI';
 
+const HealthPackagesList = () => {
+
+	const { packages, isPaymentOpen, setIsPaymentOpen, subscribedPackage, setSubscribedPackage, discount, setPackages } = usePatientContext();
 	const { user } = useUserContext();
 	const [totalPrice, setTotalPrice] = useState(0);
 	const [data, setData] = useState(null);
-
+	const { setIsEditDialogOpen, setSelectedEditPackages } = useAdminContext();
 	const handleSubscribe = (pack) => {
-		const healthPackage = {};
-		healthPackage.packageId = pack._id;
-		healthPackage.subscribtionDate = new Date();
-		healthPackage.renewalDate = new Date(healthPackage.subscribtionDate);
-		healthPackage.renewalDate.setMonth(healthPackage.renewalDate.getMonth() + 1);
-		healthPackage.status = HEALTH_PACKAGE_STATUS[1];
-		const packageData = {};
-		packageData.healthPackage = healthPackage;
+		const packageData = createPackageData(pack);
 		setData(packageData);
 		setTotalPrice(pack.price);
 		setIsPaymentOpen(true);
+	};
+
+	const handleEditButtonClick = (pack, event) => {
+		event.stopPropagation();
+		setSelectedEditPackages(pack);
+		setIsEditDialogOpen(true);
+	};
+
+	const handleDeleteButtonClick = (pack) => {
+		deleteHealthPackage(pack).then(() => {
+			setPackages((prevPackage) => {
+				const updatedPackages = prevPackage.filter((packages) => {
+					if (pack._id !== packages._id) {
+						return packages;
+					}
+				});
+				return updatedPackages;
+			});
+		});
 	};
 
 	const handleCancel = () => {
@@ -38,20 +55,13 @@ const HealthPackagesList = ({ packages, handleEditButtonClick, isPaymentOpen, se
 			confirmButtonText: 'Yes, cancel it!'
 		}).then((result) => {
 			if (result.isConfirmed) {
-				patientAxios.patch(`patient/${user.id}/health-packages/${subscribedPackage.packageId}`).then((response => {
-					if (response.status === 200) {
-						Swal.fire({ title: 'Cancelled successfully', icon: 'success' });
-						setSubscribedPackage(null);
-					}
-				}));
+				updateHealthPackageStatus(user, subscribedPackage).then(() => {
+					Swal.fire({ title: 'Cancelled successfully', icon: 'success' });
+					setSubscribedPackage(null);
+				}
+				);
 			}
 		});
-	};
-
-	const isSubscribedPackage = (pack) => {
-		console.log('Subscribed Package = ', subscribedPackage);
-		console.log('pack = ', pack);
-		return subscribedPackage && pack.name === subscribedPackage.name && subscribedPackage.status === HEALTH_PACKAGE_STATUS[1];
 	};
 
 	return (
@@ -61,17 +71,14 @@ const HealthPackagesList = ({ packages, handleEditButtonClick, isPaymentOpen, se
 					item
 					key={pack.name}
 					xs={12}
-					sm={pack.name === 'platinium' ? 12 : 6}
+					sm={6}
 					md={4}
 				>
 					<Card>
 						<CardHeader
 							title={pack.name}
 							titleTypographyProps={{ align: 'center' }}
-							action={pack.name === 'gold' ? <Star /> : null}
-							subheaderTypographyProps={{
-								align: 'center',
-							}}
+							subheaderTypographyProps={{ align: 'center' }}
 							sx={{
 								backgroundColor: (theme) =>
 									theme.palette.mode === 'light'
@@ -140,15 +147,15 @@ const HealthPackagesList = ({ packages, handleEditButtonClick, isPaymentOpen, se
 							{
 								user.type === PATIENT_TYPE_ENUM
 								&&
-								<Button fullWidth variant="contained" color='secondary' sx={{ background: isSubscribedPackage(pack) ? '#C71585' : '' }}
+								<Button fullWidth variant="contained" color='secondary' sx={{ background: isSubscribedPackage(pack, subscribedPackage) ? '#C71585' : '' }}
 									onClick={() => {
-										if (isSubscribedPackage(pack)) {
+										if (isSubscribedPackage(pack, subscribedPackage)) {
 											handleCancel();
 										} else {
 											handleSubscribe(pack);
 										}
 									}}>
-									{(isSubscribedPackage(pack)) ? 'Cancel Subscribtion' : 'Subscribe Now'}
+									{(isSubscribedPackage(pack, subscribedPackage)) ? 'Cancel Subscribtion' : 'Subscribe Now'}
 								</Button>
 							}
 						</CardActions>

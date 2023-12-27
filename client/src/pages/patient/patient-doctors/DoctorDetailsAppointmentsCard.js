@@ -10,12 +10,15 @@ import {
     Autocomplete,
     TextField
 } from '@mui/material';
-
+import { styled } from '@mui/system';
 import { getDay, getTime } from '../../../utils/DateFormatter.js';
-
+import { commonStyles } from 'ui-component/CommonStyles.js';
 import { calcPrice } from '../../../utils/PriceCalculator.js';
 import { ChoosePayment } from 'utils/PaymentOptions.js';
-import { PAYMENT_ITEM_TYPES } from 'utils/Constants.js';
+import { PAYMENT_ITEM_TYPES, FAMILY_BOOKING_TYPE, MY_SELF_BOOKING_TYPE } from 'utils/Constants.js';
+
+const useStyles = styled(() => commonStyles);
+
 const DoctorDetailsAppointmentsCard = ({
     selectedDoctor,
     availableSlotsIdx,
@@ -23,19 +26,19 @@ const DoctorDetailsAppointmentsCard = ({
     loggedInPatientHealthPackage
 }
 ) => {
+    const classes = useStyles();
     const { availableSlots } = selectedDoctor;
     const slot = availableSlots[availableSlotsIdx];
     const [isDialogOpen, setDialogOpen] = useState(false);
     const [expanded, setExpanded] = useState(false);
-    const [selectedBookingType, setSelectedBookingType] = useState('myself');
-    const [allFamilyMembers, setAllFamilyMembers] = useState([]); // for autocomplete
-    const [selectedMember, setSelectedMember] = useState(null); // for autocomplete
+    const [selectedBookingType, setSelectedBookingType] = useState(MY_SELF_BOOKING_TYPE);
+    const [allFamilyMembers, setAllFamilyMembers] = useState([]);
+    const [selectedMember, setSelectedMember] = useState(null);
     const [appointmentPrice, setAppointmentPrice] = useState(0);
     const [selectedAppointment, setSelectedAppointment] = useState(null);
 
     useEffect(() => {
-        // loggedInPatient.family members are already 
-        // filtered [only unregistered/minors] from Doctor.js
+
         const familyMembers = [];
         loggedInPatient.familyMembers.forEach((member) => {
             familyMembers.push(member.name);
@@ -68,7 +71,7 @@ const DoctorDetailsAppointmentsCard = ({
             pricePaidByPatient: price,
             pricePaidToDoctor: selectedDoctor.hourlyRate
         };
-        if (selectedBookingType == 'family') {
+        if (selectedBookingType == FAMILY_BOOKING_TYPE) {
             const familyMember = loggedInPatient.familyMembers[selectedMember.index];
             const patientFamilyMember = {
                 name: familyMember.name,
@@ -93,14 +96,7 @@ const DoctorDetailsAppointmentsCard = ({
                             : theme.palette.grey[700],
                 }}
             >
-                <CardContent
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        flexDirection: 'column',
-                        textAlign: 'center'
-                    }}
-                >
+                <CardContent className={classes.appointmentCard} >
                     <Typography sx={{ mb: 1.5 }} variant="h5">
                         {getDay(slot.from)}
                     </Typography>
@@ -121,64 +117,41 @@ const DoctorDetailsAppointmentsCard = ({
                         {`${expanded ? 'Hide' : 'View'} Booking Options`}
                     </Button>
                     <Accordion expanded={expanded}>
-                        {/* must have this empty typography for the accordion 
-                        to work properly (acts as summary) */}
                         <Typography />
                         <AccordionDetails>
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    justifyContent: 'space-around',
-                                    flexDirection: 'row',
-                                    textAlign: 'center',
-                                    marginBottom: '2em'
-                                }}
-                            >
+                            <div className={classes.accordion}>
                                 <Button
                                     size="small"
-                                    variant={selectedBookingType == 'myself' ? 'outlined' : 'text'}
+                                    variant={selectedBookingType == MY_SELF_BOOKING_TYPE ? 'outlined' : 'text'}
                                     color='secondary'
                                     sx={{
-                                        color: (selectedBookingType == 'myself' ? 'secondary' : '#808080')
+                                        color: (selectedBookingType == MY_SELF_BOOKING_TYPE ? 'secondary' : '#808080')
                                     }}
-                                    onClick={() => setSelectedBookingType('myself')}
+                                    onClick={() => setSelectedBookingType(MY_SELF_BOOKING_TYPE)}
                                 >
                                     Myself
                                 </Button>
                                 <Button
                                     size="small"
-                                    variant={selectedBookingType == 'family' ? 'outlined' : 'text'}
+                                    variant={selectedBookingType == FAMILY_BOOKING_TYPE ? 'outlined' : 'text'}
                                     color='secondary'
                                     sx={{
-                                        color: (selectedBookingType == 'family' ? 'secondary' : '#808080')
+                                        color: (selectedBookingType == FAMILY_BOOKING_TYPE ? 'secondary' : '#808080')
                                     }}
-                                    onClick={() => setSelectedBookingType('family')}
+                                    onClick={() => setSelectedBookingType(FAMILY_BOOKING_TYPE)}
                                 >
                                     Family Member
                                 </Button>
                             </div>
 
                             {
-                                selectedBookingType == 'family' &&
-                                <div
-                                    style={{
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        marginBottom: '2em'
-                                    }}
-                                >
+                                selectedBookingType == FAMILY_BOOKING_TYPE &&
+                                <div className={classes.autoCompleteContainer} >
                                     <Autocomplete
                                         disablePortal
                                         id="combo-box-demo"
                                         options={allFamilyMembers}
-                                        sx={{
-                                            '&.MuiAutocomplete-hasPopupIcon .MuiAutocomplete-inputRoot': {
-                                                padding: '0.3em',
-                                                fontSize: '1em',
-                                                fontWeight: 500,
-                                            },
-                                            width: 160
-                                        }}
+                                        className={classes.autoComplete}
                                         renderInput={(params) => <TextField {...params} label="Select member" />}
                                         onChange={handleChange}
                                     />
@@ -191,7 +164,7 @@ const DoctorDetailsAppointmentsCard = ({
                                 sx={{
                                     borderRadius: 5
                                 }}
-                                disabled={selectedBookingType == 'family' && !selectedMember}
+                                disabled={selectedBookingType == FAMILY_BOOKING_TYPE && !selectedMember}
                                 onClick={handleBookNow}
                             >
                                 Book Now

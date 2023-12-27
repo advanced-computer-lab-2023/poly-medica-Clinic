@@ -19,6 +19,15 @@ const AdminProvider = ({ children }) => {
     const [selectedAdmin, setSelectedAdmin] = useState(null);
     const [strength, setStrength] = useState(0);
     const [level, setLevel] = useState();
+    const [newPackage, setNewPackage] = useState({
+        name: '',
+        price: '',
+        discountOfDoctor: '',
+        discountOfMedicin: '',
+        discountOfFamily: '',
+    });
+    const [selectedEditPackages, setSelectedEditPackages] = useState(null);
+    const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
     const contextValue = {
         admins, setAdmins, isLoading, setIsLoading, openAddDialog, setOpenAddDialog, newAdminEmail,
@@ -27,7 +36,8 @@ const AdminProvider = ({ children }) => {
         adminToDelete, setAdminToDelete, addAdmin, setAddAdmin, removeAdmin, setRemoveAdmin,
         adminIsBeingAdded, setAdminIsBeingAdded, adminIsBeingDeleted, setAdminIsBeingDeleted,
         errorMessage, setErrorMessage, selectedAdmin, setSelectedAdmin, strength, setStrength,
-        level, setLevel
+        level, setLevel, newPackage, setNewPackage, selectedEditPackages, setSelectedEditPackages, isEditDialogOpen,
+        setIsEditDialogOpen
     };
 
     return (
