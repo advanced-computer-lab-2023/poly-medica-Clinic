@@ -54,19 +54,17 @@ const Prescriptions = () => {
 	useEffect(() => {
 		const getPrescriptions = async () => {
 			try {
-				const patientResponses = await patientAxios.get(
-					`patient/${patientID}/prescriptions`,
-				);
+				let patientResponses = await getPatientPrescription(patientID);
 				if (singlePatientPrescriptions) {
-					const filteredPrescriptions = patientResponses.data.filter(
+					const filteredPrescriptions = patientResponses.filter(
 						(prescription) => prescription.doctorId === user.id,
 					);
 					patientResponses.data = filteredPrescriptions;
 				}
-				setPrescriptions(patientResponses.data);
-				setOriginalPrescritpions(patientResponses.data);
-				for (let i = 0; i < patientResponses.data.length; i++) {
-					const patientResponse = patientResponses.data[i];
+				setPrescriptions(patientResponses);
+				setOriginalPrescritpions(patientResponses);
+				for (let i = 0; i < patientResponses.length; i++) {
+					const patientResponse = patientResponses[i];
 					doctors.push(patientResponse.doctorName);
 				}
 				updateFilter([
