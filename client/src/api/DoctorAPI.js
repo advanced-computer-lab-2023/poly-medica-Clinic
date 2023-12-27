@@ -1,4 +1,4 @@
-import { clinicAxios, communicationAxios } from 'utils/AxiosConfig';
+import { clinicAxios, communicationAxios, patientAxios } from 'utils/AxiosConfig';
 import {
     DOCTOR_TYPE_ENUM,
     PHARMACIST_TYPE_ENUM,
@@ -82,4 +82,16 @@ export const addDoctorChat = async (doctor) => {
             ],
         },
     });
+};
+
+export const updatePrescription = async (selectedEditPrescription) => {
+    const response = await patientAxios.patch('/prescriptions/' + selectedEditPrescription._id, {
+        prescription: selectedEditPrescription,
+    });
+    return response.data;
+};
+
+export const createPrescription = async (prescription) => {
+    const response = await patientAxios.post('/prescriptions', { prescription });
+    return response.data;
 };

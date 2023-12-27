@@ -8,6 +8,7 @@ import { useSearch } from 'contexts/SearchContext';
 import { useFilter } from 'contexts/FilterContext';
 import { useLocation } from 'react-router-dom';
 import { useDoctorContext } from 'hooks/useDoctorContext';
+import { usePatientContext } from 'hooks/usePatientContext';
 import { isUpcomingAppointment } from 'utils/DoctorUtils';
 import { getAppointments, getDoctorPatients, getDoctor } from 'api/DoctorAPI';
 import Loader from 'ui-component/Loader';
@@ -19,8 +20,9 @@ const Patients = () => {
 		redirectedPatient = location.state.selectedPatient;
 	}
 
-	const { patients, setPatients, originalPatients, setOriginalPatients, isLoading, setIsLoading,
-		appointments, setAppointments, setLoggedInDoctor, setSelectedPatient } = useDoctorContext();
+	const { appointments, setAppointments, setLoggedInDoctor } = useDoctorContext();
+
+	const { patients, setPatients, isLoading, setIsLoading, originalPatients, setOriginalPatients, setSelectedPatient } = usePatientContext();
 
 	const { searchQuery } = useSearch();
 	const { filterData, updateFilter } = useFilter();
@@ -76,7 +78,6 @@ const Patients = () => {
 			});
 	}, []);
 
-
 	return (
 		<MainCard title='Patients'>
 			{isLoading ? (
@@ -97,5 +98,4 @@ const Patients = () => {
 		</MainCard>
 	);
 };
-
 export default Patients;

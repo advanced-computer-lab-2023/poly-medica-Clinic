@@ -12,10 +12,10 @@ import '../../../assets/css/swalStyle.css';
 import { useDoctorContext } from 'hooks/useDoctorContext.js';
 import { getTitle } from 'utils/CommonUtils.js';
 import { addAppointment } from 'api/DoctorAPI.js';
-
+import { usePatientContext } from 'hooks/usePatientContext.js';
 const FollowUp = () => {
-	const { selectedPatient, loggedInDoctor, setLoggedInDoctor } = useDoctorContext();
-
+	const { loggedInDoctor, setLoggedInDoctor } = useDoctorContext();
+	const { selectedPatient } = usePatientContext();
 	const title = getTitle(selectedPatient);
 
 	const [availableSlots, setAvailableSlots] = useState(

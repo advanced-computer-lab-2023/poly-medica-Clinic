@@ -11,21 +11,21 @@ import {
     TableRow,
     TableCell,
 } from '@mui/material';
-import { patientAxios } from '../../../utils/AxiosConfig';
+import { getPatientHealthPackage } from 'api/PatientAPI';
+import { usePatientContext } from 'hooks/usePatientContext';
 
-export const HealthPackageSubscription = ({ memberId, openPackages, setOpenPackages }) => {
+export const HealthPackageSubscription = () => {
     const [healthPackage, setHealthPackage] = useState(null);
-
+    const { memberId, openPackages, setOpenPackages } = usePatientContext();
     useEffect(() => {
         const fetchData = async () => {
-            console.log('memberId = ', memberId);
             if (memberId) {
                 try {
-                    patientAxios.get(`/patient/${memberId}/health-packages`).then((response) => {
-                        setHealthPackage(response.data.healthPackages[0]);
+                    getPatientHealthPackage(memberId).then((response) => {
+                        setHealthPackage(response.healthPackages[0]);
                     });
                 } catch (error) {
-                    console.log('error = ', error.response.data.message);
+                    console.log('error = ', error.response.message);
                 }
             }
         };
@@ -50,7 +50,6 @@ export const HealthPackageSubscription = ({ memberId, openPackages, setOpenPacka
                                         <TableCell>Subscribed Package:</TableCell>
                                         <TableCell>{healthPackage.name}</TableCell>
                                     </TableRow>
-                                    {/* Add more rows for other health package details */}
                                 </TableBody>
                             </Table>
                         </TableContainer>
