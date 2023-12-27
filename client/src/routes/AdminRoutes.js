@@ -79,7 +79,13 @@ const AdminRoutes = {
 				},
 				{
 					path: 'packages',
-					element: <LazyPackages />,
+					element:
+						<AdminProvider>
+							<PatientProvider>
+								<LazyPackages />
+							</PatientProvider>
+						</AdminProvider>
+					,
 				},
 			],
 		},

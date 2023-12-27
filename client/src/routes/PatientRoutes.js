@@ -14,7 +14,7 @@ const LazyPackages = Loadable(
 );
 import DoctorProvider from 'contexts/DoctorContext';
 import PatientProvider from 'contexts/PatientContext';
-
+import AdminProvider from 'contexts/AdminContext';
 const LazyClinicDoctors = Loadable(lazy(() => import('pages/patient/patient-doctors/Doctors')));
 const LazyAppointments = Loadable(
 	lazy(() => import('pages/Appointment/Appointment')),
@@ -83,7 +83,13 @@ const MainRoutes = {
 				},
 				{
 					path: 'packages',
-					element: <LazyPackages />,
+					element:
+						<AdminProvider>
+							<PatientProvider>
+								<LazyPackages />
+							</PatientProvider>
+						</AdminProvider>
+					,
 				},
 				{
 					path: 'payment',

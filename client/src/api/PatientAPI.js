@@ -8,7 +8,7 @@ export const getPatient = async (patientID) => {
 export const getPatientHealthPackage = async (patientID) => {
     const response = await patientAxios.get(`/patient/${patientID}/health-packages`);
     return response.data;
-}; 
+};
 
 export const getPatients = async () => {
     const response = await patientAxios.get('/patients');
@@ -27,5 +27,15 @@ export const getFamilyMembers = async (userId) => {
 
 export const updateFamilyMembers = async (userId, newMember) => {
     const response = await patientAxios.patch('/family-members/' + userId, { member: newMember });
+    return response.data;
+};
+
+export const getPatientDiscount = async (user) => {
+    const response = await patientAxios.get(`/patient/${user.id}/discount`);
+    return response.data;
+};
+
+export const updateHealthPackageStatus = async (user, subscribedPackage) => {
+    const response = await patientAxios.patch(`patient/${user.id}/health-packages/${subscribedPackage.packageId}`);
     return response.data;
 };

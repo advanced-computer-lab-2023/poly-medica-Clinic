@@ -29,11 +29,16 @@ const PatientProvider = ({ children }) => {
         id: ''
     });
     const [memberId, setMemberId] = useState(null);
+    const [packages, setPackages] = useState([]);
+    const [subscribedPackage, setSubscribedPackage] = useState(null);
+    const [discount, setDiscount] = useState(0);
+    const [isPaymentOpen, setIsPaymentOpen] = useState(false);
     const contextValue = {
         patients, setPatients, isLoading, setIsLoading, confirmDeleteDialogOpen, setConfirmDeleteDialogOpen, patientToDelete, setPatientToDelete, FamilyMembers,
         patientIsBeingDeleted, setPatientIsBeingDeleted, patientDeleted, setPatientDeleted, errorMessage, setErrorMessage, selectedPatient, setFamilyMembers,
         setSelectedPatient, originalPatients, setOriginalPatients, loggedInPatient, setLoggedInPatient, loggedInPatientHealthPackage,
-        openPackages, setOpenPackages, error, setError, newMember, setNewMember, memberId, setMemberId, setLoggedInPatientHealthPackage
+        openPackages, setOpenPackages, error, setError, newMember, setNewMember, memberId, setMemberId, setLoggedInPatientHealthPackage,
+        packages, setPackages, subscribedPackage, setSubscribedPackage, discount, setDiscount, isPaymentOpen, setIsPaymentOpen
     };
 
     return (
