@@ -16,42 +16,24 @@ import {
 import { Add, Subscriptions } from '@mui/icons-material';
 import AddFamilyMember from './AddFamilyMember';
 import { useUserContext } from 'hooks/useUserContext';
-import { patientAxios } from '../../../utils/AxiosConfig';
+import { getFamilyMembers } from 'api/PatientAPI';
+import Loader from 'ui-component/Loader';
 import { HealthPackageSubscription } from './HealthPackageSubscription';
-const FamilyMembers = () => {
-    const [FamilyMembers, setFamilyMembers] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [openPackages, setOpenPackages] = useState(false);
-    const [isAddingMember, setIsAddingMember] = useState(false);
-    const [error, setError] = useState(false);
-    const [newMember, setNewMember] = useState({
-        name: '',
-        nationalId: '',
-        age: '',
-        gender: '',
-        relation: '',
-        email: '',
-        mobileNumber: '',
-        id: ''
-    });
-    const [memberId, setMemberId] = useState(null);
+import { usePatientContext } from 'hooks/usePatientContext';
 
-    const handleFormInputChange = (e) => {
-        setNewMember((member) => ({
-            ...member,
-            [e.target.name]: e.target.value,
-        }));
-        setError(false);
-    };
+const FamilyMembers = () => {
+    const [isAddingMember, setIsAddingMember] = useState(false);
+
+    const { FamilyMembers, setFamilyMembers, isLoading, setIsLoading, setOpenPackages,
+        setError, setNewMember, setMemberId } = usePatientContext();
+
     const { user } = useUserContext();
     const userId = user.id;
     useEffect(() => {
         const fetch = async () => {
-            patientAxios
-                .get('/family-members/' + userId)
-                .then((response) => response.data)
-                .then((data) => {
-                    setFamilyMembers(data.familyMembers);
+            getFamilyMembers(userId)
+                .then((response) => {
+                    setFamilyMembers(response.familyMembers);
                     setIsLoading(false);
                 }).catch(() => setIsLoading(false));
         };
@@ -74,7 +56,6 @@ const FamilyMembers = () => {
     };
 
     const handlePackageClick = (id) => {
-        console.log('current Id = ', id);
         setMemberId(id);
         setOpenPackages(true);
     };
@@ -85,7 +66,7 @@ const FamilyMembers = () => {
 
         >
 
-            {isLoading && <p>Loading...</p>}
+            {isLoading && <Loader />}
             {!isLoading && (<Fab
                 color="secondary"
                 aria-label="Add"
@@ -142,15 +123,10 @@ const FamilyMembers = () => {
                 </TableContainer>
             )}
             <AddFamilyMember
-                setFamilyMembers={setFamilyMembers}
                 isOpen={isAddingMember}
                 setIsOpen={setIsAddingMember}
-                newMember={newMember}
-                handleFormInputChange={handleFormInputChange}
-                setError={setError}
-                error={error}
             />
-            <HealthPackageSubscription memberId={memberId} openPackages={openPackages} setOpenPackages={setOpenPackages} />
+            <HealthPackageSubscription />
         </MainCard>
     );
 };

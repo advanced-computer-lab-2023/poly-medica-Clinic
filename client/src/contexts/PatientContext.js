@@ -15,11 +15,25 @@ const PatientProvider = ({ children }) => {
     const [selectedPatient, setSelectedPatient] = useState(null);
     const [loggedInPatient, setLoggedInPatient] = useState(null);
     const [loggedInPatientHealthPackage, setLoggedInPatientHealthPackage] = useState(null);
-
+    const [FamilyMembers, setFamilyMembers] = useState([]);
+    const [openPackages, setOpenPackages] = useState(false);
+    const [error, setError] = useState(false);
+    const [newMember, setNewMember] = useState({
+        name: '',
+        nationalId: '',
+        age: '',
+        gender: '',
+        relation: '',
+        email: '',
+        mobileNumber: '',
+        id: ''
+    });
+    const [memberId, setMemberId] = useState(null);
     const contextValue = {
-        patients, setPatients, isLoading, setIsLoading, confirmDeleteDialogOpen, setConfirmDeleteDialogOpen, patientToDelete, setPatientToDelete,
-        patientIsBeingDeleted, setPatientIsBeingDeleted, patientDeleted, setPatientDeleted, errorMessage, setErrorMessage, selectedPatient,
-        setSelectedPatient, originalPatients, setOriginalPatients, loggedInPatient, setLoggedInPatient, loggedInPatientHealthPackage, setLoggedInPatientHealthPackage
+        patients, setPatients, isLoading, setIsLoading, confirmDeleteDialogOpen, setConfirmDeleteDialogOpen, patientToDelete, setPatientToDelete, FamilyMembers,
+        patientIsBeingDeleted, setPatientIsBeingDeleted, patientDeleted, setPatientDeleted, errorMessage, setErrorMessage, selectedPatient, setFamilyMembers,
+        setSelectedPatient, originalPatients, setOriginalPatients, loggedInPatient, setLoggedInPatient, loggedInPatientHealthPackage,
+        openPackages, setOpenPackages, error, setError, newMember, setNewMember, memberId, setMemberId, setLoggedInPatientHealthPackage
     };
 
     return (

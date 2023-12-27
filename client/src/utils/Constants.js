@@ -67,3 +67,11 @@ export const PAYMENT_ITEM_TYPES = ['Health-Package', 'appointment'];
 export const LIMIT_PER_PAGE = 5;
 
 export const TWO_SECONDS = 2000;
+
+export const GENDERS = ['MALE', 'FEMALE'];
+
+export const RELATIONS = ['HUSBAND', 'WIFE', 'CHILD'];
+
+export const REGISTERED_MEMBER = 'Registered-Family-Member';
+
+export const UNREGISTERED_MEMBER = 'Unregistered-Family-Member';

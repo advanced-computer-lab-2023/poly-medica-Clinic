@@ -63,7 +63,11 @@ const MainRoutes = {
 				},
 				{
 					path: 'family-members',
-					element: <LazyFamilyMembers />,
+					element:
+						<PatientProvider>
+							<LazyFamilyMembers />
+						</PatientProvider>
+					,
 				},
 				{
 					path: 'appointments',

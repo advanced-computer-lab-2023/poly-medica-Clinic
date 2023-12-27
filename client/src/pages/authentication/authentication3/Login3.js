@@ -35,10 +35,10 @@ const Login = () => {
 											<Grid item>
 												<Stack alignItems="center" justifyContent="center" spacing={1}>
 													<Typography color={theme.palette.secondary.main} gutterBottom variant={matchDownSM ? 'h3' : 'h2'}>
-                            Hi, Welcome Back
+														Hi, Welcome Back
 													</Typography>
 													<Typography variant="caption" fontSize="16px" textAlign={matchDownSM ? 'center' : 'inherit'}>
-                            Enter your credentials to continue
+														Enter your credentials to continue
 													</Typography>
 												</Stack>
 											</Grid>
@@ -53,7 +53,7 @@ const Login = () => {
 									<Grid item xs={12}>
 										<Grid item container direction="column" alignItems="center" xs={12}>
 											<Typography component={Link} to="/login/register/register3" variant="subtitle1" sx={{ textDecoration: 'none' }}>
-                        Don&apos;t have an account?
+												Don&apos;t have an account?
 											</Typography>
 										</Grid>
 									</Grid>
