@@ -26,7 +26,6 @@ const Doctors = () => {
 	useEffect(() => {
 
 		getDoctors().then((response) => {
-			console.log('response = ', response);
 			setDoctors(response);
 			setIsLoading(false);
 		})

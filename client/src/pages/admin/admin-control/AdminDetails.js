@@ -13,29 +13,9 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/system';
 import { useAdminContext } from 'hooks/useAdminContext';
+import { commonStyles } from 'ui-component/CommonStyles';
 
-const useStyles = styled(() => ({
-	container: {
-		display: 'flex',
-		justifyContent: 'space-around',
-		alignItems: 'center',
-		flexDirection: 'row',
-		marginBottom: '5em',
-	},
-	infoContainer: {
-		display: 'flex',
-		flexDirection: 'column',
-		gap: '0.7em',
-	},
-	emailContainer: {
-		display: 'flex',
-		alignItems: 'center',
-		flexDirection: 'row',
-	},
-	iconMargin: {
-		marginRight: '0.4em',
-	},
-}));
+const useStyles = styled(() => commonStyles);
 
 const AdminDetails = () => {
 	const classes = useStyles();

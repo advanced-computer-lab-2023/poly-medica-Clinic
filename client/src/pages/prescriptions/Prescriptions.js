@@ -4,7 +4,8 @@ import PrescriptionsList from './PrescriptionsList';
 import EditPrescription from './EditPrescription';
 import AddPrescription from './AddPrescription';
 import MainCard from '../../ui-component/cards/MainCard';
-import { patientAxios } from '../../utils/AxiosConfig';
+import { updatePrescription, createPrescription } from 'api/DoctorAPI';
+import { getPatientPrescription, getPatient } from 'api/PatientAPI';
 import PrescriptionDetails from './PrescriptionDetails';
 import { useUserContext } from 'hooks/useUserContext';
 import { useFilter } from 'contexts/FilterContext';
@@ -20,7 +21,6 @@ import { Fab, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useLocation, useNavigate } from 'react-router-dom';
-
 
 const Prescriptions = () => {
 	const navigate = useNavigate();
@@ -46,27 +46,25 @@ const Prescriptions = () => {
 	const [description, setDescription] = useState('');
 	const [patientName, setPatientName] = useState('');
 	let selectedPatient = '';
-	if(location.state){
+	if (location.state) {
 		selectedPatient = location.state.selectedPatient;
 	}
-	
+
 
 	useEffect(() => {
 		const getPrescriptions = async () => {
 			try {
-				const patientResponses = await patientAxios.get(
-					`patient/${patientID}/prescriptions`,
-				);
+				let patientResponses = await getPatientPrescription(patientID);
 				if (singlePatientPrescriptions) {
-					const filteredPrescriptions = patientResponses.data.filter(
+					const filteredPrescriptions = patientResponses.filter(
 						(prescription) => prescription.doctorId === user.id,
 					);
-					patientResponses.data = filteredPrescriptions;
+					patientResponses = filteredPrescriptions;
 				}
-				setPrescriptions(patientResponses.data);
-				setOriginalPrescritpions(patientResponses.data);
-				for (let i = 0; i < patientResponses.data.length; i++) {
-					const patientResponse = patientResponses.data[i];
+				setPrescriptions(patientResponses);
+				setOriginalPrescritpions(patientResponses);
+				for (let i = 0; i < patientResponses.length; i++) {
+					const patientResponse = patientResponses[i];
 					doctors.push(patientResponse.doctorName);
 				}
 				updateFilter([
@@ -93,8 +91,8 @@ const Prescriptions = () => {
 	}, [prescriptions.length]);
 
 	useEffect(() => {
-		patientAxios.get(`/patients/${patientID}`).then((response) => {
-			setPatientName(response.data.patient.name);
+		getPatient(patientID).then((response) => {
+			setPatientName(response.patient.name);
 		}
 		);
 	}, []);
@@ -146,26 +144,22 @@ const Prescriptions = () => {
 
 	const handleSaveEdit = (e) => {
 		e.preventDefault();
-		patientAxios
-			.patch('/prescriptions/' + selectedEditPrescription._id, {
-				prescription: selectedEditPrescription,
-			})
-			.then((response) => {
-				const updatedPrescription = response.data;
-				const updatedPrescriptions = prescriptions.map((prescription) => {
-					if (prescription._id === updatedPrescription._id) {
-						return updatedPrescription;
-					}
-					return prescription;
-				});
-				setIsEditDialogOpen(false);
-				setTimeout(() => {
-					setPrescriptions(updatedPrescriptions);
-					setOriginalPrescritpions(updatedPrescriptions);
-					setSelectedEditPrescription(null);
-					setEditErrorMessage('');
-				}, 1000);
-			})
+		updatePrescription(selectedEditPrescription).then((response) => {
+			const updatedPrescription = response;
+			const updatedPrescriptions = prescriptions.map((prescription) => {
+				if (prescription._id === updatedPrescription._id) {
+					return updatedPrescription;
+				}
+				return prescription;
+			});
+			setIsEditDialogOpen(false);
+			setTimeout(() => {
+				setPrescriptions(updatedPrescriptions);
+				setOriginalPrescritpions(updatedPrescriptions);
+				setSelectedEditPrescription(null);
+				setEditErrorMessage('');
+			}, 1000);
+		})
 			.catch((err) => {
 				console.log(err);
 				setEditErrorMessage('Error updating prescription');
@@ -194,8 +188,7 @@ const Prescriptions = () => {
 			medicines: [],
 			price: 0,
 		};
-		patientAxios
-			.post('/prescriptions', { prescription })
+		createPrescription(prescription)
 			.then(() => {
 				setPrescriptions((prev) => [...prev, prescription]);
 				setIsAddDialogOpen(false);
@@ -210,63 +203,63 @@ const Prescriptions = () => {
 		<Loader />
 	) : (
 		<>
-		{(user.type === DOCTOR_TYPE_ENUM && patientID) && (
-			<Button variant="outlined" startIcon={<ArrowBackIcon />} color='secondary' onClick={() => { navigate('/doctor/pages/my-patients', { state: { selectedPatient } }); }}
-				sx={{ mb: 1.5 }}
-			>
-				Back to my patients
-			</Button>
-		)
-		}
-		<MainCard title={`Mr/Mrs ${patientName} Prescriptions`}>
-			<PrescriptionsList
-				prescriptions={prescriptions}
-				handleSelectingPrescription={handleSelectingPrescription}
-				handleEditButtonClick={handleEditButtonClick}
-			/>
-
-			<PrescriptionDetails
-				selectedPrescription={selectedPrescription}
-				setSelectedPrescription={setSelectedPrescription}
-				prescriptionDoctor={prescriptionDoctor}
-				handleDialogClose={handleDialogClose}
-				medicines={medicines}
-			/>
-
-			<EditPrescription
-				isEditDialogOpen={isEditDialogOpen}
-				setIsEditDialogOpen={setIsEditDialogOpen}
-				selectedEditPrescription={selectedEditPrescription}
-				handleSaveEdit={handleSaveEdit}
-				setSelectedEditPrescription={setSelectedEditPrescription}
-				editErrorMessage={editErrorMessage}
-				setEditErrorMessage={setEditErrorMessage}
-			/>
-
-			{user.type === DOCTOR_TYPE_ENUM && (
-				<Fab
-					color='secondary'
-					aria-label='Add'
-					onClick={handleAddButtonClick}
-					sx={{
-						position: 'fixed',
-						bottom: 16,
-						right: 16,
-						zIndex: 9999,
-					}}
+			{(user.type === DOCTOR_TYPE_ENUM && patientID) && (
+				<Button variant="outlined" startIcon={<ArrowBackIcon />} color='secondary' onClick={() => { navigate('/doctor/pages/my-patients', { state: { selectedPatient } }); }}
+					sx={{ mb: 1.5 }}
 				>
-					<AddIcon />
-				</Fab>
-			)}
+					Back to my patients
+				</Button>
+			)
+			}
+			<MainCard title={`Mr/Mrs ${patientName} Prescriptions`}>
+				<PrescriptionsList
+					prescriptions={prescriptions}
+					handleSelectingPrescription={handleSelectingPrescription}
+					handleEditButtonClick={handleEditButtonClick}
+				/>
 
-			<AddPrescription
-				isAddDialogOpen={isAddDialogOpen}
-				handleConfirmAdd={handleConfirmAdd}
-				handleCancelAdd={handleCancelAdd}
-				setDescription={setDescription}
-			/>
+				<PrescriptionDetails
+					selectedPrescription={selectedPrescription}
+					setSelectedPrescription={setSelectedPrescription}
+					prescriptionDoctor={prescriptionDoctor}
+					handleDialogClose={handleDialogClose}
+					medicines={medicines}
+				/>
 
-		</MainCard>
+				<EditPrescription
+					isEditDialogOpen={isEditDialogOpen}
+					setIsEditDialogOpen={setIsEditDialogOpen}
+					selectedEditPrescription={selectedEditPrescription}
+					handleSaveEdit={handleSaveEdit}
+					setSelectedEditPrescription={setSelectedEditPrescription}
+					editErrorMessage={editErrorMessage}
+					setEditErrorMessage={setEditErrorMessage}
+				/>
+
+				{user.type === DOCTOR_TYPE_ENUM && (
+					<Fab
+						color='secondary'
+						aria-label='Add'
+						onClick={handleAddButtonClick}
+						sx={{
+							position: 'fixed',
+							bottom: 16,
+							right: 16,
+							zIndex: 9999,
+						}}
+					>
+						<AddIcon />
+					</Fab>
+				)}
+
+				<AddPrescription
+					isAddDialogOpen={isAddDialogOpen}
+					handleConfirmAdd={handleConfirmAdd}
+					handleCancelAdd={handleCancelAdd}
+					setDescription={setDescription}
+				/>
+
+			</MainCard>
 		</>
 	);
 };

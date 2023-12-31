@@ -11,11 +11,19 @@ const DoctorProvider = ({ children }) => {
     const [doctorIsBeingDeleted, setDoctorIsBeingDeleted] = useState(false);
     const [doctorDeleted, setDoctorDeleted] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [availableSlots, setAvailableSlots] = useState([]);
+    const [selectedDate, setSelectedDate] = useState(null);
+    const [selectedTime, setSelectedTime] = useState(null);
+    const [appointments, setAppointments] = useState([]);
+    const [loggedInDoctor, setLoggedInDoctor] = useState(null);
+    const [selectedDoctor, setSelectedDoctor] = useState(null);
+    const [originalDoctors, setOriginalDoctors] = useState([]);
 
     const contextValue = {
-        doctors, setDoctors, isLoading, setIsLoading, confirmDeleteDialogOpen, setConfirmDeleteDialogOpen,
-        doctorToDelete, setDoctorToDelete, doctorIsBeingDeleted, setDoctorIsBeingDeleted, doctorDeleted,
-        setDoctorDeleted, errorMessage, setErrorMessage
+        doctors, setDoctors, isLoading, setIsLoading, confirmDeleteDialogOpen, setConfirmDeleteDialogOpen, setSelectedTime,
+        doctorToDelete, setDoctorToDelete, doctorIsBeingDeleted, setDoctorIsBeingDeleted, doctorDeleted, selectedTime, setOriginalDoctors,
+        setDoctorDeleted, errorMessage, setErrorMessage, availableSlots, setAvailableSlots, selectedDate, setSelectedDate,
+        appointments, setAppointments, loggedInDoctor, setLoggedInDoctor, selectedDoctor, setSelectedDoctor, originalDoctors
     };
 
     return (
