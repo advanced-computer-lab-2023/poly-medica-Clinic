@@ -7,11 +7,10 @@ import { ButtonBase } from '@mui/material';
 // project imports
 import Logo from 'ui-component/Logo';
 import { MENU_OPEN } from 'store/actions';
-import { useUserContext } from 'hooks/useUserContext.js';
 // ==============================|| MAIN LOGO ||============================== //
 
 const LogoSection = () => {
-	const { user } = useUserContext();
+	const { user } = useSelector(state => state.user);
 	const userType = user.type;
 	const defaultId = useSelector((state) => state.customization.defaultId);
 	const dispatch = useDispatch();

@@ -3,7 +3,6 @@ import { clinicAxios } from 'pages/utilities/AxiosConfig';
 import MainCard from 'ui-component/cards/MainCard';
 import AppointmentList from './AppointmentList.js';
 import AppointmentOptions from './appointment-options/AppointmentOptions.js';
-import { useUserContext } from 'hooks/useUserContext.js';
 import { useFilter } from 'contexts/FilterContext.js';
 import {
 	APPOINTMENT_FILTER_ARRAY,
@@ -14,6 +13,7 @@ import {
 	filterAppointmentByChronology
 } from 'utils/AppointmentUtils.js';
 import Pagination from '@mui/material/Pagination';
+import { useSelector } from 'react-redux';
 
 
 const Appointment = () => {
@@ -25,7 +25,7 @@ const Appointment = () => {
 	const [currentPage, setCurrentPage] = useState(0); // 0-indexed
 	const isNormalRender = useRef(true);
 	const { filterData, updateFilter } = useFilter();
-	const { user } = useUserContext();
+	const { user } = useSelector(state => state.user);
 	const userId = user.id;
 	
 	const paginate = (allAppointments, requiredPage) => {

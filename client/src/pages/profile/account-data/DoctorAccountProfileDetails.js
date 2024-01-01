@@ -10,11 +10,11 @@ import {
     TextField,
     Unstable_Grid2 as Grid,
 } from '@mui/material';
-import { useUserContext } from 'hooks/useUserContext';
 import format from 'date-fns/format';
 import { clinicAxios } from '../../../utils/AxiosConfig';
 import Loader from 'ui-component/Loader';
 import { showFailureAlert, showSuccessAlert } from 'utils/swal';
+import { useSelector } from 'react-redux';
 
 export const DoctorAccountProfileDetails = () => {
     const [values, setValues] = useState({
@@ -29,7 +29,7 @@ export const DoctorAccountProfileDetails = () => {
         walletAmount: '',
     });
     const [loading, setLoading] = useState(true);
-    const { user } = useUserContext();
+    const { user } = useSelector(state => state.user);
     useEffect(() => {
         const getPatientsURL = '/doctor/' + user.id;
         // let user;

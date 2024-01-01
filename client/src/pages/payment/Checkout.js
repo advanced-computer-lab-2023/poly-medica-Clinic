@@ -7,9 +7,9 @@ import {
 import { paymentElementOptions, paymentStatus } from '../../utils/PaymentUtils';
 import { Button } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useUserContext } from 'hooks/useUserContext';
 import { PAYMENT_ITEM_TYPES } from '../../utils/Constants';
 import { showFailureAlert } from 'utils/swal';
+import { useSelector } from 'react-redux';
 
 export default function CheckoutForm({ item, type, selectedDoctor }) {
   const stripe = useStripe();
@@ -18,7 +18,7 @@ export default function CheckoutForm({ item, type, selectedDoctor }) {
   const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const { user } = useUserContext();
+  const { user } = useSelector(state => state.user);
 
   const navigate = useNavigate();
 

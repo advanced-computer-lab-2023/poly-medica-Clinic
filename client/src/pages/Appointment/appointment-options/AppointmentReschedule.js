@@ -5,17 +5,17 @@ import AvailableSlotsList from '../../../ui-component/AvailableSlotsList.js';
 import Swal from 'sweetalert2';
 import '../../../assets/css/swalStyle.css';
 import { communicationAxios } from 'utils/AxiosConfig.js';
-import { useUserContext } from 'hooks/useUserContext';
 import { PATIENT_TYPE_ENUM } from 'utils/Constants.js';
 import { getDay, getTime } from '../../../utils/DateFormatter.js';
 import { showSuccessAlert } from 'utils/swal.js';
+import { useSelector } from 'react-redux';
 const AppointmentReschedule = ({
     selectedAppointment,
     setSelectedAppointment,
     setTabValue,
     handleAppoinmentUpdate
 }) => {
-    const { user } = useUserContext();
+    const { user } = useSelector(state => state.user);
 
     const [doctorAvailableSlots, setDoctorAvailableSlots] = useState(null);
     const [isLoading, setIsLoading] = useState(true);

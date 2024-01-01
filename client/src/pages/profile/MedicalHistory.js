@@ -2,17 +2,17 @@ import { Stack, Unstable_Grid2 as Grid, List, ListItemButton, ListItemText, List
 import { useState, useEffect } from 'react';
 import Delete from '@mui/icons-material/Delete';
 import { patientAxios } from 'utils/AxiosConfig';
-import { useUserContext } from 'hooks/useUserContext';
 import Loader from 'ui-component/Loader';
 import { Attachment } from '@mui/icons-material';
 import Swal from 'sweetalert2';
 import { PATIENT_BASE_URL } from 'utils/Constants';
 import { showFailureAlert, showSuccessAlert } from 'utils/swal';
+import { useSelector } from 'react-redux';
 
 const MedicalHistory = ({ patientId }) => {
     const [documents, setDocuments] = useState();
     const [loading, setLoading] = useState(true);
-    const { user } = useUserContext();
+    const { user } = useSelector(state => state.user);
     const userId = patientId ? patientId : user.id;
     const [title, setTitle] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);

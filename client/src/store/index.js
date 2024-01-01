@@ -1,9 +1,8 @@
-import { createStore } from 'redux';
 import reducer from './reducer';
+import { configureStore } from '@reduxjs/toolkit';
 
-// ==============================|| REDUX - MAIN STORE ||============================== //
+// // ==============================|| REDUX - MAIN STORE ||============================== //
 
-const store = createStore(reducer);
-const persister = '';
-
-export { store, persister };
+export const store = configureStore({
+    reducer
+});

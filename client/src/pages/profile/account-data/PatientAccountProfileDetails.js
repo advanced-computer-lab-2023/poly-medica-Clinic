@@ -8,12 +8,12 @@ import {
     TextField,
     Unstable_Grid2 as Grid,
 } from '@mui/material';
-import { useUserContext } from 'hooks/useUserContext';
 import format from 'date-fns/format';
 import { patientAxios } from 'utils/AxiosConfig';
 import Loader from 'ui-component/Loader';
 import { PATIENT_TYPE_ENUM } from 'utils/Constants';
 import { useParams } from 'react-router';
+import { useSelector } from 'react-redux';
 export const PatientAccountProfileDetails = () => {
     const [values, setValues] = useState({
         name: '',
@@ -28,7 +28,7 @@ export const PatientAccountProfileDetails = () => {
         walletAmount: '',
     });
     const [loading, setLoading] = useState(true);
-    const { user } = useUserContext();
+    const { user } = useSelector(state => state.user);
     const isPatient = user.type === PATIENT_TYPE_ENUM;
     const { patientId } = useParams();
     const userId = isPatient ? user.id : patientId;

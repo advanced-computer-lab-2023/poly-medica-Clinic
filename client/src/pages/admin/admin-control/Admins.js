@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { useUserContext } from 'hooks/useUserContext.js';
 import { useAdminContext } from 'hooks/useAdminContext.js';
 import { Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
@@ -12,8 +11,9 @@ import { getAdmins } from 'api/AdminAPI';
 import Message from 'ui-component/Message';
 import { TWO_SECONDS } from 'utils/Constants';
 import Loader from 'ui-component/Loader';
+import { useSelector } from 'react-redux';
 const Admins = () => {
-	const { user } = useUserContext();
+	const { user } = useSelector(state => state.user);
 	const { setAdmins, setIsLoading, admins, setErrorMessage, isLoading, removeAdmin, addAdmin, setOpenAddDialog } = useAdminContext();
 
 	useEffect(() => {

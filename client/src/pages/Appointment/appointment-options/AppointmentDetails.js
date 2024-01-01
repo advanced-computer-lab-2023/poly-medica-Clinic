@@ -14,13 +14,13 @@ import { clinicAxios, communicationAxios } from 'pages/utilities/AxiosConfig';
 import { useChat } from 'contexts/ChatContext.js';
 import { DOCTOR_TYPE_ENUM, PATIENT_TYPE_ENUM } from 'utils/Constants.js';
 import { chatExist } from 'utils/ChatUtils.js';
-import { useUserContext } from 'hooks/useUserContext.js';
 import { getDay, getTime } from '../../../utils/DateFormatter.js';
 import { patientCanRefund } from '../../../utils/AppointmentUtils.js';
 import AppointmentStatus from '../AppointmentStatus.js';
 import { useNavigate } from 'react-router-dom';
 import { usePayment } from 'contexts/PaymentContext';
 import { showSuccessAlert } from 'utils/swal';
+import { useSelector } from 'react-redux';
 
 
 const AppointmentDetails = ({
@@ -29,7 +29,7 @@ const AppointmentDetails = ({
     handleAppoinmentUpdate
 }) => {
     const { chats, setChats } = useChat();
-    const { user } = useUserContext();
+    const { user } = useSelector(state => state.user);
     const navigate = useNavigate();
 
     const [cannotCompleteOrCancel, setCannotCompleteOrCancel] = useState(false);

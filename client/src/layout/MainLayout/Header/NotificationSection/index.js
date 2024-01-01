@@ -29,11 +29,11 @@ import NotificationList from './NotificationList';
 
 // assets
 import { IconBell } from '@tabler/icons';
-import { useUserContext } from 'hooks/useUserContext';
 import { communicationAxios } from 'utils/AxiosConfig';
 import { COMMUNICATION_BASE_URL } from 'utils/Constants';
 import { io } from 'socket.io-client';
 import { showFailureAlert } from 'utils/swal';
+import { useSelector } from 'react-redux';
 
 
 // ==============================|| NOTIFICATION ||============================== //
@@ -43,7 +43,7 @@ const NotificationSection = () => {
 	const matchesXs = useMediaQuery(theme.breakpoints.down('md'));
 
 	const [open, setOpen] = useState(false);
-	const { user } = useUserContext();
+	const { user } = useSelector(state => state.user);
 	const [notifications, setNotifications] = useState([]);
 	const [numberOfUnseenNotification, setNumberOfUnseenNotification] = useState(0);
 	const [dataChange, setDataChange] = useState(false);

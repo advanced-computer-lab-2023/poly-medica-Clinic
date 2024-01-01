@@ -6,13 +6,13 @@ import NavGroup from './NavGroup';
 import patientMenuItem from 'layout/MainLayout/Sidebar/MenuList/patient-menu-items';
 import doctortMenuItem from 'layout/MainLayout/Sidebar/MenuList/doctor-menu-items';
 import admintMenuItem from 'layout/MainLayout/Sidebar/MenuList/admin-menu-items';
-import { useUserContext } from 'hooks/useUserContext';
 import { ADMIN_TYPE_ENUM, PATIENT_TYPE_ENUM } from 'utils/Constants';
+import { useSelector } from 'react-redux';
 
 // ==============================|| SIDEBAR MENU LIST ||============================== //
 
 const MenuList = () => {
-	const { user } = useUserContext();
+	const { user } = useSelector(state => state.user);
 	const menuItem = user.type == PATIENT_TYPE_ENUM? patientMenuItem: user.type == ADMIN_TYPE_ENUM? admintMenuItem: doctortMenuItem;
 	
 	const navItems = menuItem.items.map((item) => {

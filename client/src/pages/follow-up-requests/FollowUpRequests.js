@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import { clinicAxios } from 'pages/utilities/AxiosConfig';
-import { useUserContext } from 'hooks/useUserContext';
 import CircularProgress from '@mui/material/CircularProgress';
 import { List } from '@mui/material';
 import FollowUpRequestCard from './FollowUpRequestCard.js';
 import NoDataFound from '../NoDataFound.js';
+import { useSelector } from 'react-redux';
 const FollowUpRequests = () => {
 
     const [followUpRequests, setFollowUpRequests] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const { user } = useUserContext();
+    const { user } = useSelector(state => state.user);
     useEffect(() => {
         clinicAxios
             .get(`/appointments/follow-up-requests/${user.id}`)

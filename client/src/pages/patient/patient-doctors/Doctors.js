@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import MainCard from 'ui-component/cards/MainCard';
 import DoctorList from './DoctorList.js';
 import DoctorDetails from './DoctorDetails.js';
-import { useUserContext } from 'hooks/useUserContext';
 import { useFilter } from 'contexts/FilterContext.js';
 import { useSearch } from 'contexts/SearchContext.js';
 import { isDateInAvailableSlots } from 'utils/AppointmentUtils.js';
@@ -11,8 +10,9 @@ import { useDoctorContext } from 'hooks/useDoctorContext.js';
 import { usePatientContext } from 'hooks/usePatientContext.js';
 import { getDoctors } from 'api/DoctorAPI.js';
 import { getPatient, getPatientHealthPackage } from 'api/PatientAPI.js';
+import { useSelector } from 'react-redux';
 const Doctors = () => {
-    const { user } = useUserContext();
+    const { user } = useSelector(state => state.user);
     const patientID = user.id;
     const { setDoctors, originalDoctors, setOriginalDoctors, setSelectedDoctor } = useDoctorContext();
     const { setLoggedInPatient, setLoggedInPatientHealthPackage } = usePatientContext();

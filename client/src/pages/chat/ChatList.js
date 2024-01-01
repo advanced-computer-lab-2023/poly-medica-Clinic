@@ -7,7 +7,6 @@ import {
     IconButton,
     CardHeader,
 } from '@mui/material';
-import { useUserContext } from 'hooks/useUserContext';
 import ChatListCard from './ChatListCard';
 import { useChat } from 'contexts/ChatContext';
 import {
@@ -16,9 +15,10 @@ import {
 } from 'utils/Constants';
 import CloseIcon from '@mui/icons-material/Close';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import { useSelector } from 'react-redux';
 
 const ChatList = ({ setChatOpen }) => {
-    const { user } = useUserContext();
+    const { user } = useSelector(state => state.user);
     const userId = user.id, userType = user.type;
     const { socket, setSelectedChat, chats, updateChat } = useChat();
     

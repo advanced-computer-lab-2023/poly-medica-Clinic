@@ -3,7 +3,6 @@ import { List } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
 import DoctorPatientCard from './DoctorPatientCard';
 import DoctorPatientDialog from './DoctorPatientDialog';
-import { useUserContext } from 'hooks/useUserContext';
 import { useSearch } from 'contexts/SearchContext';
 import { useFilter } from 'contexts/FilterContext';
 import { useLocation } from 'react-router-dom';
@@ -12,6 +11,7 @@ import { usePatientContext } from 'hooks/usePatientContext';
 import { isUpcomingAppointment } from 'utils/DoctorUtils';
 import { getAppointments, getDoctorPatients, getDoctor } from 'api/DoctorAPI';
 import Loader from 'ui-component/Loader';
+import { useSelector } from 'react-redux';
 const Patients = () => {
 
 	const location = useLocation();
@@ -26,7 +26,7 @@ const Patients = () => {
 
 	const { searchQuery } = useSearch();
 	const { filterData, updateFilter } = useFilter();
-	const { user } = useUserContext();
+	const { user } = useSelector(state => state.user);
 	const id = user.id;
 
 	useEffect(() => {

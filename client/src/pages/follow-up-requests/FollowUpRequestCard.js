@@ -14,7 +14,6 @@ import ClearIcon from '@mui/icons-material/Clear';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import PendingIcon from '@mui/icons-material/Pending';
-import { useUserContext } from 'hooks/useUserContext';
 import { useTheme } from '@mui/material/styles';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { getDay, getTime } from '../../utils/DateFormatter.js';
@@ -22,6 +21,7 @@ import { PATIENT_TYPE_ENUM } from 'utils/Constants';
 import { clinicAxios } from 'utils/AxiosConfig.js';
 import Swal from 'sweetalert2';
 import '../../assets/css/swalStyle.css';
+import { useSelector } from 'react-redux';
 
 
 const FollowUpRequestCard = ({
@@ -29,7 +29,7 @@ const FollowUpRequestCard = ({
      handleUpdateFollowUpRequest
 }) => {
     const theme = useTheme();
-    const { user } = useUserContext();
+    const { user } = useSelector(state => state.user);
     const titleName = user.type=='patient' ? `Dr. ${followUpRequest.doctorName}` : `Mr/Miss ${followUpRequest.patientName}`;
     let followUpStatus = '';
     if(followUpRequest.followUpData.handled){

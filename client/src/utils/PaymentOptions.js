@@ -3,7 +3,6 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { successfulPayment } from './PaymentUtils';
 import { React, useState, useEffect } from 'react';
-import { useUserContext } from 'hooks/useUserContext';
 import {
   Dialog,
   DialogTitle,
@@ -26,11 +25,12 @@ import CreditCardIcon from '@mui/icons-material/CreditCard';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import { usePayment } from 'contexts/PaymentContext';
 import { showSuccessAlert } from './swal';
+import { useSelector } from 'react-redux';
 
 export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amountToPay, type, selectedDoctor }) => {
   const [amountInWallet, setAmountInWallet] = useState(0);
   const navigate = useNavigate();
-  const { user } = useUserContext();
+  const { user } = useSelector(state => state.user);
   const userId = user.id;
 
   const { setPaymentDone } = usePayment();

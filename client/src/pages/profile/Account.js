@@ -16,7 +16,6 @@ import {
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DcotorAccountProfileDetails from './account-data/DoctorAccountProfileDetails';
 import PatientAccountProfileDetails from './account-data/PatientAccountProfileDetails';
-import { useUserContext } from 'hooks/useUserContext';
 import { DOCTOR_TYPE_ENUM, PATIENT_TYPE_ENUM } from 'utils/Constants';
 import { useState } from 'react';
 import MedicalHistory from './MedicalHistory';
@@ -27,11 +26,12 @@ import { useParams } from 'react-router';
 
 import DoctorContract from '../doctor/DoctorContract';
 import { showFailureAlert, showSuccessAlert } from 'utils/swal';
+import { useSelector } from 'react-redux';
 const Page = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const { patientId } = useParams();
-	const { user } = useUserContext();
+	const { user } = useSelector(state => state.user);
 	const [password, setPassword] = useState('');
 	const [strength, setStrength] = useState(0);
 	const [level, setLevel] = useState();

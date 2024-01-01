@@ -7,7 +7,6 @@ import MainCard from '../../ui-component/cards/MainCard';
 import { updatePrescription, createPrescription } from 'api/DoctorAPI';
 import { getPatientPrescription, getPatient } from 'api/PatientAPI';
 import PrescriptionDetails from './PrescriptionDetails';
-import { useUserContext } from 'hooks/useUserContext';
 import { useFilter } from 'contexts/FilterContext';
 import {
 	DATE_FILTER_ARRAY,
@@ -21,11 +20,12 @@ import { Fab, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Prescriptions = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
-	const { user } = useUserContext();
+	const { user } = useSelector(state => state.user);
 	const patientID =
 		user.type === PATIENT_TYPE_ENUM ? user.id : useParams().patientId;
 	const { filterData, updateFilter } = useFilter();

@@ -2,12 +2,12 @@
 import { styled } from '@mui/material/styles';
 import { useState, useEffect } from 'react';
 import { Button, Card, CardContent, Grid, Stack, Typography } from '@mui/material';
-import { useUserContext } from 'hooks/useUserContext';
 // project imports
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import { HEALTH_PACKAGE_STATUS } from 'utils/Constants';
 import { useNavigate } from 'react-router-dom';
 import { getPatientHealthPackage } from 'api/PatientAPI';
+import { useSelector } from 'react-redux';
 // styles
 const CardStyle = styled(Card)(({ theme }) => ({
 	background: theme.palette.warning.light,
@@ -43,7 +43,8 @@ const CardStyle = styled(Card)(({ theme }) => ({
 
 const UpgradePlanCard = () => {
 	const [healthPackages, setHealthPackages] = useState([]);
-	const { user } = useUserContext();
+	const { user } = useSelector(state => state.user);
+
 	const renewalDate = healthPackages[0] ? new Date(healthPackages[0].renewalDate) : new Date();
 	const options = { day: 'numeric', month: 'long' };
 	const formattedRenewalDate = renewalDate.toLocaleString('en-US', options);

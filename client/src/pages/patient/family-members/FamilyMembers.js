@@ -15,11 +15,11 @@ import {
 
 import { Add, Subscriptions } from '@mui/icons-material';
 import AddFamilyMember from './AddFamilyMember';
-import { useUserContext } from 'hooks/useUserContext';
 import { getFamilyMembers } from 'api/PatientAPI';
 import Loader from 'ui-component/Loader';
 import { HealthPackageSubscription } from './HealthPackageSubscription';
 import { usePatientContext } from 'hooks/usePatientContext';
+import { useSelector } from 'react-redux';
 
 const FamilyMembers = () => {
     const [isAddingMember, setIsAddingMember] = useState(false);
@@ -27,7 +27,7 @@ const FamilyMembers = () => {
     const { FamilyMembers, setFamilyMembers, isLoading, setIsLoading, setOpenPackages,
         setError, setNewMember, setMemberId } = usePatientContext();
 
-    const { user } = useUserContext();
+        const { user } = useSelector(state => state.user);
     const userId = user.id;
     useEffect(() => {
         const fetch = async () => {
