@@ -5,8 +5,7 @@ import {
 	ERROR_STATUS_CODE,
     CLINIC_BASE_URL,
     PATIENTS_BASE_URL,
-    BAD_REQUEST_CODE_400,
-    SECRET_KEY
+    BAD_REQUEST_CODE_400
 } from '../utils/Constants.js';
 import { isValidMongoId } from '../utils/Validation.js';
 import PaymentService from '../service/payment-service.js';
