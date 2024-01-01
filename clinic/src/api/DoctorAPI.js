@@ -128,6 +128,7 @@ export const doctor = (app) => {
 			});
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({ err: err.message });
+			console.log('err: ', err.message);
 		}
 	});
 
@@ -184,7 +185,6 @@ export const doctor = (app) => {
 				});
 			}
 		} catch (error) {
-			// console.log(error);
 			if(error.response){
 				res.status(BAD_REQUEST_CODE_400).send({ message: error.response.data.message });
 			}
@@ -253,7 +253,6 @@ export const doctor = (app) => {
 		try {
 			const id = req.params.id;
 			const from = req.body.from; // Date
-			console.log('from' + ' ' + from);
 			if (!isValidMongoId(id))
 				return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
 			const doctor = await service.addSlot(id, from);
@@ -312,7 +311,6 @@ export const doctor = (app) => {
 			}
 			// walletChange is +ve if paid to doctor, -ve if deducted from doctor
 			const walletChange = parseFloat(req.body.walletChange);
-			console.log('walletChange = ', walletChange);
 			const updatedDoctor = await service.updateWallet(doctorId, walletChange);
 			res.status(OK_STATUS_CODE).json({ updatedDoctor });
 		} catch (error) {

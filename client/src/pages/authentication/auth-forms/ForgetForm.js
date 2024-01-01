@@ -25,52 +25,52 @@ const ForgetForm = () => {
 		e.preventDefault();
 		setIsSubmitting(true);
 		const postData = { 'email': email };
-		try{
-			await authenticationAxios.post('/reset-password', postData);		
+		try {
+			await authenticationAxios.post('/reset-password', postData);
 			Swal.fire({
-                icon: 'success',
-                title: 'Success!',
-                text: 'Email sent successfully',
+				icon: 'success',
+				title: 'Success!',
+				text: 'Email sent successfully',
 			});
 			navigate('/login/login3');
 			setEmail('');
 			setIsSubmitting(false);
-		} catch(error){
-            
+		} catch (error) {
+
 			Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
 				text: error.response.data.errMessage,
 			});
 			setIsSubmitting(false);
-			}
+		}
 	};
 
-	return (	
+	return (
 		<>
 			<Grid container direction="column" justifyContent="center" spacing={2}>
 			</Grid>
-					<form onSubmit={handleSubmit}>
-						<FormControl fullWidth required sx={{ marginBottom:3 }}>
-							<TextField
-							type='email'
-							required
-							label="email"
-							value={email}
-							onChange={e => setEmail(e.target.value)}
-							/>
-						</FormControl>
+			<form onSubmit={handleSubmit}>
+				<FormControl fullWidth required sx={{ marginBottom: 3 }}>
+					<TextField
+						type='email'
+						required
+						label="email"
+						value={email}
+						onChange={e => setEmail(e.target.value)}
+					/>
+				</FormControl>
 
-						<Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-						</Stack>
-						<Box sx={{ mt: 2 }}>
-							<AnimateButton>
-								<Button disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">
-                  submit
-								</Button>
-							</AnimateButton>
-						</Box>
-					</form>
+				<Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
+				</Stack>
+				<Box sx={{ mt: 2 }}>
+					<AnimateButton>
+						<Button disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">
+							submit
+						</Button>
+					</AnimateButton>
+				</Box>
+			</form>
 		</>
 	);
 };

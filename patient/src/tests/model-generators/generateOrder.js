@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker';
 
 const generateItem = () => {
 	return {
+		medicineId: faker.database.mongodbObjectId(),
 		name: faker.lorem.words({ min: 5, max: 10 }),
 		price: faker.number.int({ min: 3, max: 10 }),
 		quantity: faker.number.int({ min: 1, max: 10 }),
@@ -22,6 +23,7 @@ const generateOrder = (patientId, orderStatus) => {
 		details,
 		amount: total,
 		status: orderStatus,
+		paymentMethod: 'credit card',
 	};
 };
 

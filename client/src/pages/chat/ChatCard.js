@@ -4,19 +4,23 @@ import ChatList from './ChatList';
 import { useChat } from 'contexts/ChatContext';
 
 const ChatCard = ({ setChatOpen }) => {
-    const { selectedChat } = useChat();
+  const { selectedChat } = useChat();
+
+  const cardStyle = {
+    position: window.innerWidth < 1000 ? 'static' : 'fixed',
+    right: window.innerWidth < 1000 ? 'auto' : 16,
+    backgroundColor: 'transparent',
+    height: window.innerWidth < 1000? '100%' : '70%',
+    width: window.innerWidth < 1000 ? '70%' : '25%', // Adjusted width for smaller screens
+    display: 'flex',
+    justifyContent: 'space-around',
+  };
+
   return (
-    <Card
-        sx={{
-            backgroundColor: 'transparent',
-            height: '100%',
-            width: '30%',
-            display: 'flex',
-            flexDirection: 'row-reverse',
-        }}>
-            {selectedChat && <ChatBox setChatOpen={ setChatOpen }></ChatBox> }
-            {!selectedChat && <ChatList setChatOpen={ setChatOpen }></ChatList> }
-        </Card>
+    <Card sx={cardStyle}>
+      {!selectedChat && <ChatList setChatOpen={setChatOpen}></ChatList>}
+      {selectedChat && <ChatBox setChatOpen={setChatOpen}></ChatBox>}
+    </Card>
   );
 };
 

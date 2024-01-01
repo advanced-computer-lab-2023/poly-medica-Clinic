@@ -15,7 +15,7 @@ import {
 	ZERO
 } from '../utils/Constants.js';
 
-import { calcAge } from '../utils/Patient-utils.js';
+import { calcAge } from '../utils/PatientUtils.js';
 
 export const patient = (app) => {
 	const service = new PatientService();
@@ -36,7 +36,6 @@ export const patient = (app) => {
 	});
 
 	app.get('/patients/:id', async (req, res) => {
-		console.log('heeeere!');
 		const { id } = req.params;
 		if (!isValidMongoId(id)) {
 			return res.status(ERROR_STATUS_CODE).json({ message: 'Invalid ID' });
@@ -76,7 +75,6 @@ export const patient = (app) => {
 					.json({ message: 'Invalid ID' });
 			}
 			const deletedPatient = await service.deletePatient(id);
-			console.log(deletedPatient, 'deletedPatient');
 			if (!deletedPatient) {
 				return res.status(NOT_FOUND_STATUS_CODE).json({
 					message: 'patient not found!',
@@ -126,7 +124,6 @@ export const patient = (app) => {
 		}
 		try {
 			const { member } = req.body;
-			console.log('member = ', member);
 			if (member.email || member.mobileNumber) {
 				const patient = await service.getPatient(member);
 				if (!patient) {
@@ -278,7 +275,6 @@ export const patient = (app) => {
 		try {
 			const { id } = req.params;
 			const { title } = req.body;
-			console.log('title ======================================= ', title);
 			const healthRecord = {};
 			healthRecord.recordTitle = title;
 			healthRecord.documentName = req.file ? req.file.filename : '';
@@ -338,7 +334,6 @@ export const patient = (app) => {
 				const duplicateKeyAttrb = Object.keys(err.keyPattern)[
 					ZERO_INDEX
 				];
-				console.log(duplicateKeyAttrb);
 				res.status(BAD_REQUEST_CODE_400).send({
 					errCode: DUPLICATE_KEY_ERROR_CODE,
 					errMessage: `that ${duplicateKeyAttrb} is already registered`,
@@ -421,7 +416,6 @@ export const patient = (app) => {
 	app.patch('/patients/:patientId/wallet', async (req, res) => {
 		const { patientId } = req.params;
 		const { walletChange } = req.body;
-		console.log('walletChange = ', walletChange);
 		if (!isValidMongoId(patientId)) {
 			return res
 				.status(ERROR_STATUS_CODE)

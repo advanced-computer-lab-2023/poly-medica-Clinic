@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { clinicAxios } from 'pages/utilities/AxiosConfig';
 import MainCard from 'ui-component/cards/MainCard';
 import AppointmentList from './AppointmentList.js';
-import AppointmentOptions from './AppointmentOptions/AppointmentOptions.js';
+import AppointmentOptions from './appointment-options/AppointmentOptions.js';
 import { useUserContext } from 'hooks/useUserContext.js';
 import { useFilter } from 'contexts/FilterContext.js';
 import {

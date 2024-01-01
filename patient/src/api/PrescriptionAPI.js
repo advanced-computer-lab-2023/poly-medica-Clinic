@@ -28,7 +28,6 @@ export const prescription = (app) => {
 				});
 			}
 			const { prescription } = req.body;
-			console.log('prescription in patch == ', prescription);
 			const data = await service.updatePrescription(
 				prescriptionId,
 				prescription,
@@ -51,7 +50,6 @@ export const prescription = (app) => {
 				});
 			}
 			const prescription = await service.getPrescriptionById(prescriptionId);
-			console.log('prescription' + ' ' + prescription);
 			if (!prescription) {
 				return res.status(ERROR_STATUS_CODE).json({
 					message: 'Prescription not found',
@@ -62,7 +60,6 @@ export const prescription = (app) => {
 			await generatePrescriptionPDF(prescription, date);
 			const fileName = `prescription-${date}-${prescription._id}.pdf`;
 			const filePath = service.getFile(fileName);
-			console.log('filePath in PATEITN API' + ' ' + filePath);
 			res.status(OK_STATUS_CODE).sendFile(filePath);
 		} catch (err) {
 			res.status(ERROR_STATUS_CODE).json({

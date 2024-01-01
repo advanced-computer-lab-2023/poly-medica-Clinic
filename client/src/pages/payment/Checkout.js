@@ -10,8 +10,6 @@ import Swal from 'sweetalert2';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useUserContext } from 'hooks/useUserContext';
 import { PAYMENT_ITEM_TYPES } from '../../utils/Constants';
-//import Card from 'react-credit-cards'
-
 
 export default function CheckoutForm({ item, type, selectedDoctor }) {
   const stripe = useStripe();
@@ -77,7 +75,6 @@ export default function CheckoutForm({ item, type, selectedDoctor }) {
     if (type === PAYMENT_ITEM_TYPES[0]) {
       navigate('/patient/pages/packages');
     } else if (type === PAYMENT_ITEM_TYPES[1]) {
-      console.log('was here');
       if (selectedDoctor != '') {
         navigate('/patient/pages/doctors', { state: { selectedDoctor } });
       }
@@ -88,11 +85,6 @@ export default function CheckoutForm({ item, type, selectedDoctor }) {
     <form id='payment-form' onSubmit={handleSubmit}>
 
       <PaymentElement id='payment-element' options={paymentElementOptions}
-      // onChange={() => {
-      //   handleCardNumberChange(event.elementType === 'cardNumber' ? event : null);
-      //   handleCardExpiryChange(event.elementType === 'cardExpiry' ? event : null);
-      //   handleCardExpiryChange(event.elementType === 'cardCvc' ? event : null);
-      // }}
       />
       <Button disabled={isLoading || !stripe || !elements} fullWidth variant="contained" onClick={handleSubmit}
         sx={{ mt: 0.5 }}

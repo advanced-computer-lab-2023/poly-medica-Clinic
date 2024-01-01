@@ -26,8 +26,8 @@ import { SearchProvider } from 'contexts/SearchContext';
 import { FilterProvider } from 'contexts/FilterContext';
 import { useUserContext } from 'hooks/useUserContext';
 import { useEffect } from 'react';
-import { clinicAxios } from 'utils/AxiosConfig';
 import { ContextProvider } from 'contexts/VideoChatContext';
+import { getDoctorStatus } from 'api/DoctorAPI';
 // styles
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
     ({ theme, open }) => ({
@@ -67,24 +67,23 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
 // ==============================|| MAIN LAYOUT ||============================== //
 
 const MainLayout = ({ userType }) => {
-    Outlet;
     const theme = useTheme();
     const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
     const navigate = useNavigate();
     const leftDrawerOpened = useSelector((state) => state.customization.opened);
+
     const { user } = useUserContext();
     const id = user.id;
     const location = useLocation();
     useEffect(() => {
         const isDoctor = user.type === DOCTOR_TYPE_ENUM;
         if (!user || user.type != userType) {
-            navigate(`/${user.type}`);
+            navigate(`/${user.type}/dashboard/home`);
         }
         if (isDoctor) {
-            clinicAxios
-                .get('/doctors/' + id + '/status')
+            getDoctorStatus(id)
                 .then((res) => {
-                    const status = res.data.status;
+                    const status = res.status;
                     if (user && isDoctor && !status) {
                         navigate('/doctor/pages/profile');
                         Swal.fire({ title: 'Pending Offer', icon: 'info', text: 'Please Accept the offer first' });
@@ -140,19 +139,20 @@ const MainLayout = ({ userType }) => {
                                 />
                             )}
 
-                        {/* main content */}
-                        <Main theme={theme} open={leftDrawerOpened} sx={{ position: 'relative' }}>
-                            {(!user || user.type != userType) && (
-                                <h1>not autherized!!</h1>
-                            )}
-                            {user && user.type == userType &&
-                            <Chat> 
-                                <div>
-                                <Outlet />
-                                </div>
-                            </Chat>
-                            }
-                        </Main>
+                            {/* main content */}
+                            <Main theme={theme} open={leftDrawerOpened} sx={{ position: 'relative' }}>
+                                {(!user || user.type != userType) && (
+                                    <h1>not autherized!!</h1>
+                                )}
+                                {user && user.type == userType &&
+                                    user.type === 'admin' ? <Outlet /> :
+                                    <Chat>
+                                        <div>
+                                            <Outlet />
+                                        </div>
+                                    </Chat>
+                                }
+                            </Main>
 
                             {/* <Customization /> */}
                         </Box>

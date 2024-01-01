@@ -2,7 +2,8 @@ export const CLINIC_BASE_URL = 'http://localhost:8001';
 export const PATIENT_BASE_URL = 'http://localhost:8002';
 export const PHARMACY_BASE_URL = 'http://localhost:8003';
 export const COMMUNICATION_BASE_URL = 'http://localhost:8006';
-
+export const FAMILY_BOOKING_TYPE = 'family';
+export const MY_SELF_BOOKING_TYPE = 'myself';
 export const PHARMACY_MONGO_ID = '5fc7a921328d333b8ce85141';
 
 const APPOINTMENT_STATUS = [
@@ -64,3 +65,13 @@ export const ZERO_INDEX = 0;
 export const PAYMENT_ITEM_TYPES = ['Health-Package', 'appointment'];
 
 export const LIMIT_PER_PAGE = 5;
+
+export const TWO_SECONDS = 2000;
+
+export const GENDERS = ['MALE', 'FEMALE'];
+
+export const RELATIONS = ['HUSBAND', 'WIFE', 'CHILD'];
+
+export const REGISTERED_MEMBER = 'Registered-Family-Member';
+
+export const UNREGISTERED_MEMBER = 'Unregistered-Family-Member';

@@ -10,9 +10,11 @@ export default function MedicineCard({
 	setSelectedPrescription,
 	userType,
 }) {
+
 	const handleMedicineAmount = (value) => {
 		medicine.amount += value;
 		if (medicine.amount < 1) medicine.amount = 1;
+		if (medicine.amount > medicine.quantity) medicine.amount = medicine.quantity;
 		const medicineIndex = selectedPrescription.medicines.findIndex(
 			(prescriptionMedicine) =>
 				prescriptionMedicine.medicineId.toString() === medicine._id.toString(),
@@ -42,7 +44,7 @@ export default function MedicineCard({
 				<Grid item xs={3}>
 					<ListItemText primary={'Amount: ' + medicine.amount} />
 				</Grid>
-				{userType === 'doctor' && (
+				{userType === 'doctor' && !selectedPrescription.filled && (
 					<>
 						<Grid item xs={2}>
 							<Tooltip title='Increase amount'>

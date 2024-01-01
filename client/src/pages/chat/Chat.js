@@ -1,22 +1,19 @@
 import { Container } from '@mui/system';
 import ChatCard from './ChatCard';
 import DraggableChatButton from './DraggableChatButton';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDrop } from 'react-dnd';
 
 const Chat = ({ children }) => {
   const [isChatOpen, setChatOpen] = useState(false);
   const [position, setPosition] = useState({
-    left: window.innerWidth - window.innerWidth * 0.25,
-    top: window.innerHeight - window.innerHeight * 0.22,
+    left: window.innerWidth - window.innerWidth * 0.1,
+    top: window.innerHeight - window.innerHeight * 0.1,
   });
 
   const handleDrop = (delta) => {
-    const maxLeft = window.innerWidth - window.innerWidth * 0.25;
-    const maxTop = window.innerHeight - window.innerHeight * 0.22;
-
-    const newLeft = Math.min(Math.max(position.left + delta.x, 0), maxLeft);
-    const newTop = Math.min(Math.max(position.top + delta.y, 0), maxTop);
+    const newLeft = Math.max(position.left + delta.x, 0);
+    const newTop = Math.max(position.top + delta.y, 0);
 
     setPosition({
       left: newLeft,
@@ -35,34 +32,49 @@ const Chat = ({ children }) => {
   });
 
   const containerStyle = {
-    display: 'flex',
-    justifyContent: 'space-between',
+    position: 'relative',
+    padding: 3,
     width: '100%',
     height: '100%',
-    position: 'absolute',
-    left: '50%',
-    top: '50%',
-    transform: 'translate(-50%, -50%)', // Center the container
-    padding: 3,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: isChatOpen && isChatOpen && window.innerWidth > 1000 ? 'start' : 'center',
   };
+
+  const updatePosition = () => {
+    setPosition({
+      left: window.innerWidth - window.innerWidth * 0.1,
+      top: window.innerHeight - window.innerHeight * 0.1,
+    });
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', updatePosition);
+    return () => {
+      window.removeEventListener('resize', updatePosition);
+    };
+  }, []);
 
   const childrenWithStyles = React.Children.map(children, (child) => {
     return React.cloneElement(child, {
       style: {
         ...child.props.style,
+        display: isChatOpen && window.innerWidth < 1000 ? 'none' : 'block',
         pointerEvents: isChatOpen ? 'none' : 'auto',
-        opacity: isChatOpen ? 0.5: 1,
+        opacity: isChatOpen ? 0.5 : 1,
         width: isChatOpen ? '70%' : '100%',
       },
     });
   });
 
   return (
-      <Container ref={drop} sx={containerStyle}>
+    <Container ref={drop} sx={containerStyle}>
+      {!location.pathname.includes('profile') && (
         <DraggableChatButton isChatOpen={isChatOpen} position={position} setChatOpen={setChatOpen} />
-        {childrenWithStyles}
-        {isChatOpen && <ChatCard setChatOpen= {setChatOpen}/>}
-      </Container>
+      )}
+      {childrenWithStyles}
+      {isChatOpen && <ChatCard setChatOpen={setChatOpen} />}
+    </Container>
   );
 };
 

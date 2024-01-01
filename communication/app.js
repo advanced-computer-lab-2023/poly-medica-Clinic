@@ -67,6 +67,15 @@ io.on('connection', (socket) => {
 		});
 	});
 
+	socket.on('message_seen', (data) => {
+		console.log(data);
+		data.chat.users.map((user) => {
+			if (user.id !== data.sender)
+				socket.to(user.id).emit('update_chat_seen', {
+					chat: data.chat,
+				});
+		});
+	});
 	socket.on('ready', async ({ userId }) => {
 		try {
 			console.log('inside ready with id = ', userId);
@@ -80,27 +89,27 @@ io.on('connection', (socket) => {
 				const newUserSocket = new UserSocketModel(newUser);
 				newUserSocket.save();
 			}
-			socket.emit("me", socket.id);
+			socket.emit('me', socket.id);
 
 		} catch (err) {
 			console.log('err: ', err.message);
 		}
 	});
 
-	socket.on("disconnect", () => {
-		socket.broadcast.emit("callEnded");
+	socket.on('disconnect', () => {
+		socket.broadcast.emit('callEnded');
 	});
 
-	socket.on("callUser", async ({ userToCall, signalData, from, name }) => {
+	socket.on('callUser', async ({ userToCall, signalData, from, name }) => {
 		console.log('called user succeessfully');
 		const userSocketId = await UserSocketModel.findOne({ userId: userToCall });
-		io.to(userSocketId.socketId).emit("callUser", { signal: signalData, from, name });
+		io.to(userSocketId.socketId).emit('callUser', { signal: signalData, from, name });
 	});
 
-	socket.on("answerCall", (data) => {
+	socket.on('answerCall', (data) => {
 		console.log('inside answer call');
 		io.to(data.to).emit('hello');
-		io.to(data.to).emit("callAccepted", data.signal)
+		io.to(data.to).emit('callAccepted', data.signal);
 	});
 });
 
