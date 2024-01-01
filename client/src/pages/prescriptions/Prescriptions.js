@@ -82,7 +82,6 @@ const Prescriptions = () => {
 					},
 				]);
 				setLoadingPrescription(false);
-				console.log('prescription now false');
 			} catch (err) {
 				setLoadingPrescription(false);
 				console.log(err);

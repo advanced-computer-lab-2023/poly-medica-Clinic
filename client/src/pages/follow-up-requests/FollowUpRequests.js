@@ -10,7 +10,6 @@ const FollowUpRequests = () => {
     const [followUpRequests, setFollowUpRequests] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const { user } = useUserContext();
-
     useEffect(() => {
         clinicAxios
             .get(`/appointments/follow-up-requests/${user.id}`)

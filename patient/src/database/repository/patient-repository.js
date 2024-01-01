@@ -25,12 +25,10 @@ class PatientRepository {
 	}
 
 	async findFamilyMembers(id) {
-		console.log('id = ', id);
 		const familyMembers = await PatientModel.findById(
 			id,
 			FAMILY_MEMBERS_PROJECTION,
 		);
-		console.log('Family = ', familyMembers);
 		return familyMembers;
 	}
 

@@ -54,7 +54,6 @@ export const healthPackage = (app) => {
 				.status(ERROR_STATUS_CODE)
 				.json({ message: 'Invalid ID' });
 		try {
-			console.log(selectedEditPackages);
 			const updatedPackage = await service.updatePackage(
 				id,
 				selectedEditPackages
@@ -68,7 +67,6 @@ export const healthPackage = (app) => {
 	app.delete('/packages/:id', async (req, res) => {
 		const id = req.params.id;
 		try {
-			console.log(id);
 			const deletedPackage = await service.deletePackage(id);
 			res.status(OK_STATUS_CODE).json({ deletedPackage });
 		} catch (err) {

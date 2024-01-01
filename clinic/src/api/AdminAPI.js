@@ -54,7 +54,6 @@ export const admin = (app) => {
 	});
 
 	app.delete('/admins/:id', async (req, res) => {
-		console.log('delete admin');
 		try {
 			const { id } = req.params;
 			if (!isValidMongoId(id))

@@ -5,7 +5,7 @@ import {
 	Card,
 	CardContent,
 } from '@mui/material';
-import { getDay, getTime } from '../../../utils/DateFormatter.js';
+import { getDay, getTime } from '../utils/DateFormatter.js';
 
 const AvailableSlotsList = ({ availableSlots, textOnButton, handleClick }) => {
 

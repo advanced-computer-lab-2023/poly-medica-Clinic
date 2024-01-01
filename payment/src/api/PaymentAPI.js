@@ -61,11 +61,9 @@ export const payment = (app) => {
                 });
             }
             const walletChange = parseFloat(req.body.pricePaidToDoctor);
-            console.log('walletChange = ', walletChange);
             const axiosRes = await axios.patch(`${CLINIC_BASE_URL}/doctors/${doctorId}/wallet`, {
                 walletChange
             });
-            // console.log('axiosRes = ', axiosRes);
             res.status(OK_STATUS_CODE).json({ updatedDoctor: axiosRes.data.updatedDoctor });
         }
         catch(err){
