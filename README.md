@@ -98,83 +98,110 @@ We're excited to introduce AI models to augment our system's capabilities:
 - *Branching*: Follow Gitflow (feature branches, develop, master).
 - *Pull Requests*: Require clear descriptions and peer reviews before merging.
 
+</details>  
+
+---  
+
+<details>
+
+<summary> <h3> Microservices Structure </h3> </summary>
+ 
+ ```bash
+ Poly-Medica Clinic
+├── clinic
+│   ├── ...
+│   └── (Clinic Service Code)
+├── patient
+│   ├── ...
+│   └── (Patient Service Code)
+├── authentication
+│   ├── ...
+│   └── (Authentication Service Code)
+├── communication
+│   ├── ...
+│   └── (Communication Service Code)
+├── payment
+│   ├── ...
+│   └── (Payment Service Code)
+└── client
+    ├── ...
+    └── (Client Application Code)
+
+Poly-Medica Pharmacy
+├── pharmacy
+│   ├── ...
+│   └── (Pharmacy Service Code)
+└── client
+    ├── ...
+    └── (Client Application Code)
+ ```
+
 </details>
 
 ---
 
 ## Screenshots 🖵
-<!-- Admin Screenshots-->
-<details>
-<summary>Admin</summary>
 
 <details>
-<summary>Add New Helath Packages</summary>
-
-![WhatsApp Image 2023-12-17 at 5 00 28 AM (1)](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/101880627/36a7386d-2d20-435c-acc3-349988abeb52)
-
-
-    
-</details>
-
-</details>
-
-<!-- Patient Screenshots-->
-<details>
-<summary>Patient</summary>
-
-<details>
-<summary>Home Page</summary>
-
-![WhatsApp Image 2023-12-17 at 5 00 29 AM (1)](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/101880627/7fdf73b9-bc45-4f2c-ac3d-3bcbb4abf9a6)
-
-    
-</details>
-
-<details>
-<summary>View Appointments</summary>
-
-![WhatsApp Image 2023-12-17 at 5 00 28 AM](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/101880627/62230d66-c83e-4186-a991-24f3c3879ace)
-
-    
-</details>
-
-<details>
-<summary>Select a Doctor</summary>
-
-![WhatsApp Image 2023-12-17 at 5 00 29 AM](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/101880627/7420601b-bd39-4a8c-9fc0-3338fad3c294)
-
-    
-</details>
-
-
-</details>
-
-
-
-<!-- Doctor Screenshots-->
-
-<details>
-<summary>Doctor</summary>
-
-<details>
-<summary>Follow-up requests</summary>
-
- ![WhatsApp Image 2023-12-17 at 5 00 28 AM (2)](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/101880627/51774f22-2b4c-41c1-a073-390703f5b911)
-
-
-</details>
-
-<details>
-<summary>confirmation message </summary>
-
- ![WhatsApp Image 2023-12-17 at 5 00 29 AM (2)](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/101880627/7097c174-83d2-4fd2-8718-669282a5595c)
-
-
-</details>
-
-</details>
-<!-- to be added -->
+<summary>Login Page</summary>  
+	
+ ![login](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/102627389/56325872-aaac-4b78-843f-635c8edf4849)
  
+</details>
+
+<details>
+<summary>Home Page</summary>  
+	
+ ![home](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/102627389/5bfe411b-d6a7-4472-96db-0b88cf9353b6)
+ 
+</details>
+
+
+<details>
+<summary>Appointments Page</summary>  
+	
+ ![appointments](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/102627389/4095f6da-2857-4ac1-bd5d-f2b61d911dc1)
+ 
+</details>
+
+<details>
+<summary>Health Package Page</summary>  
+	
+ ![health-package](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/102627389/ef6c952f-107a-4438-8462-f74652dc8ffa)
+ 
+</details>
+
+<details>
+<summary>Apply Filter on doctors</summary>  
+	
+![apply-filter](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/102627389/a8b3508f-52dd-4e17-8292-48c788667916)
+ 
+</details>
+
+<details>
+<summary>Patient Adding family members</summary>  
+	
+![add-member](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/102627389/e11252e9-487b-4b4f-b33e-efa325a854fb)
+ 
+</details>
+
+<details>
+<summary>Doctor Receiving Notification</summary>  
+	
+![notification](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/102627389/f2a8d218-3002-4d7e-9129-25b537392adb)
+ 
+</details>
+
+<details>
+<summary>Admin Viewing Requests</summary>  
+	
+![requests](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/102627389/b7643d4d-ac7b-4d18-b2e8-8f5b0fb9e84b)
+
+</details>
+
+
+
+
  ---
 
 ## Tech/Framework used 
