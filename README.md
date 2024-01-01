@@ -718,14 +718,10 @@ The testing is done using `jest`. To run the tests, run the following command:
 ![image](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/101880627/3b31ae18-a4af-47ed-aee3-cf8e1be5a2d2)
 
  
- 
 ### Model tests
 `Faker.js` is used to generate data to test different models 
 
 There are tests done for the following models : `User` , `Admin` , `Patient` , `Doctor` , `Appointment` , `Health Package` , `Order` , `Prescription` 
-
-
-
 
 
 ## How to use
@@ -788,18 +784,19 @@ Contributions are always welcome!
 - [Designing Data Intensive Applications](https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/)
 
 
-
-
+---
 
 ## License
 
-#### Stripe License
-This project uses Stripe to process payments. By using this project, you agree to be bound by the Stripe Services Agreement.
+The Project is open source following [MIT License](https://opensource.org/license/mit/)
 
-You can find the full text of the Stripe Services Agreement at the following link:
+---
 
-https://stripe.com/legal
-
-Please make sure to read and understand the Stripe Services Agreement before using this project.
-
-If you have any questions about the Stripe Services Agreement or how it applies to your use of this project, please contact Stripe at support@stripe.com.    
+### Contributers: 
+- [Mohamed Khaled](https://github.com/Mohamed-Khaled308)
+- [Amir Tarek](https://github.com/amir-awad)
+- [Malek Mohamed](https://github.com/malekelkssas)
+- [Ahmad Hoseiny](https://github.com/AhmadHoseiny)
+- [Mohamed Hassan](https://github.com/mohamedhassans)
+- [Abdelrahman Amr](https://github.com/Aelmeky)
+- [Yehia Mohamed](https://github.com/YehiaFarghaly)
