@@ -1,8 +1,9 @@
 import React from 'react';
 import { List } from '@mui/material';
 import DoctorCard from './DoctorCard.js';
-
-const DoctorList = ({ doctors, setSelectedDoctor, loggedInPatientHealthPackage }) => {
+import { useDoctorContext } from 'hooks/useDoctorContext.js';
+const DoctorList = () => {
+    const { doctors } = useDoctorContext();
     return (
         <List>
             {Array.isArray(doctors) &&
@@ -11,8 +12,6 @@ const DoctorList = ({ doctors, setSelectedDoctor, loggedInPatientHealthPackage }
                         <div key={index}>
                             <DoctorCard
                                 doctor={doctor}
-                                setSelectedDoctor={setSelectedDoctor}
-                                loggedInPatientHealthPackage={loggedInPatientHealthPackage}
                             ></DoctorCard>
                         </div>
                     </div>

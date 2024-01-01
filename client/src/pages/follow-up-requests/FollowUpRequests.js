@@ -6,10 +6,10 @@ import { List } from '@mui/material';
 import FollowUpRequestCard from './FollowUpRequestCard.js';
 import NoDataFound from '../NoDataFound.js';
 const FollowUpRequests = () => {
+
     const [followUpRequests, setFollowUpRequests] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const { user } = useUserContext();
-    console.log('user = ', user);
     useEffect(() => {
         clinicAxios
             .get(`/appointments/follow-up-requests/${user.id}`)
@@ -17,7 +17,6 @@ const FollowUpRequests = () => {
                 const resFollowUpRequests = response.data;
                 setFollowUpRequests(resFollowUpRequests);
                 setIsLoading(false);
-                console.log('resFollowUpRequests = ', resFollowUpRequests);
             })
             .catch((error) => {
                 console.log(error);

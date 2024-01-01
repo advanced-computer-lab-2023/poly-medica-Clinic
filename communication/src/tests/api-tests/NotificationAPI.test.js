@@ -3,9 +3,9 @@ import app from '../../../app.js';
 import { 
 	connectDBTest,
 	disconnectDBTest
-} from '../../utils/testing-utils.js';
+} from '../../utils/TestingUtils.js';
 import Notification from '../../database/models/Notification.js';
-import { describe, beforeEach, afterEach, expect, it } from '@jest/globals';
+import { describe, beforeEach, afterEach, expect, it, jest } from '@jest/globals';
 import generateNotification from '../model-generators/generateNotification.js';
 import { faker } from '@faker-js/faker';
 import { 
@@ -17,8 +17,13 @@ import {
 	OK_STATUS_CODE,
 	ZERO,
 	ONE,
-	TWO
+	TWO,
+	TIME_OUT,
 } from '../../utils/Constants.js';
+// import nodemailer from 'nodemailer';
+import axios from 'axios';
+
+jest.setTimeout(TIME_OUT);
 
 describe('GET /notifications/:userId', () => {
     
@@ -64,6 +69,8 @@ describe('POST /user/:id', () => {
 	});
 });
 
+
+jest.mock('axios');
 describe('POST /notification/:userId/type/:type', () => {
     
 	beforeEach(async () => {
@@ -74,6 +81,7 @@ describe('POST /notification/:userId/type/:type', () => {
 		const userId = faker.database.mongodbObjectId();
 		await Notification.create({ userId });
 		const notification = generateNotification();
+		axios.get.mockResolvedValue({ data: 'mock123@gmail.com' });
 		const res = await request(app).post(`/notification/${userId}/type/${NORMAL_NOTIFICATION_TYPE_ENUM}`).send(notification);
 		expect(res.status).toBe(OK_STATUS_CODE);
 	});

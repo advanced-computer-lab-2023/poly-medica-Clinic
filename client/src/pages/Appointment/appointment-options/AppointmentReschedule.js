@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { clinicAxios } from 'pages/utilities/AxiosConfig';
 import { Typography } from '@mui/material';
-import AvailableSlotsList from './AvailableSlotsList.js';
+import AvailableSlotsList from '../../../ui-component/AvailableSlotsList.js';
 import Swal from 'sweetalert2';
 import '../../../assets/css/swalStyle.css';
 import { communicationAxios } from 'utils/AxiosConfig.js';
@@ -17,7 +17,6 @@ const AppointmentReschedule = ({
 }) => {
     const { user } = useUserContext();
 
-    console.log('selectedAppointment', selectedAppointment);
     const [doctorAvailableSlots, setDoctorAvailableSlots] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
@@ -68,7 +67,6 @@ const AppointmentReschedule = ({
             .catch((error) => {
                 console.log(error);
             });
-        console.log('availableSlotsIdx', availableSlotsIdx);
     };
     const handleConfirmation = (event) => {
         const availableSlotsIdx = parseInt(event.target.id);

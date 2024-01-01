@@ -1,6 +1,6 @@
 import request from 'supertest';
 import app from '../../../app.js';
-import { connectDBTest, disconnectDBTest } from '../../utils/testing-utils.js';
+import { connectDBTest, disconnectDBTest } from '../../utils/TestingUtils.js';
 import {
 	OK_STATUS_CODE,
 	NOT_FOUND_STATUS_CODE,
@@ -35,7 +35,6 @@ describe('GET /doctor/:id', () => {
 	it('should return 200 OK and retrieve the doctor correctly', async () => {
 		const doctor = new DoctorModel(generateDoctor());
 		await doctor.save();
-		// console.log('DoctorAPI doctor', doctor);
 		const id = doctor._id.toString();
 		const res = await request(app).get(`/doctor/${id}`);
 		expect(res.status).toBe(OK_STATUS_CODE);
@@ -304,7 +303,6 @@ describe('GET /appointments', () => {
 		}
 
 		const res = await request(app).get('/appointments');
-		console.log('dsdsds', res._body);
 		expect(res.status).toBe(OK_STATUS_CODE);
 		expect(res._body.allAppointments.length).toBe(len);
 		for (let i = 0; i < len; i++) {
@@ -387,7 +385,6 @@ describe('GET /doctors/:id/slots', () => {
 		const id = doctor._id.toString();
 		const res = await request(app).get(`/doctors/${id}/slots`);
 		expect(res.status).toBe(OK_STATUS_CODE);
-		console.log('dsdsddsds', res._body);
 
 		for (let i = 0; i < doctor.availableSlots.length; i++) {
 			expect(new Date(res._body[i].from)).toStrictEqual(
@@ -435,7 +432,6 @@ describe('POST /doctors/:id/slots', () => {
 			.send({ from });
 		expect(res.status).toBe(OK_STATUS_CODE);
 
-		console.log('dsdsddsds', res._body);
 		for (let i = 0; i < doctor.availableSlots.length; i++) {
 			expect(new Date(res._body[i].from)).toStrictEqual(
 				doctor.availableSlots[i].from
@@ -500,7 +496,6 @@ describe('GET /doctors/:id/wallet', () => {
 		await doctor.save();
 		const id = doctor._id.toString();
 		const res = await request(app).get(`/doctors/${id}/wallet`);
-		console.log('res._body', res._body);
 		expect(res.status).toBe(OK_STATUS_CODE);
 		expect(res._body.walletAmount).toBe(doctor.walletAmount);
 	});

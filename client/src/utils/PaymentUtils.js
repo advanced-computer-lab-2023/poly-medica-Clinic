@@ -1,12 +1,9 @@
-import { clinicAxios, patientAxios, paymentAxios } from './AxiosConfig';
+import { clinicAxios, patientAxios, paymentAxios, communicationAxios } from './AxiosConfig';
 import { PAYMENT_ITEM_TYPES } from './Constants';
 import { showFailureAlert, showSuccessAlert } from './swal';
 
 export const successfulPayment = (userId, items, type) => {
-  console.log('items = ', items);
-  console.log('type = ', type);
   if (type === PAYMENT_ITEM_TYPES[0]) {
-    console.log('condition true');
     patientAxios.patch(`/patient/${userId}/health-packages`, { items })
       .catch((error) => {
         console.log('Error in placing the order', error);
@@ -16,9 +13,17 @@ export const successfulPayment = (userId, items, type) => {
     clinicAxios.post('/appointments', { items })
       .then(() => {
         // payment to doctor
-        payDoctor(items).catch((err) => {
-          console.log('err = ', err);
-        });
+        payDoctor(items)
+          .then(async () => {
+            await communicationAxios.post(`/notification/${items.doctorId}/type/appointment`, {
+              senderName: items.doctorName,
+              notificationHead: 'Appointment Booked',
+              notificationBody: `Mr/Miss ${items.patientName} has booked an appointment with you`
+          });
+          })
+          .catch((err) => {
+            console.log('err = ', err);
+          });
       })
       .catch((error) => {
         console.log('Error in placing the order', error);
@@ -64,10 +69,9 @@ export const paymentElementOptions = {
   }
 };
 
-export const payDoctor = (items) => {
+export const payDoctor = async (items) => {
   const { doctorId, pricePaidToDoctor } = items;
-  console.log('pricePaidToDoctor = ', pricePaidToDoctor);
-  return paymentAxios.post(`/payment-salary/doctor/${doctorId}/wallet`, { 
+  return await paymentAxios.post(`/payment-salary/doctor/${doctorId}/wallet`, { 
     pricePaidToDoctor
   });
 };

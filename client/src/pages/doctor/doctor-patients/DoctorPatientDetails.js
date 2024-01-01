@@ -8,27 +8,11 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import ContactEmergencyIcon from '@mui/icons-material/ContactEmergency';
 import { getDay } from '../../../utils/DateFormatter';
 import { useNavigate } from 'react-router-dom';
-import { useDoctorContext } from 'hooks/useDoctorContext';
+import { usePatientContext } from 'hooks/usePatientContext';
 import { getTitle } from 'utils/CommonUtils';
-const PatientDetailsContainer = styled('div')({
-    display: 'flex',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginBottom: '5em',
-});
+import { commonStyles } from 'ui-component/CommonStyles';
 
-const PatientInfoContainer = styled('div')({
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '0.7em',
-});
-
-const IconContainer = styled('div')({
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'row',
-});
+const useStyles = styled(() => commonStyles);
 
 const StyledButton = styled(Button)({
     marginTop: '2%',
@@ -36,43 +20,43 @@ const StyledButton = styled(Button)({
 
 const DoctorPatientDetails = () => {
     const navigate = useNavigate();
-    const { selectedPatient } = useDoctorContext();
+    const { selectedPatient } = usePatientContext();
     const title = getTitle(selectedPatient);
-
+    const classes = useStyles();
     return (
         <>
             {selectedPatient && (
                 <>
-                    <PatientDetailsContainer>
-                        <div>
-                            <img src={DoctorIcon} alt={`${title} ${selectedPatient.name}`} width='100' height='100' />
-                            <Typography variant='h4' sx={{ marginTop: '1em' }}>
-                                {`${title} ${selectedPatient.name}`}
-                            </Typography>
-                        </div>
-                        <PatientInfoContainer>
-                            <IconContainer>
+                    <div className={classes.container}>
+
+                        <img src={DoctorIcon} alt={`${title} ${selectedPatient.name}`} width='100' height='100' />
+                        <Typography variant='h4' sx={{ marginTop: '1em' }}>
+                            {`${title} ${selectedPatient.name}`}
+                        </Typography>
+                        <div className={classes.infoContainer}>
+
+                            <div className={classes.emailContainer}>
                                 <EmailIcon sx={{ marginRight: '0.4em' }} />
                                 <Typography variant='body1'>{`${selectedPatient.email}`}</Typography>
-                            </IconContainer>
-                            <IconContainer>
+                            </div>
+                            <div className={classes.emailContainer}>
                                 <PregnantWomanIcon sx={{ marginRight: '0.4em' }} />
                                 <Typography variant='body1'>{`Born on ${getDay(selectedPatient.dateOfBirth)}`}</Typography>
-                            </IconContainer>
-                            <IconContainer>
+                            </div>
+                            <div className={classes.emailContainer}>
                                 <WcIcon sx={{ marginRight: '0.4em' }} />
                                 <Typography variant='body1'>{`${selectedPatient.gender}`}</Typography>
-                            </IconContainer>
-                            <IconContainer>
+                            </div>
+                            <div className={classes.emailContainer}>
                                 <PhoneIcon sx={{ marginRight: '0.4em' }} />
                                 <Typography variant='body1'>{`${selectedPatient.mobileNumber}`}</Typography>
-                            </IconContainer>
-                            <IconContainer>
+                            </div>
+                            <div className={classes.emailContainer}>
                                 <ContactEmergencyIcon sx={{ marginRight: '0.4em' }} />
                                 <Typography variant='body1'>{`${selectedPatient.emergencyContact.name} - ${selectedPatient.emergencyContact.mobile}`}</Typography>
-                            </IconContainer>
-                        </PatientInfoContainer>
-                    </PatientDetailsContainer>
+                            </div>
+                        </div>
+                    </div>
 
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
                         <StyledButton variant='outlined' onClick={() => navigate(`/doctor/pages/profile/${selectedPatient._id}`, { state: { selectedPatient } })}>
