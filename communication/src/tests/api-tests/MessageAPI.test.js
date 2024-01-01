@@ -1,6 +1,6 @@
 import request from 'supertest';
 import server from '../../../app.js';
-import { connectDBTest, disconnectDBTest } from '../../utils/testing-utils.js';
+import { connectDBTest, disconnectDBTest } from '../../utils/TestingUtils.js';
 import { OK_STATUS_CODE, ERROR_STATUS_CODE, TIME_OUT } from '../../utils/Constants.js';
 import MessageModel from '../../database/models/Message.js';
 import generateMessage from '../model-generators/generateMessage.js';

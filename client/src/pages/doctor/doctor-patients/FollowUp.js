@@ -1,22 +1,19 @@
 import React, { useState } from 'react';
 import {
-	Button,
 	Typography,
-	Grid,
-	Card,
-	CardContent,
 } from '@mui/material';
-import { getDay, getTime } from '../../../utils/DateFormatter.js';
 import Swal from 'sweetalert2';
 import '../../../assets/css/swalStyle.css';
 import { useDoctorContext } from 'hooks/useDoctorContext.js';
 import { getTitle } from 'utils/CommonUtils.js';
 import { addAppointment } from 'api/DoctorAPI.js';
 import { showSuccessAlert } from 'utils/swal.js';
+import { usePatientContext } from 'hooks/usePatientContext.js';
+import AvailableSlotsList from '../../../ui-component/AvailableSlotsList.js';
 
 const FollowUp = () => {
-	const { selectedPatient, loggedInDoctor, setLoggedInDoctor } = useDoctorContext();
-
+	const { loggedInDoctor, setLoggedInDoctor } = useDoctorContext();
+	const { selectedPatient } = usePatientContext();
 	const title = getTitle(selectedPatient);
 
 	const [availableSlots, setAvailableSlots] = useState(
@@ -87,60 +84,11 @@ const FollowUp = () => {
 			)}
 			{
 				selectedPatient &&
-				<Grid
-					container
-					spacing={{ xs: 2, md: 3 }}
-					columns={{ xs: 4, sm: 8, md: 12 }}
-				>
-					{Array.isArray(availableSlots) &&
-						availableSlots.length > 0 &&
-						availableSlots.map((slot, index) => (
-							<Grid item key={index} xs={4} sm={6}>
-								<Card
-									sx={{
-										backgroundColor: (theme) =>
-											theme.palette.mode === 'light'
-												? theme.palette.grey[200]
-												: theme.palette.grey[700],
-									}}
-								>
-									<CardContent
-										sx={{
-											display: 'flex',
-											justifyContent: 'center',
-											flexDirection: 'column',
-											textAlign: 'center',
-										}}
-									>
-										<Typography sx={{ mb: 1.5 }} variant='h5'>
-											{getDay(slot.from)}
-										</Typography>
-
-										<Typography component='h6' color='text.primary'>
-											{`From : ${getTime(slot.from)}`}
-										</Typography>
-										<Typography
-											component='h6'
-											color='text.primary'
-											sx={{ mb: '1.5em' }}
-										>
-											{`To : ${getTime(slot.until)}`}
-										</Typography>
-
-										<Button
-											id={index}
-											size='small'
-											variant='text'
-											color='primary'
-											onClick={handleConfirmation}
-										>
-											Schedule Now
-										</Button>
-									</CardContent>
-								</Card>
-							</Grid>
-						))}
-				</Grid>
+				<AvailableSlotsList
+					availableSlots={availableSlots}
+					textOnButton='Schedule Now'
+					handleClick={handleConfirmation}
+				/>
 			}
 		</>
 	);

@@ -1,6 +1,6 @@
 import request from 'supertest';
 import app from '../../../app.js';
-import { connectDBTest, disconnectDBTest } from '../../utils/testing-utils.js';
+import { connectDBTest, disconnectDBTest } from '../../utils/TestingUtils.js';
 import {
 	OK_STATUS_CODE,
 	NOT_FOUND_STATUS_CODE,
@@ -64,7 +64,6 @@ describe('GET /patient/:id/health-packages', () => {
 		const res = await fetchPackages(id);
 
 		expect(res.status).toBe(OK_STATUS_CODE);
-		console.log(res._body);
 		expect(res._body.healthPackages.length).toBe(ONE);
 	});
 
@@ -283,7 +282,6 @@ describe('GET /patient/:id/prescriptions (get all prescriptions of a patient)', 
 			);
 			await prescription.save();
 		}
-		console.log(mainPatientId);
 		const res = await request(app).get(
 			`/patient/${mainPatientId}/prescriptions`
 		);

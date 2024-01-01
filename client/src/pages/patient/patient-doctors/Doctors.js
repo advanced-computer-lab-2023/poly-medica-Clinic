@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { doctorAxios, patientAxios } from 'pages/utilities/AxiosConfig';
 import MainCard from 'ui-component/cards/MainCard';
 import DoctorList from './DoctorList.js';
 import DoctorDetails from './DoctorDetails.js';
@@ -8,33 +7,31 @@ import { useFilter } from 'contexts/FilterContext.js';
 import { useSearch } from 'contexts/SearchContext.js';
 import { isDateInAvailableSlots } from 'utils/AppointmentUtils.js';
 import { useLocation } from 'react-router-dom';
-
-
+import { useDoctorContext } from 'hooks/useDoctorContext.js';
+import { usePatientContext } from 'hooks/usePatientContext.js';
+import { getDoctors } from 'api/DoctorAPI.js';
+import { getPatient, getPatientHealthPackage } from 'api/PatientAPI.js';
 const Doctors = () => {
     const { user } = useUserContext();
     const patientID = user.id;
-    const [doctors, setDoctors] = useState([]);
-    const [selectedDoctor, setSelectedDoctor] = useState(null);
-    const [originalDoctors, setOriginalDoctors] = useState([]);
-    const [loggedInPatient, setLoggedInPatient] = useState(null);
-    const [loggedInPatientHealthPackage, setLoggedInPatientHealthPackage] = useState(null);
+    const { setDoctors, originalDoctors, setOriginalDoctors, setSelectedDoctor } = useDoctorContext();
+    const { setLoggedInPatient, setLoggedInPatientHealthPackage } = usePatientContext();
     const [isLoaded, setIsLoaded] = useState(false);
     const [redirected, setRedirceted] = useState(false);
     const { filterData, updateFilter } = useFilter();
     const { searchQuery } = useSearch();
     const specialities = [];
     const location = useLocation();
+
     useEffect(() => {
-        doctorAxios
-            .get('/doctors')
+        getDoctors()
             .then((response) => {
-                setDoctors(response.data);
-                setOriginalDoctors(response.data);
-                for (let i = 0; i < response.data.length; i++) {
-                    const doctor = response.data[i];
+                setDoctors(response);
+                setOriginalDoctors(response);
+                for (let i = 0; i < response.length; i++) {
+                    const doctor = response[i];
                     specialities.push(doctor.speciality);
                 }
-                console.log(response);
                 updateFilter([
                     {
                         attribute: 'Speciality',
@@ -100,40 +97,28 @@ const Doctors = () => {
         setDoctors(filteredDoctors);
     }, [filterData, originalDoctors, searchQuery]);
 
-    const handleDialogClose = () => {
-        setSelectedDoctor(null);
-    };
-
     useEffect(() => {
-        patientAxios
-            .get(`/patients/${patientID}`)
+        getPatient(patientID)
             .then((response) => {
-                const patient = response.data.patient;
+                const patient = response.patient;
                 const filteredMembers = patient.familyMembers.filter(member => !member.id);
                 patient.familyMembers = filteredMembers;
                 setLoggedInPatient(patient);
-            })
-            .catch((error) => {
-                console.log(error);
             });
     }, []);
 
     useEffect(() => {
-        patientAxios
-            .get(`/patient/${patientID}/health-packages`)
+        getPatientHealthPackage(patientID)
             .then((response) => {
                 let healthPackage = {
                     doctorDiscount: 0
                 };
-                const healthPackages = response.data.healthPackages;
+                const healthPackages = response.healthPackages;
                 if (healthPackages.length) {
                     healthPackage = healthPackages[0];
                 }
                 setLoggedInPatientHealthPackage(healthPackage);
                 setIsLoaded(true);
-            })
-            .catch((error) => {
-                console.log(error);
             });
     }, []);
 
@@ -141,24 +126,10 @@ const Doctors = () => {
         isLoaded
         &&
         <MainCard title='Doctors'>
-            <DoctorList
-                doctors={doctors}
-                setSelectedDoctor={setSelectedDoctor}
-                loggedInPatientHealthPackage={loggedInPatientHealthPackage}
-            />
-            {redirected && <DoctorDetails
-                selectedDoctor={selectedDoctor}
-                handleDialogClose={handleDialogClose}
-                loggedInPatient={loggedInPatient}
-                loggedInPatientHealthPackage={loggedInPatientHealthPackage}
-            />
+            <DoctorList />
+            {redirected && <DoctorDetails />
             }
-            <DoctorDetails
-                selectedDoctor={selectedDoctor}
-                handleDialogClose={handleDialogClose}
-                loggedInPatient={loggedInPatient}
-                loggedInPatientHealthPackage={loggedInPatientHealthPackage}
-            />
+            <DoctorDetails />
         </MainCard>
     );
 };

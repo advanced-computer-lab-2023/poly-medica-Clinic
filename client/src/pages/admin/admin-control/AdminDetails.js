@@ -14,6 +14,7 @@ import {
 import { styled } from '@mui/system';
 import { useAdminContext } from 'hooks/useAdminContext';
 import { commonStyles } from 'ui-component/CommonStyles';
+
 const useStyles = styled(() => commonStyles);
 
 const AdminDetails = () => {

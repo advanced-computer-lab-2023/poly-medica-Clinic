@@ -34,15 +34,13 @@ export const ChoosePayment = ({ isAddDialogOpen, setIsAddDialogOpen, items, amou
   const userId = user.id;
 
   const { setPaymentDone } = usePayment();
-  console.log('items  ', items);
-  console.log('price = ', amountToPay);
   const [value, setValue] = useState('credit-card');
 
   useEffect(
     () => {
       if (user.type !== ADMIN_TYPE_ENUM) {
         patientAxios.get(`/patients/${userId}/wallet`).then((response) => {
-          setAmountInWallet(response.data.walletAmount);
+          setAmountInWallet(response.data.walletAmount.toFixed(2));
         }).
           catch(error => {
             Swal.fire('error', error, 'error');

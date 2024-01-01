@@ -8,8 +8,33 @@ import {
     TextField,
     FormControl
 } from '@mui/material';
+import { useAdminContext } from 'hooks/useAdminContext';
+import { updateHealthPackage } from 'api/AdminAPI';
+import { usePatientContext } from 'hooks/usePatientContext';
 
-const EditHealthPackage = ({ isEditDialogOpen, setIsEditDialogOpen, setSelectedEditPackage, handleSaveEdit, selectedEditPackage }) => {
+const EditHealthPackage = () => {
+    const { isEditDialogOpen, setIsEditDialogOpen, setSelectedEditPackage, selectedEditPackages } = useAdminContext();
+    const { setPackages } = usePatientContext();
+    const handleSaveEdit = (e) => {
+        e.preventDefault();
+        if (selectedEditPackages) {
+            updateHealthPackage(selectedEditPackages)
+                .then(() => {
+                    setIsEditDialogOpen(false);
+                    setPackages((prevPackage) => {
+                        const updatedPackages = prevPackage.map((packages) => {
+                            if (packages._id === selectedEditPackages._id) {
+                                return selectedEditPackages;
+                            }
+                            return packages;
+                        });
+                        return updatedPackages;
+                    });
+                    setSelectedEditPackage(null);
+                });
+        }
+    };
+
     return (
         <Dialog
             open={isEditDialogOpen}
@@ -17,7 +42,7 @@ const EditHealthPackage = ({ isEditDialogOpen, setIsEditDialogOpen, setSelectedE
         >
             <DialogTitle>Edit Health Package</DialogTitle>
             <DialogContent>
-                {selectedEditPackage && (
+                {selectedEditPackages && (
                     <form onSubmit={(e) => handleSaveEdit(e)} id='editPackageForm'>
 
                         <FormControl required fullWidth>
@@ -27,8 +52,8 @@ const EditHealthPackage = ({ isEditDialogOpen, setIsEditDialogOpen, setSelectedE
                                 variant="outlined"
                                 fullWidth
                                 margin="normal"
-                                value={selectedEditPackage.name}
-                                onChange={(e) => setSelectedEditPackage({ ...selectedEditPackage, name: e.target.value })}
+                                value={selectedEditPackages.name}
+                                onChange={(e) => setSelectedEditPackage({ ...selectedEditPackages, name: e.target.value })}
                                 required
                             />
                         </FormControl>
@@ -39,8 +64,8 @@ const EditHealthPackage = ({ isEditDialogOpen, setIsEditDialogOpen, setSelectedE
                                 variant="outlined"
                                 fullWidth
                                 margin="normal"
-                                value={selectedEditPackage.price}
-                                onChange={(e) => setSelectedEditPackage({ ...selectedEditPackage, price: e.target.value })}
+                                value={selectedEditPackages.price}
+                                onChange={(e) => setSelectedEditPackage({ ...selectedEditPackages, price: e.target.value })}
                                 required
                             />
                         </FormControl>
@@ -52,8 +77,8 @@ const EditHealthPackage = ({ isEditDialogOpen, setIsEditDialogOpen, setSelectedE
                                 variant="outlined"
                                 fullWidth
                                 margin="normal"
-                                value={selectedEditPackage.discountOfDoctor}
-                                onChange={(e) => setSelectedEditPackage({ ...selectedEditPackage, discountOfDoctor: e.target.value })}
+                                value={selectedEditPackages.discountOfDoctor}
+                                onChange={(e) => setSelectedEditPackage({ ...selectedEditPackages, discountOfDoctor: e.target.value })}
                                 required
                             />
                         </FormControl>
@@ -64,8 +89,8 @@ const EditHealthPackage = ({ isEditDialogOpen, setIsEditDialogOpen, setSelectedE
                                 variant="outlined"
                                 fullWidth
                                 margin="normal"
-                                value={selectedEditPackage.discountOfMedicin}
-                                onChange={(e) => setSelectedEditPackage({ ...selectedEditPackage, discountOfMedicin: e.target.value })}
+                                value={selectedEditPackages.discountOfMedicin}
+                                onChange={(e) => setSelectedEditPackage({ ...selectedEditPackages, discountOfMedicin: e.target.value })}
                                 required
                             />
                         </FormControl>
@@ -76,8 +101,8 @@ const EditHealthPackage = ({ isEditDialogOpen, setIsEditDialogOpen, setSelectedE
                                 variant="outlined"
                                 fullWidth
                                 margin="normal"
-                                value={selectedEditPackage.discountOfFamily}
-                                onChange={(e) => setSelectedEditPackage({ ...selectedEditPackage, discountOfFamily: e.target.value })}
+                                value={selectedEditPackages.discountOfFamily}
+                                onChange={(e) => setSelectedEditPackage({ ...selectedEditPackages, discountOfFamily: e.target.value })}
                                 required
                             />
                         </FormControl>

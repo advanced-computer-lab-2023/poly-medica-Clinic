@@ -75,7 +75,6 @@ const ChatBox = ({ setChatOpen }) => {
                     }
                     action={
                         <IconButton aria-label="settings" onClick={() => {
-                            // console.log(chats, selectedChat);
                             setSelectedChat(null);
                             setChatOpen(false);
                         }}>

@@ -4,13 +4,17 @@ import {
     ListItemAvatar,
 } from '@mui/material';
 import DoctorIcon from '../../../assets/images/icons/DoctorIcon.png';
-import { useDoctorContext } from 'hooks/useDoctorContext';
+import { usePatientContext } from 'hooks/usePatientContext';
 import { getTitle } from 'utils/CommonUtils';
+import { commonStyles } from 'ui-component/CommonStyles';
+import { styled } from '@mui/system';
+
+const useStyles = styled(() => commonStyles);
 
 const DoctorPatientCard = ({ patient }) => {
-    const { setSelectedPatient } = useDoctorContext();
-
+    const { setSelectedPatient } = usePatientContext();
     const title = getTitle(patient);
+    const classes = useStyles();
 
     return (
         <ListItemButton onClick={() => setSelectedPatient(patient)}>
@@ -25,11 +29,7 @@ const DoctorPatientCard = ({ patient }) => {
             <ListItemText
                 primary={`${title} ${patient.name}`}
                 secondary={patient.email}
-                sx={{
-                    width: '60%',
-                    lineHeight: '1.5em',
-                    maxHeight: '3em',
-                }}
+                className={classes.ListItemText}
             />
         </ListItemButton>
     );

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { clinicAxios } from 'pages/utilities/AxiosConfig';
 import { Typography } from '@mui/material';
-import AvailableSlotsList from './AvailableSlotsList.js';
+import AvailableSlotsList from '../../../ui-component/AvailableSlotsList.js';
 import Swal from 'sweetalert2';
 import '../../../assets/css/swalStyle.css';
 import { useNavigate } from 'react-router-dom';
@@ -25,7 +25,6 @@ const FollowUp = ({ selectedAppointment }) => {
     }
     , []);
     const handleFollowUpRequest = async (availableSlotsIdx) => {
-        console.log('availableSlotsIdx', availableSlotsIdx);
         const appointmentData = {
             patientId: selectedAppointment.patientId,
             doctorId: selectedAppointment.doctorId,

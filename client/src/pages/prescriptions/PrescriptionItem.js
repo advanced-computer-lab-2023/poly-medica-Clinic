@@ -7,7 +7,7 @@ import {
 	IconButton,
 	Tooltip,
 } from '@mui/material';
-
+import { getDoctor } from 'api/DoctorAPI';
 import { Edit as EditIcon } from '@mui/icons-material';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import CheckIcon from '@mui/icons-material/Check';
@@ -16,7 +16,6 @@ import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import prescrptionImage from '../utilities/prescription.png';
-import { clinicAxios } from '../../utils/AxiosConfig';
 import { useUserContext } from 'hooks/useUserContext';
 import { PATIENT_BASE_URL } from 'utils/Constants';
 
@@ -29,20 +28,18 @@ const PrescriptionItem = ({
 	const [doctor, setDoctor] = useState({});
 	const [Loading, setLoading] = useState(true);
 	useEffect(() => {
-		try { 
-			const getDoctor = () => {
-				clinicAxios
-					.get(`doctor/${prescription.doctorId}`)
+		try {
+			const fetchDoctor = () => {
+				getDoctor(prescription.doctorId)
 					.then((responseClinic) => {
-						setDoctor(responseClinic.data.doctor);
+						setDoctor(responseClinic.doctor);
 						setLoading(false);
 					})
-					.catch((err) => {
-						console.log(err);
+					.catch(() => {
 						setLoading(false);
 					});
 			};
-			getDoctor();
+			fetchDoctor();
 		} catch (err) {
 			console.log(err);
 		}
@@ -89,7 +86,6 @@ const PrescriptionItem = ({
 							maxHeight: '3em',
 						}}
 					/>
-					{/* <Typography variant="h5" sx={{ paddingLeft: '2%', align:'center' }}> {dayjs(prescription.date).format('LL')} </Typography> */}
 				</LocalizationProvider>
 
 				{user.type === 'doctor' && !prescription.filled && (

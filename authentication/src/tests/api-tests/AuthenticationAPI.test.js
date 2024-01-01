@@ -3,7 +3,7 @@ import app from '../../../app.js';
 import { 
 	connectDBTest,
 	disconnectDBTest
-} from '../../utils/testing-utils.js';
+} from '../../utils/TestingUtils.js';
 import User from '../../database/models/Users.js';
 import { describe, beforeEach, afterEach, expect, it, jest } from '@jest/globals';
 import generateUser from '../model-generators/generateUser.js';

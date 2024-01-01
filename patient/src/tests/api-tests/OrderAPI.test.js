@@ -1,6 +1,6 @@
 import request from 'supertest';
 import app from '../../../app.js';
-import { connectDBTest, disconnectDBTest } from '../../utils/testing-utils.js';
+import { connectDBTest, disconnectDBTest } from '../../utils/TestingUtils.js';
 import {
 	OK_STATUS_CODE,
 	ERROR_STATUS_CODE,
@@ -57,14 +57,8 @@ describe('POST /order', () => {
 	it('should return 200 OK and create a new order', async () => {
 		const patient = new PatientModel(generatePatient());
 		await patient.save();
-		const order = new OrderModel(generateOrder(patient._id, ORDER_STATUS[ZERO_INDEX]));
-		await order.save();
-		const newOrder = {
-			patientId: order.patientId,
-			details: order.details,
-			amount: order.amount,
-		};
-		const res = await request(app).post('/order').send({ order: newOrder });
+		const order = generateOrder(patient._id, ORDER_STATUS[ZERO_INDEX]);
+		const res = await request(app).post('/order').send({ order });
 		expect(res.status).toBe(OK_STATUS_CODE);
 		expect(res._body.patientId.toString()).toBe(order.patientId.toString());
 	});
