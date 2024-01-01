@@ -50,7 +50,7 @@ const UpgradePlanCard = () => {
 	const navigate = useNavigate();
 	useEffect(() => {
 		getPatientHealthPackage(user.id).then((response) => {
-			setHealthPackages(response.data.healthPackages);
+			setHealthPackages(response.healthPackages);
 		}).catch((err) => {
 			console.log(err);
 		});

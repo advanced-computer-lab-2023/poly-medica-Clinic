@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { useTheme } from '@mui/material/styles';
 import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
-
+import boardingImage from 'assets/images/boarding.jpg';
 import AuthWrapper1 from '../AuthWrapper1';
 import AuthCardWrapper from '../AuthCardWrapper';
 import AuthLogin from '../auth-forms/AuthLogin';
@@ -19,12 +19,15 @@ const Login = () => {
 
 	return (
 		<AuthWrapper1>
-			<Grid container direction="column" justifyContent="flex-end" sx={{ minHeight: '100vh' }}>
+			<Grid container sx={{ minHeight: '100vh', padding: '2%' }}>
 				<Grid item xs={12}>
-					<Grid container justifyContent="center" alignItems="center" sx={{ minHeight: 'calc(100vh - 68px)' }}>
-						<Grid item sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
+					<Grid container>
+						<Grid item xs={7}>
+							<img src={boardingImage} alt="Boarding" style={{ width: '100%', height: '70%', objectFit: 'fill' }} />
+						</Grid>
+						<Grid item xs={5} >
 							<AuthCardWrapper>
-								<Grid container spacing={2} alignItems="center" justifyContent="center">
+								<Grid item container spacing={2} alignItems="center" justifyContent="center">
 									<Grid item sx={{ mb: 3 }}>
 										<Link to="#">
 											<Logo />
