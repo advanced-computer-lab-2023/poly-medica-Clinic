@@ -1,4 +1,3 @@
-import Stripe from 'stripe';
 import axios from 'axios';
 
 import {
@@ -10,21 +9,17 @@ import {
     SECRET_KEY
 } from '../utils/Constants.js';
 import { isValidMongoId } from '../utils/Validation.js';
+import PaymentService from '../service/payment-service.js';
 
-const stripe = new Stripe(SECRET_KEY);
 
 export const payment = (app) => {
+
+    const service = new PaymentService();
 
     app.post('/payment/card', async (req, res) => {
         try{
             const total_amount = Number(req.body.paymentAmount);
-            const paymentIntent = await stripe.paymentIntents.create({
-                amount: parseInt(total_amount * 100),
-                currency: "usd",
-                automatic_payment_methods: {
-                  enabled: true,
-                },
-            });
+            const paymentIntent = service.createPaymentIntent(total_amount);
             res.status(OK_STATUS_CODE).send({
                 clientSecret: paymentIntent.client_secret,
             });
@@ -61,11 +56,9 @@ export const payment = (app) => {
                 });
             }
             const walletChange = parseFloat(req.body.pricePaidToDoctor);
-            console.log('walletChange = ', walletChange);
             const axiosRes = await axios.patch(`${CLINIC_BASE_URL}/doctors/${doctorId}/wallet`, {
                 walletChange
             });
-            // console.log('axiosRes = ', axiosRes);
             res.status(OK_STATUS_CODE).json({ updatedDoctor: axiosRes.data.updatedDoctor });
         }
         catch(err){
