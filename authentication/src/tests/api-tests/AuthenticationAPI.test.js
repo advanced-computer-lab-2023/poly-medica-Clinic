@@ -6,7 +6,7 @@ import {
     dropDBTest
 } from '../../utils/TestingUtils.js';
 import User from '../../database/models/Users.js';
-import { describe, beforeEach, afterEach, expect, it, jest, afterAll } from '@jest/globals';
+import { describe, beforeAll, afterAll, expect, it, jest } from '@jest/globals';
 import generateUser from '../model-generators/generateUser.js';
 import { faker } from '@faker-js/faker';
 import axios from 'axios';
@@ -15,7 +15,7 @@ jest.mock('axios');
 import bcrypt from 'bcrypt'
 describe('POST /signup/:request', () => {
 
-    beforeEach(async () => {
+    beforeAll(async () => {
         await connectDBTest();
     });
 
@@ -49,7 +49,7 @@ describe('POST /signup/:request', () => {
         expect(JSON.parse(res.text).message).toBe(DUB_EMAIL_ERROR_MESSAGE);
     });
 
-    afterEach(async () => {
+    afterAll(async () => {
         await disconnectDBTest();
     })
 
@@ -61,7 +61,7 @@ describe('POST /signup/:request', () => {
 
 describe('DELETE /users/:id', () => {
 
-    beforeEach(async () => {
+    beforeAll(async () => {
         await connectDBTest();
     });
 
@@ -90,7 +90,7 @@ describe('DELETE /users/:id', () => {
         expect(newDataBaseRecord.length).toBe(oldDataBaseRecord.length);
     });
 
-    afterEach(async () => {
+    afterAll(async () => {
         await disconnectDBTest();
     })
 
@@ -102,7 +102,7 @@ describe('DELETE /users/:id', () => {
 
 describe('POST /doctors', () => {
 
-    beforeEach(async () => {
+    beforeAll(async () => {
         await connectDBTest();
     });
 
@@ -117,7 +117,7 @@ describe('POST /doctors', () => {
         expect(databaseRecord[databaseRecord.length - 1].userName).toBe(userName);
     });
 
-    afterEach(async () => {
+    afterAll(async () => {
         await disconnectDBTest();
     })
 
@@ -133,7 +133,7 @@ describe('POST /doctors', () => {
 
 describe('POST /pharmacists', () => {
 
-    beforeEach(async () => {
+    beforeAll(async () => {
         await connectDBTest();
     });
 
@@ -148,7 +148,7 @@ describe('POST /pharmacists', () => {
         expect(databaseRecord[databaseRecord.length - 1].userName).toBe(userName);
     });
 
-    afterEach(async () => {
+    afterAll(async () => {
         await disconnectDBTest();
     })
 
@@ -160,7 +160,7 @@ describe('POST /pharmacists', () => {
 
 describe('POST /admins/:request', () => {
 
-    beforeEach(async () => {
+    beforeAll(async () => {
         await connectDBTest();
     });
 
@@ -203,7 +203,7 @@ describe('POST /admins/:request', () => {
         expect(JSON.parse(res.text).message).toBe(DUB_USERNAME_ERROR_MESSAGE);
     });
 
-    afterEach(async () => {
+    afterAll(async () => {
         await disconnectDBTest();
     })
 
@@ -215,7 +215,7 @@ describe('POST /admins/:request', () => {
 
 describe('POST /login/:request', () => {
 
-    beforeEach(async () => {
+    beforeAll(async () => {
         await connectDBTest();
 
     });
@@ -250,7 +250,7 @@ describe('POST /login/:request', () => {
         expect(JSON.parse(res.text).message).toBe(INCORRECT_PASSWORD_ERROR_MESSAGE);
     });
 
-    afterEach(async () => {
+    afterAll(async () => {
         await disconnectDBTest();
     })
 
