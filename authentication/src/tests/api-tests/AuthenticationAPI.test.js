@@ -2,11 +2,10 @@ import request from 'supertest';
 import app from '../../../app.js';
 import {
     connectDBTest,
-    disconnectDBTest,
-    dropDBTest
+    disconnectDBTest
 } from '../../utils/TestingUtils.js';
 import User from '../../database/models/Users.js';
-import { describe, beforeAll, afterAll, expect, it, jest } from '@jest/globals';
+import { describe, beforeEach, afterEach, expect, it, jest } from '@jest/globals';
 import generateUser from '../model-generators/generateUser.js';
 import { faker } from '@faker-js/faker';
 import axios from 'axios';
@@ -15,7 +14,7 @@ jest.mock('axios');
 import bcrypt from 'bcrypt'
 describe('POST /signup/:request', () => {
 
-    beforeAll(async () => {
+    beforeEach(async () => {
         await connectDBTest();
     });
 
@@ -49,19 +48,15 @@ describe('POST /signup/:request', () => {
         expect(JSON.parse(res.text).message).toBe(DUB_EMAIL_ERROR_MESSAGE);
     });
 
-    afterAll(async () => {
+    afterEach(async () => {
         await disconnectDBTest();
-    })
-
-    afterAll(async () => {
-        await dropDBTest();
     })
 })
 
 
 describe('DELETE /users/:id', () => {
 
-    beforeAll(async () => {
+    beforeEach(async () => {
         await connectDBTest();
     });
 
@@ -90,19 +85,15 @@ describe('DELETE /users/:id', () => {
         expect(newDataBaseRecord.length).toBe(oldDataBaseRecord.length);
     });
 
-    afterAll(async () => {
+    afterEach(async () => {
         await disconnectDBTest();
-    })
-
-    afterAll(async () => {
-        await dropDBTest();
     })
 
 })
 
 describe('POST /doctors', () => {
 
-    beforeAll(async () => {
+    beforeEach(async () => {
         await connectDBTest();
     });
 
@@ -117,23 +108,15 @@ describe('POST /doctors', () => {
         expect(databaseRecord[databaseRecord.length - 1].userName).toBe(userName);
     });
 
-    afterAll(async () => {
+    afterEach(async () => {
         await disconnectDBTest();
-    })
-
-    afterAll(async () => {
-        await dropDBTest();
-    })
-
-    afterAll(async () => {
-        await dropDBTest();
     })
 
 })
 
 describe('POST /pharmacists', () => {
 
-    beforeAll(async () => {
+    beforeEach(async () => {
         await connectDBTest();
     });
 
@@ -148,19 +131,15 @@ describe('POST /pharmacists', () => {
         expect(databaseRecord[databaseRecord.length - 1].userName).toBe(userName);
     });
 
-    afterAll(async () => {
+    afterEach(async () => {
         await disconnectDBTest();
-    })
-
-    afterAll(async () => {
-        await dropDBTest();
     })
 
 })
 
 describe('POST /admins/:request', () => {
 
-    beforeAll(async () => {
+    beforeEach(async () => {
         await connectDBTest();
     });
 
@@ -203,19 +182,15 @@ describe('POST /admins/:request', () => {
         expect(JSON.parse(res.text).message).toBe(DUB_USERNAME_ERROR_MESSAGE);
     });
 
-    afterAll(async () => {
+    afterEach(async () => {
         await disconnectDBTest();
-    })
-
-    afterAll(async () => {
-        await dropDBTest();
     })
 
 })
 
 describe('POST /login/:request', () => {
 
-    beforeAll(async () => {
+    beforeEach(async () => {
         await connectDBTest();
 
     });
@@ -250,12 +225,22 @@ describe('POST /login/:request', () => {
         expect(JSON.parse(res.text).message).toBe(INCORRECT_PASSWORD_ERROR_MESSAGE);
     });
 
-    afterAll(async () => {
-        await disconnectDBTest();
-    })
+    it('should return 200 the correct user', async () => {
+        const userId = faker.database.mongodbObjectId();
+        const email = faker.internet.email();
+        const userName = faker.internet.userName();
+        const password = faker.internet.password();
+        const salt = await bcrypt.genSalt();
+        const HashedPassword = await bcrypt.hash(password, salt);
+        const user = new User(generateUser(userId, email, userName, PATIENT_ENUM, HashedPassword));
+        await user.save();
+        const res = await request(app).post(`/login/${CLINIC_REQ}`).send({ userName, password });
+        expect(res.status).toBe(OK_REQUEST_CODE_200);
+        expect(JSON.parse(res.text).userName).toBe(userName);
+    });
 
-    afterAll(async () => {
-        await dropDBTest();
+    afterEach(async () => {
+        await disconnectDBTest();
     })
 
 })
