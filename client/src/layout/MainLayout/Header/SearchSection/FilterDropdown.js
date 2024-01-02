@@ -25,13 +25,17 @@ const FilterDropdown = ({ filterData, onChange, isDrawerOpen, handleDrawerClose 
       setActiveFilterIndex((prevIndex) => (prevIndex + 1) % filterData.length);
     }
   };
-
   return (
     <Drawer
       anchor="right"
       open={isDrawerOpen}
       onClose={handleDrawerClose}
-      PaperProps={{ style: { height: 'calc(100% - 80px)', overflow: 'hidden', backgroundColor: '#4527a0', borderRadius: '30px' } }}
+      PaperProps={{
+        style: {
+          height: 'calc(100% - 80px)', overflow: 'hidden', backgroundColor: '#4527a0',
+          borderRadius: '30px', marginRight: '1%', marginTop: '1%'
+        }
+      }}
     >
       <Slide direction="left" in={isDrawerOpen} mountOnEnter unmountOnExit>
         {filterData.length > 0 ? (
