@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Outlet, useLocation } from 'react-router-dom';
 import { DOCTOR_TYPE_ENUM } from 'utils/Constants';
-import Swal from 'sweetalert2';
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
 import {
@@ -24,10 +23,10 @@ import { SET_MENU } from 'store/actions';
 import { ChatContextProvider } from 'contexts/ChatContext';
 import { SearchProvider } from 'contexts/SearchContext';
 import { FilterProvider } from 'contexts/FilterContext';
-import { useUserContext } from 'hooks/useUserContext';
 import { useEffect } from 'react';
 import { ContextProvider } from 'contexts/VideoChatContext';
 import { getDoctorStatus } from 'api/DoctorAPI';
+import { showVerificationAlert } from 'utils/swal';
 // styles
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
     ({ theme, open }) => ({
@@ -71,9 +70,7 @@ const MainLayout = ({ userType }) => {
     const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
     const navigate = useNavigate();
     const leftDrawerOpened = useSelector((state) => state.customization.opened);
-
-    const { user } = useUserContext();
-    const id = user.id;
+    const { user } = useSelector(state => state.user);
     const location = useLocation();
     useEffect(() => {
         const isDoctor = user.type === DOCTOR_TYPE_ENUM;
@@ -81,12 +78,12 @@ const MainLayout = ({ userType }) => {
             navigate(`/${user.type}/dashboard/home`);
         }
         if (isDoctor) {
-            getDoctorStatus(id)
+            getDoctorStatus(user.id)
                 .then((res) => {
                     const status = res.status;
                     if (user && isDoctor && !status) {
                         navigate('/doctor/pages/profile');
-                        Swal.fire({ title: 'Pending Offer', icon: 'info', text: 'Please Accept the offer first' });
+                        showVerificationAlert('Pending Offer', 'Please Accept the offer first');
                     }
                 })
                 .catch((err) => {
@@ -100,66 +97,67 @@ const MainLayout = ({ userType }) => {
     };
 
     return (
+       user && 
         <ChatContextProvider>
-            <ContextProvider>
-                <FilterProvider>
-                    <SearchProvider>
-                        <Box sx={{ display: 'flex' }}>
-                            <CssBaseline />
-                            {/* header */}
-                            <AppBar
-                                enableColorOnDark
-                                position='fixed'
-                                color='inherit'
-                                elevation={0}
-                                sx={{
-                                    bgcolor: theme.palette.background.default,
-                                    transition: leftDrawerOpened
-                                        ? theme.transitions.create('width')
-                                        : 'none',
-                                }}>
-                                <Toolbar>
-                                    <Header
-                                        handleLeftDrawerToggle={
-                                            handleLeftDrawerToggle
-                                        }
-                                    />
-                                </Toolbar>
-                            </AppBar>
-
-                            {/* drawer */}
-                            {user && user.type == userType && (
-                                <Sidebar
-                                    drawerOpen={
-                                        !matchDownMd
-                                            ? leftDrawerOpened
-                                            : !leftDrawerOpened
+        <ContextProvider>
+            <FilterProvider>
+                <SearchProvider>
+                    <Box sx={{ display: 'flex' }}>
+                        <CssBaseline />
+                        {/* header */}
+                        <AppBar
+                            enableColorOnDark
+                            position='fixed'
+                            color='inherit'
+                            elevation={0}
+                            sx={{
+                                bgcolor: theme.palette.background.default,
+                                transition: leftDrawerOpened
+                                    ? theme.transitions.create('width')
+                                    : 'none',
+                            }}>
+                            <Toolbar>
+                                <Header
+                                    handleLeftDrawerToggle={
+                                        handleLeftDrawerToggle
                                     }
-                                    drawerToggle={handleLeftDrawerToggle}
                                 />
-                            )}
+                            </Toolbar>
+                        </AppBar>
 
-                            {/* main content */}
-                            <Main theme={theme} open={leftDrawerOpened} sx={{ position: 'relative' }}>
-                                {(!user || user.type != userType) && (
-                                    <h1>not autherized!!</h1>
-                                )}
-                                {user && user.type == userType &&
-                                    user.type === 'admin' ? <Outlet /> :
-                                    <Chat>
-                                        <div>
-                                            <Outlet />
-                                        </div>
-                                    </Chat>
+                        {/* drawer */}
+                        {user && user.type == userType && (
+                            <Sidebar
+                                drawerOpen={
+                                    !matchDownMd
+                                        ? leftDrawerOpened
+                                        : !leftDrawerOpened
                                 }
-                            </Main>
+                                drawerToggle={handleLeftDrawerToggle}
+                            />
+                        )}
 
-                            {/* <Customization /> */}
-                        </Box>
-                    </SearchProvider>
-                </FilterProvider>
-            </ContextProvider>
-        </ChatContextProvider>
+                        {/* main content */}
+                        <Main theme={theme} open={leftDrawerOpened} sx={{ position: 'relative' }}>
+                            {(!user || user.type != userType) && (
+                                <h1>not autherized!!</h1>
+                            )}
+                            {user && user.type == userType &&
+                                user.type === 'admin' ? <Outlet /> :
+                                <Chat>
+                                    <div>
+                                        <Outlet />
+                                    </div>
+                                </Chat>
+                            }
+                        </Main>
+
+                        {/* <Customization /> */}
+                    </Box>
+                </SearchProvider>
+            </FilterProvider>
+        </ContextProvider>
+    </ChatContextProvider>
     );
 };
 

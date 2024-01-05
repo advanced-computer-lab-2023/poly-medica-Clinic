@@ -5,21 +5,20 @@ import HealthPackagesList from './HealthPackagesList';
 import { Add } from '@mui/icons-material';
 import AddHealthPackages from './AddHealthPackages';
 import EditHealthPackages from './EditHealthPackage';
-import { useUserContext } from 'hooks/useUserContext';
 import Loader from 'ui-component/Loader';
 import { ADMIN_TYPE_ENUM, PATIENT_TYPE_ENUM } from 'utils/Constants';
 import { getHealthPackages } from 'api/AdminAPI';
 import { getPatientHealthPackage, getPatientDiscount } from 'api/PatientAPI';
 import { useAdminContext } from 'hooks/useAdminContext';
 import { usePatientContext } from 'hooks/usePatientContext';
+import { useSelector } from 'react-redux';
 
 const HealthPackages = () => {
 
 	const { setPackages, setSubscribedPackage, isLoading: loading,
 		setIsLoading: setLoading, setDiscount, isPaymentOpen } = usePatientContext();
 	const { setOpenAddDialog: setIsAddDialogOpen } = useAdminContext();
-	const { user } = useUserContext();
-
+	const { user } = useSelector(state => state.user);
 
 	useEffect(() => {
 		getHealthPackages().then((response) => {

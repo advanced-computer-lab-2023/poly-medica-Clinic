@@ -12,11 +12,11 @@ import {
 	Typography
 } from '@mui/material';
 import { useNavigate } from 'react-router';
-import { useUserContext } from 'hooks/useUserContext';
 
 // assets
 import { IconCalendarTime } from '@tabler/icons';
 import { APPOINTMENT_NOTIFICATION_TYPE_ENUM } from 'utils/Constants';
+import { useSelector } from 'react-redux';
 
 
 const ListItemWrapper = styled('div')(({ theme }) => ({
@@ -38,7 +38,7 @@ const chipSX = {
 const BasicNotification = ({ header, body, date, notificationType, senderName, senderImage, chipLabel, chipType, key }) => {
     const theme = useTheme();
 	const navigate = useNavigate();
-	const { user } = useUserContext();
+	const { user } = useSelector(state => state.user);
 
 	const chipStyles = {
 		error:{

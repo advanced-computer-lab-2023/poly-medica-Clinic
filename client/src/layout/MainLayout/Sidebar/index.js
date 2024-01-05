@@ -3,7 +3,6 @@ import TotalIncomeDarkCard from 'ui-component/cards/TotalIncomeDarkCard';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Box, Chip, Drawer, Stack, useMediaQuery, List } from '@mui/material';
-import { useUserContext } from 'hooks/useUserContext';
 import { usePayment } from 'contexts/PaymentContext';
 // third-party
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -16,6 +15,7 @@ import { drawerWidth } from 'store/constant';
 
 import { useState, useEffect } from 'react';
 import { patientAxios, clinicAxios } from 'utils/AxiosConfig';
+import { useSelector } from 'react-redux';
 
 // ==============================|| SIDEBAR DRAWER ||============================== //
 
@@ -23,7 +23,7 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
 	const theme = useTheme();
 	const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
 
-	const { user } = useUserContext();
+	const { user } = useSelector(state => state.user);
 	const userType = user.type;
 	const userId = user.id;
 

@@ -6,17 +6,17 @@ import {
     Button,
 } from '@mui/material';
 import { useState } from 'react';
-import { useUserContext } from 'hooks/useUserContext';
 import { updateFamilyMembers } from 'api/PatientAPI';
 import FamilyMemberOptions from './FamilyMemeberOptions';
 import { REGISTERED_MEMBER, UNREGISTERED_MEMBER } from 'utils/Constants';
 import UnregisteredForm from './UnregisteredForm';
 import RegisteredForm from './RegisteredForm';
 import { usePatientContext } from 'hooks/usePatientContext';
+import { useSelector } from 'react-redux';
 
 const AddFamilyMember = ({ isOpen, setIsOpen }) => {
 
-    const { user } = useUserContext();
+    const { user } = useSelector(state => state.user);
     const { setFamilyMembers, newMember, setError } = usePatientContext();
 
     const [value, setValue] = useState(REGISTERED_MEMBER);

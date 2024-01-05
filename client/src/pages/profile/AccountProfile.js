@@ -8,12 +8,12 @@ import {
 	Divider,
 	Typography
 } from '@mui/material';
-import { useUserContext } from 'hooks/useUserContext';
+import { useSelector } from 'react-redux';
   
   
 const AccountProfile = () => {
 
-	const { user } = useUserContext();
+	const { user } = useSelector(state => state.user);
 	return (
 		<Card>
 			<CardContent>

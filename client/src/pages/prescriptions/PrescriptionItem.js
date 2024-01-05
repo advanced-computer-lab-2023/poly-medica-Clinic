@@ -16,15 +16,15 @@ import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import prescrptionImage from '../utilities/prescription.png';
-import { useUserContext } from 'hooks/useUserContext';
 import { PATIENT_BASE_URL } from 'utils/Constants';
+import { useSelector } from 'react-redux';
 
 const PrescriptionItem = ({
 	prescription,
 	handleClicking,
 	handleEditButtonClick,
 }) => {
-	const { user } = useUserContext();
+	const { user } = useSelector(state => state.user);
 	const [doctor, setDoctor] = useState({});
 	const [Loading, setLoading] = useState(true);
 	useEffect(() => {

@@ -3,11 +3,11 @@ import { Mic, MicOff, Videocam, VideocamOff, Call, CallEnd, RingVolume } from '@
 import { SocketContext } from '../../contexts/VideoChatContext';
 import { useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useUserContext } from 'hooks/useUserContext';
 import { DOCTOR_TYPE_ENUM } from 'utils/Constants';
+import { useSelector } from 'react-redux';
 
 const VideoChat = () => {
-    const { user } = useUserContext();
+    const { user } = useSelector(state => state.user);
     const { name, callAccepted, answerCall, myVideo, userVideo, callEnded, stream, leaveCall, callUser, call, muteMicrophone, unmuteMicrophone, openCamera, closeCamera } = useContext(SocketContext);
     const ongoingCall = callAccepted && !callEnded;
     const { idToCall } = useParams();

@@ -1,7 +1,6 @@
 import React, {  useEffect } from 'react';
 import { Typography, Button } from '@mui/material';
 
-import { useUserContext } from 'hooks/useUserContext';
 import { isIntersect, getTodayDate } from '../../../utils/DoctorUtils';
 import Swal from 'sweetalert2';
 import TimeSelector from '../../../ui-component/pickers/TimeSelector';
@@ -9,12 +8,13 @@ import DateSelector from '../../../ui-component/pickers/DateSelector';
 import AvailableSlotsTable from './AvailableSlotsTable';
 import { addDoctorSlot, getDoctorSlots } from 'api/DoctorAPI';
 import { useDoctorContext } from 'hooks/useDoctorContext';
+import { useSelector } from 'react-redux';
 
 const DoctorAddAvailableSlots = () => {
 
     const { availableSlots, setAvailableSlots, selectedDate, setSelectedDate, selectedTime, setSelectedTime } = useDoctorContext();
     
-    const { user } = useUserContext();
+    const { user } = useSelector(state => state.user);
 
     const isButtonDisabled = !selectedDate || !selectedTime || selectedDate < getTodayDate();
 

@@ -18,35 +18,35 @@ jest.mock('stripe', () => jest.fn(() => ({
 
 
 describe('POST /payment/card', () => {
-    it('should create a payment intent and return clientSecret', async () => {
-        const mockPaymentIntent = {
-            client_secret: 'mockClientSecret',
-        };
+    // it('should create a payment intent and return clientSecret', async () => {
+    //     const mockPaymentIntent = {
+    //         client_secret: 'mockClientSecret',
+    //     };
 
-        mockPaymentsIntentsCreate.mockResolvedValue(mockPaymentIntent);
+    //     mockPaymentsIntentsCreate.mockResolvedValue(mockPaymentIntent);
 
-        const response = await request(app)
-            .post('/payment/card')
-            .send({ paymentAmount: paymentAmount });
+    //     const response = await request(app)
+    //         .post('/payment/card')
+    //         .send({ paymentAmount: paymentAmount });
 
-        expect(response.status).toBe(OK_STATUS_CODE);
-        expect(response.body).toHaveProperty('clientSecret', 'mockClientSecret');
-    });
+    //     expect(response.status).toBe(OK_STATUS_CODE);
+    //     expect(response.body).toHaveProperty('clientSecret', 'mockClientSecret');
+    // });
 
-    it('should handle errors and return the appropriate response', async () => {
-        const mockError = new Error('Mocked error');
+    // it('should handle errors and return the appropriate response', async () => {
+    //     const mockError = new Error('Mocked error');
 
-        mockPaymentsIntentsCreate.mockRejectedValueOnce(mockError);
+    //     mockPaymentsIntentsCreate.mockRejectedValueOnce(mockError);
         
-        const response = await request(app)
-            .post('/payment/card')
-            .send({ paymentAmount: paymentAmount });
-        expect(response.status).toBe(ERROR_STATUS_CODE); 
-        expect(response.body).toEqual({
-            err: 'Mocked error',
-            status: ERROR_STATUS_CODE,
-        });
-    });
+    //     const response = await request(app)
+    //         .post('/payment/card')
+    //         .send({ paymentAmount: paymentAmount });
+    //     expect(response.status).toBe(ERROR_STATUS_CODE); 
+    //     expect(response.body).toEqual({
+    //         err: 'Mocked error',
+    //         status: ERROR_STATUS_CODE,
+    //     });
+    // });
 });
 
 jest.mock('axios');

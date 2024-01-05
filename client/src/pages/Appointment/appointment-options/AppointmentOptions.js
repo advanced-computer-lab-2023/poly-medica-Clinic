@@ -11,11 +11,11 @@ import {
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import { useUserContext } from 'hooks/useUserContext.js';
 import { PATIENT_TYPE_ENUM } from 'utils/Constants';
 import AppointmentDetails from './AppointmentDetails';
 import AppointmentReschedule from './AppointmentReschedule';
 import FollowUp from './FollowUp';
+import { useSelector } from 'react-redux';
 
 
 const AppointmentOptions = ({
@@ -24,7 +24,7 @@ const AppointmentOptions = ({
     handleDialogClose,
     handleAppoinmentUpdate
 }) => {
-    const { user } = useUserContext();
+    const { user } = useSelector(state => state.user);
     const [tabValue, setTabValue] = useState('1');
     const [cannotReschedule, setCannotReschedule] = useState(false);
     const handleTabChange = (event, newTabValue) => {

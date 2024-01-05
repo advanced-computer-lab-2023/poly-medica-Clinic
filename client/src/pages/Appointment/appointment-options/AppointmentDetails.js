@@ -14,12 +14,13 @@ import { clinicAxios, communicationAxios } from 'pages/utilities/AxiosConfig';
 import { useChat } from 'contexts/ChatContext.js';
 import { DOCTOR_TYPE_ENUM, PATIENT_TYPE_ENUM } from 'utils/Constants.js';
 import { chatExist } from 'utils/ChatUtils.js';
-import { useUserContext } from 'hooks/useUserContext.js';
 import { getDay, getTime } from '../../../utils/DateFormatter.js';
 import { patientCanRefund } from '../../../utils/AppointmentUtils.js';
 import AppointmentStatus from '../AppointmentStatus.js';
 import { useNavigate } from 'react-router-dom';
 import { usePayment } from 'contexts/PaymentContext';
+import { showSuccessAlert } from 'utils/swal';
+import { useSelector } from 'react-redux';
 
 
 const AppointmentDetails = ({
@@ -28,7 +29,7 @@ const AppointmentDetails = ({
     handleAppoinmentUpdate
 }) => {
     const { chats, setChats } = useChat();
-    const { user } = useUserContext();
+    const { user } = useSelector(state => state.user);
     const navigate = useNavigate();
 
     const [cannotCompleteOrCancel, setCannotCompleteOrCancel] = useState(false);
@@ -61,22 +62,19 @@ const AppointmentDetails = ({
         clinicAxios
             .patch(`/appointments/cancel/${selectedAppointment._id}`, requestData)
             .then((response) => {
-                Swal.fire(
-                    'Appointment Cancelled!',
-                    'Your Appointment has been cancelled successfully!',
-                    'success',
-                )
-                    .then(async () => {
-                        const updatedAppointment = response.data;
-                        setSelectedAppointment(updatedAppointment);
-                        handleAppoinmentUpdate(updatedAppointment);
-                        await communicationAxios.post(`/notification/${userIdToNotify}/type/appointment`, {
-                            senderName: user.userName,
-                            notificationHead,
-                            notificationBody
-                        });
-                        setPaymentDone(1);
+                showSuccessAlert('Appointment Cancelled!', 'Your Appointment has been cancelled successfully!',
+                async () => {
+                    const updatedAppointment = response.data;
+                    setSelectedAppointment(updatedAppointment);
+                    handleAppoinmentUpdate(updatedAppointment);
+                    await communicationAxios.post(`/notification/${userIdToNotify}/type/appointment`, {
+                        senderName: user.userName,
+                        notificationHead,
+                        notificationBody
                     });
+                    setPaymentDone(1);
+                }
+                );
             });
     };
     const handleComplete = async () => {
@@ -84,38 +82,33 @@ const AppointmentDetails = ({
         clinicAxios
             .patch(`/appointments/complete/${selectedAppointment._id}`)
             .then((response) => {
-                Swal.fire(
-                    'Appointment Completed!',
-                    'Your Appointment has been completed successfully!',
-                    'success',
-                )
-
-                    .then(() => {
-                        const app = response.data;
-                        setSelectedAppointment(app);
-                        handleAppoinmentUpdate(app);
-                        if (
-                            !chatExist(chats, app.patientId, app.doctorId) &&
-                            !chatExist(chats, app.doctorId, app.patientId)
-                        ) {
-                            const res = communicationAxios.post('/chat', {
-                                chat: {
-                                    chatName: 'Doctor-Patient',
-                                    users: [
-                                        {
-                                            id: app.patientId,
-                                            userType: PATIENT_TYPE_ENUM,
-                                        },
-                                        {
-                                            id: app.doctorId,
-                                            userType: DOCTOR_TYPE_ENUM,
-                                        },
-                                    ],
-                                },
-                            });
-                            setChats([res.data, ...chats]);
-                        }
-                    });
+                showSuccessAlert('Appointment Completed!', 'Your Appointment has been completed successfully!', 
+                () => {
+                    const app = response.data;
+                    setSelectedAppointment(app);
+                    handleAppoinmentUpdate(app);
+                    if (
+                        !chatExist(chats, app.patientId, app.doctorId) &&
+                        !chatExist(chats, app.doctorId, app.patientId)
+                    ) {
+                        const res = communicationAxios.post('/chat', {
+                            chat: {
+                                chatName: 'Doctor-Patient',
+                                users: [
+                                    {
+                                        id: app.patientId,
+                                        userType: PATIENT_TYPE_ENUM,
+                                    },
+                                    {
+                                        id: app.doctorId,
+                                        userType: DOCTOR_TYPE_ENUM,
+                                    },
+                                ],
+                            },
+                        });
+                        setChats([res.data, ...chats]);
+                    }
+                });
             })
             .catch((error) => {
                 console.log(error);

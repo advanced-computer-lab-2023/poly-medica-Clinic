@@ -2,16 +2,17 @@ import { Stack, Unstable_Grid2 as Grid, List, ListItemButton, ListItemText, List
 import { useState, useEffect } from 'react';
 import Delete from '@mui/icons-material/Delete';
 import { patientAxios } from 'utils/AxiosConfig';
-import { useUserContext } from 'hooks/useUserContext';
 import Loader from 'ui-component/Loader';
 import { Attachment } from '@mui/icons-material';
 import Swal from 'sweetalert2';
-import { OK_STATUS_CODE, PATIENT_BASE_URL } from 'utils/Constants';
+import { PATIENT_BASE_URL } from 'utils/Constants';
+import { showFailureAlert, showSuccessAlert } from 'utils/swal';
+import { useSelector } from 'react-redux';
 
 const MedicalHistory = ({ patientId }) => {
     const [documents, setDocuments] = useState();
     const [loading, setLoading] = useState(true);
-    const { user } = useUserContext();
+    const { user } = useSelector(state => state.user);
     const userId = patientId ? patientId : user.id;
     const [title, setTitle] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
@@ -42,14 +43,12 @@ const MedicalHistory = ({ patientId }) => {
             if (result.isConfirmed) {
                 try {
                     patientAxios.patch(`/patient/${userId}/medical-history/${document._id}`)
-                        .then((response) => {
-                            if (response.status === OK_STATUS_CODE) {
-                                Swal.fire({ title: 'Deleted Successfully', icon: 'success' });
+                        .then(() => {
+                            showSuccessAlert('Deleted Successfully', '');
                                 setDocuments(documents.filter((doc) => doc._id !== document._id));
-                            }
                         });
                 } catch (err) {
-                    Swal.fire({ title: 'Deletion Failed', icon: 'error' });
+                    showFailureAlert('Deletion Failed', '');
                 }
             }
         });

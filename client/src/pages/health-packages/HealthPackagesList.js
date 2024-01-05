@@ -2,7 +2,6 @@ import { Typography, Grid, Card, CardHeader, Box, CardActions, Button, CardConte
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Stack from '@mui/material/Stack';
-import { useUserContext } from 'hooks/useUserContext';
 import Swal from 'sweetalert2';
 import { useState } from 'react';
 import { ADMIN_TYPE_ENUM, PATIENT_TYPE_ENUM, PAYMENT_ITEM_TYPES } from 'utils/Constants';
@@ -12,11 +11,12 @@ import { usePatientContext } from 'hooks/usePatientContext';
 import { useAdminContext } from 'hooks/useAdminContext';
 import { deleteHealthPackage } from 'api/AdminAPI';
 import { updateHealthPackageStatus } from 'api/PatientAPI';
+import { useSelector } from 'react-redux';
 
 const HealthPackagesList = () => {
 
 	const { packages, isPaymentOpen, setIsPaymentOpen, subscribedPackage, setSubscribedPackage, discount, setPackages } = usePatientContext();
-	const { user } = useUserContext();
+	const { user } = useSelector(state => state.user);
 	const [totalPrice, setTotalPrice] = useState(0);
 	const [data, setData] = useState(null);
 	const { setIsEditDialogOpen, setSelectedEditPackages } = useAdminContext();

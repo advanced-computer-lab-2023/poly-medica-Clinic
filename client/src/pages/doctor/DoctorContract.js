@@ -3,13 +3,13 @@ import { Handshake, CloudDownload } from '@mui/icons-material';
 import Swal from 'sweetalert2';
 import { useEffect, useState } from 'react';
 import { displayOfferText } from '../../utils/DoctorUtils';
-import { useUserContext } from 'hooks/useUserContext';
 import { clinicAxios } from 'utils/AxiosConfig';
 import contract from '../../utils/contract.pdf';
 import { getDoctorStatus, updateDoctorStatus } from 'api/DoctorAPI';
+import { useSelector } from 'react-redux';
 const DoctorContract = () => {
 
-  const { user } = useUserContext();
+  const { user } = useSelector(state => state.user);
   const id = user.id;
   const [active, setActive] = useState(true);
   const [name, setName] = useState('');

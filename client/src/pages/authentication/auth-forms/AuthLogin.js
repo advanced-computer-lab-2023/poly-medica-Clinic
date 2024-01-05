@@ -9,12 +9,13 @@ import {
 	TextField,
 	Typography,
 } from '@mui/material';
-import { useUserContext } from 'hooks/useUserContext';
 import { useNavigate } from 'react-router-dom';
 // project imports
 import AnimateButton from 'ui-component/extended/AnimateButton';
-import Swal from 'sweetalert2';
 import { authenticationAxios } from 'utils/AxiosConfig';
+import { showFailureAlert } from 'utils/swal';
+import { dispatchUser } from 'store/user/configUserStore';
+import { useDispatch } from 'react-redux';
 
 
 // ============================|| FIREBASE - LOGIN ||============================ //
@@ -24,7 +25,7 @@ const FirebaseLogin = () => {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [password, setPassword] = useState('');
 	const [userName, setUserName] = useState('');
-	const { dispatch } = useUserContext();
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
 	const handleSubmit = async (e) => {
@@ -34,18 +35,14 @@ const FirebaseLogin = () => {
 		try {
 			const response = await authenticationAxios.post('/login/clinic', postData);
 			const data = response.data;
-			dispatch({ auth: true, payload: data });
+			dispatch(dispatchUser({ user: data }));
 			if (data.reset)
 				navigate(`/${data.type}/pages/profile`);
 			else
 				navigate(`/${data.type}/dashboard/home`);
 			setIsSubmitting(false);
 		} catch (err) {
-			Swal.fire({
-				icon: 'error',
-				title: 'Oops...',
-				text: err.response.data.message,
-			});
+			showFailureAlert('Oops...', err.response.data.message);
 			setIsSubmitting(false);
 		}
 	};

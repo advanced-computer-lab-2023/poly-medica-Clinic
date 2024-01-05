@@ -5,6 +5,7 @@ import AvailableSlotsList from '../../../ui-component/AvailableSlotsList.js';
 import Swal from 'sweetalert2';
 import '../../../assets/css/swalStyle.css';
 import { useNavigate } from 'react-router-dom';
+import { showFailureAlert, showSuccessAlert } from 'utils/swal.js';
 
 const FollowUp = ({ selectedAppointment }) => {
     console.log('selectedAppointment', selectedAppointment);
@@ -39,12 +40,8 @@ const FollowUp = ({ selectedAppointment }) => {
         await clinicAxios
             .post('/appointments/follow-up-requests', appointmentData)
             .then(() => {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success!',
-                    text: 'Your request has been sent successfully!',
-                })
-                .then(() => {
+                showSuccessAlert('Success!', 'Your request has been sent successfully!',
+                () => {
                     navigate('/patient/pages/follow-up-requests', { replace: true });
                 });
             });
@@ -52,11 +49,7 @@ const FollowUp = ({ selectedAppointment }) => {
     };
     const handleConfirmation = (event) => {
         if(selectedAppointment.status.toUpperCase() != 'COMPLETE'){
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'You cannot request a follow-up for an incomplete appointment!',
-            });
+            showFailureAlert('Oops...', 'You cannot request a follow-up for an incomplete appointment!');
             return;
         }
         const availableSlotsIdx = parseInt(event.target.id);

@@ -12,7 +12,7 @@ const LazyDoctorListofPatients = Loadable(
     lazy(() => import('pages/doctor/doctor-patients/DoctorListofPatients'))
 );
 const LazyAppointments = Loadable(
-    lazy(() => import('pages/appointment/Appointment'))
+    lazy(() => import('pages/Appointment/Appointment'))
 );
 const LazyFollowUpRequests = Loadable(
     lazy(() => import('pages/follow-up-requests/FollowUpRequests')),
@@ -27,7 +27,7 @@ const LazyPrescriptions = Loadable(
 
 
 const LazyChat = Loadable(lazy(() => import('pages/chat/Chat')));
-const LazyHome = Loadable(lazy(() => import('pages/home/Home')));
+const LazyHome = Loadable(lazy(() => import('pages/Home/Home')));
 
 const Account = Loadable(lazy(() => import('pages/profile/Account')));
 const LazyVideoChat = Loadable(lazy(() => import('pages/chat/VideoChat.js')));

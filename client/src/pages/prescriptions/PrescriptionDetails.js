@@ -10,7 +10,6 @@ import {
 	Divider,
 	Tooltip
 } from '@mui/material';
-import { useUserContext } from 'hooks/useUserContext';
 import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -20,6 +19,7 @@ import { formatMedicines } from '../../utils/PrescriptionUtils';
 import { OK_STATUS_CODE } from 'utils/Constants';
 import { patientAxios } from 'utils/AxiosConfig';
 import { AddMedicine } from './AddMedicine';
+import { useSelector } from 'react-redux';
 const PrescriptionDetails = ({
 	selectedPrescription,
 	setSelectedPrescription,
@@ -27,7 +27,7 @@ const PrescriptionDetails = ({
 	handleDialogClose,
 	medicines,
 }) => {
-	const { user } = useUserContext();
+	const { user } = useSelector(state => state.user);
 	const [addMode, setAddMode] = useState(false);
 	const [selectedMedicine, setSelectedMedicine] = useState(null);
 	const formattedMedicines = formatMedicines(medicines, selectedPrescription);
