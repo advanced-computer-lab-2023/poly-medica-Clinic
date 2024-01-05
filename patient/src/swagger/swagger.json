@@ -1,0 +1,1198 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Patient Service API",
+      "description": "API documentation for the patient service"
+    },
+    "basePath": "/",
+    "schemes": ["http"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "paths": {
+        "/patients": {
+            "get": {
+              "summary": "Get list of patients",
+              "description": "Returns a list of all patients",
+              "responses": {
+                "200": {
+                  "description": "Successful response",
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "patients": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/definitions/Patient"
+                        }
+                      }
+                    }
+                  }
+                },
+                "404": {
+                  "description": "No patients found",
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "500": {
+                    "description": "Internal Server Error",
+                    "schema": {
+                      "$ref": "#/definitions/ErrorResponse"
+                    }
+                  }
+              }
+            }, 
+            "post": {
+                "summary": "Create a new patient",
+                "description": "Creates a new patient with the provided details",
+                "consumes": ["application/json"],
+                "parameters": [
+                  {
+                    "name": "body",
+                    "in": "body",
+                    "description": "Patient details",
+                    "required": true,
+                    "schema": {
+                      "$ref": "#/definitions/Patient"
+                    }
+                  }
+                ],
+                "responses": {
+                  "200": {
+                    "description": "Successful response",
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string"
+                        },
+                        "newPatient": {
+                          "$ref": "#/definitions/Patient"
+                        }
+                      }
+                    }
+                  },
+                  "500": {
+                    "description": "Internal Server Error",
+                    "schema": {
+                      "$ref": "#/definitions/ErrorResponse"
+                    }
+                  }
+                }
+            }
+        },
+        "/patients/{id}": {
+            "get": {
+              "summary": "Get a single patient by ID",
+              "description": "Returns a single patient based on the provided ID",
+              "parameters": [
+                {
+                  "name": "id",
+                  "in": "path",
+                  "description": "ID of the patient",
+                  "required": true,
+                  "type": "string",
+                  "pattern": "^[0-9a-fA-F]{24}$",
+                  "example": "5fde07a7b2e33d54a474597c"
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Successful response",
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "patient": {
+                        "$ref": "#/definitions/Patient"
+                      }
+                    }
+                  }
+                },
+                "400": {
+                  "description": "Bad Request",
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "404": {
+                  "description": "Patient not found",
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "500": {
+                    "description": "Internal Server Error",
+                    "schema": {
+                      "$ref": "#/definitions/ErrorResponse"
+                    }
+                  }
+              }
+            },
+            "delete": {
+                "summary": "Delete a patient by ID",
+                "description": "Deletes a patient based on the provided ID",
+                "parameters": [
+                  {
+                    "name": "id",
+                    "in": "path",
+                    "description": "ID of the patient",
+                    "required": true,
+                    "type": "string",
+                    "pattern": "^[0-9a-fA-F]{24}$",
+                    "example": "5fde07a7b2e33d54a474597c"
+                  }
+                ],
+                "responses": {
+                  "200": {
+                    "description": "Successful response",
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string"
+                        },
+                        "deleted_patient": {
+                          "$ref": "#/definitions/Patient"
+                        }
+                      }
+                    }
+                  },
+                  "404": {
+                    "description": "Patient not found",
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  },
+                  "500": {
+                    "description": "Internal Server Error",
+                    "schema": {
+                      "$ref": "#/definitions/ErrorResponse"
+                    }
+                  }
+                }
+            }
+        },
+        "/family-members/{id}": {
+            "get": {
+              "summary": "Get family members for a specific patient",
+              "description": "Returns the list of family members for a patient based on the provided ID",
+              "parameters": [
+                {
+                  "name": "id",
+                  "in": "path",
+                  "description": "ID of the patient",
+                  "required": true,
+                  "type": "string",
+                  "pattern": "^[0-9a-fA-F]{24}$",
+                  "example": "5fde07a7b2e33d54a474597c"
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Successful response",
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/FamilyMember"
+                    }
+                  }
+                },
+                "404": {
+                  "description": "Family members not found",
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "500": {
+                  "description": "Internal Server Error",
+                  "schema": {
+                    "$ref": "#/definitions/ErrorResponse"
+                  }
+                }
+              }
+            },
+            "patch": {
+                "summary": "Update family members for a specific patient",
+                "description": "Updates the list of family members for a specific patient by adding a new family member",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the patient",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[0-9a-fA-F]{24}$",
+                        "example": "5fde07a7b2e33d54a474597c"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Family member details",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "member": {
+                                    "$ref": "#/definitions/FamilyMember"
+                                }
+                            },
+                            "required": ["member"]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Family member not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/patient/{id}/prescriptions": {
+            "get": {
+                "summary": "Get prescriptions for a specific patient",
+                "description": "Returns prescriptions for a specific patient based on the provided ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the patient",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[0-9a-fA-F]{24}$",
+                        "example": "5fde07a7b2e33d54a474597c"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Prescription"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Prescriptions not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/patient/{pateintId}/prescription/{prescriptionId}": {
+            "get": {
+                "summary": "Get a single prescription for a patient by ID",
+                "description": "Returns a single prescription based on the provided Patient ID and Prescription ID",
+                "parameters": [
+                    {
+                        "name": "pateintId",
+                        "in": "path",
+                        "description": "ID of the patient",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[0-9a-fA-F]{24}$",
+                        "example": "5fde07a7b2e33d54a474597c"
+                    },
+                    {
+                        "name": "prescriptionId",
+                        "in": "path",
+                        "description": "ID of the prescription",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[0-9a-fA-F]{24}$",
+                        "example": "5fde07a7b2e33d54a474597d"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "$ref": "#/definitions/Prescription"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Prescription not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/patient/{id}/discount": {
+            "get": {
+                "summary": "Get the maximum family discount for a patient",
+                "description": "Returns the maximum family discount for a patient based on their ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the patient",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[0-9a-fA-F]{24}$",
+                        "example": "5fde07a7b2e33d54a474597c"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "maxDiscount": {
+                                    "type": "number",
+                                    "example": 10.0
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Patient not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/patient/{id}/health-packages": {
+            "get": {
+                "summary": "Get health packages for a patient",
+                "description": "Returns the health packages for a patient based on their ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the patient",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[0-9a-fA-F]{24}$",
+                        "example": "5fde07a7b2e33d54a474597c"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "healthPackages": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/HealthPackage"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Patient not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "summary": "Add health package for a patient",
+                "description": "Adds a health package for a patient based on their ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the patient",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[0-9a-fA-F]{24}$",
+                        "example": "5fde07a7b2e33d54a474597c"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Health package details",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "healthPackage": {
+                                            "$ref": "#/definitions/HealthPackage"
+                                        }
+                                    },
+                                    "required": ["healthPackage"]
+                                }
+                            }
+                        }
+                    }
+                ],
+                "consumes": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Patient not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/patient/{id}/health-packages/{packageId}": {
+            "patch": {
+                "summary": "Cancel a health package for a patient",
+                "description": "Cancels a health package for a patient based on their ID and health package ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the patient",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[0-9a-fA-F]{24}$",
+                        "example": "5fde07a7b2e33d54a474597c"
+                    },
+                    {
+                        "name": "packageId",
+                        "in": "path",
+                        "description": "ID of the health package",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[0-9a-fA-F]{24}$",
+                        "example": "5fde07a7b2e33d54a474597d"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "updatedPatient": {
+                                    "$ref": "#/definitions/Patient"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Patient not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }, 
+        "/patient/{id}/medical-history": {
+            "get": {
+                "summary": "Get medical history for a patient",
+                "description": "Retrieves the medical history for a patient based on their ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the patient",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[0-9a-fA-F]{24}$",
+                        "example": "5fde07a7b2e33d54a474597c"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/HealthRecord"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Patient not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "summary": "Add a health record to the medical history of a patient",
+                "description": "Adds a health record to the medical history of a patient based on their ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the patient",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[0-9a-fA-F]{24}$",
+                        "example": "5fde07a7b2e33d54a474597c"
+                    },
+                    {
+                        "name": "title",
+                        "in": "formData",
+                        "description": "Title of the health record",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "image",
+                        "in": "formData",
+                        "description": "Document image file",
+                        "required": false,
+                        "type": "file"
+                    }
+                ],
+                "consumes": ["multipart/form-data"],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "$ref": "#/definitions/Patient"
+                        }
+                    },
+                    "404": {
+                        "description": "Patient not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/patient/{id}/medical-history/{recordId}": {
+            "get": {
+                "summary": "Get a specific health record for a patient",
+                "description": "Retrieves a specific health record for a patient based on their ID and record ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the patient",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[0-9a-fA-F]{24}$",
+                        "example": "5fde07a7b2e33d54a474597c"
+                    },
+                    {
+                        "name": "recordId",
+                        "in": "path",
+                        "description": "ID of the health record",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[0-9a-fA-F]{24}$",
+                        "example": "5fde07a7b2e33d54a474597d"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "$ref": "#/definitions/HealthRecord"
+                        }
+                    },
+                    "404": {
+                        "description": "Health record not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "summary": "Delete a health record for a patient",
+                "description": "Deletes a specific health record for a patient based on their ID and record ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the patient",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[0-9a-fA-F]{24}$",
+                        "example": "5fde07a7b2e33d54a474597c"
+                    },
+                    {
+                        "name": "recordId",
+                        "in": "path",
+                        "description": "ID of the health record",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[0-9a-fA-F]{24}$",
+                        "example": "5fde07a7b2e33d54a474597d"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "$ref": "#/definitions/HealthRecord"
+                        }
+                    },
+                    "404": {
+                        "description": "Health record not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/signup": {
+            "post": {
+                "summary": "User Signup",
+                "description": "Registers a new user",
+                "consumes": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "User details",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UserSignupRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "$ref": "#/definitions/UserSignupResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/UserSignupErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/address/{patientId}": {
+            "get": {
+                "summary": "Get addresses for a patient",
+                "description": "Retrieves the addresses for a patient based on their ID",
+                "parameters": [
+                    {
+                        "name": "patientId",
+                        "in": "path",
+                        "description": "ID of the patient",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[0-9a-fA-F]{24}$",
+                        "example": "5fde07a7b2e33d54a474597c"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/DeliveryAddress"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Addresses not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "summary": "Update addresses for a patient",
+                "description": "Updates the addresses for a patient based on their ID",
+                "parameters": [
+                    {
+                        "name": "patientId",
+                        "in": "path",
+                        "description": "ID of the patient",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[0-9a-fA-F]{24}$",
+                        "example": "5fde07a7b2e33d54a474597c"
+                    },
+                    {
+                        "name": "deliveryAddresses",
+                        "in": "body",
+                        "description": "Updated delivery addresses",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/DeliveryAddress"
+                            }
+                        }
+                    }
+                ],
+                "consumes": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/DeliveryAddress"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Addresses not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/patients/{patientId}/wallet": {
+            "get": {
+                "summary": "Get wallet amount for a patient",
+                "description": "Retrieves the wallet amount for a patient based on their ID",
+                "parameters": [
+                    {
+                        "name": "patientId",
+                        "in": "path",
+                        "description": "ID of the patient",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[0-9a-fA-F]{24}$",
+                        "example": "5fde07a7b2e33d54a474597c"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "walletAmount": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Patient not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "summary": "Update wallet amount for a patient",
+                "description": "Updates the wallet amount for a patient based on their ID",
+                "parameters": [
+                    {
+                        "name": "patientId",
+                        "in": "path",
+                        "description": "ID of the patient",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[0-9a-fA-F]{24}$",
+                        "example": "5fde07a7b2e33d54a474597c"
+                    },
+                    {
+                        "name": "walletChange",
+                        "in": "body",
+                        "description": "Wallet change information",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "walletChange": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "walletAmount": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Patient not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }                                                
+    },
+    "definitions": {
+        "Patient": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "userName": { "type": "string" },
+                  "email": { "type": "string" },
+                  "password": { "type": "string" },
+                  "dateOfBirth": { "type": "string", "format": "date" },
+                  "gender": { "type": "string", "enum": ["MALE", "FEMALE"] },
+                  "mobileNumber": { "type": "string" },
+                  "emergencyContact": { "$ref": "#/definitions/EmergencyContact" },
+                  "familyMembers": { "type": "array", "items": { "$ref": "#/definitions/FamilyMember" } },
+                  "healthRecords": { "type": "array", "items": { "$ref": "#/definitions/HealthRecord" } },
+                  "healthPackages": { "type": "array", "items": { "$ref": "#/definitions/HealthPackage" } },
+                  "walletAmount": { "type": "number", "default": 0, "minimum": 0 },
+                  "deliveryAddresses": { "type": "array", "items": { "$ref": "#/definitions/DeliveryAddress" } }
+                },
+                "required": ["name", "userName", "email", "password", "dateOfBirth", "gender", "mobileNumber"]
+        },
+        "EmergencyContact": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "mobile": { "type": "string" },
+              "relation": { "type": "string", "enum": ["Parent", "Child", "Sibling", "Spouse", "Grandparent", "Grandchild", "Aunt", "Uncle", "Niece", "Nephew", "Cousin", "Other"] }
+            },
+            "required": ["name", "mobile", "relation"]
+          },
+        "FamilyMember": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "name": { "type": "string" },
+              "nationalId": { "type": "string" },
+              "age": { "type": "integer" },
+              "gender": { "type": "string", "enum": ["MALE", "FEMALE"] },
+              "relation": { "type": "string", "enum": ["HUSBAND", "WIFE", "CHILD"] },
+              "email": { "type": "string" },
+              "mobileNumber": { "type": "string" }
+            },
+            "required": ["name"]
+          },
+        "HealthRecord": {
+            "type": "object",
+            "properties": {
+              "recordTitle": { "type": "string" },
+              "documentName": { "type": "string" }
+            },
+            "required": ["recordTitle", "documentName"]
+          },
+        "HealthPackage": {
+            "type": "object",
+            "properties": {
+              "packageId": { "type": "string" },
+              "subscribtionDate": { "type": "string", "format": "date" },
+              "renewalDate": { "type": "string", "format": "date" },
+              "status": { "type": "string", "enum": ["CANCELLED", "SUBSCRIBED WITH RENEWAL DATE", "UNSUBSCRIBED"] }
+            },
+            "required": ["packageId", "subscribtionDate", "status"]
+          },
+        "DeliveryAddress": {
+            "type": "object",
+            "properties": {
+              "city": { "type": "string" },
+              "street": { "type": "string" },
+              "buildingName": { "type": "string" },
+              "phoneNumber": { "type": "string" },
+              "primary": { "type": "boolean" }
+            },
+            "required": ["city", "street", "buildingName", "phoneNumber"]
+          },
+          "Medicine": {
+            "type": "object",
+            "properties": {
+                "medicineId": {
+                    "type": "string",
+                    "format": "uuid", 
+                    "example": "5fde07a7b2e33d54a474597e"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Medicine A"
+                },
+                "price": {
+                    "type": "number",
+                    "example": 20.5
+                },
+                "amount": {
+                    "type": "number",
+                    "example": 3
+                }
+            },
+            "required": ["medicineId", "name", "price", "amount"]
+           },
+           "Prescription": {
+            "type": "object",
+            "properties": {
+                "patientId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "5fde07a7b2e33d54a474597c"
+                },
+                "doctorId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "5fde07a7b2e33d54a474597d"
+                },
+                "doctorName": {
+                    "type": "string",
+                    "example": "Dr. John Doe"
+                },
+                "date": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-01-05T10:30:00Z"
+                },
+                "filled": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "description": {
+                    "type": "string",
+                    "example": "Prescription for treating a specific condition"
+                },
+                "medicines": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Medicine"
+                    }
+                },
+                "inCart": {
+                    "type": "boolean",
+                    "default": false,
+                    "example": false
+                },
+                "purchased": {
+                    "type": "boolean",
+                    "default": false,
+                    "example": false
+                }
+            },
+            "required": ["patientId", "doctorId", "date", "filled", "description", "medicines"]
+        },
+        "UserSignupRequest": {
+            "type": "object",
+            "properties": {
+                "email": { "type": "string" },
+                "password": { "type": "string" },
+                "userName": { "type": "string" }
+            },
+            "required": ["email", "password", "userName"]
+        },
+        "UserSignupResponse": {
+            "type": "object",
+            "properties": {
+                "userId": { "type": "string" },
+                "email": { "type": "string" },
+                "password": { "type": "string" },
+                "userName": { "type": "string" },
+                "type": { "type": "string" }
+            }
+        },
+        "UserSignupErrorResponse": {
+            "type": "object",
+            "properties": {
+                "errCode": { "type": "number" },
+                "errMessage": { "type": "string" }
+            }
+        },
+        "ErrorResponse": {
+            "type": "object",
+            "properties": {
+              "error": {
+                "type": "object",
+                "properties": {
+                  "message": { "type": "string" }
+                }
+              }
+            }
+          }
+    }
+  }
+  
