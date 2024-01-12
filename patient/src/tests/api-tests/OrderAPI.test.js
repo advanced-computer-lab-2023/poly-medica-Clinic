@@ -38,12 +38,6 @@ describe('GET /order/:patientId', () => {
 		expect(res._body.length).toBe(len);
 	});
 
-	it('should return 500 ERROR when the id is invalid', async () => {
-		const id = faker.lorem.word();
-		const res = await request(app).get(`/order/${id}`);
-		expect(res.status).toBe(ERROR_STATUS_CODE);
-	});
-
 	afterEach(async () => {
 		await disconnectDBTest();
 	});

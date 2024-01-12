@@ -14,12 +14,7 @@ const connectDBTest = async () => {
 
 const disconnectDBTest = async () => {
 	try {
-		const collections = mongoose.connection.collections;
-
-		for (const key in collections) {
-			const collection = collections[key];
-			await collection.deleteMany({});
-		}
+		await mongoose.connection.db.dropDatabase();
 		await mongoose.disconnect();
 	} catch (err) {
 		console.error('Error connecting to the database:', err.message);
