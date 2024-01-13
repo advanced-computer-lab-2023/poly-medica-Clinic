@@ -26,7 +26,6 @@ app.use(cors({
 }));
 
 app.use('*', checkUser);
-console.log(swaggerFile);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 patient(app);

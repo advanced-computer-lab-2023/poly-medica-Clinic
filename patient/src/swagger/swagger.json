@@ -1010,7 +1010,320 @@
                     }
                 }
             }
-        }                                                
+        },
+        "/prescriptions": {
+            "post": {
+                "summary": "Add a prescription",
+                "description": "Adds a prescription to the system",
+                "consumes": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "prescription",
+                        "in": "body",
+                        "description": "Prescription details",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Prescription"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "$ref": "#/definitions/Prescription"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/prescriptions/{prescriptionId}": {
+            "patch": {
+                "summary": "Update a prescription",
+                "description": "Updates a prescription based on its ID",
+                "parameters": [
+                    {
+                        "name": "prescriptionId",
+                        "in": "path",
+                        "description": "ID of the prescription",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[0-9a-fA-F]{24}$",
+                        "example": "5fde07a7b2e33d54a474597c"
+                    },
+                    {
+                        "name": "prescription",
+                        "in": "body",
+                        "description": "Updated prescription details",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Prescription"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "$ref": "#/definitions/Prescription"
+                        }
+                    },
+                    "404": {
+                        "description": "Prescription not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/prescriptions/{prescriptionId}/download": {
+            "get": {
+                "summary": "Download a prescription as PDF",
+                "description": "Downloads a prescription in PDF format based on its ID",
+                "parameters": [
+                    {
+                        "name": "prescriptionId",
+                        "in": "path",
+                        "description": "ID of the prescription",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[0-9a-fA-F]{24}$",
+                        "example": "5fde07a7b2e33d54a474597c"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/pdf": {}
+                        }
+                    },
+                    "404": {
+                        "description": "Prescription not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }, 
+        "/prescriptions/{prescriptionId}/medicines": {
+            "get": {
+                "summary": "Get medicines for a prescription",
+                "description": "Retrieves the medicines for a prescription based on its ID",
+                "parameters": [
+                    {
+                        "name": "prescriptionId",
+                        "in": "path",
+                        "description": "ID of the prescription",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[0-9a-fA-F]{24}$",
+                        "example": "5fde07a7b2e33d54a474597c"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Medicine"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Prescription not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/order": {
+            "post": {
+                "summary": "Create a new order",
+                "description": "Adds a new order to the system",
+                "parameters": [
+                    {
+                        "name": "order",
+                        "in": "body",
+                        "description": "Order information",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Order"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "$ref": "#/definitions/Order"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }, 
+        "/order/{orderId}": {
+            "patch": {
+                "summary": "Update an existing order",
+                "description": "Updates the details of an existing order based on its ID",
+                "parameters": [
+                    {
+                        "name": "orderId",
+                        "in": "path",
+                        "description": "ID of the order",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[0-9a-fA-F]{24}$",
+                        "example": "5fde07a7b2e33d54a474597c"
+                    },
+                    {
+                        "name": "order",
+                        "in": "body",
+                        "description": "Updated order information",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Order"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "$ref": "#/definitions/Order"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Order not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/order/{patientId}": {
+            "get": {
+                "summary": "Get orders for a patient",
+                "description": "Retrieves the orders for a patient based on their ID",
+                "parameters": [
+                    {
+                        "name": "patientId",
+                        "in": "path",
+                        "description": "ID of the patient",
+                        "required": true,
+                        "type": "string",
+                        "pattern": "^[0-9a-fA-F]{24}$",
+                        "example": "5fde07a7b2e33d54a474597c"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Order"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Orders not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/order/pending": {
+            "get": {
+                "summary": "Get pending orders",
+                "description": "Retrieves the pending orders",
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Order"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Pending orders not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }                                                                                                    
     },
     "definitions": {
         "Patient": {
@@ -1155,6 +1468,80 @@
                 }
             },
             "required": ["patientId", "doctorId", "date", "filled", "description", "medicines"]
+        },
+        "Order": {
+            "type": "object",
+            "properties": {
+                "patientId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "ID of the patient",
+                    "example": "5fde07a7b2e33d54a474597c"
+                },
+                "details": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "medicineId": {
+                                "type": "string",
+                                "format": "uuid",
+                                "description": "ID of the medicine",
+                                "example": "5fde07a7b2e33d54a474597d"
+                            },
+                            "name": {
+                                "type": "string",
+                                "description": "Name of the medicine",
+                                "example": "Aspirin"
+                            },
+                            "price": {
+                                "type": "number",
+                                "description": "Price of the medicine",
+                                "example": 10.99
+                            },
+                            "quantity": {
+                                "type": "integer",
+                                "description": "Quantity of the medicine",
+                                "example": 1
+                            },
+                            "prescriptionId": {
+                                "type": "string",
+                                "format": "uuid",
+                                "description": "ID of the prescription",
+                                "example": "5fde07a7b2e33d54a474597e"
+                            }
+                        },
+                        "required": ["medicineId", "name", "price"]
+                    }
+                },
+                "amount": {
+                    "type": "number",
+                    "description": "Total amount for the order",
+                    "example": 50.95
+                },
+                "status": {
+                    "type": "string",
+                    "enum": ["Pending", "Processing", "Shipped", "Delivered"],
+                    "description": "Status of the order",
+                    "default": "Pending"
+                },
+                "paymentMethod": {
+                    "type": "string",
+                    "description": "Payment method for the order",
+                    "example": "Credit Card"
+                },
+                "type": {
+                    "type": "string",
+                    "description": "Type of the order"
+                },
+                "typeId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "ID related to the order type",
+                    "example": "5fde07a7b2e33d54a474597f"
+                }
+            },
+            "required": ["patientId", "details", "amount", "status", "paymentMethod"]
         },
         "UserSignupRequest": {
             "type": "object",
