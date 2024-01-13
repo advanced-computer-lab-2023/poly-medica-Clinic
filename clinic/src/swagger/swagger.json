@@ -17,7 +17,7 @@
             "200": {
               "description": "Successful response",
               "schema": {
-                "$ref": "#/definitions/AdminResponse"
+                "$ref": "#/definitions/Admin"
               }
             },
             "400": {
@@ -34,7 +34,7 @@
             "200": {
               "description": "Successful response",
               "schema": {
-                "$ref": "#/definitions/AdminsListResponse"
+                "$ref": "#/definitions/Admin"
               }
             },
             "500": {
@@ -44,7 +44,9 @@
               }
             }
           }
-        },
+        }
+      },
+      "/admins/{id}": {
         "delete": {
           "summary": "Delete an admin user",
           "parameters": [
@@ -60,7 +62,7 @@
             "200": {
               "description": "Successful response",
               "schema": {
-                "$ref": "#/definitions/AdminDeletedResponse"
+                "$ref": "#/definitions/Admin"
               }
             },
             "400": {
@@ -84,7 +86,7 @@
           }
         }
       },
-      "/patients" : {
+      "/patients/{id}" : {
       "delete": {
         "summary": "Delete a patient",
         "parameters": [
@@ -100,7 +102,7 @@
           "200": {
             "description": "Successful response",
             "schema": {
-              "$ref": "#/definitions/PatientDeletedResponse"
+              "$ref": "#/definitions/Patient"
             }
           },
           "404": {
@@ -117,8 +119,311 @@
            }
          }
        }
-     }
-      
+     },
+     "/appointments": {
+      "post": {
+        "summary": "Create a new appointment",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "appointment",
+            "description": "Appointment object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Appointment"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/AppointmentResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/appointments/{id}": {
+      "get": {
+        "summary": "Get appointments by user ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/Appointment"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/BadRequestResponse"
+            }
+          },
+          "404": {
+            "description": "Appointments not found",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/appointments/complete/{appointmentId}": {
+      "patch": {
+        "summary": "Mark appointment as complete",
+        "parameters": [
+          {
+            "name": "appointmentId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the appointment"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/Appointment"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/BadRequestResponse"
+            }
+          },
+          "404": {
+            "description": "Appointment not found",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/appointments/reschedule/{appointmentId}": {
+      "patch": {
+        "summary": "Reschedule an appointment",
+        "parameters": [
+          {
+            "name": "appointmentId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the appointment"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/Appointment"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/BadRequestResponse"
+            }
+          },
+          "404": {
+            "description": "Appointment not found",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/appointments/cancel/{appointmentId}": {
+      "patch": {
+        "summary": "Cancel an appointment",
+        "parameters": [
+          {
+            "name": "appointmentId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the appointment"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/Appointment"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/BadRequestResponse"
+            }
+          },
+          "404": {
+            "description": "Appointment not found",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/appointments/follow-up-requests": {
+      "post": {
+        "summary": "Create a follow-up appointment",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "appointment",
+            "description": "Follow-up appointment object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Appointment"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/Appointment"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/appointments/follow-up-requests/{id}": {
+      "get": {
+        "summary": "Get follow-up requests by user ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/Appointment"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/BadRequestResponse"
+            }
+          },
+          "404": {
+            "description": "Follow-up requests not found",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/appointments/follow-up-requests/handle/{appointmentId}": {
+      "patch": {
+        "summary": "Handle a follow-up appointment request",
+        "parameters": [
+          {
+            "name": "appointmentId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the follow-up appointment request"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/Appointment"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/BadRequestResponse"
+            }
+          },
+          "404": {
+            "description": "Follow-up request not found",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    }
     },
     "definitions": {
       "Admin": {
@@ -466,6 +771,11 @@
       "type": "object",
       "properties": {
       }
+    },
+    "AppointmentResponse": {
+        "type": "object",
+        "properties": {
+        }
     }
   }
 }
