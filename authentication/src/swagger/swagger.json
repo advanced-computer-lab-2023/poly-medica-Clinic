@@ -1,0 +1,571 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Authentication Service API",
+      "description": "API documentation for the authentication service"
+    },
+    "basePath": "/",
+    "schemes": ["http", "https"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "paths": {
+        "/reset-password": {
+            "post": {
+              "summary": "Reset User Password",
+              "description": "Endpoint to initiate the password reset process.",
+              "parameters": [
+                {
+                  "name": "email",
+                  "in": "formData",
+                  "required": true,
+                  "type": "string",
+                  "description": "User's email address"
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Email sent successfully",
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string",
+                        "description": "Success message"
+                      }
+                    }
+                  }
+                },
+                "400": {
+                  "description": "Bad Request",
+                  "schema": {
+                    "$ref": "#/definitions/ErrorResponse"
+                  }
+                },
+                "500": {
+                  "description": "Internal Server Error",
+                  "schema": {
+                    "$ref": "#/definitions/ErrorResponse"
+                  }
+                }
+              }
+            }
+        },
+        "/signup/{request}": {
+            "post": {
+              "summary": "User Signup",
+              "description": "Endpoint for user registration.",
+              "parameters": [
+                {
+                  "name": "request",
+                  "in": "path",
+                  "required": true,
+                  "type": "string",
+                  "enum": ["clinic", "pharmacy"],
+                  "description": "Type of request (clinic or pharmacy)"
+                }
+              ],
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/definitions/UserSignupRequest"
+                    }
+                  }
+                }
+              },
+              "responses": {
+                "200": {
+                  "description": "User signup successful"
+                },
+                "400": {
+                  "description": "Bad Request",
+                  "schema": {
+                    "$ref": "#/definitions/ErrorResponse"
+                  }
+                }
+              }
+            }
+        },
+        "/users/{id}": {
+            "delete": {
+              "summary": "Delete User",
+              "description": "Endpoint to delete a user by ID.",
+              "parameters": [
+                {
+                  "name": "id",
+                  "in": "path",
+                  "required": true,
+                  "type": "string",
+                  "description": "User ID to be deleted"
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "User deleted successfully"
+                },
+                "500": {
+                  "description": "Internal Server Error",
+                  "schema": {
+                    "$ref": "#/definitions/ErrorResponse"
+                  }
+                }
+              }
+            }
+        },
+        "/users/{id}/email/{email}": {
+            "patch": {
+              "summary": "Update User Email",
+              "description": "Endpoint to update a user's email by ID.",
+              "parameters": [
+                {
+                  "name": "id",
+                  "in": "path",
+                  "required": true,
+                  "type": "string",
+                  "description": "User ID to be updated"
+                },
+                {
+                  "name": "email",
+                  "in": "path",
+                  "required": true,
+                  "type": "string",
+                  "description": "New email for the user"
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Email updated successfully",
+                  "schema": {
+                    "$ref": "#/definitions/PatchUserEmailResponse"
+                  }
+                },
+                "400": {
+                  "description": "Bad Request",
+                  "schema": {
+                    "$ref": "#/definitions/ErrorResponse"
+                  }
+                },
+                "500": {
+                  "description": "Internal Server Error",
+                  "schema": {
+                    "$ref": "#/definitions/ErrorResponse"
+                  }
+                }
+              }
+            }
+        },
+        "/doctors": {
+            "post": {
+              "summary": "Add Doctor",
+              "description": "Endpoint to add a doctor.",
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/definitions/DoctorRequest"
+                    }
+                  }
+                }
+              },
+              "responses": {
+                "200": {
+                  "description": "Doctor added successfully"
+                },
+                "500": {
+                  "description": "Internal Server Error",
+                  "schema": {
+                    "$ref": "#/definitions/ErrorResponse"
+                  }
+                }
+              }
+            }
+        },
+        "/pharmacists": {
+            "post": {
+              "summary": "Add Pharmacist",
+              "description": "Endpoint to add a pharmacist.",
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/definitions/PharmacistRequest"
+                    }
+                  }
+                }
+              },
+              "responses": {
+                "200": {
+                  "description": "Pharmacist added successfully"
+                },
+                "500": {
+                  "description": "Internal Server Error",
+                  "schema": {
+                    "$ref": "#/definitions/ErrorResponse"
+                  }
+                }
+              }
+            }
+        },
+        "/login/{request}": {
+            "post": {
+              "summary": "User Login",
+              "description": "Endpoint for user login.",
+              "parameters": [
+                {
+                  "name": "request",
+                  "in": "path",
+                  "required": true,
+                  "type": "string",
+                  "enum": ["clinic", "pharmacy"],
+                  "description": "Type of login request (clinic or pharmacy)"
+                }
+              ],
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/definitions/LoginRequest"
+                    }
+                  }
+                }
+              },
+              "responses": {
+                "200": {
+                  "description": "User logged in successfully",
+                  "schema": {
+                    "$ref": "#/definitions/LoginResponse"
+                  }
+                },
+                "400": {
+                  "description": "Bad Request",
+                  "schema": {
+                    "$ref": "#/definitions/ErrorResponse"
+                  }
+                }
+              }
+            }
+        },
+        "/user/{id}/email": {
+            "get": {
+              "summary": "Get User Email",
+              "description": "Endpoint to retrieve a user's email by ID.",
+              "parameters": [
+                {
+                  "name": "id",
+                  "in": "path",
+                  "required": true,
+                  "type": "string",
+                  "description": "User ID to retrieve the email"
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "User email retrieved successfully",
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "email": {
+                        "type": "string",
+                        "description": "User's email address"
+                      }
+                    }
+                  }
+                },
+                "500": {
+                  "description": "Internal Server Error",
+                  "schema": {
+                    "$ref": "#/definitions/ErrorResponse"
+                  }
+                }
+              }
+            }
+        },
+        "/check-user": {
+            "get": {
+              "summary": "Check User Authentication",
+              "description": "Endpoint to check if the user is authenticated.",
+              "responses": {
+                "200": {
+                  "description": "User is authenticated",
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "User ID"
+                      },
+                      "userName": {
+                        "type": "string",
+                        "description": "User's username"
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "User type"
+                      }
+                    }
+                  }
+                },
+                "401": {
+                  "description": "Unauthorized",
+                  "schema": {
+                    "$ref": "#/definitions/ErrorResponse"
+                  }
+                }
+              }
+            }
+        },
+        "/change-password/{userId}": {
+            "patch": {
+              "summary": "Change Password",
+              "description": "Endpoint to change user password by ID.",
+              "parameters": [
+                {
+                  "name": "userId",
+                  "in": "path",
+                  "required": true,
+                  "type": "string",
+                  "description": "User ID to change the password"
+                }
+              ],
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/definitions/ChangePasswordRequest"
+                    }
+                  }
+                }
+              },
+              "responses": {
+                "200": {
+                  "description": "Password changed successfully"
+                },
+                "500": {
+                  "description": "Internal Server Error",
+                  "schema": {
+                    "$ref": "#/definitions/ErrorResponse"
+                  }
+                }
+              }
+            }
+        },
+        "/remove-cookie": {
+            "get": {
+              "summary": "Remove Cookie",
+              "description": "Endpoint to remove the JWT cookie.",
+              "responses": {
+                "200": {
+                  "description": "Cookie removed successfully"
+                }
+              }
+            }
+        },
+        "/pharmacists/id": {
+            "get": {
+              "summary": "Get Pharmacist IDs",
+              "description": "Endpoint to retrieve IDs of pharmacists.",
+              "responses": {
+                "200": {
+                  "description": "Pharmacist IDs retrieved successfully",
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "500": {
+                  "description": "Internal Server Error",
+                  "schema": {
+                    "$ref": "#/definitions/ErrorResponse"
+                  }
+                }
+              }
+            }
+        }
+    },
+    "definitions": {
+        "UserSchema": {
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "string",
+                "format": "uuid",
+                "description": "Unique identifier for the user",
+                "example": "550e8400-e29b-41d4-a716-446655440000"
+              },
+              "email": {
+                "type": "string",
+                "description": "User's email address",
+                "example": "user@example.com"
+              },
+              "userName": {
+                "type": "string",
+                "description": "User's username",
+                "example": "john_doe"
+              },
+              "password": {
+                "type": "string",
+                "description": "User's password",
+                "example": "password123"
+              },
+              "type": {
+                "type": "string",
+                "description": "User type",
+                "enum": ["CLINIC_ADMIN", "PHARMACY_ADMIN", "PATIENT", "DOCTOR", "PHARMACIST"],
+                "example": "PATIENT"
+              }
+            },
+            "required": ["userId", "email", "userName", "password", "type"],
+            "uniqueItems": ["userId", "email", "userName"]
+        },
+        "ResetSchema": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "description": "User's email address",
+                "example": "user@example.com"
+              },
+              "OTP": {
+                "type": "string",
+                "description": "One-Time Password for resetting",
+                "example": "123456"
+              },
+              "resetTokenExpiration": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Token expiration date and time",
+                "example": "2024-01-13T12:00:00Z"
+              }
+            },
+            "required": ["email", "OTP", "resetTokenExpiration"]
+        },
+        "UserSignupRequest": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["PATIENT", "DOCTOR", "PHARMACIST"],
+                "description": "Type of user"
+              },
+              "email": {
+                "type": "string",
+                "description": "User's email address"
+              },
+              "userName": {
+                "type": "string",
+                "description": "User's username"
+              }
+            },
+            "required": ["type", "email", "userName"]
+        },
+        "PatchUserEmailResponse": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "description": "Success message"
+              }
+            }
+        },
+        "DoctorRequest": {
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "string",
+                "description": "Unique identifier for the doctor",
+                "example": "550e8400-e29b-41d4-a716-446655440000"
+              }
+            },
+            "required": ["userId"]
+        },
+        "PharmacistRequest": {
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "string",
+                "description": "Unique identifier for the pharmacist",
+                "example": "550e8400-e29b-41d4-a716-446655440000"
+              }
+            },
+            "required": ["userId"]
+        },
+        "AdminRequest": {
+            "type": "object",
+            "properties": {
+              "userName": {
+                "type": "string",
+                "description": "Admin's username"
+              },
+              "email": {
+                "type": "string",
+                "description": "Admin's email address"
+              }
+            },
+            "required": ["userName", "email"]
+        },
+        "AdminResponse": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "description": "Success message"
+              }
+            }
+        },
+        "LoginRequest": {
+            "type": "object",
+            "properties": {
+              "userName": {
+                "type": "string",
+                "description": "User's username"
+              },
+              "password": {
+                "type": "string",
+                "description": "User's password"
+              }
+            },
+            "required": ["userName", "password"]
+        },
+        "LoginResponse": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string",
+                "description": "User authentication token"
+              },
+              "type": {
+                "type": "string",
+                "description": "User type"
+              }
+            }
+        },
+        "ChangePasswordRequest": {
+            "type": "object",
+            "properties": {
+              "password": {
+                "type": "string",
+                "description": "New password for the user"
+              }
+            },
+            "required": ["password"]
+        },
+        "ErrorResponse": {
+            "type": "object",
+            "properties": {
+              "errMessage": {
+                "type": "string",
+                "description": "Error message"
+              }
+            }
+        }
+    }
+  }
+  

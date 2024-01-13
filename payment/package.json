@@ -19,7 +19,9 @@
     "mongoose": "^8.0.2",
     "morgan": "^1.10.0",
     "nodemon": "^3.0.1",
-    "stripe": "^14.1.0"
+    "stripe": "^14.1.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.23.3",
