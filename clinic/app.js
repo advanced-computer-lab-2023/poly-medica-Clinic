@@ -9,6 +9,9 @@ import { appointment } from './src/api/AppointmentAPI.js';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
+import swaggerUi from "swagger-ui-express";
+import { default as swaggerFile } from './src/swagger/swagger.json' assert { type: "json" };
+
 
 const app = express();
 
@@ -29,6 +32,8 @@ app.use(
 		credentials: true,
 	}),
 );
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 healthPackage(app);
 admin(app);

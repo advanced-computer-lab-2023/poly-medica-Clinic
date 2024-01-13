@@ -1,0 +1,324 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Clinic Service API",
+      "description": "API documentation for the clinic service"
+    },
+    "basePath": "/",
+    "schemes": ["http", "https"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "paths": {
+      "/admins": {
+        "post": {
+          "summary": "Create a new admin user",
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "schema": {
+                "$ref": "#/definitions/AdminResponse"
+              }
+            },
+            "400": {
+              "description": "Bad request",
+              "schema": {
+                "$ref": "#/definitions/BadRequestResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "Admin": {
+        "type": "object",
+        "properties": {
+          "userName": {
+            "type": "string",
+            "description": "The username of the admin",
+            "required": true,
+            "unique": true
+          },
+          "password": {
+            "type": "string",
+            "description": "The password of the admin",
+            "required": true
+          },
+          "mainAdmin": {
+            "type": "boolean",
+            "description": "Indicates whether the admin is the main admin",
+            "default": false
+          },
+          "email": {
+            "type": "string",
+            "description": "The email of the admin",
+            "required": true,
+            "unique": true
+          }
+        }
+    },
+    "Appointment": {
+      "type": "object",
+      "properties": {
+        "patientId": {
+          "type": "string",
+          "description": "The ID of the patient associated with the appointment",
+          "required": true
+        },
+        "doctorId": {
+          "type": "string",
+          "description": "The ID of the doctor associated with the appointment",
+          "required": true
+        },
+        "patientName": {
+          "type": "string",
+          "description": "The name of the patient",
+          "required": true
+        },
+        "doctorName": {
+          "type": "string",
+          "description": "The name of the doctor",
+          "required": true
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date and time of the appointment",
+          "required": true
+        },
+        "status": {
+          "type": "string",
+          "description": "The status of the appointment"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["appointment", "follow-up"],
+          "description": "The type of appointment",
+          "required": true
+        },
+        "pricePaidByPatient": {
+          "type": "number",
+          "description": "The price paid by the patient (only applicable if type is appointment)"
+        },
+        "pricePaidToDoctor": {
+          "type": "number",
+          "description": "The price paid to the doctor (only applicable if type is appointment)"
+        },
+        "patientFamilyMember": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "nationalId": { "type": "string" },
+            "age": { "type": "number" },
+            "gender": { "type": "string", "enum": ["Male", "Female", "Other"] },
+            "relation": { "type": "string", "enum": ["Father", "Mother", "Sibling", "Other"] }
+          },
+          "description": "Details about the patient's family member (if exists)"
+        },
+        "followUpData": {
+          "type": "object",
+          "properties": {
+            "isValid": { "type": "boolean", "default": false },
+            "accepted": { "type": "boolean" },
+            "handled": { "type": "boolean" }
+          },
+          "description": "Follow-up data (only applicable if type is follow-up)"
+        }
+      }
+    },
+    "Doctor": {
+      "type": "object",
+      "properties": {
+        "userData": {
+          "$ref": "#/definitions/User"
+        },
+        "speciality": {
+          "type": "string",
+          "description": "The speciality of the doctor",
+          "required": true
+        },
+        "hourlyRate": {
+          "type": "number",
+          "description": "The hourly rate of the doctor",
+          "required": true
+        },
+        "affiliation": {
+          "type": "string",
+          "description": "The affiliation of the doctor",
+          "required": true
+        },
+        "educationalBackground": {
+          "type": "string",
+          "description": "The educational background of the doctor",
+          "required": true
+        },
+        "availableSlots": {
+          "type": "array",
+          "description": "Array of available slots for the doctor"
+        },
+        "walletAmount": {
+          "type": "number",
+          "description": "The wallet amount of the doctor",
+          "default": 0,
+          "minimum": 0,
+          "message": "Wallet amount must be greater than or equal to 0"
+        },
+        "documentsNames": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Array of document names associated with the doctor"
+        },
+        "status": {
+          "type": "boolean",
+          "description": "The status of the doctor",
+          "default": false
+        }
+      }
+    },
+    "DoctorReq": {
+      "type": "object",
+      "properties": {
+        "userData": {
+          "$ref": "#/definitions/User"
+        },
+        "speciality": {
+          "type": "string",
+          "description": "The speciality of the doctor",
+          "required": true
+        },
+        "hourlyRate": {
+          "type": "number",
+          "description": "The hourly rate of the doctor",
+          "required": true
+        },
+        "affiliation": {
+          "type": "string",
+          "description": "The affiliation of the doctor",
+          "required": true
+        },
+        "educationalBackground": {
+          "type": "string",
+          "description": "The educational background of the doctor",
+          "required": true
+        },
+        "documentsNames": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Array of document names associated with the doctor",
+          "required": true
+        }
+      }
+    },
+    "HealthPackage": {
+      "type": "object",
+      "properties": {
+        "price": {
+          "type": "number",
+          "description": "The price of the health package",
+          "required": true
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the health package",
+          "required": true
+        },
+        "discountOfDoctor": {
+          "type": "number",
+          "description": "The discount applied by a doctor for the health package",
+          "required": true
+        },
+        "discountOfMedicin": {
+          "type": "number",
+          "description": "The discount applied for medicines in the health package",
+          "required": true
+        },
+        "discountOfFamily": {
+          "type": "number",
+          "description": "The discount applied for family members in the health package",
+          "required": true
+        }
+      }
+    },
+    "HealthPackageOrder": {
+      "type": "object",
+      "properties": {
+        "price": {
+          "type": "number",
+          "description": "The price of the health package order",
+          "required": true
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the health package order",
+          "required": true
+        },
+        "discountOfDoctor": {
+          "type": "number",
+          "description": "The discount applied by a doctor for the health package order",
+          "required": true
+        },
+        "discountOfMedicin": {
+          "type": "number",
+          "description": "The discount applied for medicines in the health package order",
+          "required": true
+        },
+        "discountOfFamily": {
+          "type": "number",
+          "description": "The discount applied for family members in the health package order",
+          "required": true
+        },
+        "status": {
+          "type": "string",
+          "enum": ["DONE", "FAILED"],
+          "description": "The status of the health package order"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the user",
+          "required": true
+        },
+        "userName": {
+          "type": "string",
+          "description": "The username of the user",
+          "required": true,
+          "unique": true
+        },
+        "email": {
+          "type": "string",
+          "description": "The email address of the user",
+          "required": true,
+          "unique": true
+        },
+        "password": {
+          "type": "string",
+          "description": "The password of the user",
+          "required": true
+        },
+        "dateOfBirth": {
+          "type": "string",
+          "format": "date",
+          "description": "The date of birth of the user",
+          "required": true
+        }
+      }
+    },
+    "BadRequestResponse": {
+      "type": "object",
+      "properties": {
+        "errCode": { "type": "string" },
+        "errMessage": { "type": "string" },
+        "errStatus": { "type": "number" }
+      }
+    }
+  }
+}
