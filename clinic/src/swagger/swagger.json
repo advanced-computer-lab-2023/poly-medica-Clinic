@@ -27,8 +27,98 @@
               }
             }
           }
+        },
+        "get": {
+          "summary": "Get a list of admins",
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "schema": {
+                "$ref": "#/definitions/AdminsListResponse"
+              }
+            },
+            "500": {
+              "description": "Internal Server Error",
+              "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+              }
+            }
+          }
+        },
+        "delete": {
+          "summary": "Delete an admin user",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "description": "ID of the admin user"
+            }
+          ],
+          "responses": { 
+            "200": {
+              "description": "Successful response",
+              "schema": {
+                "$ref": "#/definitions/AdminDeletedResponse"
+              }
+            },
+            "400": {
+              "description": "Bad request",
+              "schema": {
+                "$ref": "#/definitions/BadRequestResponse"
+              }
+            },
+            "404": {
+              "description": "Admin not found",
+              "schema": {
+                "$ref": "#/definitions/NotFoundResponse"
+              }
+            },
+            "500": {
+              "description": "Internal Server Error",
+              "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+              }
+            }
+          }
         }
-      }
+      },
+      "/patients" : {
+      "delete": {
+        "summary": "Delete a patient",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the patient"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/PatientDeletedResponse"
+            }
+          },
+          "404": {
+            "description": "Patient not found",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+             }
+           }
+         }
+       }
+     }
+      
     },
     "definitions": {
       "Admin": {
@@ -318,6 +408,63 @@
         "errCode": { "type": "string" },
         "errMessage": { "type": "string" },
         "errStatus": { "type": "number" }
+      }
+    },
+    "AdminResponse": {
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "password": { "type": "string" },
+        "userName": { "type": "string" },
+        "email": { "type": "string" },
+        "type": { "type": "string", "enum": ["ADMIN"] }
+      }
+    },
+    "AdminsListResponse": {
+      "type": "object",
+      "properties": {
+        "admins": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AdminResponse"
+          }
+        }
+      }
+    },
+    "AdminDeletedResponse": {
+      "type": "object",
+      "properties": {
+        "message": { "type": "string" },
+        "deletedAdmin": {
+          "$ref": "#/definitions/AdminResponse"
+        }
+      }
+    },
+    "NotFoundResponse": {
+      "type": "object",
+      "properties": {
+        "message": { "type": "string" }
+      }
+    },
+    "ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "err": { "type": "string" }
+      }
+    },
+    "PatientDeletedResponse": {
+      "type": "object",
+      "properties": {
+        "message": { "type": "string" },
+        "status": { "type": "number" },
+        "deletePatient": {
+          "$ref": "#/definitions/PatientResponse"
+        }
+      }
+    },
+    "PatientResponse": {
+      "type": "object",
+      "properties": {
       }
     }
   }
