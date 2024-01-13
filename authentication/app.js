@@ -4,7 +4,6 @@ import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import { user } from './src/api/user.js';
 import { resetPassword } from './src/api/resetPassword.js';
-import { kafka } from './src/api/KafkaAPI.js';
 import cors from 'cors';
 
 const app = express();
@@ -22,6 +21,5 @@ app.use(
 
 user(app);
 resetPassword(app);
-kafka(app);
 
 export default app;

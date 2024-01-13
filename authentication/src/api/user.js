@@ -85,7 +85,7 @@ export const user = (app) => {
 			}
 
 			if (type == PATIENT_ENUM) {
-				signupData = await axios.post(PATIENT_SIGNUP_URL, req.body);
+				signupData = await axios.post(PATIENT_SIGNUP_URL, req.body);
 				const userId = signupData.data.userId;
 				await axios.post(`${COMMUNICATION_USER_POST_URL}/${userId}`);
 				await service.signupUser(signupData.data);
@@ -126,12 +126,10 @@ export const user = (app) => {
 			const email = req.params.email;
 			const systemUser = await service.findUserByEmail(email);
 			if (systemUser) {
-				res
-					.status(BAD_REQUEST_CODE_400)
-					.send({
-						errCode: DUPLICATE_KEY_ERROR_CODE,
-						message: 'this email is already exist in the system',
-					});
+				res.status(BAD_REQUEST_CODE_400).send({
+					errCode: DUPLICATE_KEY_ERROR_CODE,
+					message: 'this email is already exist in the system',
+				});
 			} else {
 				const systemUser = await service.updateEmail(id, email);
 				//TODO: check the way of update akw
@@ -175,7 +173,7 @@ export const user = (app) => {
 		}
 	});
 
-	app.post('/admins/:request', async (req, res) => {
+	app.post('/check-admin/:request', async (req, res) => {
 		try {
 			const requestFrom = req.params.request; // clinic, pharmacy
 			const userName = req.body.userName;
@@ -205,6 +203,20 @@ export const user = (app) => {
 					throw new Error('invalid system');
 			}
 
+			res.status(OK_REQUEST_CODE_200).end();
+		} catch (error) {
+			if (error.response) {
+				res
+					.status(BAD_REQUEST_CODE_400)
+					.send({ message: error.response.data.errMessage });
+			} else {
+				res.status(ERROR_STATUS_CODE).send({ message: error.message });
+			}
+		}
+	});
+
+	app.post('/admins/:request', async (req, res) => {
+		try {
 			let signupData = null;
 			switch (requestFrom) {
 				case CLINIC_REQ:
@@ -364,16 +376,13 @@ export const user = (app) => {
 		res.status(200).end();
 	});
 
-	app.get('/pharmacists/id', async (req, res) =>{
-		try{
+	app.get('/pharmacists/id', async (req, res) => {
+		try {
 			let pharmacist = await service.getPharmacistid();
-			pharmacist = pharmacist.map(element => element.userId);
+			pharmacist = pharmacist.map((element) => element.userId);
 			res.send(pharmacist);
-		} catch(err){
-			res.status(SERVER_ERROR_REQUEST_CODE_500).send({ message:err.message });
+		} catch (err) {
+			res.status(SERVER_ERROR_REQUEST_CODE_500).send({ message: err.message });
 		}
-	})
-
+	});
 };
-
-

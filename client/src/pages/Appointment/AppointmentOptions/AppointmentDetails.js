@@ -73,7 +73,8 @@ const AppointmentDetails = ({
                         const updatedAppointment = response.data;
                         setSelectedAppointment(updatedAppointment);
                         handleAppoinmentUpdate(updatedAppointment);
-                        await communicationAxios.post(`/notification/${userIdToNotify}/type/appointment`, {
+                        // kafka producer: POST /appointments/{userId}
+                        await clinicAxios.post(`/appointments/${userIdToNotify}/`, {
                             senderName: user.userName,
                             notificationHead,
                             notificationBody

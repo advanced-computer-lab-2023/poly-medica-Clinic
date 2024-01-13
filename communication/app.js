@@ -8,6 +8,8 @@ import http from 'http';
 import { Server } from 'socket.io';
 import { notification } from './src/api/NotificationAPI.js';
 import UserSocketModel from './src/database/models/UserSocket.js';
+import { outOfStockConsumer } from './src/consumers/OutOfStockConsumer.js';
+import { appointmentConsumer } from './src/consumers/AppointmentConsumer.js';
 
 const app = express();
 
@@ -24,12 +26,14 @@ app.use(
 			'http://localhost:3005',
 		],
 		credentials: true,
-	})
+	}),
 );
 
 chat(app);
 message(app);
 notification(app);
+appointmentConsumer();
+outOfStockConsumer();
 
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -79,37 +83,41 @@ io.on('connection', (socket) => {
 	socket.on('ready', async ({ userId }) => {
 		try {
 			console.log('inside ready with id = ', userId);
-			const userSockets = await UserSocketModel.findOne({ userId: userId.toString() });
+			const userSockets = await UserSocketModel.findOne({
+				userId: userId.toString(),
+			});
 			if (userSockets) {
 				userSockets.socketId = socket.id;
 				userSockets.save();
-			}
-			else {
+			} else {
 				const newUser = { userId: userId, socketId: socket.id };
 				const newUserSocket = new UserSocketModel(newUser);
 				newUserSocket.save();
 			}
-			socket.emit("me", socket.id);
-
+			socket.emit('me', socket.id);
 		} catch (err) {
 			console.log('err: ', err.message);
 		}
 	});
 
-	socket.on("disconnect", () => {
-		socket.broadcast.emit("callEnded");
+	socket.on('disconnect', () => {
+		socket.broadcast.emit('callEnded');
 	});
 
-	socket.on("callUser", async ({ userToCall, signalData, from, name }) => {
+	socket.on('callUser', async ({ userToCall, signalData, from, name }) => {
 		console.log('called user succeessfully');
 		const userSocketId = await UserSocketModel.findOne({ userId: userToCall });
-		io.to(userSocketId.socketId).emit("callUser", { signal: signalData, from, name });
+		io.to(userSocketId.socketId).emit('callUser', {
+			signal: signalData,
+			from,
+			name,
+		});
 	});
 
-	socket.on("answerCall", (data) => {
+	socket.on('answerCall', (data) => {
 		console.log('inside answer call');
 		io.to(data.to).emit('hello');
-		io.to(data.to).emit("callAccepted", data.signal)
+		io.to(data.to).emit('callAccepted', data.signal);
 	});
 });
 
