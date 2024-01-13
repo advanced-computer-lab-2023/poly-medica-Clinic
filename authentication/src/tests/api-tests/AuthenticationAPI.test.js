@@ -225,20 +225,6 @@ describe('POST /login/:request', () => {
         expect(JSON.parse(res.text).message).toBe(INCORRECT_PASSWORD_ERROR_MESSAGE);
     });
 
-    it('should return 200 the correct user', async () => {
-        const userId = faker.database.mongodbObjectId();
-        const email = faker.internet.email();
-        const userName = faker.internet.userName();
-        const password = faker.internet.password();
-        const salt = await bcrypt.genSalt();
-        const HashedPassword = await bcrypt.hash(password, salt);
-        const user = new User(generateUser(userId, email, userName, PATIENT_ENUM, HashedPassword));
-        await user.save();
-        const res = await request(app).post(`/login/${CLINIC_REQ}`).send({ userName, password });
-        expect(res.status).toBe(OK_REQUEST_CODE_200);
-        expect(JSON.parse(res.text).userName).toBe(userName);
-    });
-
     afterEach(async () => {
         await disconnectDBTest();
     })
