@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/plugin-syntax-import-attributes": "^7.23.3",
     "@babel/plugin-transform-modules-commonjs": "^7.23.0",
     "@faker-js/faker": "^8.2.0",
     "babel-jest": "^29.7.0",

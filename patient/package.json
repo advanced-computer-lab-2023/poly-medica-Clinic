@@ -30,6 +30,7 @@
     "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
+    "@babel/plugin-syntax-import-attributes": "^7.23.3",
     "@babel/plugin-transform-modules-commonjs": "^7.23.0",
     "@babel/preset-env": "^7.23.3",
     "@faker-js/faker": "^8.2.0",
