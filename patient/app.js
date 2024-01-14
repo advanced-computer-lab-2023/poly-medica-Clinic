@@ -7,6 +7,9 @@ import cookieParser from 'cookie-parser';
 import { checkUser } from './src/middleware/authMiddleware.js';
 import cors from 'cors';
 import { prescription } from './src/api/PrescriptionAPI.js';
+import swaggerUi from "swagger-ui-express";
+import { default as swaggerFile } from './src/swagger/swagger.json' assert { type: "json" };
+
 
 const app = express();
 
@@ -23,6 +26,7 @@ app.use(cors({
 }));
 
 app.use('*', checkUser);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 patient(app);
 order(app);

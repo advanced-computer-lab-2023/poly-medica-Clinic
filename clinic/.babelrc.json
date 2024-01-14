@@ -3,5 +3,8 @@
       "test": {
         "plugins": ["@babel/plugin-transform-modules-commonjs"]
       }
-    }
+    },
+    "plugins": [
+      ["@babel/plugin-syntax-import-attributes", { "deprecatedAssertSyntax": true }]
+    ]
 }

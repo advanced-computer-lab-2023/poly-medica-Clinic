@@ -19,9 +19,12 @@
     "mongoose": "^8.0.2",
     "morgan": "^1.10.0",
     "nodemon": "^3.0.1",
-    "stripe": "^14.1.0"
+    "stripe": "^14.1.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
+    "@babel/plugin-syntax-import-attributes": "^7.23.3",
     "@babel/plugin-transform-modules-commonjs": "^7.23.3",
     "@faker-js/faker": "^8.3.1",
     "babel-jest": "^29.7.0",

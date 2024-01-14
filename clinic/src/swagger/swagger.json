@@ -1,0 +1,1654 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Clinic Service API",
+      "description": "API documentation for the clinic service"
+    },
+    "basePath": "/",
+    "schemes": ["http", "https"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "paths": {
+      "/admins": {
+        "post": {
+          "summary": "Create a new admin user",
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "schema": {
+                "$ref": "#/definitions/Admin"
+              }
+            },
+            "400": {
+              "description": "Bad request",
+              "schema": {
+                "$ref": "#/definitions/BadRequestResponse"
+              }
+            }
+          }
+        },
+        "get": {
+          "summary": "Get a list of admins",
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "schema": {
+                "$ref": "#/definitions/Admin"
+              }
+            },
+            "500": {
+              "description": "Internal Server Error",
+              "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+              }
+            }
+          }
+        }
+      },
+      "/admins/{id}": {
+        "delete": {
+          "summary": "Delete an admin user",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "description": "ID of the admin user"
+            }
+          ],
+          "responses": { 
+            "200": {
+              "description": "Successful response",
+              "schema": {
+                "$ref": "#/definitions/Admin"
+              }
+            },
+            "400": {
+              "description": "Bad request",
+              "schema": {
+                "$ref": "#/definitions/BadRequestResponse"
+              }
+            },
+            "404": {
+              "description": "Admin not found",
+              "schema": {
+                "$ref": "#/definitions/NotFoundResponse"
+              }
+            },
+            "500": {
+              "description": "Internal Server Error",
+              "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+              }
+            }
+          }
+        }
+      },
+      "/patients/{id}" : {
+      "delete": {
+        "summary": "Delete a patient",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the patient"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/Patient"
+            }
+          },
+          "404": {
+            "description": "Patient not found",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+             }
+           }
+         }
+       }
+     },
+     "/appointments": {
+      "post": {
+        "summary": "Create a new appointment",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "appointment",
+            "description": "Appointment object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Appointment"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/AppointmentResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+        "get": {
+          "summary": "Get all appointments",
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "schema": {
+                "$ref": "#/definitions/Appointment"
+              }
+            },
+            "404": {
+              "description": "Appointments not found",
+              "schema": {
+                "$ref": "#/definitions/NotFoundResponse"
+              }
+            },
+            "500": {
+              "description": "Internal Server Error",
+              "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+              }
+            }
+          }
+        }
+    },
+    "/appointments/{id}": {
+      "get": {
+        "summary": "Get appointments by user ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/Appointment"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/BadRequestResponse"
+            }
+          },
+          "404": {
+            "description": "Appointments not found",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/appointments/complete/{appointmentId}": {
+      "patch": {
+        "summary": "Mark appointment as complete",
+        "parameters": [
+          {
+            "name": "appointmentId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the appointment"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/Appointment"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/BadRequestResponse"
+            }
+          },
+          "404": {
+            "description": "Appointment not found",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/appointments/reschedule/{appointmentId}": {
+      "patch": {
+        "summary": "Reschedule an appointment",
+        "parameters": [
+          {
+            "name": "appointmentId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the appointment"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/Appointment"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/BadRequestResponse"
+            }
+          },
+          "404": {
+            "description": "Appointment not found",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/appointments/cancel/{appointmentId}": {
+      "patch": {
+        "summary": "Cancel an appointment",
+        "parameters": [
+          {
+            "name": "appointmentId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the appointment"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/Appointment"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/BadRequestResponse"
+            }
+          },
+          "404": {
+            "description": "Appointment not found",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/appointments/follow-up-requests": {
+      "post": {
+        "summary": "Create a follow-up appointment",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "appointment",
+            "description": "Follow-up appointment object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Appointment"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/Appointment"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/appointments/follow-up-requests/{id}": {
+      "get": {
+        "summary": "Get follow-up requests by user ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/Appointment"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/BadRequestResponse"
+            }
+          },
+          "404": {
+            "description": "Follow-up requests not found",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/appointments/follow-up-requests/handle/{appointmentId}": {
+      "patch": {
+        "summary": "Handle a follow-up appointment request",
+        "parameters": [
+          {
+            "name": "appointmentId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the follow-up appointment request"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/Appointment"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/BadRequestResponse"
+            }
+          },
+          "404": {
+            "description": "Follow-up request not found",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/check-doctor": {
+      "post": {
+        "summary": "Check if doctor request user exists",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "checkDoctorParams",
+            "description": "Check Doctor parameters",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CheckDoctorParams"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/BadRequestResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/doctors/{id}/patients": {
+      "get": {
+        "summary": "Get patients associated with a doctor",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the doctor"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/Doctor"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/BadRequestResponse"
+            }
+          },
+          "404": {
+            "description": "Patients not found",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/doctor/{id}": {
+      "get": {
+        "summary": "Get doctor by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the doctor"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/Doctor"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/BadRequestResponse"
+            }
+          },
+          "404": {
+            "description": "Doctor not found",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/doctors": {
+      "get": {
+        "summary": "Get all doctors",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/Doctor"
+            }
+          },
+          "404": {
+            "description": "Doctors not found",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new doctor",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "doctorParams",
+            "description": "Doctor creation parameters",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Doctor"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/Doctor"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/BadRequestResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/doctors/{id}": {
+      "delete": {
+        "summary": "Delete a doctor by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the doctor"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/Doctor"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/BadRequestResponse"
+            }
+          },
+          "404": {
+            "description": "Doctor not found",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "patch": {
+          "summary": "Update a doctor by ID",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "description": "ID of the doctor"
+            },
+            {
+              "in": "body",
+              "name": "doctorUpdateParams",
+              "description": "Doctor update parameters",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Doctor"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "schema": {
+                "$ref": "#/definitions/Doctor"
+              }
+            },
+            "400": {
+              "description": "Bad request",
+              "schema": {
+                "$ref": "#/definitions/BadRequestResponse"
+              }
+            },
+            "404": {
+              "description": "Doctor not found",
+              "schema": {
+                "$ref": "#/definitions/NotFoundResponse"
+              }
+            },
+            "500": {
+              "description": "Internal Server Error",
+              "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+              }
+            }
+          }
+        }
+    },
+    "/patients": {
+      "get": {
+        "summary": "Get all patients",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/Patient"
+            }
+          },
+          "404": {
+            "description": "Patients not found",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/doctors/{id}/status": {
+      "get": {
+        "summary": "Get the status of a doctor by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the doctor"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/Doctor"
+            }
+          },
+          "404": {
+            "description": "Doctor not found",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "post": {
+          "summary": "Update the status of a doctor by ID",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "description": "ID of the doctor"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "schema": {
+                "$ref": "#/definitions/Doctor"
+              }
+            },
+            "404": {
+              "description": "Doctor not found",
+              "schema": {
+                "$ref": "#/definitions/NotFoundResponse"
+              }
+            },
+            "500": {
+              "description": "Internal Server Error",
+              "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+              }
+            }
+        }
+      }
+    },
+    "/doctors/{id}/name": {
+      "get": {
+        "summary": "Get the name of a doctor by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the doctor"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "Doctor not found",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/doctors/{id}/slots": {
+      "post": {
+        "summary": "Add slots for a doctor by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the doctor"
+          }
+        ],
+        "requestBody": {
+          "description": "Slots data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/DoctorSlotsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/BadRequestResponse"
+            }
+          },
+          "404": {
+            "description": "Doctor not found",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get available slots for a doctor by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the doctor"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "404": {
+            "description": "Doctor not found",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/doctors/{id}/wallet": {
+      "get": {
+        "summary": "Get wallet amount for a doctor by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the doctor"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "walletAmount": { "type": "number" }
+              }
+            }
+          },
+          "404": {
+            "description": "Doctor not found",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/doctors/{doctorId}/wallet": {
+      "patch": {
+        "summary": "Update wallet amount for a doctor by ID",
+        "parameters": [
+          {
+            "name": "doctorId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the doctor"
+          }
+        ],
+        "requestBody": {
+          "description": "Wallet change data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "walletChange": { "type": "number" }
+                },
+                "required": ["walletChange"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "updatedDoctor": { "$ref": "#/definitions/Doctor" }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "schema": {
+              "$ref": "#/definitions/BadRequestResponse"
+            }
+          },
+          "404": {
+            "description": "Doctor not found",
+            "schema": {
+              "$ref": "#/definitions/NotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/doctor-requests": {
+      "get": {
+        "summary": "Get all doctor requests",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "doctorRequests": {
+                  "type": "array",
+                  "items": { "$ref": "#/definitions/DoctorReq" }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/add-doctor-req": {
+      "post": {
+        "summary": "Add a doctor request",
+        "consumes": ["multipart/form-data"],
+        "parameters": [
+          {
+            "name": "file",
+            "in": "formData",
+            "type": "file",
+            "description": "Files to be uploaded",
+            "required": true
+          },
+          {
+            "name": "sendData",
+            "in": "formData",
+            "type": "string",
+            "description": "JSON string containing request data",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": { "type": "string" },
+                "email": { "type": "string" },
+                "password": { "type": "string" },
+                "userName": { "type": "string" },
+                "type": { "type": "string" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/doctor-requests/files/{fileName}": {
+      "get": {
+        "summary": "Get a file associated with a doctor request",
+        "parameters": [
+          {
+            "name": "fileName",
+            "in": "path",
+            "type": "string",
+            "description": "Name of the file",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "file"
+            }
+          },
+          "404": {
+            "description": "File not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/doctor-requests/{id}": {
+      "delete": {
+        "summary": "Delete a doctor request",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "description": "ID of the doctor request",
+            "required": true
+          },
+          {
+            "name": "accept",
+            "in": "query",
+            "type": "boolean",
+            "description": "Acceptance status (true/false)",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/DoctorReq"
+            }
+          },
+          "404": {
+            "description": "Doctor request not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/packages": {
+      "get": {
+        "summary": "Get all packages",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/HealthPackage"
+            }
+          },
+          "404": {
+            "description": "Packages not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+        "post": {
+          "summary": "Create a new package",
+          "parameters": [
+            {
+              "name": "newPackage",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/HealthPackage"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "schema": {
+                "$ref": "#/definitions/HealthPackage"
+              }
+            },
+            "404": {
+              "description": "Not found",
+              "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+              }
+            },
+            "500": {
+              "description": "Internal Server Error",
+              "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+              }
+            }
+          }
+        }
+    },
+    "/package/{id}": {
+      "patch": {
+        "summary": "Update a package by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "ObjectId",
+            "description": "ID of the package to be updated"
+          },
+          {
+            "name": "selectedEditPackages",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/HealthPackage"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/HealthPackage"
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a package by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "ObjectId",
+            "description": "ID of the package to be deleted"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/HealthPackage"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    }
+    },
+    "definitions": {
+      "Admin": {
+        "type": "object",
+        "properties": {
+          "userName": {
+            "type": "string",
+            "description": "The username of the admin",
+            "required": true,
+            "unique": true
+          },
+          "password": {
+            "type": "string",
+            "description": "The password of the admin",
+            "required": true
+          },
+          "mainAdmin": {
+            "type": "boolean",
+            "description": "Indicates whether the admin is the main admin",
+            "default": false
+          },
+          "email": {
+            "type": "string",
+            "description": "The email of the admin",
+            "required": true,
+            "unique": true
+          }
+        }
+    },
+    "Appointment": {
+      "type": "object",
+      "properties": {
+        "patientId": {
+          "type": "string",
+          "description": "The ID of the patient associated with the appointment",
+          "required": true
+        },
+        "doctorId": {
+          "type": "string",
+          "description": "The ID of the doctor associated with the appointment",
+          "required": true
+        },
+        "patientName": {
+          "type": "string",
+          "description": "The name of the patient",
+          "required": true
+        },
+        "doctorName": {
+          "type": "string",
+          "description": "The name of the doctor",
+          "required": true
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date and time of the appointment",
+          "required": true
+        },
+        "status": {
+          "type": "string",
+          "description": "The status of the appointment"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["appointment", "follow-up"],
+          "description": "The type of appointment",
+          "required": true
+        },
+        "pricePaidByPatient": {
+          "type": "number",
+          "description": "The price paid by the patient (only applicable if type is appointment)"
+        },
+        "pricePaidToDoctor": {
+          "type": "number",
+          "description": "The price paid to the doctor (only applicable if type is appointment)"
+        },
+        "patientFamilyMember": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "nationalId": { "type": "string" },
+            "age": { "type": "number" },
+            "gender": { "type": "string", "enum": ["Male", "Female", "Other"] },
+            "relation": { "type": "string", "enum": ["Father", "Mother", "Sibling", "Other"] }
+          },
+          "description": "Details about the patient's family member (if exists)"
+        },
+        "followUpData": {
+          "type": "object",
+          "properties": {
+            "isValid": { "type": "boolean", "default": false },
+            "accepted": { "type": "boolean" },
+            "handled": { "type": "boolean" }
+          },
+          "description": "Follow-up data (only applicable if type is follow-up)"
+        }
+      }
+    },
+    "Doctor": {
+      "type": "object",
+      "properties": {
+        "userData": {
+          "$ref": "#/definitions/User"
+        },
+        "speciality": {
+          "type": "string",
+          "description": "The speciality of the doctor",
+          "required": true
+        },
+        "hourlyRate": {
+          "type": "number",
+          "description": "The hourly rate of the doctor",
+          "required": true
+        },
+        "affiliation": {
+          "type": "string",
+          "description": "The affiliation of the doctor",
+          "required": true
+        },
+        "educationalBackground": {
+          "type": "string",
+          "description": "The educational background of the doctor",
+          "required": true
+        },
+        "availableSlots": {
+          "type": "array",
+          "description": "Array of available slots for the doctor"
+        },
+        "walletAmount": {
+          "type": "number",
+          "description": "The wallet amount of the doctor",
+          "default": 0,
+          "minimum": 0,
+          "message": "Wallet amount must be greater than or equal to 0"
+        },
+        "documentsNames": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Array of document names associated with the doctor"
+        },
+        "status": {
+          "type": "boolean",
+          "description": "The status of the doctor",
+          "default": false
+        }
+      }
+    },
+    "DoctorReq": {
+      "type": "object",
+      "properties": {
+        "userData": {
+          "$ref": "#/definitions/User"
+        },
+        "speciality": {
+          "type": "string",
+          "description": "The speciality of the doctor",
+          "required": true
+        },
+        "hourlyRate": {
+          "type": "number",
+          "description": "The hourly rate of the doctor",
+          "required": true
+        },
+        "affiliation": {
+          "type": "string",
+          "description": "The affiliation of the doctor",
+          "required": true
+        },
+        "educationalBackground": {
+          "type": "string",
+          "description": "The educational background of the doctor",
+          "required": true
+        },
+        "documentsNames": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Array of document names associated with the doctor",
+          "required": true
+        }
+      }
+    },
+    "HealthPackage": {
+      "type": "object",
+      "properties": {
+        "price": {
+          "type": "number",
+          "description": "The price of the health package",
+          "required": true
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the health package",
+          "required": true
+        },
+        "discountOfDoctor": {
+          "type": "number",
+          "description": "The discount applied by a doctor for the health package",
+          "required": true
+        },
+        "discountOfMedicin": {
+          "type": "number",
+          "description": "The discount applied for medicines in the health package",
+          "required": true
+        },
+        "discountOfFamily": {
+          "type": "number",
+          "description": "The discount applied for family members in the health package",
+          "required": true
+        }
+      }
+    },
+    "HealthPackageOrder": {
+      "type": "object",
+      "properties": {
+        "price": {
+          "type": "number",
+          "description": "The price of the health package order",
+          "required": true
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the health package order",
+          "required": true
+        },
+        "discountOfDoctor": {
+          "type": "number",
+          "description": "The discount applied by a doctor for the health package order",
+          "required": true
+        },
+        "discountOfMedicin": {
+          "type": "number",
+          "description": "The discount applied for medicines in the health package order",
+          "required": true
+        },
+        "discountOfFamily": {
+          "type": "number",
+          "description": "The discount applied for family members in the health package order",
+          "required": true
+        },
+        "status": {
+          "type": "string",
+          "enum": ["DONE", "FAILED"],
+          "description": "The status of the health package order"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the user",
+          "required": true
+        },
+        "userName": {
+          "type": "string",
+          "description": "The username of the user",
+          "required": true,
+          "unique": true
+        },
+        "email": {
+          "type": "string",
+          "description": "The email address of the user",
+          "required": true,
+          "unique": true
+        },
+        "password": {
+          "type": "string",
+          "description": "The password of the user",
+          "required": true
+        },
+        "dateOfBirth": {
+          "type": "string",
+          "format": "date",
+          "description": "The date of birth of the user",
+          "required": true
+        }
+      }
+    },
+    "BadRequestResponse": {
+      "type": "object",
+      "properties": {
+        "errCode": { "type": "string" },
+        "errMessage": { "type": "string" },
+        "errStatus": { "type": "number" }
+      }
+    },
+    "AdminResponse": {
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "password": { "type": "string" },
+        "userName": { "type": "string" },
+        "email": { "type": "string" },
+        "type": { "type": "string", "enum": ["ADMIN"] }
+      }
+    },
+    "AdminsListResponse": {
+      "type": "object",
+      "properties": {
+        "admins": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AdminResponse"
+          }
+        }
+      }
+    },
+    "AdminDeletedResponse": {
+      "type": "object",
+      "properties": {
+        "message": { "type": "string" },
+        "deletedAdmin": {
+          "$ref": "#/definitions/AdminResponse"
+        }
+      }
+    },
+    "NotFoundResponse": {
+      "type": "object",
+      "properties": {
+        "message": { "type": "string" }
+      }
+    },
+    "ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "err": { "type": "string" }
+      }
+    },
+    "PatientDeletedResponse": {
+      "type": "object",
+      "properties": {
+        "message": { "type": "string" },
+        "status": { "type": "number" },
+        "deletePatient": {
+          "$ref": "#/definitions/PatientResponse"
+        }
+      }
+    },
+    "PatientResponse": {
+      "type": "object",
+      "properties": {
+      }
+    },
+    "AppointmentResponse": {
+        "type": "object",
+        "properties": {
+        }
+    },
+    "Patient": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "userName": { "type": "string" },
+        "email": { "type": "string" },
+        "password": { "type": "string" },
+        "dateOfBirth": { "type": "string", "format": "date" },
+        "gender": { "type": "string", "enum": ["MALE", "FEMALE"] },
+        "mobileNumber": { "type": "string" },
+        "emergencyContact": { "$ref": "#/definitions/EmergencyContact" },
+        "familyMembers": { "type": "array", "items": { "$ref": "#/definitions/FamilyMember" } },
+        "healthRecords": { "type": "array", "items": { "$ref": "#/definitions/HealthRecord" } },
+        "healthPackages": { "type": "array", "items": { "$ref": "#/definitions/HealthPackage" } },
+        "walletAmount": { "type": "number", "default": 0, "minimum": 0 },
+        "deliveryAddresses": { "type": "array", "items": { "$ref": "#/definitions/DeliveryAddress" } }
+      },
+      "required": ["name", "userName", "email", "password", "dateOfBirth", "gender", "mobileNumber"]
+    }
+  }
+}

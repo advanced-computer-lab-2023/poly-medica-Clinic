@@ -1,0 +1,724 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Communication Service API",
+      "description": "API documentation for the communication service"
+    },
+    "basePath": "/",
+    "schemes": ["http", "https"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "paths": {
+        "/chat": {
+            "post": {
+              "summary": "Add a new chat",
+              "description": "Endpoint to add a new chat",
+              "parameters": [
+                {
+                  "name": "chat",
+                  "in": "body",
+                  "required": true,
+                  "schema": {
+                    "$ref": "#/definitions/Chat"
+                  }
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Successful operation",
+                  "schema": {
+                    "$ref": "#/definitions/ApiResponse"
+                  }
+                },
+                "500": {
+                  "description": "Internal server error",
+                  "schema": {
+                    "$ref": "#/definitions/ApiError"
+                  }
+                }
+              }
+            },
+            "patch": {
+              "summary": "Update a chat",
+              "description": "Endpoint to update a chat",
+              "parameters": [
+                {
+                  "name": "chat",
+                  "in": "body",
+                  "required": true,
+                  "schema": {
+                    "$ref": "#/definitions/Chat"
+                  }
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Successful operation",
+                  "schema": {
+                    "$ref": "#/definitions/ApiResponse"
+                  }
+                },
+                "500": {
+                  "description": "Internal server error",
+                  "schema": {
+                    "$ref": "#/definitions/ApiError"
+                  }
+                }
+              }
+            }
+        },
+        "/chat/{id}": {
+            "get": {
+              "summary": "Get user chats",
+              "description": "Endpoint to fetch chats for a specific user",
+              "parameters": [
+                {
+                  "name": "id",
+                  "in": "path",
+                  "description": "User ID",
+                  "required": true,
+                  "type": "string",
+                  "format": "ObjectId"
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Successful operation",
+                  "schema": {
+                    "$ref": "#/definitions/UserChatsResponse"
+                  }
+                },
+                "400": {
+                  "description": "Bad request",
+                  "schema": {
+                    "$ref": "#/definitions/ApiError"
+                  }
+                },
+                "500": {
+                  "description": "Internal server error",
+                  "schema": {
+                    "$ref": "#/definitions/ApiError"
+                  }
+                }
+              }
+            }
+        },
+        "/message/{chatId}": {
+            "get": {
+              "summary": "Get chat messages",
+              "description": "Endpoint to fetch messages for a specific chat",
+              "parameters": [
+                {
+                  "name": "chatId",
+                  "in": "path",
+                  "description": "Chat ID",
+                  "required": true,
+                  "type": "string",
+                  "format": "ObjectId"
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Successful operation",
+                  "schema": {
+                    "$ref": "#/definitions/ChatMessagesResponse"
+                  }
+                },
+                "400": {
+                  "description": "Bad request",
+                  "schema": {
+                    "$ref": "#/definitions/ApiError"
+                  }
+                },
+                "500": {
+                  "description": "Internal server error",
+                  "schema": {
+                    "$ref": "#/definitions/ApiError"
+                  }
+                }
+              }
+            }
+        },
+        "/message": {
+            "post": {
+              "summary": "Add a new message",
+              "description": "Endpoint to add a new message",
+              "parameters": [
+                {
+                  "name": "message",
+                  "in": "body",
+                  "required": true,
+                  "schema": {
+                    "$ref": "#/definitions/Message"
+                  }
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Successful operation",
+                  "schema": {
+                    "$ref": "#/definitions/ApiResponse"
+                  }
+                },
+                "500": {
+                  "description": "Internal server error",
+                  "schema": {
+                    "$ref": "#/definitions/ApiError"
+                  }
+                }
+              }
+            }
+        },
+        "/notifications/{userId}": {
+            "get": {
+              "summary": "Get user notifications",
+              "description": "Endpoint to fetch notifications for a specific user",
+              "parameters": [
+                {
+                  "name": "userId",
+                  "in": "path",
+                  "description": "User ID",
+                  "required": true,
+                  "type": "string",
+                  "format": "ObjectId"
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Successful operation",
+                  "schema": {
+                    "$ref": "#/definitions/UserNotificationsResponse"
+                  }
+                },
+                "500": {
+                  "description": "Internal server error",
+                  "schema": {
+                    "$ref": "#/definitions/ApiError"
+                  }
+                }
+              }
+            },
+            "patch": {
+                "summary": "Update notifications state",
+                "description": "Endpoint to update the state of all notifications for a specific user",
+                "parameters": [
+                  {
+                    "name": "userId",
+                    "in": "path",
+                    "description": "User ID",
+                    "required": true,
+                    "type": "string",
+                    "format": "ObjectId"
+                  }
+                ],
+                "responses": {
+                  "200": {
+                    "description": "Successful operation",
+                    "schema": {
+                      "$ref": "#/definitions/ApiResponse"
+                    }
+                  },
+                  "500": {
+                    "description": "Internal server error",
+                    "schema": {
+                      "$ref": "#/definitions/ApiError"
+                    }
+                  }
+                }
+            }
+        },
+        "/notification/{userId}/type/{type}": {
+            "post": {
+              "summary": "Add a notification for a user by type",
+              "description": "Endpoint to add a notification for a specific user and type",
+              "parameters": [
+                {
+                  "name": "userId",
+                  "in": "path",
+                  "description": "User ID",
+                  "required": true,
+                  "type": "string",
+                  "format": "ObjectId"
+                },
+                {
+                  "name": "type",
+                  "in": "path",
+                  "description": "Notification type",
+                  "required": true,
+                  "type": "string"
+                },
+                {
+                  "name": "notification",
+                  "in": "body",
+                  "required": true,
+                  "schema": {
+                    "$ref": "#/definitions/Notification"
+                  }
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Successful operation",
+                  "schema": {
+                    "$ref": "#/definitions/ApiResponse"
+                  }
+                },
+                "400": {
+                  "description": "Bad request",
+                  "schema": {
+                    "$ref": "#/definitions/ApiError"
+                  }
+                },
+                "500": {
+                  "description": "Internal server error",
+                  "schema": {
+                    "$ref": "#/definitions/ApiError"
+                  }
+                }
+              }
+            }
+        },
+        "/user/{id}": {
+            "post": {
+              "summary": "Create or update a user",
+              "description": "Endpoint to create or update a user by ID",
+              "parameters": [
+                {
+                  "name": "id",
+                  "in": "path",
+                  "description": "User ID",
+                  "required": true,
+                  "type": "string",
+                  "format": "ObjectId"
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Successful operation",
+                  "schema": {
+                    "$ref": "#/definitions/ApiResponse"
+                  }
+                },
+                "400": {
+                  "description": "Bad request",
+                  "schema": {
+                    "$ref": "#/definitions/ApiError"
+                  }
+                },
+                "500": {
+                  "description": "Internal server error",
+                  "schema": {
+                    "$ref": "#/definitions/ApiError"
+                  }
+                }
+              }
+            },
+            "delete": {
+                "summary": "Delete a user",
+                "description": "Endpoint to delete a user by ID",
+                "parameters": [
+                  {
+                    "name": "id",
+                    "in": "path",
+                    "description": "User ID",
+                    "required": true,
+                    "type": "string",
+                    "format": "ObjectId"
+                  }
+                ],
+                "responses": {
+                  "200": {
+                    "description": "Successful operation",
+                    "schema": {
+                      "$ref": "#/definitions/ApiResponse"
+                    }
+                  },
+                  "500": {
+                    "description": "Internal server error",
+                    "schema": {
+                      "$ref": "#/definitions/ApiError"
+                    }
+                  }
+                }
+            }
+        },
+        "/notification/{userId}/{notificationId}": {
+            "patch": {
+              "summary": "Update notification state",
+              "description": "Endpoint to update the state of a notification for a specific user",
+              "parameters": [
+                {
+                  "name": "userId",
+                  "in": "path",
+                  "description": "User ID",
+                  "required": true,
+                  "type": "string",
+                  "format": "ObjectId"
+                },
+                {
+                  "name": "notificationId",
+                  "in": "path",
+                  "description": "Notification ID",
+                  "required": true,
+                  "type": "string",
+                  "format": "ObjectId"
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Successful operation",
+                  "schema": {
+                    "$ref": "#/definitions/ApiResponse"
+                  }
+                },
+                "500": {
+                  "description": "Internal server error",
+                  "schema": {
+                    "$ref": "#/definitions/ApiError"
+                  }
+                }
+              }
+            }
+        },
+        "/notifications/medicines/{medicineName}": {
+            "post": {
+              "summary": "Send out-of-stock notification for a medicine",
+              "description": "Endpoint to send out-of-stock notifications for a specific medicine to all pharmacists",
+              "parameters": [
+                {
+                  "name": "medicineName",
+                  "in": "path",
+                  "description": "Medicine Name",
+                  "required": true,
+                  "type": "string"
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Successful operation",
+                  "schema": {
+                    "$ref": "#/definitions/ApiResponse"
+                  }
+                },
+                "500": {
+                  "description": "Internal server error",
+                  "schema": {
+                    "$ref": "#/definitions/ApiError"
+                  }
+                }
+              }
+            }
+        }
+    },
+    "definitions": {
+        "Chat": {
+            "type": "object",
+            "properties": {
+              "chatName": {
+                "type": "string"
+              },
+              "users": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/UserInChat"
+                }
+              },
+              "lastMessage": {
+                "type": "string",
+                "format": "ObjectId"
+              }
+            },
+            "required": ["users"],
+            "example": {
+              "chatName": "Example Chat",
+              "users": [
+                {
+                  "id": "5f72c7d1a7ce3835a863158d",
+                  "userType": "regular",
+                  "unseen": 0
+                }
+              ],
+              "lastMessage": "5f72c7d1a7ce3835a863158e"
+            }
+        },
+        "UserInChat": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "ObjectId"
+              },
+              "userType": {
+                "type": "string"
+              },
+              "unseen": {
+                "type": "number",
+                "default": 0
+              }
+            },
+            "required": ["id", "userType"],
+            "example": {
+              "id": "5f72c7d1a7ce3835a863158d",
+              "userType": "regular",
+              "unseen": 0
+            }
+        },
+        "Message": {
+            "type": "object",
+            "properties": {
+              "chatId": {
+                "type": "string",
+                "format": "ObjectId"
+              },
+              "sender": {
+                "type": "string",
+                "format": "ObjectId"
+              },
+              "receiver": {
+                "type": "string",
+                "format": "ObjectId"
+              },
+              "content": {
+                "type": "string"
+              }
+            },
+            "required": ["chatId", "sender", "receiver", "content"],
+            "example": {
+              "chatId": "5f72c7d1a7ce3835a863158d",
+              "sender": "5f72c7d1a7ce3835a863158e",
+              "receiver": "5f72c7d1a7ce3835a863158f",
+              "content": "Hello, how are you?"
+            }
+        },
+        "Notification": {
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "string",
+                "format": "ObjectId",
+                "description": "User ID associated with the notifications",
+                "example": "5f72c7d1a7ce3835a863158d"
+              },
+              "notifications": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/NotificationSchema"
+                },
+                "description": "Array of notifications"
+              }
+            },
+            "required": ["userId", "notifications"],
+            "example": {
+              "userId": "5f72c7d1a7ce3835a863158d",
+              "notifications": [
+                {
+                  "notificationHead": "New Message",
+                  "notificationBody": "You have a new message",
+                  "senderName": "John Doe",
+                  "senderImage": "https://example.com/johndoe.jpg",
+                  "notificationType": "Normal",
+                  "notificationState": false,
+                  "timestamp": "2024-01-13T12:00:00Z"
+                }
+              ]
+            }
+          },
+        "NotificationSchema": {
+            "type": "object",
+            "properties": {
+              "notificationHead": {
+                "type": "string",
+                "description": "Notification title",
+                "example": "New Message"
+              },
+              "notificationBody": {
+                "type": "string",
+                "description": "Notification body",
+                "example": "You have a new message"
+              },
+              "senderName": {
+                "type": "string",
+                "description": "Sender's name",
+                "example": "John Doe"
+              },
+              "senderImage": {
+                "type": "string",
+                "description": "URL of sender's image",
+                "example": "https://example.com/johndoe.jpg"
+              },
+              "notificationType": {
+                "type": "string",
+                "enum": ["Normal", "Type1", "Type2"],
+                "description": "Type of notification",
+                "example": "Normal"
+              },
+              "notificationState": {
+                "type": "boolean",
+                "description": "Notification state (seen or unseen)",
+                "example": false
+              },
+              "timestamp": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Timestamp of the notification",
+                "example": "2024-01-13T12:00:00Z"
+              }
+            },
+            "required": ["notificationHead", "notificationBody", "notificationType"],
+            "example": {
+              "notificationHead": "New Message",
+              "notificationBody": "You have a new message",
+              "senderName": "John Doe",
+              "senderImage": "https://example.com/johndoe.jpg",
+              "notificationType": "Normal",
+              "notificationState": false,
+              "timestamp": "2024-01-13T12:00:00Z"
+            }
+        },
+        "UserSocket": {
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "string",
+                "description": "User ID associated with the socket",
+                "example": "5f72c7d1a7ce3835a863158d"
+              },
+              "socketId": {
+                "type": "string",
+                "description": "Socket ID associated with the user",
+                "example": "socket-123456789"
+              }
+            },
+            "required": ["userId", "socketId"],
+            "example": {
+              "userId": "5f72c7d1a7ce3835a863158d",
+              "socketId": "socket-123456789"
+            }
+        },
+        "UserChatsResponse": {
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "string",
+                "format": "ObjectId",
+                "description": "User ID",
+                "example": "5f72c7d1a7ce3835a863158d"
+              },
+              "chats": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Chat"
+                },
+                "description": "Array of user's chats"
+              }
+            },
+            "required": ["userId", "chats"],
+            "example": {
+              "userId": "5f72c7d1a7ce3835a863158d",
+              "chats": [
+                {
+                  "chatName": "Example Chat",
+                  "users": [
+                    {
+                      "id": "5f72c7d1a7ce3835a863158d",
+                      "userType": "regular",
+                      "unseen": 0
+                    }
+                  ],
+                  "lastMessage": "5f72c7d1a7ce3835a863158e"
+                }
+              ]
+            }
+        },
+        "ChatMessagesResponse": {
+            "type": "object",
+            "properties": {
+              "chatId": {
+                "type": "string",
+                "format": "ObjectId",
+                "description": "Chat ID",
+                "example": "5f72c7d1a7ce3835a863158d"
+              },
+              "messages": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Message"
+                },
+                "description": "Array of messages in the chat"
+              }
+            },
+            "required": ["chatId", "messages"],
+            "example": {
+              "chatId": "5f72c7d1a7ce3835a863158d",
+              "messages": [
+                {
+                  "chatId": "5f72c7d1a7ce3835a863158d",
+                  "sender": "5f72c7d1a7ce3835a863158e",
+                  "receiver": "5f72c7d1a7ce3835a863158f",
+                  "content": "Hello, how are you?",
+                  "timestamp": "2024-01-13T12:00:00Z"
+                }
+              ]
+            }
+        },
+        "UserNotificationsResponse": {
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "string",
+                "format": "ObjectId",
+                "description": "User ID",
+                "example": "5f72c7d1a7ce3835a863158d"
+              },
+              "notifications": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Notification"
+                },
+                "description": "Array of user's notifications"
+              }
+            },
+            "required": ["userId", "notifications"],
+            "example": {
+              "userId": "5f72c7d1a7ce3835a863158d",
+              "notifications": [
+                {
+                  "notificationHead": "New Message",
+                  "notificationBody": "You have a new message",
+                  "senderName": "John Doe",
+                  "senderImage": "https://example.com/johndoe.jpg",
+                  "notificationType": "Normal",
+                  "notificationState": false,
+                  "timestamp": "2024-01-13T12:00:00Z"
+                }
+              ]
+            }
+        },
+        "ApiResponse": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              }
+            },
+            "required": ["status", "message"]
+          },
+        "ApiError": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string"
+              },
+              "error": {
+                "type": "string"
+              }
+            },
+            "required": ["message", "error"]
+        }
+    }
+}
+  

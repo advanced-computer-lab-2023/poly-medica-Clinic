@@ -1,0 +1,213 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Payment Service API",
+      "description": "API documentation for the payment service"
+    },
+    "basePath": "/api",
+    "schemes": ["http", "https"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "paths": {
+      "/payment/card": {
+        "post": {
+          "summary": "Create Payment Intent for Card Payment",
+          "description": "Creates a payment intent for processing card payments.",
+          "parameters": [
+            {
+              "name": "paymentAmount",
+              "in": "body",
+              "description": "Total payment amount",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "paymentAmount": {
+                    "type": "number",
+                    "description": "The total amount to be paid"
+                  }
+                },
+                "required": ["paymentAmount"]
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "clientSecret": {
+                    "type": "string",
+                    "description": "Client secret for payment intent"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "err": {
+                    "type": "string",
+                    "description": "Error message"
+                  },
+                  "status": {
+                    "type": "integer",
+                    "description": "Error status code"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/payment/wallet": {
+        "post": {
+          "summary": "Make Payment Using Wallet",
+          "description": "Allows patients to make payments using their wallet.",
+          "parameters": [
+            {
+              "name": "amountToPayByWallet",
+              "in": "body",
+              "description": "Amount to pay using the wallet",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "amountToPayByWallet": {
+                    "type": "number",
+                    "description": "The amount to be paid using the wallet"
+                  },
+                  "userId": {
+                    "type": "string",
+                    "description": "User ID of the patient"
+                  }
+                },
+                "required": ["amountToPayByWallet", "userId"]
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Payment successful"
+            },
+            "400": {
+              "description": "Bad request",
+              "schema": {
+                "type": "string",
+                "description": "Insufficient amount in the wallet"
+              }
+            },
+            "500": {
+              "description": "Internal server error",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "err": {
+                    "type": "string",
+                    "description": "Error message"
+                  },
+                  "status": {
+                    "type": "integer",
+                    "description": "Error status code"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/payment-salary/doctor/{doctorId}/wallet": {
+        "post": {
+          "summary": "Make Salary Payment to Doctor's Wallet",
+          "description": "Allows making salary payments to a doctor's wallet.",
+          "parameters": [
+            {
+              "name": "doctorId",
+              "in": "path",
+              "description": "ID of the doctor",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "pricePaidToDoctor",
+              "in": "body",
+              "description": "Price paid to the doctor",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "pricePaidToDoctor": {
+                    "type": "number",
+                    "description": "The amount paid to the doctor"
+                  }
+                },
+                "required": ["pricePaidToDoctor"]
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "updatedDoctor": {
+                    "$ref": "#/definitions/Doctor"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "description": "Error message"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Internal server error",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "err": {
+                    "type": "string",
+                    "description": "Error message"
+                  },
+                  "status": {
+                    "type": "integer",
+                    "description": "Error status code"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "Doctor": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "walletAmount": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  }
+  
