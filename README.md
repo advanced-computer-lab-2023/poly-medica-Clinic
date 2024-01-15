@@ -632,101 +632,18 @@ export default Sidebar;
 
 ---
 
-## API Refrences
+## API Documentation
 
- ### Authentication Endpoints
+The API documentation is created using Swagger. To access it, follow these steps:
+
+1. Ensure the service is running.
+2. Open your browser and navigate to `localhost:SERVICE_PORT/api-docs`.
 
 
-    GET /user/:id/email
-    GET /check-user
-    GET /remove-cookie
-    GET /pharmacists/id
-    POST /signup/:request
-    POST /doctors
-    POST /pharmacists
-    POST /admins/:request
-    POST /login/:request
-    POST /reset-password
-    PATCH /users/:id/email/:email
-    PATCH /change-password/:userId
-    DELETE /users/:id
+![swagger](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/102627389/a78893f3-69a7-4b00-b8c1-c30e9901e898)
 
- ### Clinic Endpoints
 
-    GET /packages
-    GET /admins
-    GET /doctors/:id/patients
-    GET /doctor/:id
-    GET /doctors
-    GET /patients
-    GET /appointments
-    GET /doctors/:id/status
-    GET /doctors/:id/name
-    GET /doctors/:id/slots
-    GET /doctors/:id/wallet
-    GET /doctor-requests
-    GET /doctor-requests/files/:fileName
-    GET /appointments/:id
-    GET /appointments/follow-up-requests/:id
-    POST /packages
-    POST /admins
-    POST /check-doctor
-    POST /doctors
-    POST /doctors/:id/status
-    POST /doctors/:id/slots
-    POST /add-doctor-req
-    POST /appointments
-    POST /appointments/follow-up-requests
-    PATCH /package/:id
-    PATCH /doctors/:id
-    PATCH /doctors/:doctorId/wallet
-    PATCH /appointments/complete/:appointmentId
-    PATCH /appointments/reschedule/:appointmentId
-    PATCH /appointments/cancel/:appointmentId
-    PATCH /appointments/follow-up-requests/handle/:appointmentId
-    DELETE /packages/:id
-    DELETE /admins/:id
-    DELETE /patients/:id
-    DELETE /doctors/:id
-    DELETE /doctor-requests/:id
 
- ### Patient Endpoints
-    GET /patients
-    GET /patients/:id
-    GET /family-members/:id
-    GET /patient/:id/prescriptions
-    GET /patient/:pateintId/prescription/:prescriptionId
-    GET /patient/:id/discount
-    GET /patient/:id/health-packages
-    GET /patient/:id/medical-history
-    GET /patient/:id/medical-history/:recordId
-    GET /address/:pateintId
-    GET /patients/:pateintId/wallet
-    GET /order/pending
-    GET /order/:patientId
-    GET /prescriptions/:prescriptionId/download
-    GET /prescriptions/:prescriptionId/medicines
-    POST /patients
-    POST /signup
-    POST /order
-    POST /prescriptions
-    PATCH /family-members/:id
-    PATCH /patient/:id/health-packages
-    PATCH /patient/:id/health-packages/:packageId
-    PATCH /patient/:id/medical-history
-    PATCH /patient/:id/medical-history/:recordId
-    PATCH /address/:pateintId
-    PATCH /patients/:patientId/wallet
-    PATCH /order/:orderId
-    PATCH /prescriptions/:prescriptionId
-    DELETE /patients/:id
-
- ### Payment Endpoints
-
-    POST /payment/card
-    POST /payment/wallet
-    POST /payment-salary/doctor/:doctorId/wallet
-<!-- to be added -->
 ---
 
 ## Tests
@@ -769,17 +686,52 @@ To run this project, you will need to add the following environment variables to
 
 <details>
     <summary>
-        envs
+        Authentication and Communication envs
     </summary>
-
 
 `MONGO_URI`
 
-`JWT_SECRETABLE_KEY`
-
 `MONGO_URI_TEST` 
+
+`JWT_SECRET`
+
+`PORT`
+
+`RESETEMAIL`
+
+`RESETPASSWORD`
+
 </details>
 
+
+<details>
+    <summary>
+        Clinic and Patient envs
+    </summary>
+
+`MONGO_URI`
+
+`MONGO_URI_TEST` 
+
+`JWT_SECRET`
+
+`PORT`
+
+</details>
+
+
+<details>
+    <summary>
+        Payment envs
+    </summary>
+
+`SecretKey`
+
+`PublicKey` 
+
+`PORT`
+
+</details>
 
 
 ## Contributing
@@ -800,15 +752,11 @@ Contributions are always welcome!
 # Credits
 - [NodeJs docs](https://nodejs.org/en/docs/)
 - [Express docs](https://expressjs.com/en/4x/api.html)
-
 - [ReactJs docs](https://reactjs.org/docs/getting-started.html)
 - [Mongoose docs](https://mongoosejs.com/docs/)
 - [Jest docs](https://jestjs.io/docs/getting-started)
 - [Stripe docs](https://stripe.com/docs)
 
-- [Clean code](https://www.oreilly.com/library/view/clean-code-a/9780136083238/)
-- [RESTful Web API Patterns and Practices Cookbook](https://learning.oreilly.com/library/view/restful-web-api/9781098106737/)
-- [Designing Data Intensive Applications](https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/)
 
 
 ---
