@@ -3,7 +3,7 @@
 
 PolyMedica is a comprehensive healthcare solution that seamlessly integrates two virtual platforms: [PolyMedica Clinics](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic) and [PolyMedica Pharmacy](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy). This innovative system is built on a microservices architecture, ensuring flexibility, scalability, and efficiency.  
 <br/>
-The Systen mainly composed of 6 services, the communication among them is done by either synchronous HTTP requests using Axios or asynchronous communication using Apache Kafka:
+The System mainly composed of 6 services, the communication among them is done by either synchronous HTTP requests using Axios or asynchronous communication using Apache Kafka:
  * Clinic Service
  * Patient Service
  * Authentication Service
