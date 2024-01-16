@@ -2,7 +2,7 @@ import KafkaNode from 'kafka-node';
 import { addNotificationForUser } from '../utils/NotificationsUtils.js';
 
 export const appointmentConsumer = async () => {
-	const client = new KafkaNode.KafkaClient({ kafkaHost: 'kafka:9092' });
+	const client = new KafkaNode.KafkaClient({ kafkaHost: 'localhost:9092' });
 	const consumer = new KafkaNode.Consumer(client, [{ topic: 'notifications' }]);
 
 	consumer.on('message', async function (message) {

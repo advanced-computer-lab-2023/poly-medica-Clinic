@@ -6,7 +6,7 @@ import {
 } from '../utils/Constants.js';
 
 export const appointmentProducer = (app) => {
-	const client = new KafkaNode.KafkaClient({ kafkaHost: 'kafka:9092' });
+	const client = new KafkaNode.KafkaClient({ kafkaHost: 'localhost:9092' });
 	const producer = new KafkaNode.Producer(client);
 	const kafka_topic = 'notifications';
 

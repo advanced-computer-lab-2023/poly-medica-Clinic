@@ -2,14 +2,13 @@ import NotificationService from '../service/notification-service.js';
 import { socket } from './serverUtils.js';
 import axios from 'axios';
 import nodemailer from 'nodemailer';
+import { AUTH_BASE_URL } from './Constants.js';
 
 const addNotificationForUser = async (userId, type, notification) => {
 	const service = new NotificationService();
 
 	await service.postNotification(userId, notification, type);
-	let email = await axios.get(
-		`http://authentication:8004/user/${userId}/email`,
-	);
+	let email = await axios.get(`${AUTH_BASE_URL}/user/${userId}/email`);
 	email = email.data;
 	const transporter = nodemailer.createTransport({
 		service: 'Gmail',
