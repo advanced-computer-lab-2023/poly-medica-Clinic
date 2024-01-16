@@ -1,5 +1,4 @@
 import NotificationService from '../service/notification-service.js';
-import { AUTH_BASE_URL } from './Constants.js';
 import { socket } from './serverUtils.js';
 import axios from 'axios';
 import nodemailer from 'nodemailer';
