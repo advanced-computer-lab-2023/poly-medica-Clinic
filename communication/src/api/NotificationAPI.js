@@ -7,6 +7,7 @@ import {
 	SERVER_ERROR_MESSAGE,
 	ZERO_INDEX,
 } from '../utils/Constants.js';
+import { addNotificationForUser } from '../utils/NotificationsUtils.js';
 export const notification = (app) => {
 	const service = new NotificationService();
 

@@ -1,9 +1,9 @@
 import KafkaNode from 'kafka-node';
-import { addNotificationForUser } from '../utils/NotificationsUtills';
-import axios from 'axios';
-import { AUTH_BASE_URL } from '../utils/Constants';
+import { addNotificationForUser } from '../utils/NotificationsUtils.js';
+// import axios from 'axios';
+// import { AUTH_BASE_URL } from '../utils/Constants.js';
 
-export const outOfStockConsumer = () => {
+export const outOfStockConsumer = async () => {
 	const client = new KafkaNode.KafkaClient({ kafkaHost: 'kafka:9092' });
 	const consumer = new KafkaNode.Consumer(client, [{ topic: 'out_of_stock' }]);
 
@@ -14,7 +14,7 @@ export const outOfStockConsumer = () => {
 		const type = notification.type;
 		const notificationBody = notification.notification;
 
-		const sendedData = await axios.get(`${AUTH_BASE_URL}/pharmacists/id`);
+		const sendedData = await fetch('http://authentication:8004/pharmacists/id');
 		const pharmacist = sendedData.data;
 
 		for (let i = 0; i < pharmacist.length; i++) {

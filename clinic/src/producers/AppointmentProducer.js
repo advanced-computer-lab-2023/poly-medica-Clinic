@@ -3,7 +3,7 @@ import {
 	APPOINTMENT_NOTIFICATION_TYPE_ENUM,
 	ERROR_STATUS_CODE,
 	OK_STATUS_CODE,
-} from '../../../communication/src/utils/Constants';
+} from '../utils/Constants.js';
 
 export const appointmentProducer = (app) => {
 	const client = new KafkaNode.KafkaClient({ kafkaHost: 'kafka:9092' });
@@ -19,7 +19,7 @@ export const appointmentProducer = (app) => {
 		console.log(err);
 	});
 
-	const sendAppointmentNotification = async (userId, type, appointment) => {
+	const sendAppointmentNotification = async (userId, appointment) => {
 		const payload = [
 			{
 				topic: kafka_topic,

@@ -9,6 +9,7 @@ import { appointment } from './src/api/AppointmentAPI.js';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
+import { appointmentProducer } from './src/producers/AppointmentProducer.js';
 
 const app = express();
 
@@ -35,5 +36,6 @@ admin(app);
 doctor(app);
 doctorRequests(app);
 appointment(app);
+appointmentProducer(app);
 
 export default app;
