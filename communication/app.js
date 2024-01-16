@@ -10,6 +10,8 @@ import { notification } from './src/api/NotificationAPI.js';
 import UserSocketModel from './src/database/models/UserSocket.js';
 import { outOfStockConsumer } from './src/consumers/OutOfStockConsumer.js';
 import { appointmentConsumer } from './src/consumers/AppointmentConsumer.js';
+import swaggerUi from 'swagger-ui-express';
+import { default as swaggerFile } from './src/swagger/swagger.json' assert { type: 'json' };
 
 const app = express();
 
@@ -28,6 +30,8 @@ app.use(
 		credentials: true,
 	}),
 );
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 chat(app);
 message(app);

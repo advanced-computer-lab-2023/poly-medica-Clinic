@@ -1,10 +1,10 @@
 import { CardHeader, Avatar, Badge } from '@mui/material';
 import { getReceiver, getUserName } from 'utils/ChatUtils';
-import { useUserContext } from 'hooks/useUserContext';
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 const ChatListCard = ({ chat }) => {
-    const { user } = useUserContext();
+    const { user } = useSelector(state => state.user);
     const [unseen, setUnseen] = useState(0);
     const [name, setName] = useState('');
 
@@ -14,7 +14,6 @@ const ChatListCard = ({ chat }) => {
         } else {
             setUnseen(chat.users[1].unseen);
         }
-        console.log(chat);
     }, [chat]);
 
     useEffect(() => {

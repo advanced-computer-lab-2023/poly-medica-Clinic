@@ -7,9 +7,9 @@ import {
     PHARMACIST_TYPE_ENUM,
     PHARMACY_MONGO_ID,
 } from '../utils/Constants.js';
-import { useUserContext } from 'hooks/useUserContext.js';
 import { chatExist } from 'utils/ChatUtils.js';
 import { isEqual } from 'lodash';
+import { useSelector } from 'react-redux';
 const ChatContext = createContext();
 
 var socket;
@@ -21,20 +21,18 @@ export const ChatContextProvider = ({ children }) => {
     const [chatMessages, setChatMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
 
-    const { user } = useUserContext();
-    const userId = user.id,
-        userType = user.type;
+    const { user } = useSelector(state => state.user);
 
     const updateChat = (updatedChat, messageId, type) => {
         if(type === 0) {
-            if(updatedChat.users[0].id === userId) {
+            if(updatedChat.users[0].id === user.id) {
                 updatedChat.users[0].unseen++;
             } else {
                 updatedChat.users[1].unseen++;
             }
         }
         if(type === 1) {
-            if(updatedChat.users[0].id === userId) {
+            if(updatedChat.users[0].id === user.id) {
                 updatedChat.users[1].unseen++;
             } else {
                 updatedChat.users[0].unseen++;
@@ -65,7 +63,7 @@ export const ChatContextProvider = ({ children }) => {
         socket = io.connect(COMMUNICATION_BASE_URL);
         socket.emit(
             'setup',
-            userType === PHARMACIST_TYPE_ENUM ? PHARMACY_MONGO_ID : userId
+            user.type === PHARMACIST_TYPE_ENUM ? PHARMACY_MONGO_ID : user.id
         );
     }, []);
 
@@ -73,12 +71,12 @@ export const ChatContextProvider = ({ children }) => {
         const fetchData = async () => {
             try {
                 const response = await communicationAxios.get(
-                    `/chat/${userId}`
+                    `/chat/${user.id}`
                 );
                 if (
-                    userType === PATIENT_TYPE_ENUM &&
-                    !chatExist(response.data, userId, PHARMACY_MONGO_ID) &&
-                    !chatExist(response.data, PHARMACY_MONGO_ID, userId)
+                    user.type === PATIENT_TYPE_ENUM &&
+                    !chatExist(response.data, user.id, PHARMACY_MONGO_ID) &&
+                    !chatExist(response.data, PHARMACY_MONGO_ID, user.id)
                 ) {
                     const res = await communicationAxios.post('/chat', {
                         chat: {
@@ -88,7 +86,7 @@ export const ChatContextProvider = ({ children }) => {
                                     id: PHARMACY_MONGO_ID,
                                     userType: PHARMACIST_TYPE_ENUM,
                                 },
-                                { id: userId, userType: PATIENT_TYPE_ENUM },
+                                { id: user.id, userType: PATIENT_TYPE_ENUM },
                             ],
                         },
                     });
@@ -109,7 +107,7 @@ export const ChatContextProvider = ({ children }) => {
             chats.map(chat => {
                 if(chat && chat.users) {
                     chat.users.map(user => {
-                        if(user.id === userId) {
+                        if(user.id === user.id) {
                             tot += user.unseen;
                         }
                     });
@@ -128,13 +126,13 @@ export const ChatContextProvider = ({ children }) => {
             updateChat(data.selectedChat, data.message._id, 0);
             if (selectedChat && selectedChat._id === data.room) {
                 selectedChat.users.map(user => {
-                    if(user.id === userId) {
+                    if(user.id === user.id) {
                         user.unseen = 0;
                     }
                     return user;
                 });
                 socket.emit('message_seen', {
-                    sender: userId,
+                    sender: user.id,
                     chat: selectedChat,
                 });
                 setChatMessages((prevMessages) => [

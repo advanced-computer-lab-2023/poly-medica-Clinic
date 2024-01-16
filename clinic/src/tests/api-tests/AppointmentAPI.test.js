@@ -1,6 +1,6 @@
 import request from 'supertest';
 import app from '../../../app.js';
-import { connectDBTest, disconnectDBTest } from '../../utils/testing-utils.js';
+import { connectDBTest, disconnectDBTest } from '../../utils/TestingUtils.js';
 import { 
 	OK_STATUS_CODE,
 	ONE, ERROR_STATUS_CODE,
@@ -19,14 +19,6 @@ import { describe, beforeEach, afterEach, expect, it, jest } from '@jest/globals
 import { faker } from '@faker-js/faker';
 
 jest.setTimeout(TIME_OUT);
-// const NEGONE = -1;
-// const printAllDoctors = async (num) => {
-// 	const docs = await DoctorModel.find({});
-// 	console.log('docsLen', docs.length, 'num', num);
-// 	docs.forEach((doc) => {
-// 		console.log('doc', doc);
-// 	});
-// };
 
 describe('POST /appointments', () => {
 	beforeEach(async () => {

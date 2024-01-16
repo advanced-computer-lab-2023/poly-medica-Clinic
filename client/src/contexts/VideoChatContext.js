@@ -2,14 +2,14 @@ import React, { createContext, useState, useRef, useEffect } from 'react';
 import { io } from 'socket.io-client';
 import Peer from 'simple-peer';
 import { COMMUNICATION_BASE_URL } from '../utils/Constants';
-import { useUserContext } from '../hooks/useUserContext';
+import { useSelector } from 'react-redux';
 
 const SocketContext = createContext();
 
 const socket = io(COMMUNICATION_BASE_URL);
 
 const ContextProvider = ({ children }) => {
-    const { user } = useUserContext();
+    const { user } = useSelector(state => state.user);
     const [callAccepted, setCallAccepted] = useState(false);
     const [callEnded, setCallEnded] = useState(false);
     const [stream, setStream] = useState();

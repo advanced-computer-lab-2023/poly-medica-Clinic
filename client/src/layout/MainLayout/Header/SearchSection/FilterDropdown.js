@@ -1,71 +1,91 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Drawer,
-  Select,
   Typography,
-  MenuItem,
-  FormControl,
-  InputLabel,
   Card,
   Grid,
-  TextField,
+  FormControl,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  IconButton,
   Slide,
+  TextField
 } from '@mui/material';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const FilterDropdown = ({ filterData, onChange, isDrawerOpen, handleDrawerClose }) => {
+  const [activeFilterIndex, setActiveFilterIndex] = useState(0);
+
+  const handleArrowClick = (direction) => {
+    if (direction === 'left') {
+      setActiveFilterIndex((prevIndex) => (prevIndex - 1 + filterData.length) % filterData.length);
+    } else if (direction === 'right') {
+      setActiveFilterIndex((prevIndex) => (prevIndex + 1) % filterData.length);
+    }
+  };
   return (
     <Drawer
       anchor="right"
       open={isDrawerOpen}
       onClose={handleDrawerClose}
-      PaperProps={{ style: { height: '100%', overflow: 'hidden' } }}
+      PaperProps={{
+        style: {
+          height: 'calc(100% - 80px)', overflow: 'hidden', backgroundColor: '#4527a0',
+          borderRadius: '30px', marginRight: '1%', marginTop: '1%'
+        }
+      }}
     >
       <Slide direction="left" in={isDrawerOpen} mountOnEnter unmountOnExit>
         {filterData.length > 0 ? (
-          <Grid container spacing={2} sx={{ padding: '4%', backgroundColor: '#f0f0f0', width: 300, height: '100%' }}>
-            <Grid item xs={12} textAlign={'center'}>
-              <Typography variant="h5" sx={{ marginBottom: '2%', color: '#333' }}>
-                Apply Filters on this page:
+          <Grid container spacing={2} sx={{ padding: '4%', width: 300, height: '100%' }}>
+            <Grid item xs={12}>
+              <Typography align={'center'} sx={{ color: 'white ' }}>
+                Apply Filters:
               </Typography>
             </Grid>
-            {filterData.map((filter, index) => (
-              <Grid item xs={12} key={index}>
-                <Card variant="outlined" sx={{ p: 2, backgroundColor: '#fff', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}>
-                  <Typography variant="subtitle1" sx={{ mb: 1, color: '#555' }}>
-                    Filter By {filter.attribute}
+            <Grid item xs={12}>
+              <Card variant="outlined" sx={{ p: 2, boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}>
+                <Grid container justifyContent="space-between">
+                  <IconButton onClick={() => handleArrowClick('left')}>
+                    <ArrowBackIcon />
+                  </IconButton>
+                  <Typography variant="subtitle1" sx={{ mb: 1, color: '#b39ddb' }}>
+                    {filterData[activeFilterIndex].attribute}
                   </Typography>
-                  {filter.attribute === 'Available Slots' ? (
-                    <TextField
-                      type="datetime-local"
-                      value={filter.selectedValue}
-                      onChange={(event) => onChange(index, event.target.value)}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      fullWidth
-                      sx={{ mb: 2 }}
-                    />
-                  ) : (
-                    <FormControl fullWidth sx={{ mb: 2 }}>
-                      <InputLabel>Select...</InputLabel>
-                      <Select value={filter.selectedValue} onChange={(event) => onChange(index, event.target.value)}>
-                        <MenuItem value="">
-                          <em>Select...</em>
-                        </MenuItem>
-                        {filter.values.map((value) => (
-                          <MenuItem key={value} value={value}>
-                            {value}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  )}
-                </Card>
-              </Grid>
-            ))}
+                  <IconButton onClick={() => handleArrowClick('right')}>
+                    <ArrowForwardIcon />
+                  </IconButton>
+                </Grid>
+                {filterData[activeFilterIndex].attribute === 'Available Slots' ? (
+                  <TextField
+                    type="datetime-local"
+                    value={filterData[activeFilterIndex].selectedValue}
+                    onChange={(event) => onChange(activeFilterIndex, event.target.value)}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    fullWidth
+                    sx={{ mb: 2 }}
+                  />
+                ) : (
+                  <FormControl component="fieldset">
+                    <RadioGroup
+                      value={filterData[activeFilterIndex].selectedValue}
+                      onChange={(event) => onChange(activeFilterIndex, event.target.value)}
+                    >
+                      {filterData[activeFilterIndex].values.map((value) => (
+                        <FormControlLabel key={value} value={value} control={<Radio />} label={value} />
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                )}
+              </Card>
+            </Grid>
           </Grid>
         ) : (
-          <Typography variant="body2" sx={{ color: '#555', textAlign: 'center', padding: '2%' }}>
+          <Typography variant="body2" sx={{ color: '#4527a0', textAlign: 'center', padding: '2%' }}>
             No Filter Data on this page
           </Typography>
         )}

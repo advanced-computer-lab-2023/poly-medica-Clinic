@@ -3,7 +3,6 @@ import { Provider } from 'react-redux';
 import App from 'App';
 import { store } from 'store';
 import 'assets/scss/style.scss';
-import { UserContextProvider } from './contexts/UserContext';
 import { PaymentProvider } from './contexts/PaymentContext';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -14,11 +13,9 @@ const root = createRoot(container); // createRoot(container!) if you use TypeScr
 root.render(
   <Provider store={store}>
     <BrowserRouter>
-      <UserContextProvider>
-        <PaymentProvider>
-          <App />
-        </PaymentProvider>
-      </UserContextProvider>
+      <PaymentProvider>
+        <App />
+      </PaymentProvider>
     </BrowserRouter>
   </Provider>
 );

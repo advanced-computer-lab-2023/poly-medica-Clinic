@@ -1,5 +1,4 @@
 export const downloadDocument = (data) => {
-	console.log('date == ' + data);
 	const blob = new Blob([data], { type: 'application/octet-stream' });
 	const url = URL.createObjectURL(blob);
 	const a = document.createElement('a');
@@ -7,4 +6,10 @@ export const downloadDocument = (data) => {
 	a.download = document.documentName;
 	a.click();
 	URL.revokeObjectURL(url);
+};
+
+export const getTitle = (person) => {
+	if (person) {
+		return (person.gender == 'MALE') ? 'Mr.' : 'Miss.';
+	}
 };

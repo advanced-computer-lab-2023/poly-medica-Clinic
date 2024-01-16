@@ -1,9 +1,39 @@
-# poly-medica-clinic
+# Poly Medica
 
 
-## Motivation
+PolyMedica is a comprehensive healthcare solution that seamlessly integrates two virtual platforms: [PolyMedica Clinics](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic) and [PolyMedica Pharmacy](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy). This innovative system is built on a microservices architecture, ensuring flexibility, scalability, and efficiency.  
+<br/>
+The System mainly composed of 6 services, the communication among them is done by either synchronous HTTP requests using Axios or asynchronous communication using Apache Kafka:
+ * Clinic Service
+ * Patient Service
+ * Authentication Service
+ * Communication Service
+ * Payment Service
+ * Pharmacy Service
+---
 
-Welcome to poly-medica, a pioneering virtual clinic system designed to revolutionise healthcare accessibility by providing a seamless platform for patients and healthcare providers. Offering effortless appointment scheduling, online consultations, and streamlined access to medical records, our focus is on empowering patients while enabling healthcare professionals to prioritise patient care over administrative burdens. Join us in redefining the clinic experience, ensuring convenient, patient-centric healthcare services.
+## Badges
+
+<div style="display: flex;">
+  <img src="https://img.shields.io/badge/Github-Actions-%232088FF?style=for-the-badge&logo=GithubActions" alt="Github Actions badge">
+  <img src="https://img.shields.io/badge/Git--%23F05032?style=for-the-badge&logo=Git" alt="Git badge">
+  <img src ="https://img.shields.io/badge/Express-%23000000?style=for-the-badge&logo=Express&logoColor=white" alt = "Express badge">
+  <img src="https://img.shields.io/badge/-jest-%23C21325?style=for-the-badge&logo=jest&logoColor=white" alt="Jest Badge">
+  <img src ="https://img.shields.io/badge/Node.js-%2343853D?style=for-the-badge&logo=Node.js&logoColor=white" alt = "Node badge">
+  <img src ="https://img.shields.io/badge/React.js-%2361DAFB?style=for-the-badge&logo=React&logoColor=black" alt = "React badge">
+  <img src ="https://img.shields.io/badge/MongoDB-%2347A248?style=for-the-badge&logo=MongoDB&logoColor=white" alt = "Mongo badge">
+  <img src ="https://img.shields.io/badge/Socket.IO-%23000000?style=for-the-badge&logo=Socket.IO&logoColor=white" alt = "Socket badge">
+  <img src ="https://img.shields.io/badge/JavaScript_ES6-%23F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=black" alt = "ES6 badge">
+  <img src ="https://img.shields.io/badge/Redux-%23764ABC?style=for-the-badge&logo=Redux&logoColor=white" alt = "Redux badge">
+  <img src ="https://img.shields.io/badge/ESLint-%234B32C3?style=for-the-badge&logo=ESLint&logoColor=white" alt = "ESLINT badge">
+  <img src ="https://img.shields.io/badge/JWT-%23000000?style=for-the-badge&logo=JSON%20Web%20Tokens&logoColor=white" alt = "JWT badge">
+  <img src ="https://img.shields.io/badge/Docker-%232496ED?style=for-the-badge&logo=Docker&logoColor=white" alt = "Docker badge">
+  <img src ="https://img.shields.io/badge/Kafka-%23231F20?style=for-the-badge&logo=Apache%20Kafka&logoColor=white" alt = "Kafka badge">
+  <img src ="https://img.shields.io/badge/Stripe-%231A1A1A?style=for-the-badge&logo=Stripe&logoColor=white" alt = "Stripe badge">
+  <img src ="https://img.shields.io/badge/Swagger-%2385EA2D?style=for-the-badge&logo=Swagger&logoColor=black" alt = "Swagger badge">
+</div>
+
+--- 
 
 ## Build Status
 
@@ -17,12 +47,10 @@ Welcome to poly-medica, a pioneering virtual clinic system designed to revolutio
 
 [![Payment CI](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/actions/workflows/payment-microservice-ci.yml/badge.svg)](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/actions/workflows/payment-microservice-ci.yml)
 
+---
 
 ### Planned Features
 
-#### Microservices with Kafka
-
-We're planning to implement a microservices architecture using Kafka as the messaging system. This will enable scalable and decoupled communication between various components of our system, ensuring robustness and flexibility.
 
 #### Frontend Automated Testing with Jest for React MUI
 
@@ -34,7 +62,11 @@ We're excited to introduce AI models to augment our system's capabilities:
 
 - *Doctor Assistance AI*: This AI model will assist doctors by analyzing symptoms input by the patient, suggesting suitable medicines, and providing dosage recommendations. It will also create reminders for doctors regarding prescribed medications and their quantities.
 
-## Code Style Guide
+- *Patient Assistance AI*: Suggest replacements for medicines out of stock for the patient
+
+---
+<details>
+<summary> <h2>Code Style Guide</h2> </summary>
 
 ### JavaScript (Node.js and React)
 
@@ -66,104 +98,137 @@ We're excited to introduce AI models to augment our system's capabilities:
 - *Branching*: Follow Gitflow (feature branches, develop, master).
 - *Pull Requests*: Require clear descriptions and peer reviews before merging.
 
+</details>  
 
+---  
+
+<details>
+
+<summary> <h3> Microservices Structure </h3> </summary>
+ 
+ ```bash
+ Poly-Medica Clinic
+├── clinic
+│   ├── ...
+│   └── (Clinic Service Code)
+├── patient
+│   ├── ...
+│   └── (Patient Service Code)
+├── authentication
+│   ├── ...
+│   └── (Authentication Service Code)
+├── communication
+│   ├── ...
+│   └── (Communication Service Code)
+├── payment
+│   ├── ...
+│   └── (Payment Service Code)
+└── client
+    ├── ...
+    └── (Client Application Code)
+
+Poly-Medica Pharmacy
+├── pharmacy
+│   ├── ...
+│   └── (Pharmacy Service Code)
+└── client
+    ├── ...
+    └── (Client Application Code)
+ ```
+
+</details>
+
+---
 
 ## Screenshots 🖵
-<!-- Admin Screenshots-->
-<details>
-<summary>Admin</summary>
 
 <details>
-<summary>Add New Helath Packages</summary>
-
-![WhatsApp Image 2023-12-17 at 5 00 28 AM (1)](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/101880627/36a7386d-2d20-435c-acc3-349988abeb52)
-
-
-    
-</details>
-
-</details>
-
-<!-- Patient Screenshots-->
-<details>
-<summary>Patient</summary>
-
-<details>
-<summary>Home Page</summary>
-
-![WhatsApp Image 2023-12-17 at 5 00 29 AM (1)](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/101880627/7fdf73b9-bc45-4f2c-ac3d-3bcbb4abf9a6)
-
-    
-</details>
-
-<details>
-<summary>View Appointments</summary>
-
-![WhatsApp Image 2023-12-17 at 5 00 28 AM](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/101880627/62230d66-c83e-4186-a991-24f3c3879ace)
-
-    
-</details>
-
-<details>
-<summary>Select a Doctor</summary>
-
-![WhatsApp Image 2023-12-17 at 5 00 29 AM](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/101880627/7420601b-bd39-4a8c-9fc0-3338fad3c294)
-
-    
-</details>
-
-
-</details>
-
-
-
-<!-- Doctor Screenshots-->
-
-<details>
-<summary>Doctor</summary>
-
-<details>
-<summary>Follow-up requests</summary>
-
- ![WhatsApp Image 2023-12-17 at 5 00 28 AM (2)](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/101880627/51774f22-2b4c-41c1-a073-390703f5b911)
-
-
-</details>
-
-<details>
-<summary>confirmation message </summary>
-
- ![WhatsApp Image 2023-12-17 at 5 00 29 AM (2)](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/101880627/7097c174-83d2-4fd2-8718-669282a5595c)
-
-
-</details>
-
-</details>
-<!-- to be added -->
+<summary>Login Page</summary>  
+	
+ ![login](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/102627389/56325872-aaac-4b78-843f-635c8edf4849)
  
+</details>
+
+<details>
+<summary>Home Page</summary>  
+	
+ ![home](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/102627389/5bfe411b-d6a7-4472-96db-0b88cf9353b6)
  
+</details>
+
+
+<details>
+<summary>Appointments Page</summary>  
+	
+ ![appointments](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/102627389/4095f6da-2857-4ac1-bd5d-f2b61d911dc1)
+ 
+</details>
+
+<details>
+<summary>Health Package Page</summary>  
+	
+ ![health-package](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/102627389/ef6c952f-107a-4438-8462-f74652dc8ffa)
+ 
+</details>
+
+<details>
+<summary>Apply Filter on doctors</summary>  
+	
+![apply-filter](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/102627389/a8b3508f-52dd-4e17-8292-48c788667916)
+ 
+</details>
+
+<details>
+<summary>Patient Adding family members</summary>  
+	
+![add-member](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/102627389/e11252e9-487b-4b4f-b33e-efa325a854fb)
+ 
+</details>
+
+<details>
+<summary>Doctor Receiving Notification</summary>  
+	
+![notification](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/102627389/f2a8d218-3002-4d7e-9129-25b537392adb)
+ 
+</details>
+
+<details>
+<summary>Admin Viewing Requests</summary>  
+	
+![requests](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/102627389/b7643d4d-ac7b-4d18-b2e8-8f5b0fb9e84b)
+
+</details>
+
+
+
+
+ ---
 
 ## Tech/Framework used 
 
 -   [Node.js](https://nodejs.org/en/)
 -   [Express](https://expressjs.com/)
 -   [React](https://reactjs.org/)
-
 -   [MongoDB](https://www.mongodb.com/)
 -   [Mongoose](https://mongoosejs.com/)
 -   [Jest](https://jestjs.io/)
-
 -   [Material-UI](https://material-ui.com/)
 -   [Stripe](https://stripe.com/)
-
 -   [Git](https://git-scm.com/)
 -   [Github Actions](github.com/features/actions)
-
 -   [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
 -   [Postman](https://www.postman.com/)
 -   [VSCode](https://code.visualstudio.com/)
-- [Babel](https://babeljs.io/)
+-   [Babel](https://babeljs.io/)
+-   [Socket IO](https://socket.io/)
+-   [JWT](https://jwt.io/)
+-   [Docker](https://www.docker.com/)
+-   [Apache Kafka](https://kafka.apache.org/)
+-   [ESlint](https://eslint.org/)
+-   [Redux](https://react-redux.js.org/)
+-   [Node Mailer](https://nodemailer.com/)
 
+---
 
 ## Features
 
@@ -230,7 +295,7 @@ The system serves different type of users (Patient, Doctor , Admin )
 
 <details>
 
-<summary> As a Admin I can </summary>
+<summary> As an Admin I can </summary>
 
 - Add another adminstrator 
 - Remove a doctor or a patient or an admin from the system
@@ -246,44 +311,92 @@ The system serves different type of users (Patient, Doctor , Admin )
 
 <details>
     <summary>
-    Filter Context
+    Admin Details
     </summary>
 
 ```javascript
 
+import React from 'react';
+import DoctorIcon from '../../../assets/images/icons/DoctorIcon.png';
+import EmailIcon from '@mui/icons-material/Email';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import {
+	Dialog,
+	DialogTitle,
+	DialogContent,
+	Typography,
+	DialogActions,
+	Button,
+	useTheme,
+} from '@mui/material';
+import { styled } from '@mui/system';
+import { useAdminContext } from 'hooks/useAdminContext';
+import { commonStyles } from 'ui-component/CommonStyles';
 
-import React, { createContext, useContext, useState } from 'react';
+const useStyles = styled(() => commonStyles);
 
-const FilterContext = createContext();
+const AdminDetails = () => {
+	const classes = useStyles();
+	const theme = useTheme();
+	const title = ' ';
 
-export const FilterProvider = ({ children }) => {
-  const [filterData, setFilterData] = useState(
-    [
-      {
-        attribute: '', 
-        values: [],  
-        selectedValue: '', 
-      }
-    ]);
+	const { setSelectedAdmin, setErrorMessage, selectedAdmin } = useAdminContext();
 
-  const updateFilter = (newFilterData) => {
-    setFilterData(newFilterData);
-  };
+	const handleDialogClose = () => {
+		setSelectedAdmin(null);
+		setErrorMessage('');
+	};
 
-  return (
-    <FilterContext.Provider value={{ filterData, updateFilter }}>
-      {children}
-    </FilterContext.Provider>
-  );
+	return (
+		<Dialog
+			open={selectedAdmin}
+			onClose={handleDialogClose}
+			PaperProps={{ sx: { minWidth: theme.breakpoints.values.md > 800 ? 500 : 300 } }}
+		>
+			{selectedAdmin && (
+				<>
+					<DialogTitle align='center' variant='h2'>
+						{selectedAdmin.userName}
+					</DialogTitle>
+					<DialogContent>
+						<div className={classes.container}>
+							<div>
+								<img
+									src={DoctorIcon}
+									alt={`${title} ${selectedAdmin.userName}`}
+									width='100'
+									height='100'
+								/>
+								<Typography variant='h4' sx={{ marginTop: '1em' }}>
+									{`${title} ${selectedAdmin.userName}`}
+								</Typography>
+							</div>
+							<div className={classes.infoContainer}>
+								<div className={classes.emailContainer}>
+									<EmailIcon className={classes.iconMargin} />
+									<Typography variant='body1'>{selectedAdmin.email}</Typography>
+								</div>
+								<div className={classes.emailContainer}>
+									<StarBorderIcon className={classes.iconMargin} />
+									<Typography variant='body1'>
+										{selectedAdmin.mainAdmin ? 'Main Admin' : 'Sub Admin'}
+									</Typography>
+								</div>
+							</div>
+						</div>
+					</DialogContent>
+					<DialogActions>
+						<Button onClick={handleDialogClose} color='primary'>
+							Close
+						</Button>
+					</DialogActions>
+				</>
+			)}
+		</Dialog>
+	);
 };
 
-export const useFilter = () => {
-  const context = useContext(FilterContext);
-  if (!context) {
-    throw new Error('useFilter must be used within a FilterProvider');
-  }
-  return context;
-};
+export default AdminDetails;
 
 ```
 </details>
@@ -324,182 +437,80 @@ export const SearchProvider = ({ children }) => {
 
  <details>
     <summary>
-    Side Bar
+    Get admins API
     </summary>
 
 ```javascript
-import PropTypes from 'prop-types';
-
-import { useTheme } from '@mui/material/styles';
-import { Box, Chip, Drawer, Stack, useMediaQuery } from '@mui/material';
-
-import PerfectScrollbar from 'react-perfect-scrollbar';
-import { BrowserView, MobileView } from 'react-device-detect';
-
-import MenuList from './MenuList';
-import LogoSection from './LogoSection';
-import { drawerWidth } from 'store/constant';
- 
-
-const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
-	const theme = useTheme();
-	const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
-
-	const drawer = (
-		<>
-			<Box sx={{ display: { xs: 'block', md: 'none' } }}>
-				<Box sx={{ display: 'flex', p: 2, mx: 'auto' }}>
-					<LogoSection />
-				</Box>
-			</Box>
-			<BrowserView>
-				<PerfectScrollbar
-					component="div"
-					style={{
-						height: !matchUpMd ? 'calc(100vh - 56px)' : 'calc(100vh - 88px)',
-						paddingLeft: '16px',
-						paddingRight: '16px'
-					}}
-				>
-					<MenuList />
-					<Stack direction="row" justifyContent="center" sx={{ mb: 2 }}>
-						<Chip label={process.env.REACT_APP_VERSION} disabled chipcolor="secondary" size="small" sx={{ cursor: 'pointer' }} />
-					</Stack>
-				</PerfectScrollbar>
-			</BrowserView>
-			<MobileView>
-				<Box sx={{ px: 2 }}>
-					<MenuList />
-					<Stack direction="row" justifyContent="center" sx={{ mb: 2 }}>
-						<Chip label={process.env.REACT_APP_VERSION} disabled chipcolor="secondary" size="small" sx={{ cursor: 'pointer' }} />
-					</Stack>
-				</Box>
-			</MobileView>
-		</>
-	);
-
-	const container = window !== undefined ? () => window.document.body : undefined;
-
-	return (
-		<Box component="nav" sx={{ flexShrink: { md: 0 }, width: matchUpMd ? drawerWidth : 'auto' }} aria-label="mailbox folders">
-			<Drawer
-				container={container}
-				variant={matchUpMd ? 'persistent' : 'temporary'}
-				anchor="left"
-				open={drawerOpen}
-				onClose={drawerToggle}
-				sx={{
-					'& .MuiDrawer-paper': {
-						width: drawerWidth,
-						background: theme.palette.background.default,
-						color: theme.palette.text.primary,
-						borderRight: 'none',
-						[theme.breakpoints.up('md')]: {
-							top: '88px'
-						}
-					}
-				}}
-				ModalProps={{ keepMounted: true }}
-				color="inherit"
-			>
-				{drawer}
-			</Drawer>
-		</Box>
-	);
-};
-
-Sidebar.propTypes = {
-	drawerOpen: PropTypes.bool,
-	drawerToggle: PropTypes.func,
-	window: PropTypes.object
-};
-
-export default Sidebar;
-
+	app.get('/admins', async (req, res) => {
+		try {
+			const admins = await service.findAllAdmins();
+			res.status(OK_STATUS_CODE).json({ admins });
+		} catch (err) {
+			res.status(ERROR_STATUS_CODE).json({ err: err.message });
+		}
+	});
 ```
 
  </details>
 
 <details>
     <summary>
-    Order API
+    Users Model
     </summary>
 
 ```javascript
 
-import OrderService from '../service/order-service.js';
-import { isValidMongoId } from '../utils/Validation.js';
+import mongoose from 'mongoose';
+import { USER_ARR_ENUM } from '../../utils/Constants.js';
 
-import {
-	OK_STATUS_CODE,
-	ERROR_STATUS_CODE,
-} from '../utils/Constants.js';
+const userSchema = mongoose.Schema({
+	userId:{
+		type: mongoose.Schema.Types.ObjectId,
+		required:true,
+		unique: true,
+	},
+	email:{
+		type:String,
+		required:true,
+		unique: true,
+	},
+	userName:{
+		type:String,
+		required:true,
+		unique: true
+	},
+	password:{
+		type:String,
+		required:true
+	},
+	type:{
+		type: String,
+		enum: USER_ARR_ENUM,
+		required:true
+	},
+});
 
-export const order = (app) => {
-	const service = new OrderService();
-
-	app.get('/order/pending', async (req, res) => {
-		try {
-			const data = await service.getPendingOrders();
-			res.status(OK_STATUS_CODE).json(data);
-		} catch (err) {
-			res.status(ERROR_STATUS_CODE).json({
-				message: 'error occurred while fetching orders',
-			});
-		}
+userSchema.statics.signup = async function (
+	userId,
+	email,
+	password,
+	userName,
+	type,
+) {
+	const userRecord = new this({
+		userId: new mongoose.Types.ObjectId(userId),
+		email,
+		password,
+		userName,
+		type,
 	});
-
-	app.get('/order/:patientId', async (req, res) => {
-		const { patientId } = req.params;
-		if (!isValidMongoId(patientId)) {
-			return res.status(ERROR_STATUS_CODE).json({
-				message: 'Patient ID is invalid',
-			});
-		}
-		try {
-			const data = await service.getOrders(patientId);
-			res.status(OK_STATUS_CODE).json(data);
-		} catch (err) {
-			res.status(ERROR_STATUS_CODE).json({
-				message: 'error occurred while fetching orders',
-			});
-		}
-	});
-
-	app.post('/order', async (req, res) => {
-		try {
-			const { order } = req.body;
-			console.log(order);
-			const data = await service.addOrder(order);
-			res.status(OK_STATUS_CODE).json(data);
-		} catch (err) {
-			res.status(ERROR_STATUS_CODE).json({
-				message: 'error occurred while adding order',
-				error: err.message,
-			});
-		}
-	});
-
-	app.patch('/order/:orderId', async (req, res) => {
-		const { orderId } = req.params;
-		if (!isValidMongoId(orderId)) {
-			return res.status(ERROR_STATUS_CODE).json({
-				message: 'Order ID is invalid',
-			});
-		}
-		try {
-			const { order } = req.body;
-			const data = await service.updateOrder(orderId, order);
-			res.status(OK_STATUS_CODE).json(data);
-		} catch (err) {
-			res.status(ERROR_STATUS_CODE).json({
-				message: 'error occurred while updating order',
-				error: err.message,
-			});
-		}
-	});
+	const result = await userRecord.save();
+	return result;
 };
 
+const User = mongoose.model('User', userSchema);
+
+export default User;
 
 ```
 
@@ -607,198 +618,65 @@ export default Sidebar;
 
  <!-- next -->
 
-
-
-
-
- 
-
-
-
-
-
-
-
- 
-
-
+---
 
 
 ## Installation  
-
-Install my-project with `npm`
-
+  
 ```bash
 > git clone https://github.com/advanced-computer-lab-2023/poly-medica-Clinic.git
 > cd poly-medica-clinic
-> cd authentication && npm i && cd..
-> cd clinic && npm i && cd..
-> cd communication && npm i && cd..
-> cd patient && npm i && cd..
-> cd payment && npm i && cd..
-> cd client && npm i 
+> chmod +x install-all.sh
+> ./install-all.sh
 ```
-## API Refrences
 
- ### Authentication Endpoints
+---
+
+## API Documentation
+
+The API documentation is created using Swagger. To access it, follow these steps:
+
+1. Ensure the service is running.
+2. Open your browser and navigate to `localhost:SERVICE_PORT/api-docs`.
 
 
-    GET /user/:id/email
-    GET /check-user
-    GET /remove-cookie
-    GET /pharmacists/id
-    POST /signup/:request
-    POST /doctors
-    POST /pharmacists
-    POST /admins/:request
-    POST /login/:request
-    POST /reset-password
-    PATCH /users/:id/email/:email
-    PATCH /change-password/:userId
-    DELETE /users/:id
+![swagger](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/102627389/a78893f3-69a7-4b00-b8c1-c30e9901e898)
 
- ### Clinic Endpoints
 
-    GET /packages
-    GET /admins
-    GET /doctors/:id/patients
-    GET /doctor/:id
-    GET /doctors
-    GET /patients
-    GET /appointments
-    GET /doctors/:id/status
-    GET /doctors/:id/name
-    GET /doctors/:id/slots
-    GET /doctors/:id/wallet
-    GET /doctor-requests
-    GET /doctor-requests/files/:fileName
-    GET /appointments/:id
-    GET /appointments/follow-up-requests/:id
-    POST /packages
-    POST /admins
-    POST /check-doctor
-    POST /doctors
-    POST /doctors/:id/status
-    POST /doctors/:id/slots
-    POST /add-doctor-req
-    POST /appointments
-    POST /appointments/follow-up-requests
-    PATCH /package/:id
-    PATCH /doctors/:id
-    PATCH /doctors/:doctorId/wallet
-    PATCH /appointments/complete/:appointmentId
-    PATCH /appointments/reschedule/:appointmentId
-    PATCH /appointments/cancel/:appointmentId
-    PATCH /appointments/follow-up-requests/handle/:appointmentId
-    DELETE /packages/:id
-    DELETE /admins/:id
-    DELETE /patients/:id
-    DELETE /doctors/:id
-    DELETE /doctor-requests/:id
 
- ### Patient Endpoints
-    GET /patients
-    GET /patients/:id
-    GET /family-members/:id
-    GET /patient/:id/prescriptions
-    GET /patient/:pateintId/prescription/:prescriptionId
-    GET /patient/:id/discount
-    GET /patient/:id/health-packages
-    GET /patient/:id/medical-history
-    GET /patient/:id/medical-history/:recordId
-    GET /address/:pateintId
-    GET /patients/:pateintId/wallet
-    GET /order/pending
-    GET /order/:patientId
-    GET /prescriptions/:prescriptionId/download
-    GET /prescriptions/:prescriptionId/medicines
-    POST /patients
-    POST /signup
-    POST /order
-    POST /prescriptions
-    PATCH /family-members/:id
-    PATCH /patient/:id/health-packages
-    PATCH /patient/:id/health-packages/:packageId
-    PATCH /patient/:id/medical-history
-    PATCH /patient/:id/medical-history/:recordId
-    PATCH /address/:pateintId
-    PATCH /patients/:patientId/wallet
-    PATCH /order/:orderId
-    PATCH /prescriptions/:prescriptionId
-    DELETE /patients/:id
+---
 
- ### Payment Endpoints
-
-    POST /payment/card
-    POST /payment/wallet
-    POST /payment-salary/doctor/:doctorId/wallet
-<!-- to be added -->
 ## Tests
 <!-- to be added -->
 
-The testing is done using `jest`. To run the tests, run the following command.
+The testing is done using `jest`. To run the tests, run the following command:  
+- Make sure you are at the root directory of the project
+  
 
-
 ```bash
-> cd authentication && npm run test
-```
-```bash
-> cd clinic && npm run test
-```
-```bash
-> cd communication && npm run test
-```
-```bash
-> cd patient && npm run test
-```
-```bash
-> cd payment && npm run test
+> chmod +x run-tests.sh
+>./run-tests.sh
 ```
 
 
 ![image](https://github.com/advanced-computer-lab-2023/poly-medica-Clinic/assets/101880627/3b31ae18-a4af-47ed-aee3-cf8e1be5a2d2)
 
  
- 
-### Models tests
+### Model tests
 `Faker.js` is used to generate data to test different models 
 
-There is tests done for the following models : `User` , `Admin` , `Patient` , `Doctor` , `Appointment` , `Health Package` , `Order` , `Prescription` 
-
-
-
+There are tests done for the following models : `User` , `Admin` , `Patient` , `Doctor` , `Appointment` , `Health Package` , `Order` , `Prescription` 
 
 
 ## How to use
-To run backend 
-#### authentication service
-```bash
-cd authentication && nodemon start
-```
-#### clinic service
-```bash
-cd clinic && nodemon start
-```
-#### patient service
-```bash
-cd patient && nodemon start
-```
-#### patient service
-```bash
-cd patient && nodemon start
-```
-#### payment service
-```bash
-cd patient && nodemon start
-```
-#### communication service
-```bash
-cd communication && nodemon start
-```
+To run the project 
+- Make sure you are at the root directory of the project
+- The script will run all the services and the client except the pharmacy service, which could be found at [this repository](https://github.com/advanced-computer-lab-2023/poly-medica-Pharmacy)
 
-To run frontend
 ```bash
-cd client && npm start
+> npm install -g concurrently
+> chmod +x run-all.sh
+> ./run-all.sh
 ```
  All services and client will be running on the specified ports on your env files.
 
@@ -808,17 +686,52 @@ To run this project, you will need to add the following environment variables to
 
 <details>
     <summary>
-        envs
+        Authentication and Communication envs
     </summary>
-
 
 `MONGO_URI`
 
-`JWT_SECRETABLE_KEY`
-
 `MONGO_URI_TEST` 
+
+`JWT_SECRET`
+
+`PORT`
+
+`RESETEMAIL`
+
+`RESETPASSWORD`
+
 </details>
 
+
+<details>
+    <summary>
+        Clinic and Patient envs
+    </summary>
+
+`MONGO_URI`
+
+`MONGO_URI_TEST` 
+
+`JWT_SECRET`
+
+`PORT`
+
+</details>
+
+
+<details>
+    <summary>
+        Payment envs
+    </summary>
+
+`SecretKey`
+
+`PublicKey` 
+
+`PORT`
+
+</details>
 
 
 ## Contributing
@@ -836,37 +749,29 @@ Contributions are always welcome!
 8. Wait for your pull request to be reviewed and merged
 
 
-
-
-
-
-
 # Credits
 - [NodeJs docs](https://nodejs.org/en/docs/)
 - [Express docs](https://expressjs.com/en/4x/api.html)
-
 - [ReactJs docs](https://reactjs.org/docs/getting-started.html)
 - [Mongoose docs](https://mongoosejs.com/docs/)
 - [Jest docs](https://jestjs.io/docs/getting-started)
 - [Stripe docs](https://stripe.com/docs)
 
-- [Clean code](https://www.oreilly.com/library/view/clean-code-a/9780136083238/)
-- [RESTful Web API Patterns and Practices Cookbook](https://learning.oreilly.com/library/view/restful-web-api/9781098106737/)
-- [Designing Data Intensive Applications](https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/)
 
 
-
-
+---
 
 ## License
 
-#### Stripe License
-This project uses Stripe to process payments. By using this project, you agree to be bound by the Stripe Services Agreement.
+The Project is open source following [MIT License](https://opensource.org/license/mit/)
 
-You can find the full text of the Stripe Services Agreement at the following link:
+---
 
-https://stripe.com/legal
-
-Please make sure to read and understand the Stripe Services Agreement before using this project.
-
-If you have any questions about the Stripe Services Agreement or how it applies to your use of this project, please contact Stripe at support@stripe.com.    
+### Contributers: 
+- [Mohamed Khaled](https://github.com/Mohamed-Khaled308)
+- [Amir Tarek](https://github.com/amir-awad)
+- [Malek Mohamed](https://github.com/malekelkssas)
+- [Ahmad Hoseiny](https://github.com/AhmadHoseiny)
+- [Mohamed Hassan](https://github.com/mohamedhassans)
+- [Abdelrahman Amr](https://github.com/Aelmeky)
+- [Yehia Mohamed](https://github.com/YehiaFarghaly)

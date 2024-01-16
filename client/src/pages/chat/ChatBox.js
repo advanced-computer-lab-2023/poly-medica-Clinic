@@ -1,15 +1,15 @@
 import { useEffect } from 'react';
 import { communicationAxios } from 'pages/utilities/AxiosConfig';
 import { Paper, InputBase, List, ListItem, Typography, Card, CardActions, CardContent, CardHeader, IconButton } from '@mui/material';
-import { useUserContext } from 'hooks/useUserContext';
 import { isSender, getReceiverId } from '../../utils/ChatUtils.js';
 import { useChat } from 'contexts/ChatContext.js';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CloseIcon from '@mui/icons-material/Close';
+import { useSelector } from 'react-redux';
 
 const ChatBox = ({ setChatOpen }) => {
 
-    const { user } = useUserContext();
+    const { user } = useSelector(state => state.user);
     const userId = user.id;
     const { socket, selectedChat, updateChat, setSelectedChat, chatMessages, setChatMessages, newMessage, setNewMessage,  } = useChat();
    
@@ -75,7 +75,6 @@ const ChatBox = ({ setChatOpen }) => {
                     }
                     action={
                         <IconButton aria-label="settings" onClick={() => {
-                            // console.log(chats, selectedChat);
                             setSelectedChat(null);
                             setChatOpen(false);
                         }}>

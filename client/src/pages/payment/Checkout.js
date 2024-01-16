@@ -6,12 +6,10 @@ import {
 } from '@stripe/react-stripe-js';
 import { paymentElementOptions, paymentStatus } from '../../utils/PaymentUtils';
 import { Button } from '@mui/material';
-import Swal from 'sweetalert2';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useUserContext } from 'hooks/useUserContext';
 import { PAYMENT_ITEM_TYPES } from '../../utils/Constants';
-//import Card from 'react-credit-cards'
-
+import { showFailureAlert } from 'utils/swal';
+import { useSelector } from 'react-redux';
 
 export default function CheckoutForm({ item, type, selectedDoctor }) {
   const stripe = useStripe();
@@ -20,7 +18,7 @@ export default function CheckoutForm({ item, type, selectedDoctor }) {
   const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const { user } = useUserContext();
+  const { user } = useSelector(state => state.user);
 
   const navigate = useNavigate();
 
@@ -65,11 +63,10 @@ export default function CheckoutForm({ item, type, selectedDoctor }) {
 
     if (error.type === 'card_error' || error.type === 'validation_error') {
       setMessage(error.message);
-      Swal.fire('error', error.message, 'error');
     } else {
       setMessage('An unexpected error occurred.');
-      Swal.fire('error', error.message, 'error');
     }
+    showFailureAlert('error', error.message);
     setIsLoading(false);
   };
 
@@ -77,7 +74,6 @@ export default function CheckoutForm({ item, type, selectedDoctor }) {
     if (type === PAYMENT_ITEM_TYPES[0]) {
       navigate('/patient/pages/packages');
     } else if (type === PAYMENT_ITEM_TYPES[1]) {
-      console.log('was here');
       if (selectedDoctor != '') {
         navigate('/patient/pages/doctors', { state: { selectedDoctor } });
       }
@@ -88,11 +84,6 @@ export default function CheckoutForm({ item, type, selectedDoctor }) {
     <form id='payment-form' onSubmit={handleSubmit}>
 
       <PaymentElement id='payment-element' options={paymentElementOptions}
-      // onChange={() => {
-      //   handleCardNumberChange(event.elementType === 'cardNumber' ? event : null);
-      //   handleCardExpiryChange(event.elementType === 'cardExpiry' ? event : null);
-      //   handleCardExpiryChange(event.elementType === 'cardCvc' ? event : null);
-      // }}
       />
       <Button disabled={isLoading || !stripe || !elements} fullWidth variant="contained" onClick={handleSubmit}
         sx={{ mt: 0.5 }}

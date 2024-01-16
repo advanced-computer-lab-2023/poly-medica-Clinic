@@ -1,12 +1,9 @@
-import { clinicAxios, patientAxios, paymentAxios } from './AxiosConfig';
-import Swal from 'sweetalert2';
+import { clinicAxios, patientAxios, paymentAxios, communicationAxios } from './AxiosConfig';
 import { PAYMENT_ITEM_TYPES } from './Constants';
+import { showFailureAlert, showSuccessAlert } from './swal';
 
 export const successfulPayment = (userId, items, type) => {
-  console.log('items = ', items);
-  console.log('type = ', type);
   if (type === PAYMENT_ITEM_TYPES[0]) {
-    console.log('condition true');
     patientAxios.patch(`/patient/${userId}/health-packages`, { items })
       .catch((error) => {
         console.log('Error in placing the order', error);
@@ -16,9 +13,17 @@ export const successfulPayment = (userId, items, type) => {
     clinicAxios.post('/appointments', { items })
       .then(() => {
         // payment to doctor
-        payDoctor(items).catch((err) => {
-          console.log('err = ', err);
-        });
+        payDoctor(items)
+          .then(async () => {
+            await communicationAxios.post(`/notification/${items.doctorId}/type/appointment`, {
+              senderName: items.doctorName,
+              notificationHead: 'Appointment Booked',
+              notificationBody: `Mr/Miss ${items.patientName} has booked an appointment with you`
+          });
+          })
+          .catch((err) => {
+            console.log('err = ', err);
+          });
       })
       .catch((error) => {
         console.log('Error in placing the order', error);
@@ -31,12 +36,11 @@ export const paymentStatus = (userId, status, navigate, item, type) => {
 
   switch (status) {
     case 'succeeded': {
-
-      Swal.fire('success', 'Payment Succeeded', 'success').then(() => {
+      showSuccessAlert('success', 'Payment Succeeded', () => {
         const callBackUrl = successfulPayment(userId ,item, type);
         navigate(callBackUrl, { replace: true });
-      }
-      ).catch((error) => {
+      })
+      .catch((error) => {
         console.log('Error the purchase', error);
       });
       return ('Payment succeeded!');
@@ -47,8 +51,7 @@ export const paymentStatus = (userId, status, navigate, item, type) => {
     }
 
     case 'requires_payment_method': {
-
-      Swal.fire('error', 'failed payment', 'error');
+      showFailureAlert('error', 'failed payment');
       return ('Your payment was not successful, please try again.');
     }
 
@@ -66,10 +69,9 @@ export const paymentElementOptions = {
   }
 };
 
-export const payDoctor = (items) => {
+export const payDoctor = async (items) => {
   const { doctorId, pricePaidToDoctor } = items;
-  console.log('pricePaidToDoctor = ', pricePaidToDoctor);
-  return paymentAxios.post(`/payment-salary/doctor/${doctorId}/wallet`, { 
+  return await paymentAxios.post(`/payment-salary/doctor/${doctorId}/wallet`, { 
     pricePaidToDoctor
   });
 };

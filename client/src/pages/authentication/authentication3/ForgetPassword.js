@@ -35,10 +35,10 @@ const ForgetPassword = () => {
 											<Grid item>
 												<Stack alignItems="center" justifyContent="center" spacing={1}>
 													<Typography color={theme.palette.secondary.main} gutterBottom variant={matchDownSM ? 'h3' : 'h2'}>
-                            forget Password
+														forget Password
 													</Typography>
 													<Typography variant="caption" fontSize="16px" textAlign={matchDownSM ? 'center' : 'inherit'}>
-                            Enter your Email
+														Enter your Email
 													</Typography>
 												</Stack>
 											</Grid>
@@ -53,7 +53,7 @@ const ForgetPassword = () => {
 									<Grid item xs={12}>
 										<Grid item container direction="column" alignItems="center" xs={12}>
 											<Typography component={Link} to="/login/login3" variant="subtitle1" sx={{ textDecoration: 'none' }}>
-                        Back to Login
+												Back to Login
 											</Typography>
 										</Grid>
 									</Grid>

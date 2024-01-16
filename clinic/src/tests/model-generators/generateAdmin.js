@@ -5,6 +5,7 @@ const generateAdmin = () => {
 		userName: faker.internet.userName(),
 		password: faker.internet.password(),
 		mainAdmin: faker.datatype.boolean(),
+		email: faker.internet.email()
 	};
 };
 

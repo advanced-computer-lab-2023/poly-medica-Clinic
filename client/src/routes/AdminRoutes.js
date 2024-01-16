@@ -4,19 +4,19 @@ import { lazy } from 'react';
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
 import { ADMIN_TYPE_ENUM } from 'utils/Constants';
-
+import AdminProvider from '../contexts/AdminContext';
+import DoctorProvider from '../contexts/DoctorContext';
+import PatientProvider from '../contexts/PatientContext';
 // dashboard routing
-const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
-const LazyAdmins = Loadable(lazy(() => import('pages/admin/Admins')));
-const LazyPatients = Loadable(lazy(() => import('pages/patient/Patients')));
-const LazyDoctors = Loadable(lazy(() => import('pages/adminDoctors/Doctors')));
-const LazyDoctorRequests = Loadable(lazy(() => import('pages/adminDoctors/DoctorRequests')));
+const LazyAdmins = Loadable(lazy(() => import('pages/admin/admin-control/Admins')));
+const LazyPatients = Loadable(lazy(() => import('pages/admin/admin-patients/Patients')));
+const LazyDoctors = Loadable(lazy(() => import('pages/admin/admin-doctors/Doctors')));
+const LazyDoctorRequests = Loadable(lazy(() => import('pages/admin/admin-doctors/DoctorRequests')));
 const Account = Loadable(lazy(() => import('pages/profile/Account')));
 const LazyPackages = Loadable(
-	lazy(() => import('pages/HealthPackages/HealthPackage')),
+	lazy(() => import('pages/health-packages/HealthPackage')),
 );
 const LazyHome = Loadable(lazy(() => import('pages/Home/Home')));
-
 // utilities routing
 const UtilsTypography = Loadable(
 	lazy(() => import('pages/utilities/Typography')),
@@ -34,17 +34,10 @@ const AdminRoutes = {
 	path: '/admin',
 	element: <MainLayout userType={ADMIN_TYPE_ENUM} />,
 	children: [
-		{
-			path: 'patient',
-			element: <DashboardDefault />,
-		},
+
 		{
 			path: 'dashboard',
 			children: [
-				{
-					path: 'default',
-					element: <DashboardDefault />,
-				},
 				{
 					path: 'home',
 					element: <LazyHome />,
@@ -60,15 +53,25 @@ const AdminRoutes = {
 				},
 				{
 					path: 'admins',
-					element: <LazyAdmins />,
+					element:
+						<AdminProvider>
+							<LazyAdmins />
+						</AdminProvider>,
 				},
 				{
 					path: 'patients',
-					element: <LazyPatients />,
+					element:
+						<PatientProvider>
+							<LazyPatients />
+						</PatientProvider>
+					,
 				},
 				{
 					path: 'doctors',
-					element: <LazyDoctors />,
+					element:
+						<DoctorProvider>
+							<LazyDoctors />
+						</DoctorProvider>,
 				},
 				{
 					path: 'doctor-requests',
@@ -76,7 +79,13 @@ const AdminRoutes = {
 				},
 				{
 					path: 'packages',
-					element: <LazyPackages />,
+					element:
+						<AdminProvider>
+							<PatientProvider>
+								<LazyPackages />
+							</PatientProvider>
+						</AdminProvider>
+					,
 				},
 			],
 		},

@@ -4,7 +4,23 @@ export const displayOfferText = (status, name) => {
         : `Hello Dr. ${name}, Glad to tell you that your request to be a doctor in PolyMedica is accepted. Please review our offer and respond as fast as possible by pressing on the Accept button below.`;
 };
 
+export const randomNumberInRange = (min, max) => {
+    return Math.floor(Math.random()
+        * (max - min + 1)) + min;
+};
 
+export const isUpcomingAppointment = (id, appointments) => {
+    for (let i = 0; i < appointments.length; i++) {
+        const appointment = appointments[i];
+        const currentDate = new Date();
+        if (
+            new Date(appointment.date) > currentDate &&
+            appointment.patientId === id
+        )
+            return true;
+    }
+    return false;
+};
 
 export const isIntersect = (from, availableSlots) => {
 

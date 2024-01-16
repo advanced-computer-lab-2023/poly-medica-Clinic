@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -33,9 +33,9 @@ import UpgradePlanCard from './UpgradePlanCard';
 
 // assets
 import { IconLogout, IconSettings, IconUser } from '@tabler/icons';
-import Swal from 'sweetalert2';
-import { useUserContext } from 'hooks/useUserContext';
 import { authenticationAxios } from 'utils/AxiosConfig';
+import { showFailureAlert } from 'utils/swal';
+import { dispatchUser } from 'store/user/configUserStore';
 // ==============================|| PROFILE MENU ||============================== //
 
 const ProfileSection = () => {
@@ -44,24 +44,21 @@ const ProfileSection = () => {
     const navigate = useNavigate();
     const [selectedIndex] = useState(-1);
     const [open, setOpen] = useState(false);
-    const { dispatch, user } = useUserContext();
+    const { user } = useSelector(state => state.user);
+	const dispatch = useDispatch();
     /**
      * anchorRef is used on different componets and specifying one type leads to other components throwing an error
      * */
     const anchorRef = useRef(null);
-    const handleLogout = async () => {
-        await authenticationAxios
+    const handleLogout = () => {
+        authenticationAxios
             .get('/remove-cookie')
-            .then(() => {
-                dispatch({ auth: false, payload: null });
+            .then(async () => {
                 navigate('/login/login3');
+                dispatch(dispatchUser({ user: null }));
             })
             .catch(() => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'failed to logout',
-                });
+                showFailureAlert('Oops...', 'failed to logout');
             });
     };
 
