@@ -5,9 +5,9 @@ name: Clinic CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ['main']
   pull_request:
-    branches: [ "main" ]
+    branches: ['main']
 
 jobs:
   lint-and-test-clinic:
@@ -16,6 +16,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Run Docker
+        run: docker-compose up -d
+
+      - name: Wait for Kafka to be ready
+        run: npx wait-on tcp:127.0.0.1:${{ secrets.KAFKA_PORT }} && echo "Kafka is ready!"
 
       - name: Setup Node.js
         uses: actions/setup-node@v2
@@ -33,6 +39,9 @@ jobs:
       - name: Run Tests (Clinic Microservice)
         run: npm run test
         working-directory: clinic
+
 env:
   MONGO_URI_TEST: ${{ secrets.MONGO_URI_TEST }}
-
+  ZOOKEEPER_PORT: ${{ secrets.ZOOKEEPER_PORT }}
+  KAFKA_PORT: ${{ secrets.KAFKA_PORT }}
+  ZOOKEEPER_HOST_NAME: ${{ secrets.ZOOKEEPER_HOST_NAME}}

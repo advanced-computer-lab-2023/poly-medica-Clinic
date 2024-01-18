@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - ${ZOOKEEPER_PORT}:${ZOOKEEPER_PORT}
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+
+  kafka:
+    image: wurstmeister/kafka
+    container_name: kafka
+    ports:
+      - ${KAFKA_PORT}:${KAFKA_PORT}
+    volumes:
+      - ./data/kafka:/var/run/docker.sock
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_LISTENERS=PLAINTEXT://:${KAFKA_PORT}
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:${KAFKA_PORT}
+      - KAFKA_ZOOKEEPER_CONNECT=${ZOOKEEPER_HOST_NAME}:${ZOOKEEPER_PORT}
+      - KAFKA_CREATE_TOPICS=notifications:1:1,out_of_stock:1:1
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    depends_on:
+      - zookeeper

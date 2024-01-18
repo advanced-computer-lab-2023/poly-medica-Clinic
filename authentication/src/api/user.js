@@ -102,9 +102,6 @@ export const user = (app) => {
 		}
 	});
 
-	//
-
-	//
 	app.delete('/users/:id', async (req, res) => {
 		try {
 			const userId = req.params.id;
@@ -173,8 +170,9 @@ export const user = (app) => {
 		}
 	});
 
-	app.post('/check-admin/:request', async (req, res) => {
+	app.post('/admins/:request', async (req, res) => {
 		try {
+			let signupData = null;
 			const requestFrom = req.params.request; // clinic, pharmacy
 			const userName = req.body.userName;
 			const email = req.body.email;
@@ -203,21 +201,6 @@ export const user = (app) => {
 					throw new Error('invalid system');
 			}
 
-			res.status(OK_REQUEST_CODE_200).end();
-		} catch (error) {
-			if (error.response) {
-				res
-					.status(BAD_REQUEST_CODE_400)
-					.send({ message: error.response.data.errMessage });
-			} else {
-				res.status(ERROR_STATUS_CODE).send({ message: error.message });
-			}
-		}
-	});
-
-	app.post('/admins/:request', async (req, res) => {
-		try {
-			let signupData = null;
 			switch (requestFrom) {
 				case CLINIC_REQ:
 					signupData = await axios.post(ADMIN_Clinic_SIGNUP_URL, req.body);

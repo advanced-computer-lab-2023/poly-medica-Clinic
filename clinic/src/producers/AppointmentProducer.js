@@ -5,17 +5,18 @@ import {
 	OK_STATUS_CODE,
 } from '../utils/Constants.js';
 
-export const appointmentProducer = (app) => {
-	const client = new KafkaNode.KafkaClient({ kafkaHost: 'localhost:9092' });
-	const producer = new KafkaNode.Producer(client);
+const client = new KafkaNode.KafkaClient({ kafkaHost: 'localhost:9092' });
+const producer = new KafkaNode.Producer(client);
+
+const appointmentProducer = (app) => {
 	const kafka_topic = 'notifications';
 
-	producer.on('ready', async function () {
-		console.log('Appointment Producer is ready');
+	producer.on('ready', function () {
+		console.log('Appointment producer is ready');
 	});
 
 	producer.on('error', function (err) {
-		console.log('Appointment Producer is in error state');
+		console.log('Appointment producer is in error state');
 		console.log(err);
 	});
 
@@ -58,3 +59,5 @@ export const appointmentProducer = (app) => {
 		}
 	});
 };
+
+export { appointmentProducer, producer };

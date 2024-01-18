@@ -173,8 +173,6 @@ describe('POST /admins/:request', () => {
         const type = PHARMACY_ADMIN_ENUM;
         const email = faker.internet.email();
 
-        // const userId = faker.database.mongodbObjectId();
-        // const userName = faker.internet.userName();
         const user = new User(generateUser(userId, email, userName, type));
         await user.save();
         const res = await request(app).post(`/admins/${PHARMACY_REQ}`).send({ userId: userId, type: type, email: email, userName: userName, password: faker.internet.password() });
