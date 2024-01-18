@@ -7,6 +7,7 @@ import { ADMIN_TYPE_ENUM } from 'utils/Constants';
 import AdminProvider from '../contexts/AdminContext';
 import DoctorProvider from '../contexts/DoctorContext';
 import PatientProvider from '../contexts/PatientContext';
+import Page_404 from 'pages/Page_404';
 // dashboard routing
 const LazyAdmins = Loadable(lazy(() => import('pages/admin/admin-control/Admins')));
 const LazyPatients = Loadable(lazy(() => import('pages/admin/admin-patients/Patients')));
@@ -110,6 +111,10 @@ const AdminRoutes = {
 			path: 'sample-page',
 			element: <SamplePage />,
 		},
+		{
+			path: '*',	
+			element: <Page_404/>,
+		}
 	],
 };
 

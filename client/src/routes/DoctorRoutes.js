@@ -6,6 +6,7 @@ import Loadable from 'ui-component/Loadable';
 import { DOCTOR_TYPE_ENUM } from 'utils/Constants';
 import DoctorProvider from 'contexts/DoctorContext';
 import PatientProvider from 'contexts/PatientContext';
+import Page_404 from 'pages/Page_404';
 
 // dashboard routing
 const LazyDoctorListofPatients = Loadable(
@@ -137,6 +138,10 @@ const DoctorRoutes = {
             path: 'sample-page',
             element: <SamplePage />,
         },
+        {
+			path: '*',	
+			element: <Page_404/>,
+		}
     ],
 };
 

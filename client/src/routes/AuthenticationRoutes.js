@@ -26,7 +26,7 @@ const AuthenticationRoutes = {
 		{
 			path: '/login/reset-password',
 			element: <ForgetPassword />
-		}
+		},
 	]
 };
 
