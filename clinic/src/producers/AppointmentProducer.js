@@ -10,7 +10,7 @@ export const appointmentProducer = (app) => {
 	const producer = new KafkaNode.Producer(client);
 	const kafka_topic = 'notifications';
 
-	producer.on('ready', async function () {
+	producer.on('ready', function () {
 		console.log('Appointment Producer is ready');
 	});
 
