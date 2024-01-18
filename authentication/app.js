@@ -8,7 +8,6 @@ import cors from 'cors';
 import swaggerUi from "swagger-ui-express";
 import { default as swaggerFile } from './src/swagger/swagger.json' assert { type: "json" };
 
-
 const app = express();
 app.use(morgan('dev'));
 app.use(cookieParser());
@@ -26,4 +25,3 @@ user(app);
 resetPassword(app);
 
 export default app;
-
